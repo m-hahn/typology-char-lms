@@ -271,5 +271,7 @@ for epoch in range(10000):
       break
    if args.save_to is not None:
       torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+"_EPOCH_"+str(epoch)+".pth.tar")
+      torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+".pth.tar")
+
 
 

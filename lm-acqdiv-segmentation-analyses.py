@@ -172,7 +172,7 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
       entropy = (- log_probs * torch.exp(log_probs)).sum(2).view((maxLength-1), args.batchSize).data.cpu().numpy()
 
       # 
-      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.view(-1)).view((maxLength-1), args.batchSize)
+      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.contiguous().view(-1)).view((maxLength-1), args.batchSize)
       losses = loss.data.cpu().numpy()
 #      for i in range(len(numeric[0])-1):
 

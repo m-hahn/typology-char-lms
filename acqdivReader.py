@@ -91,7 +91,7 @@ class AcqdivReader():
      
       random.Random(4656).shuffle(self.utterances[1])
       self.language = language
-      self.UTTERANCE_COLNAME = {"Japanese" : "utterance_raw", "Indonesian" : "utterance", "Sesotho" : "utterance"}[self.language]
+      self.UTTERANCE_COLNAME = ("utterance_raw" if self.language == "Japanese" else "utterance") #{"Japanese" : "utterance_raw", "Indonesian" : "utterance", "Sesotho" : "utterance"}[self.language]
    
    def length(self):
       return len(self.utterances)

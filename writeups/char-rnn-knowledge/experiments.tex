@@ -26,6 +26,8 @@ attested (e.g., ``\emph{tr}'') sequences to unattested ones
 
 Results, in a table with all pairs for both languages?
 
+LSTM vs RNN
+
 Discussion: note that generalization of model are purely
 distributional, with no aid from perceptual or articulatory cues.
 
@@ -34,10 +36,14 @@ distributional, with no aid from perceptual or articulatory cues.
 
 English/German/Italian
 
+Specifics of this setup, and differences from general setup
+
 Does the model develop an implicit notion of word?
 
 Should we use only one method here? One that is unsupervised, for
 direct comparison to the Bayesian approach?
+
+LSTM vs RNN
 
 Report syntactic depth plot: illustrates how it is useful for
 segmentation knowledge to be implicit, as the model ``knows'' about
@@ -47,13 +53,56 @@ Qualitative analysis: look at common over- and under-segmentation
 errors in English? E.g., I could go manually through the top 30 ones,
 say...
 
-\subsection{Discovering morphosyntactic categories}
+\subsection{Discovering morphological categories}
 \label{sec:categories}
+
+Focusing on German and Italian given massive morphosyntactic ambiguity
+and impoverished morphology of English. Note that these are lexical
+properties, probed in a model that has no explicit notion of word!
+
+\paragraph{Word classes (nouns vs.~verbs)}
+
+Departures from general setup
+
+Procedure as described in the quip.
+
+Baselines: autoencoder, word-based NLM embeddings, also LSTM vs
+RNN. Outperforming autoencoder shows that model has learned categories
+based on broader distributional evidence, not just typical strings
+cueing nouns and verbs.
+
+\paragraph{Number}
+
+Does the hidden state of the CNLM store an abstract notion of
+number. German nouns can be binned in different classes depending on
+the morpheme or morphological process they use to form the plural. We
+train a number classifier on a subset of these classes, test on the
+others: if model generalizes correctly, it means that it knows about
+number independently of its surface expression.
+
+Specifics of data-set construction and classifier training.
+
+Baselines/comparisons: LSTM vs RNN, autoencoder, word-based NLM.
+
+Control follow-up: singular nouns with plural ending.
 
 \subsection{Capturing syntactic dependencies}
 \label{sec:dependencies}
 
+Despite not having pre-defined information about words and morphemes,
+is the model able to capture long-distance syntactic dependencies? NB:
+actually for a CNLM even \emph{``\textbf{la} bell\textbf{a}''} is long
+distance!
+
+To be continued\ldots
+
 \subsection{Lexical semantic similarity}
 \label{sec:similarity}
 
+In English, because that's where we have resources available.
+
+Correlation with one or more word similarity sets.
+
+Comparison to word-based NLM (rather than word2vec or such, which is
+specifically tuned for semantics).
 

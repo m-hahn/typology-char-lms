@@ -1,0 +1,121 @@
+% File tacl2018.tex
+% Aug 3, 2018
+
+% The English content of this file was modified from various *ACL instructions
+% by Lillian Lee and Kristina Toutanova
+%
+% LaTeXery is all adapted from acl2018.sty.
+
+
+% To check:
+% - Submission must be in A4 format
+% - min length 7 pages, max length 10 of CONTENT
+
+% Example table:
+
+% \begin{table}[t]
+% \begin{center}
+% \begin{tabular}{|l|rl|}
+% \hline \bf Type of Text & \bf Size & \bf Style \\ \hline
+% paper title & 15 pt & bold \\
+% \iftaclfinal
+% author names & 12 pt & bold \\
+% author affiliation & 12 pt & \\
+% \else
+% \fi
+% the word ``Abstract'' as header & 12 pt & bold \\
+% abstract text & 10 pt & \\
+% section titles & 12 pt & bold \\
+% document text & 11 pt  &\\
+% captions & 10 pt & \\
+% %bibliography & 10 pt & \\
+% footnotes & 9 pt & \\
+% \hline
+% \end{tabular}
+% \end{center}
+% \caption{\label{tab:font-table} Font requirements}
+% \end{table}
+
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{tacl2018} % use ``nohyperref'' to disable  hyperref
+\usepackage{times,latexsym}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+
+\taclfinalfalse % For camera-ready, replace "\taclfinalfalse" with
+% "\taclfinalcopy"
+
+%%%%
+%%%% Material in this block can be removed by TACL authors.
+% It consists of things specific to generating TACL instructions
+\usepackage{xspace,mfirstuc,tabulary}
+
+\newcommand{\ex}[1]{{\sf #1}}
+
+%
+\iftaclfinal
+\newcommand{\taclpaper}{camera-ready\xspace}
+\newcommand{\taclpapers}{camera-readies\xspace}
+\newcommand{\Taclpaper}{Camera-ready\xspace}
+\newcommand{\Taclpapers}{Camera-readies\xspace}
+\else
+\newcommand{\taclpaper}{submission\xspace}
+\newcommand{\taclpapers}{{\taclpaper}s\xspace}
+\newcommand{\Taclpaper}{Submission\xspace}
+\newcommand{\Taclpapers}{{\Taclpaper}s\xspace}
+\fi
+
+\newif\iftaclinstructions
+\taclinstructionsfalse % AUTHORS: do NOT set this to true
+\iftaclinstructions
+\renewcommand{\confidential}{}
+\renewcommand{\anonsubtext}{(No author info supplied here, for consistency with
+TACL-submission anonymization requirements)}
+\fi
+%%%% End TACL-instructions-specific macro block
+%%%%
+
+\title{Probing the linguistic knowledge of character-based neural language models}
+
+
+% The command \taclfinalfalse suppresses display of the contents of the
+% \author{...} command in the generated pdf.
+% Replacing that command with "\taclfinalcopy" reveals the author info in the
+% generated pdf.
+% See tacl2018.sty for other ways to set author info.
+\author{
+ Template Author\Thanks{The {\em actual} contributors to this instruction
+ document and corresponding template file are given in Section
+ \ref{sec:contributors}.} \\
+ Template Affiliation/Address Line 1 \\
+ Template Affiliation/Address Line 2 \\
+ Template Affiliation/Address Line 2 \\
+  {\sf template.email@sampledomain.com} \\
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  Blah
+\end{abstract}
+
+
+\input{introduction}
+
+\input{related}
+
+\input{setup}
+
+\input{experiments}
+
+\input{discussion}
+
+\bibliography{marco}
+\bibliographystyle{acl_natbib}
+
+\end{document}
+
+

@@ -1,2 +1,59 @@
 \section{Experiments}
 \label{sec:experiments}
+
+\subsection{Discovering phonotactic constraints}
+\label{sec:phonotactics}
+
+Focusing on German and Italian, that have reasonably transparent
+orthographies.
+
+How setup here differs from general one.
+
+Method: construct pairs of letter bigrams (corresponding to phoneme
+bigrams) beginning with the same letter, such that one is
+phonotactically acceptable in the language and the other isn't, but
+the independent unigram probability of the unacceptable bigram is
+higher than that of the acceptable one. E.g., ``\emph{br}'' is
+acceptable Italian sequence, ``\emph{bt}'' isn't, although
+\emph{``t''} is more frequent. We re-train the CNLM on a version of
+the corpus from which both bigrams have been removed. We then look at
+the likelihood the model assigns to both sequences. If the model
+assigns a larger probability to the correct sequence, it means that it
+implicitly possesses a notion of phonological categories such as
+stops and sonorants, which allows it to correctly generalize from
+attested (e.g., ``\emph{tr}'') sequences to unattested ones
+(\emph{``br''}).
+
+Results, in a table with all pairs for both languages?
+
+Discussion: note that generalization of model are purely
+distributional, with no aid from perceptual or articulatory cues.
+
+\subsection{Word segmentation}
+\label{sec:segmentation}
+
+English/German/Italian
+
+Does the model develop an implicit notion of word?
+
+Should we use only one method here? One that is unsupervised, for
+direct comparison to the Bayesian approach?
+
+Report syntactic depth plot: illustrates how it is useful for
+segmentation knowledge to be implicit, as the model ``knows'' about
+different kinds of boundaries in a continuous manner.
+
+Qualitative analysis: look at common over- and under-segmentation
+errors in English? E.g., I could go manually through the top 30 ones,
+say...
+
+\subsection{Discovering morphosyntactic categories}
+\label{sec:categories}
+
+\subsection{Capturing syntactic dependencies}
+\label{sec:dependencies}
+
+\subsection{Lexical semantic similarity}
+\label{sec:similarity}
+
+

@@ -1,4 +1,35 @@
 \section{Introduction}
 \label{sec:introduction}
 
+Modern recurrent networks simply trained to predict the next symbol in
+a sequence (neural language models, NLMs) are amazing and pose
+intriguing questions about language acquisition. However, until now
+systematic studies of the linguistic knowledge discovered by such
+models has been limited to models that assume discrete words as
+input. This is problematic in at least two
+respects: \begin{inparaenum}[i)]
+\item from a language
+  acquisition point of view: discovering words and other linguistic
+  units \emph{is} part of the linguistic knowledge the learner must
+  acquire. 
+\item Moreover, the choice of (orthographically delimited) words as
+  the basic unit is arbitrary: a more realistic (and useful picture)
+  includes multiple, non-overlapping segmentations into phonological
+  constituents, morphemes, words, phrases, constructions,
+  etc. (indeed, in both agglutinating and polysynthetic languages, it
+  is not even clear the notion of word is useful).
+\end{inparaenum}
 
+Alternative: character-based NLMs (CNMLs). They only make assumption
+that a continuous input string has been split into discrete atomic
+units such as phones, and we can assume children do this very early.
+
+We study what linguistic knowledge CNMLs induce, simulating a
+minimum-previous knowledge setup by training on corpora where white
+space has been removed, thus without explicit cues to word
+boundaries. We find that such models are discovering a remarkable
+amount of linguistic information, at the phonotactic, lexical,
+morphological, syntactic and semantic levels. This suggests that,
+given abundant input, a learner can induce much linguistic knowledge
+with almost no innate bias towards linguistic structures and,
+intriguingly, without an explicit lexicon.

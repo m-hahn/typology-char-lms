@@ -24,12 +24,39 @@ stops and sonorants, which allows it to correctly generalize from
 attested (e.g., ``\emph{tr}'') sequences to unattested ones
 (\emph{``br''}).
 
-Results, in a table with all pairs for both languages?
-
 LSTM vs RNN
+
+Results, in a table with all pairs for both languages, as in Table
+\ref{tab:phonotactics-results}.
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{ll|cc}
+      \multicolumn{2}{c}{\emph{bigrams}}&\emph{LSTM}&\emph{RNN}\\
+      \hline
+      \multicolumn{4}{c}{\emph{German}}\\
+      \hline
+      \ldots & \ldots & \ldots & \ldots \\
+      \ldots & \ldots & \ldots & \ldots \\
+      \hline
+      \multicolumn{4}{c}{\emph{Italian}}\\
+      \hline
+      pa & pb & \ldots & \ldots \\
+      \ldots & \ldots & \ldots & \ldots \\
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:phonotactics-results} Figure of merit could be
+    log likelihood ratio between acceptable and unacceptable bigram,
+    with positive values in bold.}
+\end{table}
+
 
 Discussion: note that generalization of model are purely
 distributional, with no aid from perceptual or articulatory cues.
+
+Table
+
+
 
 \subsection{Word segmentation}
 \label{sec:segmentation}
@@ -41,17 +68,38 @@ Specifics of this setup, and differences from general setup
 Does the model develop an implicit notion of word?
 
 Should we use only one method here? One that is unsupervised, for
-direct comparison to the Bayesian approach?
+direct comparison to the Bayesian approach? We could then report that,
+when training on the hidden state, we get super-high accuracy,
+indicating that the information is there.
 
 LSTM vs RNN
+
+Results could be summarized as in Table \ref{tab:segmentation-results}.
+
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{l|lll|lll|lll}
+      \multicolumn{1}{c}{}&\multicolumn{3}{c}{\emph{LSTM}}&\multicolumn{3}{c}{\emph{RNN}}&\multicolumn{3}{c}{\emph{Bayes}}\\
+      \hline
+      &P&R&F&P&R&F&P&R&F\\
+      \hline
+      English &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
+      German &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
+      Italian &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results} Obviously, we must reduce space between P, R and F}
+\end{table}
 
 Report syntactic depth plot: illustrates how it is useful for
 segmentation knowledge to be implicit, as the model ``knows'' about
 different kinds of boundaries in a continuous manner.
 
-Qualitative analysis: look at common over- and under-segmentation
-errors in English? E.g., I could go manually through the top 30 ones,
-say...
+Qualitative analysis: report proportions of over- and
+under-segmentation for our best CNLM, look at common over- and
+under-segmentation errors in English? E.g., I could go manually
+through the top 30 ones, say...
 
 \subsection{Discovering morphological categories}
 \label{sec:categories}
@@ -62,7 +110,7 @@ properties, probed in a model that has no explicit notion of word!
 
 \paragraph{Word classes (nouns vs.~verbs)}
 
-Departures from general setup
+(Departures from general setup)
 
 Procedure as described in the quip.
 
@@ -70,6 +118,24 @@ Baselines: autoencoder, word-based NLM embeddings, also LSTM vs
 RNN. Outperforming autoencoder shows that model has learned categories
 based on broader distributional evidence, not just typical strings
 cueing nouns and verbs.
+
+General accuracy results table for fixed N of training examples as in Table \ref{tab:pos-results}.
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{l|l|l}
+      \multicolumn{1}{c}{}&\emph{German}&\emph{Italian}\\
+      \hline
+      LSTM&\ldots&\ldots\\
+      RNN&\ldots&\ldots\\
+      Autoencoder&\ldots&\ldots\\
+      WordNLM&\ldots&\ldots\\
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:pos-results} \ldots}
+\end{table}
+
+Report CNLM vs baseline comparison in function of training examples as in the Quip (possibly for a language only).
 
 \paragraph{Number}
 
@@ -80,11 +146,29 @@ train a number classifier on a subset of these classes, test on the
 others: if model generalizes correctly, it means that it knows about
 number independently of its surface expression.
 
-Specifics of data-set construction and classifier training.
+Specifics of data-set construction and classifier training. Pick only one setup, e.g., training on -n, -s, and -e.
 
 Baselines/comparisons: LSTM vs RNN, autoencoder, word-based NLM.
 
-Control follow-up: singular nouns with plural ending.
+Results could be summarized as in Table \ref{tab:number-results}.
+
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{l|l|l|l}
+      \multicolumn{1}{c}{}&\emph{training plurals}&\emph{-r}&\emph{no-suffix}\\
+      \hline
+      LSTM&\ldots&\ldots\\
+      RNN&\ldots&\ldots&\ldots\\
+      Autoencoder&\ldots&\ldots&\ldots\\
+      WordNLM&\ldots&\ldots&\ldots\\
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:number-results} Figure of merit is accuracy for plural prediction.}
+\end{table}
+
+
+Control follow-up: singular nouns with plural ending (with similar table?).
 
 \subsection{Capturing syntactic dependencies}
 \label{sec:dependencies}

@@ -7,8 +7,6 @@
 Focusing on German and Italian, that have reasonably transparent
 orthographies.
 
-How setup here differs from general one.
-
 Method: construct pairs of letter bigrams (corresponding to phoneme
 bigrams) beginning with the same letter, such that one is
 phonotactically acceptable in the language and the other isn't, but
@@ -16,13 +14,15 @@ the independent unigram probability of the unacceptable bigram is
 higher than that of the acceptable one. E.g., ``\emph{br}'' is
 acceptable Italian sequence, ``\emph{bt}'' isn't, although
 \emph{``t''} is more frequent. We re-train the CNLM on a version of
-the corpus from which both bigrams have been removed. We then look at
+the training partition from which both bigrams have been removed. We then look at
 the likelihood the model assigns to both sequences. If the model
 assigns a larger probability to the correct sequence, it means that it
 implicitly possesses a notion of phonological categories such as
 stops and sonorants, which allows it to correctly generalize from
 attested (e.g., ``\emph{tr}'') sequences to unattested ones
 (\emph{``br''}).
+
+Technical details of re-training
 
 LSTM vs RNN
 
@@ -58,35 +58,36 @@ distributional, with no aid from perceptual or articulatory cues.
 \subsection{Word segmentation}
 \label{sec:segmentation}
 
-English/German/Italian
-
-Specifics of this setup, and differences from general setup
 
 Does the model develop an implicit notion of word?
 
-Should we use only one method here? One that is unsupervised, for
-direct comparison to the Bayesian approach? We could then report that,
-when training on the hidden state, we get super-high accuracy,
-indicating that the information is there.
+English/German/Italian
 
-LSTM vs RNN
+How validation partition was used
+
+Use only one of the low-parameter-count methods, compare to Bayes
+although it's not entirely fair (clarify that). (report in text or
+footnote that, when training on the hidden state, we get super-high
+accuracy, indicating that the information is there).
+
+LSTM vs RNN vs Bayes vs n-gram baseline (collect transition
+probabilities across fixed n-gram windows, optimize threshold on
+validation data).
 
 Results could be summarized as in Table \ref{tab:segmentation-results}.
 
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{l|lll|lll|lll}
-      \multicolumn{1}{c}{}&\multicolumn{3}{c}{\emph{LSTM}}&\multicolumn{3}{c}{\emph{RNN}}&\multicolumn{3}{c}{\emph{Bayes}}\\
+    \begin{tabular}{l|l|l|l|l}
+      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Bayes}&\emph{ngrams}\\
       \hline
-      &P&R&F&P&R&F&P&R&F\\
-      \hline
-      English &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
-      German &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
-      Italian &\ldots & \ldots & \ldots &\ldots & \ldots & \ldots&\ldots & \ldots & \ldots\\
+      English &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      German &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      Italian &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-results} Obviously, we must reduce space between P, R and F}
+  \caption{\label{tab:segmentation-results} Scores are P/R/F\ldots too packed?}
 \end{table}
 
 Report syntactic depth plot: illustrates how it is useful for
@@ -95,8 +96,8 @@ different kinds of boundaries in a continuous manner.
 
 Qualitative analysis: report proportions of over- and
 under-segmentation for our best CNLM, look at common over- and
-under-segmentation errors in English? E.g., I could go manually
-through the top 30 ones, say...
+under-segmentation errors in English (Marco will go manually
+through the top 30 most common errors of both types).
 
 \subsection{Discovering morphological categories}
 \label{sec:categories}
@@ -106,8 +107,6 @@ and impoverished morphology of English. Note that these are lexical
 properties, probed in a model that has no explicit notion of word!
 
 \paragraph{Word classes (nouns vs.~verbs)}
-
-(Departures from general setup)
 
 Procedure as described in the quip.
 
@@ -186,9 +185,8 @@ As usual, specifics of training etc that depart from general setup.
 \end{inparaenum}
 
 Discussion case-by-case, including how do we control for possible
-n-gram effects and length. \textbf{It's not clear to me how the n-gram
-  control model would work in each of these cases, can you explain in
-  detail?}
+n-gram effects and length. N-gram control: based on counts of each
+stimulus sequence in the corpus.
 
 How to present results: figures, with number of intervening words
 (from 0 to 2 or 3) on x axis, accuracy on y axis. Multiple figures
@@ -196,7 +194,10 @@ when different genders or cases are tested. Within the figures, one
 line per model: LSTM, RNN, n-gram, wordNLM.
 
 \paragraph{Italian} We consider further constructions from Italian,
-that confirm the results we got in German.
+that confirm the results we got in German. Interesting because we look
+at subset of Italian morphology where gender and number are explicitly
+encoded while allowing for tightly controlled comparison of
+same-length strings, limited to stimuli unseen in training corpus.
 \begin{inparaenum}[i)]
 \item article-noun gender agreement with material in the middle,
 \item article-adjective gender agreement, with an adverb in the middle,
@@ -204,11 +205,9 @@ that confirm the results we got in German.
 \end{inparaenum}
 
 Discussion case-by-case, including how we control for n-gram frequency
-and length (NB: if we want to do article-noun gender agreement with
-nothing in the middle, we must insert n-gram control).
+and length.
 
-Results: same figure format as above? Or table with a row for each
-pattern and a column for each model?
+Results table with a row for each pattern and a column for each model.
 
 
 \subsection{Lexical semantic similarity}

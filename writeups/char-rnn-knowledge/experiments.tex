@@ -54,9 +54,6 @@ Results, in a table with all pairs for both languages, as in Table
 Discussion: note that generalization of model are purely
 distributional, with no aid from perceptual or articulatory cues.
 
-Table
-
-
 
 \subsection{Word segmentation}
 \label{sec:segmentation}
@@ -174,11 +171,45 @@ Control follow-up: singular nouns with plural ending (with similar table?).
 \label{sec:dependencies}
 
 Despite not having pre-defined information about words and morphemes,
-is the model able to capture long-distance syntactic dependencies? NB:
+is the model able to capture non-adjacent syntactic dependencies? NB:
 actually for a CNLM even \emph{``\textbf{la} bell\textbf{a}''} is long
-distance!
+distance! Constructions will be language-specific, so we discuss
+German and Italian separately (not much in English).
 
-To be continued\ldots
+As usual, specifics of training etc that depart from general setup.
+
+\paragraph{German} We consider 4 constructions:
+\begin{inparaenum}[i)]
+\item article-noun gender agreement, possibly with material in the middle,
+\item determiner-noun case concord, again with material in the middle,
+\item preposition case sub-categorization, with material in the middle.
+\end{inparaenum}
+
+Discussion case-by-case, including how do we control for possible
+n-gram effects and length. \textbf{It's not clear to me how the n-gram
+  control model would work in each of these cases, can you explain in
+  detail?}
+
+How to present results: figures, with number of intervening words
+(from 0 to 2 or 3) on x axis, accuracy on y axis. Multiple figures
+when different genders or cases are tested. Within the figures, one
+line per model: LSTM, RNN, n-gram, wordNLM.
+
+\paragraph{Italian} We consider further constructions from Italian,
+that confirm the results we got in German.
+\begin{inparaenum}[i)]
+\item article-noun gender agreement with material in the middle,
+\item article-adjective gender agreement, with an adverb in the middle,
+\item article-adjective  agreement, with an adverb in the middle.
+\end{inparaenum}
+
+Discussion case-by-case, including how we control for n-gram frequency
+and length (NB: if we want to do article-noun gender agreement with
+nothing in the middle, we must insert n-gram control).
+
+Results: same figure format as above? Or table with a row for each
+pattern and a column for each model?
+
 
 \subsection{Lexical semantic similarity}
 \label{sec:similarity}

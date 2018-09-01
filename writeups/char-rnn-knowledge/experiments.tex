@@ -90,15 +90,24 @@ Results could be summarized as in Table \ref{tab:segmentation-results}.
   \caption{\label{tab:segmentation-results} Scores are P/R/F\ldots too packed?}
 \end{table}
 
-Report syntactic depth plot: illustrates how it is useful for
+
+We hypothesized that the same might be true for hierarchical syntactic structure.
+We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
+For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
+This number is zero if both characters belong to the same word.
+
+Figure~\ref{fig:syntax-depth} plots MI by height.
+The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI.
+This illustrates how it is useful for
 segmentation knowledge to be implicit, as the model ``knows'' about
 different kinds of boundaries in a continuous manner.
 
 
-%\begin{figure*}
-%\includegraphics[width=0.24\textwidth]{figures/}
-%\caption{Accuracy on the Gender task.}\label{fig:syntax-depth}
-%\end{figure*}
+
+\begin{figure}
+\includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
+\caption{PMIs by syntactic depth.}\label{fig:syntax-depth}
+\end{figure}
 
 
 
@@ -336,11 +345,11 @@ For the CNLMs, the most challenging task was article-noun gender agreement.
     \begin{tabular}{l|l|l|l|l}
       \multicolumn{1}{c}{}&\emph{LSTM CNLM}&\emph{RNN CNLM}&\emph{Word LSTM}\\
 % eadj-aonoun
-	    Noun Gender & 88/90  & 84/73 & 99/96 \\
+	    Noun Gender & 97/90  & 84/73 & 99/96 \\
 %      adv-aoadj
-	    Adj. Gender & 100/97 & 100/97 & 98/100 \\
+	    Adj. Gender & 99/100 & 100/97 & 98/100 \\
 % adv-aeadj
-	    Adj. Number & 99/100 & 99/70 & 100/100 \\
+	    Adj. Number & 99/99 & 99/70 & 100/100 \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:ital-agr-results} Results for morphosyntactic tests in Italian}

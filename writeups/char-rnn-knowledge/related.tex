@@ -1,6 +1,30 @@
 \section{Related work}
 \label{sec:related}
 
+\paragraph{Character-based neural language models} Character-level
+RNN-based language models have received some attention in the last
+decade because of their potential greater generality with respect to
+word-based models, as well because, intuitively, they should be able
+to use cues, such as morphological information, that word-based models
+miss by design. Early studies such as \newcite{Mikolov:etal:2011},
+\newcite{Sutskever:etal:2011} and \newcite{Graves:2014} established
+that CNLMs are in general not as good at language modeling as their
+word-based counterparts, but lag only slightly
+behind. \newcite{Sutskever:etal:2011} and \newcite{Graves:2014}
+presented informal qualitative analysis showing that the CNLMs are
+learning basic linguistic properties of their input. The latter, who
+trained LSTM models, also showed that CNLMs can keep track to some
+extent of hierarchical structure, as showing by their ability to
+correctly balance parentheses when generating text. Our aim here is to
+understand to what extent CNLMs trained on unsegmented input learn
+various linguistic constructs. This is different from much work in the
+area, that has focused on \emph{character-aware} architectures, that
+combine in various ways character- and word-level information, with
+the goal to develop state-of-the-art language models, also effective
+in morphologically rich languages \citep[see, e.g.,][and references
+there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}.
+
+
 \begin{itemize}
 \item Character-based language models; emphasize:
   \begin{inparaenum}
@@ -28,10 +52,21 @@
 \end{itemize}
 
 
- \cite{Gerz:etal:2018}: example of
+\cite{Kim:etal:2016}, \cite{Gerz:etal:2018}: examples of
 ``character-aware'' model, good to improve performance, but not what
-we analyze here. Good paper to cite for earlier
-references. \cite{Bojanowski:etal:2016}: might be mentioned for
-showing that performance is worse than
-word-RNN. \cite{Radford:etal:2017}: more precisely byte-based model, show good performance of CNLM as feature extractor, and does some qualitative analysis, in particular finding that sentiment is localistically encoded in a single cell. Early work showing that CLNMs can be used for language modeling, although they lag somewhat behind word models: \cite{Mikolov:etal:2011}, \cite{Sutskever:etal:2011} (the latter with some qualitative analysis),  \cite{Graves:2014} shows LSTM-based CLNMs to be only slightly worse than word-based one, and showed qualitatively they generate text with interesting properties, such as correctly balancing parentheses.
+we analyze here. Latter paper good to cite for survey and state of the
+art. \cite{Bojanowski:etal:2016}: might be mentioned for showing that
+performance is worse than word-RNN. \cite{Radford:etal:2017}: more
+precisely byte-based model, show good performance of CNLM as feature
+extractor, and does some qualitative analysis, in particular finding
+that sentiment is localistically encoded in a single cell. Early work
+showing that CLNMs can be used for language modeling, although they
+lag somewhat behind word models: \cite{Mikolov:etal:2011},
+\cite{Sutskever:etal:2011} (the latter with some qualitative
+analysis), \cite{Graves:2014} shows LSTM-based CLNMs to be only
+slightly worse than word-based one, and showed qualitatively they
+generate text with interesting properties, such as correctly balancing
+parentheses. Closest to \cite{Alishahi:etal:2017}, but they focus on a
+more complex architecture for grounded language learning, and on
+phonology.
 

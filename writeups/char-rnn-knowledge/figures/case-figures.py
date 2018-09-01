@@ -19,6 +19,11 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
+matplotlib.rc('xtick', labelsize=30) 
+matplotlib.rc('ytick', labelsize=30) 
+
+
+
 for gender, genderName in zip(range(2), ["Dative", "Genitive"]):
   for name, acc in zip(names, accs):
    plt.plot(range(0, 4), [x[gender] for x in acc], label=name, linewidth=4.0)

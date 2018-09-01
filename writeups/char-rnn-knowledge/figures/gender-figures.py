@@ -25,20 +25,26 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
+matplotlib.rc('xtick', labelsize=30) 
+matplotlib.rc('ytick', labelsize=30) 
+
+
 for gender, genderName in zip(range(3), ["m", "f", "n"]):
   for name, acc in zip(names, accs):
    plt.plot(range(0, 3), [x[gender][gender] for x in acc], label=name, linewidth=4.0)
   plt.xticks(range(0,3))
   plt.legend()
+
   plt.show()
-  plt.savefig("german-gender-"+genderName+".pdf")
+  plt.savefig("german-gender-"+genderName+".pdf", bbox_inches='tight')
   plt.close()
 
 for name, acc in zip(names, accs):
  plt.plot(range(0, 3), [sum([x[gender][gender] for gender in range(3)])/3 for x in acc], label=name, linewidth=4.0)
 plt.xticks(range(0,3))
 plt.legend()
+
 plt.show()
-plt.savefig("german-gender-total.pdf")
+plt.savefig("german-gender-total.pdf", bbox_inches='tight')
 plt.close()
   

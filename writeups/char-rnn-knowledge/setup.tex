@@ -1,12 +1,46 @@
 \section{Experimental setup}
 \label{sec:setup}
 
-Describe source corpus for each language, and how it was
-pre-processed. Training/validation/test partitioning.
+We downloaded full Wikipedia dumps for English, German, and Italian, and extracted plain text with WikiExtractor.\footnote{https://github.com/attardi/wikiextractor}
+For each language, we randomly extracted testing and validation sections consisting of 50,000 paragraphs each, and used the remainder as training sets.
+The training sets contained 16M (German), 9M (Italian), and 41M (English) paragraphs, corresponding to 819M (German), 463M (Italian), and 2333M (English) words.
+Order of paragraphs was shuffled for training; we did not attempt to split by sentences.
+For word segmentation and word-based language models, we tokenized and tagged all corpora using TreeTagger.\footnote{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}
 
-Hyperparameter search. LSTM vs RNN. Word-level model (was it also
-optimized?)
+For the vocabulary, we extracted the most frequent characters from each corpus, setting thresholds so as to ensure that all characters representing phonemes of the languages were included.
+The vocabulary of the word-based models included the most frequent 50,000 words per corpus.
 
-Report results in terms of BPS on test partition, with ballpark
-estimate of where we are in terms of the state of the art.
+
+For LSTM and RNN CNLMs, and for the word-level model, we each specified a range of hyperparameter settings, and applied random search to find models that performed best on the validation set.
+%We took X samples for the LSTM CNLM per language, Y for the RNN CNLM, and Z for the word-level LSTM.
+We terminated training after 72 hours; none of the models had overfitted, as measured by performance on the validation set.
+
+Performance on the test partitions is shown in Table~\ref{tab:lm-results}.
+
+BPS do not look as good as other character LM work, but this is expected given that we do not provide whitespace to the model: Whitespace is both relatively easy to predict, and it makes predicting other characters easier.
+
+%Describe source corpus for each language, and how it was
+%pre-processed. Training/validation/test partitioning.
+
+%Hyperparameter search. LSTM vs RNN. Word-level model (was it also
+%optimized?)
+
+%Report results in terms of BPS on test partition, with ballpark
+%estimate of where we are in terms of the state of the art.
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{l|l|l|l|l}
+      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Word LSTM}\\
+      \hline
+	    English & 1.12 / 1.62 & 1.44 / 2.08 & TODO  \\
+	    German &  1.05 / 1.51 & 1.27 / 1.83 & 3.63 / 37.96   \\
+	    Italian & 1.02 / 1.47 & 1.37 / 1.97 & 3.85 / 42.02  \\
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:lm-results} For CNLMs, we report cross-entropy and bits-per-character. For word-based models, we report cross-entropy and perplexity.}
+\end{table}
+
+
+
 

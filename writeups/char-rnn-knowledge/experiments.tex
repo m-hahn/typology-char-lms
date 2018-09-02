@@ -4,17 +4,17 @@
 \subsection{Discovering phonotactic constraints}
 \label{sec:phonotactics}
 
-Focusing on German and Italian, that have reasonably transparent
-orthographies.
+We focus on German and Italian, as they have reasonably transparent orthographies.
 
-Method: construct pairs of letter bigrams (corresponding to phoneme
+
+We construct pairs of letter bigrams (corresponding to phoneme
 bigrams) beginning with the same letter, such that one is
 phonotactically acceptable in the language and the other isn't, but
 the independent unigram probability of the unacceptable bigram is
 higher than that of the acceptable one. E.g., ``\emph{br}'' is
 acceptable Italian sequence, ``\emph{bt}'' isn't, although
-\emph{``t''} is more frequent. We re-train the CNLM on a version of
-the training partition from which both bigrams have been removed. We then look at
+\emph{``t''} is more frequent than \emph{``r''}. We re-train the CNLM on a version of
+the training partition from which all sequences containing either bigram have been removed. We then look at
 the likelihood the model assigns to both sequences. If the model
 assigns a larger probability to the correct sequence, it means that it
 implicitly possesses a notion of phonological categories such as
@@ -22,7 +22,7 @@ stops and sonorants, which allows it to correctly generalize from
 attested (e.g., ``\emph{tr}'') sequences to unattested ones
 (\emph{``br''}).
 
-Technical details of re-training
+Due to computational constraints, we ran these models only for 5 epochs.
 
 LSTM vs RNN
 
@@ -91,6 +91,17 @@ Results could be summarized as in Table \ref{tab:segmentation-results}.
 \end{table}
 
 
+
+\begin{figure}
+\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
+\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-pmis-german.png}
+	\caption{Entropy and PMI at word boundaries (blue), compared to all positions (red). }\label{fig:syntax-depth}
+\end{figure}
+
+
+
+
+
 We hypothesized that the same might be true for hierarchical syntactic structure.
 We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
 For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
@@ -126,14 +137,27 @@ properties, probed in a model that has no explicit notion of word!
 
 \paragraph{Word classes (nouns vs.~verbs)}
 
-Procedure as described in the quip.
 
-Baselines: autoencoder, word-based NLM embeddings, also LSTM vs
-RNN. Outperforming autoencoder shows that model has learned categories
-based on broader distributional evidence, not just typical strings
-cueing nouns and verbs.
+We sampled 500 verbs and 500 nouns from the training set, each with the requirement that they end in -en (German) or -re (Italian).
+We did this since these final syllables are common among both verbs and nouns, setting the bar higher for methods relying on surface cues.
+We then recorded the hidden states of the CNLM after reading each of these words.
+We randomly selected N=20 training examples, balanced between the two POS classes, to create a logistic classifier distinguishing nouns and verbs from the hidden states, and tested on the remaining examples.
+We repeated this experiment 100 times to control for variation between the random train-test splits.
 
-General accuracy results table for fixed N of training examples as in Table \ref{tab:pos-results}.
+As baselines, we considered the autoencoder and word embeddings from the word-based language model.
+We further ran the RNN CNLM.
+
+Results are shown in Table~\ref{tab:pos-results}.
+Outperforming autoencoder shows that model has learned categories based on broader distributional evidence, not just typical strings cueing nouns and verbs.
+
+
+We then varied N from 2 to 100.
+Resulting accuracies for German are shown in Figure~\ref{fig:pos-induction}; they confirm that the CNLM-based encodings distinguish the categories well for small training sets, while the autoencoder does not catch up even with 100 training examples.
+
+
+%Baselines: autoencoder, word-based NLM embeddings, also LSTM vs
+%RNN.
+
 
 \begin{table}[t]
   \begin{center}
@@ -149,7 +173,19 @@ General accuracy results table for fixed N of training examples as in Table \ref
   \caption{\label{tab:pos-results} \ldots}
 \end{table}
 
-Report CNLM vs baseline comparison in function of training examples as in the Quip (possibly for a language only).
+%Report CNLM vs baseline comparison in function of training examples as in the Quip (possibly for a language only).
+
+\begin{figure}
+\includegraphics[width=0.48\textwidth]{figures/german_pos_nouns_verbs.png}
+%\includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
+%\includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
+%\includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
+	\caption{POS accuracy as a function of training examples for the LSTM (blue) and the autoencoder (orange) in German.}\label{fig:pos-induction}
+\end{figure}
+
+
+
+
 
 \paragraph{Number}
 

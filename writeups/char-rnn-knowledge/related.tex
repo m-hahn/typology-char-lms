@@ -9,8 +9,10 @@ to use cues, such as morphological information, that word-based models
 miss by design. Early studies such as \newcite{Mikolov:etal:2011},
 \newcite{Sutskever:etal:2011} and \newcite{Graves:2014} established
 that CNLMs are in general not as good at language modeling as their
-word-based counterparts, but lag only slightly
-behind. \newcite{Sutskever:etal:2011} and \newcite{Graves:2014}
+word-based counterparts, but lag only slightly behind (note that
+character-level sentence prediction involves a much larger search
+space than predicting at the word
+level). \newcite{Sutskever:etal:2011} and \newcite{Graves:2014}
 presented informal qualitative analysis showing that the CNLMs are
 learning basic linguistic properties of their input. The latter, who
 trained LSTM models, also showed that CNLMs can keep track to some
@@ -22,7 +24,24 @@ area, that has focused on \emph{character-aware} architectures, that
 combine in various ways character- and word-level information, with
 the goal to develop state-of-the-art language models, also effective
 in morphologically rich languages \citep[see, e.g.,][and references
-there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}.
+there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}. Note that
+all earlier work, even when not assuming an \emph{a priori} word
+vocabulary, trains on text with whitespace and other orthographic
+word-boundary cues.
+
+Earlier work by Jeffrey Elman is close in spirit to ours. In
+particular, \newcite{Elman:1990} presented experiments on phonotactics
+and word segmentation related to ours, but using small-size toy
+input. More recently, \cite{Radford:etal:2017} study CNLMs (or, more
+precisely, byte-level models) with focus on understanding their
+properties, but they focus on sentiment analysis. Closest to us,
+\cite{Alishahi:etal:2017} study the linguistic knowledge induced by a
+neural netowrk that receives unsegmented acoustic input. They use
+however a considerably more complex architecture, trained on
+multimodal data, and focus on the phonological level.
+
+There is extensive work\ldots
+
 
 
 \begin{itemize}
@@ -50,6 +69,8 @@ there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}.
   \end{itemize}
 \item What else?
 \end{itemize}
+
+\cite{Kann:etal:2016}.
 
 
 \cite{Kim:etal:2016}, \cite{Gerz:etal:2018}: examples of

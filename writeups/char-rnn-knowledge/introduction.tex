@@ -1,9 +1,25 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Modern recurrent networks simply trained to predict the next symbol in
-a sequence (neural language models, NLMs) are amazing and pose
-intriguing questions about language acquisition. However, until now
+Recurrent neural networks (RNNS), in particular their Long-Short-Term-Memory
+variant \cite[LSTMs,][]{Hochreiter:Schmidhuber:1997} are the current workhorse
+of natural language processing. These models, often pre-trained on the
+simple \emph{language modeling} objective of predicting the next
+symbol in raw natural text, form a crucial component of
+state-of-the-art architectures for tasks such as machine translation,
+natural language inference and text categorization
+\cite{Goldberg:2017}.
+
+RNNs are very general devices for sequence processing, assuming little
+prior bias. Moreover, the simple prediction task they are trained on
+in language modeling seems well-aligned with the core role prediction
+plays in cognition \cite[e.g.,][]{Bar:2007,Clark:2016}. RNNS have thus
+long attracted the attention of cognitive scientists and linguists
+interested in language and processing, and their recent successes in
+realistic large-scale tasks has strongly rekindled this interest
+\cite[see, e.g.,][and references there]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,McCoy:etal:2018,Pater:2018}.
+
+However, until now
 systematic studies of the linguistic knowledge discovered by such
 models has been limited to models that assume discrete words as
 input. This is problematic in at least two

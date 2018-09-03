@@ -19,6 +19,34 @@ interested in language and processing, and their recent successes in
 realistic large-scale tasks has strongly rekindled this interest
 \cite[see, e.g.,][and references there]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,McCoy:etal:2018,Pater:2018}.
 
+Following the standard pre-processing pipeline for RNNs, these studies
+assume that the input has been tokenized into words, and the latter
+are pre-stored in the RNN vocabulary. This is a reasonable practical
+approach, but it makes simulations less interesting from a language
+learning point of view. First, discovering words is one of the major
+challenges a learner faces, and by pre-encoding them in the RNN we are
+facilitating its task in a very unnatural way (not even the staunchest
+nativists would claim words to be part of our genetic code). Second,
+assuming a unique tokenization into a finite number of discrete word
+units is in any case problematic. The very notion of what counts as a
+word in languages with a rich morphology is far from clear
+\cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally, mental lexicons
+are probably organized into a not-necessarily-consistent hierarchy of
+units at different levels: morphemes, words, compounds, constructions,
+etc.~\cite[e.g.,][]{Goldberg:2005}.
+
+Motivated by these considerations, we present here an extensive study
+of RNNs trained on language modeling at the character level
+\cite{Mikolov:etal:2011,Sutskever:etal:2011,Graves:2014}. Moreover,
+the RNNs are trained on input where whitespace has been removed, so
+that, like children learning a language, they don't have access to
+major cues to wordhood.\footnote{We do not erase punctuation marks,
+  reasoning that they have a similar function to prosodic cues in
+  spoken language.} This setup is almost as \emph{tabula rasa} as it
+goes: by taking unsegmented orthographic output (and assuming that, in
+the alphabetic writing systems we work with, there is a reasonable
+correspondance between letters and phonetic segments), we are HERE\ldots
+
 However, until now
 systematic studies of the linguistic knowledge discovered by such
 models has been limited to models that assume discrete words as
@@ -49,3 +77,7 @@ morphological, syntactic and semantic levels. This suggests that,
 given abundant input, a learner can induce much linguistic knowledge
 with almost no innate bias towards linguistic structures and,
 intriguingly, without an explicit lexicon.
+
+\cite{Kuhl:2004}
+\cite{Maye:etal:2002}
+

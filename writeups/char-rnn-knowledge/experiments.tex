@@ -442,25 +442,27 @@ In English, because that's where we have resources available.
 We turn to the Microsoft Research Sentence Completion task \cite{Zweig:Burges:2011}.
 choose between words mostly of the same syntactic category, requires world knowledge for humans to solve, thus complements the morphosyntactic tests in the previous section
 
-The domain of the task (Sherlock Holmes novels) is very different from the Wikipedia dataset we are using; thus we addionally posttrained our models on the training set provided for the task, which sonsists of 19th century English novels with the same hyperparameter settings.
-We also report results obtained from a CNLM trained exclusively on the novels dataset.
-For comparison, we report results (KN5 from \cite{Mikolov:2012}, LSTM from \cite{zhang2016top}) from previous work that were trained exclusively on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
-
-% The best SOA number I found is 61.44 from \cite{woods2016exploiting}
+The domain of the task (Sherlock Holmes novels) is very different from the Wikipedia dataset we are using; thus we addionally trained our models on the training set provided for the task, which sonsists of 19th century English novels with the same hyperparameter settings.
+We both consider a fresh model trained on that data, and initializing it with the Wikipedia model.
+For comparison, we report results (KN5 from \cite{Mikolov:2012}, LSTM from \cite{zhang2016top}) from previous work that were trained on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
 
 The CNLM outperforms KN5 in the setting where both are estimated using only the novels dataset.
+It also outperforms a previously reported word LSTM (that had Glove embeddings), and -- when including the Wikipedia data -- approaches the SOA, held by approaches developed for the completion task \cite{woods2016exploiting}.
 
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l|l}
       \multicolumn{1}{c}{}& Model \\
 % eadj-aonoun
-LSTM CNLM	    &      34.1/46.8/54.4 \\
+LSTM CNLM	    &      34.1/59.0/59.2 \\
 	    RNN CNLM & \\
 	    Word LSTM \\ \hline
 	    Random & 20 \\
 	    KN5   & 40.0 \\
 	    Word LSTM & 55.96 \\
+Skipgram + RNNs \cite{Mikolov:etal:2013b} & 58.9 \\
+LdTreeLSTM \cite{zhang2016top} & 60.67 \\
+            \cite{woods2016exploiting} &  61.44 \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion}

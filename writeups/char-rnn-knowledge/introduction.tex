@@ -36,8 +36,9 @@ units at different levels: morphemes, words, compounds, constructions,
 etc.~\cite[e.g.,][]{Goldberg:2005}.
 
 Motivated by these considerations, we present here an extensive study
-of RNNs trained on language modeling at the character level
-\cite{Mikolov:etal:2011,Sutskever:etal:2011,Graves:2014}. Moreover,
+of RNNs trained on language modeling at the character level, or
+\emph{character-level neural language models}
+\cite[CNLMs,][]{Mikolov:etal:2011,Sutskever:etal:2011,Graves:2014}. Moreover,
 the RNNs are trained on input where whitespace has been removed, so
 that, like children learning a language, they don't have access to
 major cues to wordhood.\footnote{We do not erase punctuation marks,
@@ -45,28 +46,16 @@ major cues to wordhood.\footnote{We do not erase punctuation marks,
   spoken language.} This setup is almost as \emph{tabula rasa} as it
 goes: by taking unsegmented orthographic output (and assuming that, in
 the alphabetic writing systems we work with, there is a reasonable
-correspondance between letters and phonetic segments), we are HERE\ldots
+correspondance between letters and phonetic segments), we are only
+assuming that a learner has figured out how to segment a continuous
+speech stream into phonological units, an ability that children a few
+months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
 
-However, until now
-systematic studies of the linguistic knowledge discovered by such
-models has been limited to models that assume discrete words as
-input. This is problematic in at least two
-respects: \begin{inparaenum}[i)]
-\item from a language
-  acquisition point of view: discovering words and other linguistic
-  units \emph{is} part of the linguistic knowledge the learner must
-  acquire. 
-\item Moreover, the choice of (orthographically delimited) words as
-  the basic unit is arbitrary: a more realistic (and useful picture)
-  includes multiple, non-overlapping segmentations into phonological
-  constituents, morphemes, words, phrases, constructions,
-  etc. (indeed, in both agglutinating and polysynthetic languages, it
-  is not even clear the notion of word is useful).
-\end{inparaenum}
-
-Alternative: character-based NLMs (CNMLs). They only make assumption
-that a continuous input string has been split into discrete atomic
-units such as phones, and we can assume children do this very early.
+Our simulations involve phonological, morphological, syntactic and
+semantic tests in English, German and Italian. Taken together, they
+show that near-\emph{tabula rasa} CNLMs acquire an impressive spectrum
+of linguistic knowledge at various levels.  This in turn suggests
+that, given abundant input, a learning device that is only HERE
 
 We study what linguistic knowledge CNMLs induce, simulating a
 minimum-previous knowledge setup by training on corpora where white
@@ -78,6 +67,4 @@ given abundant input, a learner can induce much linguistic knowledge
 with almost no innate bias towards linguistic structures and,
 intriguingly, without an explicit lexicon.
 
-\cite{Kuhl:2004}
-\cite{Maye:etal:2002}
 

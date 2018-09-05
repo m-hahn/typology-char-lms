@@ -65,17 +65,17 @@ distributional, with no aid from perceptual or articulatory cues.
       \hline
       \multicolumn{4}{c}{\emph{Italian}}\\
       \hline
-	    bu & bd & \textbf{ 1.001} \\
-	    du & dt & \textbf{ 1.3} \\
-	    fu & ft & \textbf{ 30.5} \\
-	    pu & pt & \textbf{ 6.8} \\
-	    tu & td &  0.2 \\
-	    vu & vd & \textbf{ 2.0} \\
-	    zu & zt & \textbf{ 55.7} \\ \hline
-	    br & bt & \textbf{ 1.001} \\
-	    dr & dt & \textbf{ 2.5} \\
-	    fr & ft & \textbf{ 2.9} \\
-	    pr & pt & \textbf{ 5.0} \\
+	    bu & bd & \textbf{ 1.001} & 6e-5 \\
+	    du & dt & \textbf{ 1.3} & 0.008 \\
+	    fu & ft & \textbf{ 30.5} & 0.01 \\
+	    pu & pt & \textbf{ 6.8} & 0.008 \\
+	    tu & td &  0.2 & 3e-5 \\
+	    vu & vd & \textbf{ 2.0} & 2e-5 \\
+	    zu & zt & \textbf{ 55.7} & 0.01 \\ \hline
+	    br & bt & \textbf{ 1.001}  &  0.006 \\
+	    dr & dt & \textbf{ 2.5} & 0.4 \\
+	    fr & ft & \textbf{ 2.9} & 0.001 \\
+	    pr & pt & \textbf{ 5.0} & 0.008 \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams,    with values $>1$ in bold.}
@@ -377,16 +377,19 @@ For comparison, we report results (KN5 from \cite{Mikolov:2012}, LSTM from \cite
 The CNLM outperforms KN5 in the setting where both are estimated using only the novels dataset.
 It also outperforms a previously reported word LSTM (that had Glove embeddings), and -- when including the Wikipedia data -- approaches the SOA, held by approaches developed for the completion task \cite{woods2016exploiting}.
 
+The vanilla RNN is not successful, contrasting with \emoh{word}-based vanilla RNNs, whose performance, while below that of LSTMs, is much stronger.
+
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l|l}
       \multicolumn{1}{c}{}& Model \\
 % eadj-aonoun
 LSTM CNLM	    &      34.1/59.0/59.2 \\
-	    RNN CNLM & \\
+	    RNN CNLM &     24.3/24.0/27.1 \\
 	    Word LSTM \\ \hline
 	    Random & 20 \\
 	    KN5   & 40.0 \\
+            Word RNN & 45.0 \\
 	    Word LSTM & 55.96 \\
 Skipgram + RNNs \cite{Mikolov:etal:2013b} & 58.9 \\
 LdTreeLSTM \cite{zhang2016top} & 60.67 \\

@@ -63,10 +63,36 @@ different kinds of boundaries in a continuous manner.
 \caption{PMIs by syntactic depth.}\label{fig:syntax-depth}
 \end{figure}
 
-
-
-
 Qualitative analysis: report proportions of over- and
-under-segmentation for our best CNLM, look at common over- and
-under-segmentation errors in English (Marco will go manually
-through the top 30 most common errors of both types).
+under-segmentation for our best CNLM.
+
+Looking at the main errors made by our English CNLM is instructive. We
+consider first the 30 most common undersegmentations in the test set
+(that is, cases in which the model failed to split two or more
+words). About half (16) of them are common function word sequences
+that could indeed easily be re-analyzed as single words (e.g.,
+\emph{more than}, \emph{as well as}, \emph{such as}). Of the remaining
+cases, 8 follow the \emph{N of} pattern, where \emph{N} is a
+(typically relational) noun commonly occurring in this construction
+(\emph{member of}, \emph{end of}, \emph{part of}\ldots). There are 3
+fixed multi-word expressions (\emph{New York}, \emph{United States}
+and \emph{high school}). Finally, it's reasonable to treat \emph{based
+  on}, \emph{known as} and \emph{according to} as lexicalized
+connectives, especially in the Wikipedia text the model was trained
+upon.
+
+The picture is a bit murkier but still fairly linguistically grounded
+for the 30 most common oversegmentation errors (that is, the character
+fragments that are wrongly segmented from inside the largest number of
+distinct words).\footnote{We ignore here single-letter segmentations,
+  that would otherwise account for one third of the most-frequent
+  set.}  More than half (17) are common affixes (prefixes such as
+\emph{re} and \emph{de} or suffixes such as \emph{ing} and
+\emph{ly}). The remaining cases include 3 strings identical to frequent
+function words wrongly carved out of longer words (\emph{the},
+\emph{to} and \emph{on}, although the model might be treating the
+latter as a pseudo-suffix in forms such as \emph{Peterson} and
+\emph{Creighton}). Further, the strings \emph{land} and \emph{man} are not
+unreasonably segmented out of compounds. It's hard, on the other hand,
+to find a linguistically sound motivation for the 8 remaining top
+oversegmentations (\emph{la, le, ma, na, ra, ro, se, ta}).

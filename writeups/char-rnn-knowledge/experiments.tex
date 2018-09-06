@@ -50,17 +50,17 @@ distributional, with no aid from perceptual or articulatory cues.
       \hline
       \multicolumn{4}{c}{\emph{German}}\\
       \hline
-           bu &  bt &  \textbf{ 4.6} \\
-           do &  dd &  \textbf{ 1.9} \\
-           fu &  ft &  \textbf{ 6.5} \\
-           po &  pt &  \textbf{ 6.4} \\
-           tu &  tt &  \textbf{ 5.4} \\
-           zu &  zt &  \textbf{ 2.4} \\ \hline
-    bl &  bd & 0.8 \\
-           fl &  fd &  \textbf{ 2.1} \\
-           fr &  fn &  \textbf{ 2.7} \\
-           kl &  kt &  \textbf{ 3.8} \\
-           pl &  pt &  \textbf{ 2.5} \\
+           bu &  bt &  \textbf{ 4.6} &  0.22     \\
+           do &  dd &  \textbf{ 1.9} &  0.05     \\
+           fu &  ft &  \textbf{ 6.5} &  0.03     \\
+           po &  pt &  \textbf{ 6.4} &  0.10     \\
+           tu &  tt &  \textbf{ 5.4} &  0.02     \\
+           zu &  zt &  \textbf{ 2.4} &  0.17     \\ \hline
+           bl &  bd &   0.8          & 0.18       \\
+           fl &  fd &  \textbf{ 2.1} & 0.82      \\
+           fr &  fn &  \textbf{ 2.7} & 0.10      \\
+           kl &  kt &  \textbf{ 3.8} & 0.10      \\
+           pl &  pt &  \textbf{ 2.5} & 0.86      \\
 
       \hline
       \multicolumn{4}{c}{\emph{Italian}}\\
@@ -100,7 +100,7 @@ We then recorded the hidden states of the CNLM after reading each of these words
 We randomly selected N=20 training examples, balanced between the two POS classes, to create a logistic classifier distinguishing nouns and verbs from the hidden states, and tested on the remaining examples.
 We repeated this experiment 100 times to control for variation between the random train-test splits.
 
-As baselines, we considered the autoencoder and word embeddings from the word-based language model.
+As baselines, we considered the autoencoder and word embeddings from the output layer of the word-based language model.
 We further ran the RNN CNLM.
 
 Results are shown in Table~\ref{tab:pos-results}.
@@ -120,22 +120,19 @@ Resulting accuracies for German are shown in Figure~\ref{fig:pos-induction}; the
     \begin{tabular}{l|l|l}
       \multicolumn{1}{c}{}&\emph{German}&\emph{Italian}\\
       \hline
-      LSTM&\ldots&\ldots\\
-      RNN&\ldots&\ldots\\
-      Autoencoder&\ldots&\ldots\\
-      WordNLM&\ldots&\ldots\\
+      LSTM & 89.0 & 94.0 \\
+      RNN & 82.0 & 91.9 \\
+      Autoencoder & 65.1 & 82.8 \\
+      WordNLM & 97.4 & 96.0 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:pos-results} \ldots}
+  \caption{\label{tab:pos-results} POS accuracy (20 training examples per category)}
 \end{table}
 
 %Report CNLM vs baseline comparison in function of training examples as in the Quip (possibly for a language only).
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{figures/german_pos_nouns_verbs.png}
-%\includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
-%\includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
-%\includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
 	\caption{POS accuracy as a function of training examples for the LSTM (blue) and the autoencoder (orange) in German.}\label{fig:pos-induction}
 \end{figure}
 

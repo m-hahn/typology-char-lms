@@ -1,13 +1,14 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Recurrent neural networks (RNNS), in particular their Long-Short-Term-Memory
-variant \cite[LSTMs,][]{Hochreiter:Schmidhuber:1997} are the current workhorse
-of natural language processing. These models, often pre-trained on the
-simple \emph{language modeling} objective of predicting the next
-symbol in raw natural text, form a crucial component of
-state-of-the-art architectures for tasks such as machine translation,
-natural language inference and text categorization
+Recurrent neural networks \cite[RNNs,][]{Elman:1990}, in particular
+their Long-Short-Term-Memory variant
+\cite[LSTMs,][]{Hochreiter:Schmidhuber:1997}, are the current
+workhorse of natural language processing. These models, often
+pre-trained on the simple \emph{language modeling} objective of
+predicting the next symbol in raw natural text, form a crucial
+component of state-of-the-art architectures for tasks such as machine
+translation, natural language inference and text categorization
 \cite{Goldberg:2017}.
 
 RNNs are very general devices for sequence processing, assuming little
@@ -55,16 +56,14 @@ Our simulations involve phonological, morphological, syntactic and
 semantic tests in English, German and Italian. Taken together, they
 show that near-\emph{tabula rasa} CNLMs acquire an impressive spectrum
 of linguistic knowledge at various levels.  This in turn suggests
-that, given abundant input, a learning device that is only HERE
-
-We study what linguistic knowledge CNMLs induce, simulating a
-minimum-previous knowledge setup by training on corpora where white
-space has been removed, thus without explicit cues to word
-boundaries. We find that such models are discovering a remarkable
-amount of linguistic information, at the phonotactic, lexical,
-morphological, syntactic and semantic levels. This suggests that,
-given abundant input, a learner can induce much linguistic knowledge
-with almost no innate bias towards linguistic structures and,
-intriguingly, without an explicit lexicon.
+that, given abundant input (large Wikipedia dumps), a learning device
+whose only prior architectural bias consists in the LSTM cell to
+propagate memory across time steps, can implicitly acquire a variety
+of linguistic rules that one would intuitively expect to require much
+more prior knowledge. One aspect that we find particularly intriguing
+is that, unlike word-based models, our CNLMs do not have a morpheme-
+or word-based lexicon. Any information the network might posses about
+units larger than characters must be stored in its recurrent
+weights. Future work should explore 
 
 

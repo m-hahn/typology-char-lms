@@ -59,11 +59,24 @@ properties, but only in the domain of sentiment
 analysis. \newcite{Godin:etal:2018} investigate the rules implicitly
 used by supervised character-aware neural morphological segmentation
 methods, finding in particular that the networks discover
-linguistically sensible patterns. Closest to us,
-\newcite{Alishahi:etal:2017} study the linguistic knowledge induced by a
-neural network that receives unsegmented acoustic input. They use
+linguistically sensible patterns. More closely related to our goals,
+\newcite{Alishahi:etal:2017} study the linguistic knowledge induced by
+a neural network that receives unsegmented acoustic input. They use
 however a considerably more complex architecture, trained on
-multimodal data, and focus on the phonological level.
-
+multimodal data, and focus on the phonological level. Finally, very
+recently \newcite{Kementchedjhieva:Lopez:2018} presented another study
+probing the linguistic knowledge of plain character-level neural
+language models. Their results are aligned with ours, as they show
+that these models possess knowledge of lexical and morphological
+structure, and they capture morphosyntactic categories as well as
+constraints on possible morpheme combinations. One of the most
+intriguing results in this study is that their model tracks morpheme
+boundaries in a localist fashion through a single unit (we did not
+replicate the result with our model). Besides the fact that they do
+not explore syntactic or semantic knowledge, and limit their study to
+English, a fundamental difference between
+\newcite{Kementchedjhieva:Lopez:2018} and us is that we remove
+whitespace from the training data, thus depriving the model of a major
+(and cognitively artificial) cue to word boundaries.
 
 

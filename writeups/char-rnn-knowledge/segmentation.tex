@@ -19,6 +19,18 @@ validation data).
 
 Results could be summarized as in Table \ref{tab:segmentation-results}.
 
+How reliable is this signal?
+
+
+We constructed a logistic classifier taking into account (1) log-probability of the next character, (2) entropy of the distribution over the next character, (3) the total likelihood of the next 25 characters, minus the unconditional likelihood estimated by starting the CNLM at the current position.
+The rationale of (3) is that it measures the pointwise mutual information, and thus the statistical association, between the subsequent characters and the prior context.
+It is also the transition probability for the next characters
+We collected these quantities for each position and for the preceding and following three characters.
+In total, the classifier has 21 coefficients.
+
+We also conducted the same experiment with a character-level 8-gram model estimated on the training set.
+
+The goal of this experiment is not to construct a word segmentation system, but to evaluate how strongly the CNLM's probabilities are indicative of word boundaries.
 
 \begin{table}[t]
   \begin{center}
@@ -33,7 +45,9 @@ Results could be summarized as in Table \ref{tab:segmentation-results}.
   \caption{\label{tab:segmentation-results} Scores are P/R/F\ldots too packed?}
 \end{table}
 
-
+Results are shown in Figure~\ref{tab:segmentation-results}.
+Ablation shows that the entropy is most predictive, reaching an accuracy of X (English), X (German, X (Italian) alone.
+Setting N to other values X.
 
 \begin{figure}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
@@ -41,30 +55,31 @@ Results could be summarized as in Table \ref{tab:segmentation-results}.
 	\caption{Entropy and PMI at word boundaries (blue), compared to all positions (red). }\label{fig:syntax-depth}
 \end{figure}
 
+How does the LSTM CNLM compare to unsupervised word segmentation models?
+Running Bayesian methods on the Wikipedia dumps is infeasible; thus we also created a CNLM on the Brent corpus.
+
+\begin{table}[t]
+  \begin{center}
+    \begin{tabular}{l|l|l|l|l}
+      \multicolumn{1}{c}{}&P/R/F & Lexical & Boundaries\\      \hline
+      CNLM & 0.75/0.76/ & 0.41/0.61 & 0.91/0.90 \\
+     pmi & 0.708/0.729 \\
+     entropy & 0.504/0.533 \\
+     likelihood & 0.453/0.510 \\
+      Goldwater 2006 & 0.740/0.794 & 0.679/0.589
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results-brent} Scores are P/R/F\ldots too packed?}
+\end{table}
+
+Results in Table~\ref{tab:segmentation-results-brent} show that the performance is broadly comparable to that of a sophisticated Bayesian segmentation method.
+In contrast to the Wikipedia experiments, pmi emerges as the most important predictor on this dataset.
+
+Unlike our method, the Bayesian method is fully unsupervised, but it has an .
+
+Note that, unlike supervised word segmentation methods, our classifier does not have access to the character strings directly; instead, it evaluates how strongly quantities computed by the CNLM \emph{correlate} with word boundaries.
 
 
-
-
-We hypothesized that the same might be true for hierarchical syntactic structure.
-We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
-For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
-This number is zero if both characters belong to the same word.
-
-Figure~\ref{fig:syntax-depth} plots MI by height.
-The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI.
-This illustrates how it is useful for
-segmentation knowledge to be implicit, as the model ``knows'' about
-different kinds of boundaries in a continuous manner.
-
-
-
-\begin{figure}
-\includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
-\caption{PMIs by syntactic depth.}\label{fig:syntax-depth}
-\end{figure}
-
-Qualitative analysis: report proportions of over- and
-under-segmentation for our best CNLM.
 
 Looking at the main errors made by our English CNLM is instructive. We
 consider first the 30 most common undersegmentations in the test set
@@ -96,3 +111,20 @@ latter as a pseudo-suffix in forms such as \emph{Peterson} and
 unreasonably segmented out of compounds. It's hard, on the other hand,
 to find a linguistically sound motivation for the 8 remaining top
 oversegmentations (\emph{la, le, ma, na, ra, ro, se, ta}).
+
+
+We hypothesized that the same might be true for hierarchical syntactic structure.
+We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
+For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
+This number is zero if both characters belong to the same word.
+
+Figure~\ref{fig:syntax-depth} plots MI by height.
+The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI.
+This illustrates how it is useful for segmentation knowledge to be implicit, as the model ``knows'' about different kinds of boundaries in a continuous manner.
+
+\begin{figure}
+\includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
+\caption{PMIs by syntactic depth.}\label{fig:syntax-depth}
+\end{figure}
+
+

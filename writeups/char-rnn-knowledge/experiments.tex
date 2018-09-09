@@ -186,22 +186,23 @@ Results are summarized as in Table \ref{tab:number-results}.
     \begin{tabular}{l|l|l|l}
       \multicolumn{1}{c}{}&\emph{training plurals n, s, e}&\emph{-r}&\emph{Umlaut}\\
       \hline
-      LSTM& 82.1/68.0/83.7  & 88.2 & 52.8 \\
+      LSTM& 82.1/68.0/83.7  & \textbf{88.2} & 52.8 \\
       RNN& 77.6/60.0/73.4 & 81.3 & 53.3\\
       Autoencoder& 73.2/54.5/64.4 & 73.8 & 59.2\\
-      WordNLM&   \\ % when including OOVs: 81.0/83.8/81.5 & 72.9 & 77.6\\
+      WordNLM& \textbf{97.1/97.9/98.5} & 86.6 & \textbf{96.7}  \\ % when including OOVs: 81.0/83.8/81.5 & 72.9 & 77.6\\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:number-results} Figure of merit is accuracy for plural prediction.}
+  \caption{\label{tab:number-results} Accuracy for classifying number. The random baseline is 50 \%.}
 \end{table}
 
 %python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-RNN.py  --batchSize 256 --char_dropout_prob 0.01 --char_embedding_size 50 --char_noise_prob 0.0 --hidden_dim 2048 --language german --layer_num 2 --learning_rate 0.1 --nonlinearity tanh --load-from wiki-german-nospaces-bptt-rnn-237671415 --sequence_length 30 --weight_dropout_hidden 0.0 --weight_dropout_in 0.0
 %python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846
 
 
-The classifier based on word embeddings is by far the most successful, confirming that word embeddings encode number reliably.
-Encodings from the CNLM outperform the autoencoder on plurals formed with suffixes, indicating generalization to unseen plurals above chance.
-In contrast, no generalization to plurals formed by vowel change is found, suggesting that the CNLM does not consistently encode noun number in a generalizable ways -- at least not in a way accessible to a logistic classifier..
+The classifier based on word embeddings is overall the most successful, confirming that word embeddings encode number reliably.
+Encodings from the CNLM outperform the autoencoder on plurals formed with suffixes, indicating generalization to unseen plurals beyond orthographic cues.
+In the case of -r plurals, the CNLM LSTM generalizes better than the word NLM.
+In contrast, almost no generalization to plurals formed by vowel change is found, suggesting that the CNLM does not consistently encode noun number in a generalizable ways -- at least not in a way accessible to a logistic classifier..
 
 
 \subsection{Capturing syntactic dependencies}
@@ -443,7 +444,7 @@ This experiment shows that a CNLM, trained without word boundaries, learns lexic
       \multicolumn{1}{c}{}& Model \\
 LSTM CNLM	    &      34.1/59.0/59.2 \\
 	    RNN CNLM &     24.3/24.0/27.1 \\
-	    Word LSTM \\ \hline
+	    Word LSTM & TODO \\ \hline
 	    Random & 20 \\
 	    KN5  \cite{Mikolov:2012} & 40.0 \\
             Word RNN & 45.0 \\

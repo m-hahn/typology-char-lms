@@ -32,22 +32,38 @@ We also conducted the same experiment with a character-level 8-gram model estima
 
 The goal of this experiment is not to construct a word segmentation system, but to evaluate how strongly the CNLM's probabilities are indicative of word boundaries.
 
+
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Bayes}&\emph{ngrams}\\
+      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{8-grams}\\
       \hline
-      English &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
-      German &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
-      Italian &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      English & 65.83/60.37/62.98 &   63.26/59.81/61.49 & 55.73/51.0/53.26    \\ % \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      German &  57.012/52.505/54.67 &  53.2/49.26/51.15 & 42.89/36.28/39.31   \\ %   \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      Italian &  63.59/56.95/60.09 & 62.47/57.5/59.89  & 48.41/39.62/43.57    \\ % \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-results} Scores are P/R/F\ldots too packed?}
+  \caption{\label{tab:segmentation-results} Precisionm recall, and F1 on word segmentation.}
 \end{table}
 
 Results are shown in Figure~\ref{tab:segmentation-results}.
-Ablation shows that the entropy is most predictive, reaching an accuracy of X (English), X (German, X (Italian) alone.
-Setting N to other values X.
+%PMI alone 
+%P 30.56 R 20.61 F 24.61 German
+%P 32.19 R 20.89 F 25.34 Italian
+%P 39.37 R 29.45 F 33.69 English
+%Surprisal alone
+%P 28.04 R 18.64 F 22.4 German
+%P 28.76 R 18.31 F 22.38 Italian
+%P 33.65 R 24.1 F 28.08 English
+%Entropy alone
+%P 50.88 R 45.57 F 48.08 German
+%P 58.44 R 52.09 F 55.08 Italian
+%P 59.85 R 53.75 F 56.63 English
+
+
+Ablation shows that the entropy is most predictive, reaching an F1 of 56.63 (English), 48.08 (German), 55.08 (Italian) alone.
+Surprisal reaches 28.08 (English), 22.4 (German), 22.38 (Italian); PMI reaches 33.69 (English), 24.61 (German), 25.34 (Italian).
+%Setting N to other values shows that larger values of N increase performance (N =10: 62.45, N=20: 63.24).
 
 \begin{figure}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
@@ -69,7 +85,7 @@ Running Bayesian methods on the Wikipedia dumps is infeasible; thus we also crea
       Goldwater 2006 & 0.740/0.794 & 0.679/0.589
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-results-brent} Scores are P/R/F\ldots too packed?}
+  \caption{\label{tab:segmentation-results-brent} Word segmentation results on the Brent corpus.}
 \end{table}
 
 Results in Table~\ref{tab:segmentation-results-brent} show that the performance is broadly comparable to that of a sophisticated Bayesian segmentation method.

@@ -7,22 +7,21 @@
 We conducted agglomerative clustering of character embeddings in the output layer.
 
 We found that, in all three languages, the highest-level clusters separated characters into consonants, vowels, numerals, punctuation, and various non-phonetic or rare characters.
-
-
-In Figure~\ref{fig:char-clustering}, we show a clustering restricted to alphabetic characters, i.e., characters that mostly have clear phonological correlates.
-
-Clustering within the vowel cluster
-consonant and vowel clusters each can, to a large extent, be phonologically motivated
-
-Within the vowel cluster: in German, vowels and their fronted umlauts together (understandable as a consequence of morphological alternations), also e/i 
-
-Clustering of consonants can partly be motivated phonologically, though not along a single consistent dimensions:
-In German, there are clusters sharing place of articulation (p/f, b/v/w, c/k/q). %, and the liquids (n/l/r) form a class 
-
+In Figure~\ref{fig:char-clustering}, we show a clustering of English character embeddings restricted to alphabetic characters.
+The top-level split partitions characters into vowels and consonants.
+%consonant and vowel clusters each can, to a large extent, be phonologically motivated
+%
+%Within the vowel cluster: in German, vowels and their fronted umlauts together (understandable as a consequence of morphological alternations), also e/i 
+%
+%Clustering of consonants can partly be motivated phonologically, though not along a single consistent dimensions:
+%In German, there are clusters sharing place of articulation (p/f, b/v/w, c/k/q). %, and the liquids (n/l/r) form a class 
+%
 
 \begin{figure}
-\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.png}
-\caption{Clustering of German character embeddings (alphabetic characters only)}\label{fig:char-clustering}
+%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.png}
+\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-english-nospaces-bptt-282506230.png}
+	%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-italian-nospaces-bptt-855947412.png}
+\caption{Clustering of English character embeddings (alphabetic characters only)}\label{fig:char-clustering}
 \end{figure}
 
 
@@ -31,17 +30,20 @@ In German, there are clusters sharing place of articulation (p/f, b/v/w, c/k/q).
 \subsection{Discovering phonotactic constraints}
 \label{sec:phonotactics}
 
+Next, we study the CNLM's understanding of phonotactic constraints.
 We focus on German and Italian, as they have reasonably transparent orthographies.
 We construct pairs of letter bigrams (corresponding to phoneme
 bigrams) beginning with the same letter, such that one is
 phonotactically acceptable in the language and the other isn't, but
 the independent unigram probability of the unacceptable bigram is
 higher than that of the acceptable one. E.g., ``\emph{br}'' is
-acceptable Italian sequence, ``\emph{bt}'' isn't, although
-\emph{``t''} is more frequent than \emph{``r''}. We re-train the CNLM on a version of
-the training partition from which all sequences containing either bigram have been removed. We then look at
+an acceptable Italian sequence and ``\emph{bt}'' isn't, although
+\emph{``t''} is more frequent than \emph{``r''}.
+For each such pair, we re-train the CNLM on a version of
+the training partition from which all sequences containing either bigram have been removed.
+We then look at
 the likelihood the model assigns to both sequences. If the model systematically
-assigns a larger probability to correct sequences, it means that it
+assigns a larger probability to correct sequences, this provides evidence that it
 implicitly possesses a notion of phonological categories such as
 stops and sonorants, which allows it to correctly generalize from
 attested (e.g., ``\emph{tr}'') sequences to unattested ones
@@ -54,14 +56,11 @@ In one, the valid bigram had a vowel following a consonant; in the other, a cons
 In the invalid bigram, the consonant was followed by a stop or nasal.
 For each onset consonant and each of the two types, we considered valid vowels or sonorants satisfying the constraint on unigram frequencies, and randomly selected one if there were several.
 
-
-Due to computational constraints, we ran these models only for 5 epochs.
-
 Results are shown in \ref{tab:phonotactics-results}.
 The LSTM assignes higher probability to the valid bigrams in all but two cases.
 The RNN, on the other hand, prefers the invalid bigrams, presumably because they have higher unigram probability.
 
-This confirms that the LSTM has learnt a notion of phonological categories such as vowels and consonants, and phonotactic generalizations about them.
+This confirms that the LSTM CNLM has learnt a notion of phonological categories such as vowels and consonants, and phonotactic generalizations about them.
 Note that the model makes these phonotactic generalizations entirely on the basis of distributional evidence, with no aid from perceptual or acrticulatory cues.
 
 
@@ -84,8 +83,8 @@ Note that the model makes these phonotactic generalizations entirely on the basi
            fr &  fn &  \textbf{ 2.7} & 0.10      \\
            kl &  kt &  \textbf{ 3.8} & 0.10      \\
            pl &  pt &  \textbf{ 2.5} & 0.86      \\
-	    \multicolumn{2}{l|}{Ar. Mean}      & 3.6 \\
-	    \multicolumn{2}{l|}{Geom. Mean} & 3.0 \\
+	    \multicolumn{2}{l|}{Ar. Mean}      & \textbf{3.6} & 0.24 \\
+	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.0} & 0.13 \\
       \hline
       \multicolumn{4}{c}{\emph{Italian}}\\
       \hline
@@ -100,11 +99,11 @@ Note that the model makes these phonotactic generalizations entirely on the basi
 	    dr & dt & \textbf{ 2.5} & 0.4 \\
 	    fr & ft & \textbf{ 2.9} & 0.001 \\
 	    pr & pt & \textbf{ 5.0} & 0.008 \\
-	    \multicolumn{2}{l|}{Ar. Mean} & 10.7 \\
-	    \multicolumn{2}{l|}{Geom. Mean} & 3.2 \\
+	    \multicolumn{2}{l|}{Ar. Mean} & \textbf{10.7}  & 0.041  \\
+	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.2} & 0.0021 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams,    with values $>1$ in bold.}
+  \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams, with arithmetic and geometric means. Values $>1$ in bold.}
 \end{table}
 
 \input{segmentation}
@@ -112,7 +111,8 @@ Note that the model makes these phonotactic generalizations entirely on the basi
 \subsection{Discovering morphological categories}
 \label{sec:categories}
 
-Focusing on German and Italian given massive morphosyntactic ambiguity
+Dpes the CNLM discover morphological categories?
+We again focus on German and Italian given massive morphosyntactic ambiguity
 and impoverished morphology of English. Note that these are lexical
 properties, probed in a model that has no explicit notion of word!
 
@@ -230,9 +230,9 @@ German and Italian separately (not much in English).
 \paragraph{German Gender Agreement}
 Each German noun belongs to one of three genders (masculine, feminine, neuter), which are morphologically marked on the article.
 As the article and the noun can be separated by adjectives and adverbs, we can probe not only the CNLM's knowledge of nouns' genders, but also its ability to model gender agreement across distances.
-We create stimuli
+We create stimuli of the form
 \begin{tabular}{lllllll}
-	\{der, die, das\}& sehr& extrem& rote& Baum \\
+	\{\underline{der}, die, das\}& sehr& extrem& rote& Baum \\
 	article & adverb & adverb & adjective & noun \\
 	the & very & extremely & red & tree
 \end{tabular}
@@ -266,7 +266,7 @@ The exclusion of OOVs and thus limiting experiments on word-level models to freq
 \includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
-\caption{Accuracy on the Gender task.}\label{fig:gender}
+\caption{Accuracy on the Gender Agreement task as a function of the number of intervening elements, for masculine, feminine, and neuter nouns, and across all three classes.}\label{fig:gender}
 \end{figure*}
 
 
@@ -286,12 +286,13 @@ This can be attributed to the higher baseline frequency of dative in German, sug
 This effect is far more pronounced for the RNN CNLM, explaining its overall decrease to chance level.
 
 As for the gender experiment, restricting to words that are in the word-level vocabulary does not change the pattern of results.
-\begin{figure*}
-\includegraphics[width=0.24\textwidth]{figures/german-case-Dative.pdf}
-\includegraphics[width=0.24\textwidth]{figures/german-case-Genitive.pdf}
+\begin{figure}
+\includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
+\includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
+
 \includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
-\caption{Accuracy on the Case task.}\label{fig:case}
-\end{figure*}
+	\caption{Accuracy on the Case Agreement task as a function of the number of intervening elements, for dative and genitive phrases (top), and across the two cases (bottom).}\label{fig:case}
+\end{figure}
 
 \paragraph{Case Subcategorization}
 German verbs and prepositions lexically specify the case appropriate to their objects (mostly dative or accusative).
@@ -315,10 +316,10 @@ If accuracy is lower on these stimuli than on the full stimuli, we can conclude 
 
 For the n-gram count model, we only counted the occurrences of the prepositional phrase, omitting the environment.
 
-\begin{figure*}
-\includegraphics[width=0.24\textwidth]{figures/german-prep-with-control.pdf}
-\caption{Accuracy on the Case task.}\label{fig:prep}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
+\caption{Accuracy on the Subcategorization task as a function of the number of intervening elements. For eavh model, the dashed line indicates accuracy on the control stimuli that do not contain the preposition.}\label{fig:prep}
+\end{figure}
 
 Results are shown in Figure~\ref{fig:prep}.
 All models except the one based on n-gram counts outperform the accuracy achieved on the control stimuli that did not include the preposition, showing that their performance cannot be attributed to baseline frequencies of the adjective forms, and that they take the preposition into account when choosing the adjective form.
@@ -343,9 +344,9 @@ same-length strings, limited to stimuli unseen in training corpus.
 Similar to German, Italian articles agree with the noun in gender; however, while gender is often unpredictable in German, Italian has a productive system of forming masculine and feminine versions of nouns that differ in the final vowel (-o for masculine, -a for feminine).
 We construct stimuli of the form:
 \begin{tabular}{lllllll}
-(a) & \{il, la\} & congeniale & candidato \\
+	(a) & \{\underline{il}, la\} & congeniale & candidato \\
    &  the & congenial & candidate (male) \\
-(b) & la & congeniale & candidata \\
+	(b) & \{il, \underline{la}\} & congeniale & candidata \\
     &the & congenial & candidate (female) \\
 \end{tabular}
 Note that the intervening adjective, ending in -e, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
@@ -361,9 +362,9 @@ Even the RNN CNLM performs strongly above chance.
 \paragraph{Article-Adjective Gender Agreement}
 We then created an experiment where an adverb intervened between an article and an adjective, both of which were marked for gender:
 \begin{tabular}{lllllll}
-(a) & il & meno & \{ alieno, aliena \} \\
+	(a) & il & meno & \{ \underline{alieno}, aliena \} \\
    &  the & less & alien one  \\
-(b) & la & meno & \{ alieno, aliena \} \\
+	(b) & la & meno & \{ alieno, \underline{aliena} \} \\
     &the & less & alien one \\
 \end{tabular}
 where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less', \emph{tanto} `so much'.

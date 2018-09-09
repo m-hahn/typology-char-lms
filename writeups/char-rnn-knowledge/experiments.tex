@@ -60,8 +60,9 @@ distributional, with no aid from perceptual or articulatory cues.
            fl &  fd &  \textbf{ 2.1} \\
            fr &  fn &  \textbf{ 2.7} \\
            kl &  kt &  \textbf{ 3.8} \\
-           pl &  pt &  \textbf{ 2.5} \\
-
+           pl &  pt &  \textbf{ 2.5} \\ \hline
+	    \multicolumn{2}{l|}{Ar. Mean}      & 3.6 \\
+	    \multicolumn{2}{l|}{Geom. Mean} & 3.0 \\
       \hline
       \multicolumn{4}{c}{\emph{Italian}}\\
       \hline
@@ -75,7 +76,9 @@ distributional, with no aid from perceptual or articulatory cues.
 	    br & bt & \textbf{ 1.001} \\
 	    dr & dt & \textbf{ 2.5} \\
 	    fr & ft & \textbf{ 2.9} \\
-	    pr & pt & \textbf{ 5.0} \\
+	    pr & pt & \textbf{ 5.0} \\ \hline
+	    \multicolumn{2}{l|}{Ar. Mean} & 10.7 \\
+	    \multicolumn{2}{l|}{Geom. Mean} & 3.2 \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams,    with values $>1$ in bold.}
@@ -89,20 +92,35 @@ distributional, with no aid from perceptual or articulatory cues.
 
 Does the model develop an implicit notion of word?
 
-English/German/Italian
+Early work on word segmentation suggests that high uncertainty and low transition probabilities serve as statistical cues to word segmentation (CITE).
+In Figure~\ref{fig:syntax-depth}, we plot character entropy around word boundaries, compared to other positions.
 
-How validation partition was used
+How reliable are such statistical cues?
+We constructed a logistic regression predicting whether a character was the first one of a word or not, based on the following predictors:
 
-Use only one of the low-parameter-count methods, compare to Bayes
-although it's not entirely fair (clarify that). (report in text or
-footnote that, when training on the hidden state, we get super-high
-accuracy, indicating that the information is there).
 
-LSTM vs RNN vs Bayes vs n-gram baseline (collect transition
-probabilities across fixed n-gram windows, optimize threshold on
-validation data).
+To compare with unsupervised word segmentation models, we repeated our experiment on the Brent corpus, using X \% to train our language model, Y \% to fit the logistic regression, and Z \% to evaluate word segmentation.
+(This compares with the Bayesian models that train and evaluate on the full dataset, but incorporate no word boundary information).
 
-Results could be summarized as in Table \ref{tab:segmentation-results}.
+% Brent results
+% LP 0.41 LR 0.61 R 0.75 P 0.76 BP 0.91 BR 0.90
+
+
+
+%English/German/Italian
+%
+%How validation partition was used
+%
+%%Use only one of the low-parameter-count methods, compare to Bayes
+%%although it's not entirely fair (clarify that). (report in text or
+%%footnote that, when training on the hidden state, we get super-high
+%%accuracy, indicating that the information is there).
+%
+%LSTM vs RNN vs Bayes vs n-gram baseline (collect transition
+%probabilities across fixed n-gram windows, optimize threshold on
+%validation data).
+%
+%Results could be summarized as in Table \ref{tab:segmentation-results}.
 
 
 \begin{table}[t]
@@ -111,7 +129,7 @@ Results could be summarized as in Table \ref{tab:segmentation-results}.
       \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Bayes}&\emph{ngrams}\\
       \hline
       English &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
-      German &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
+      German & 57/53/55 & 53/49/51 & \ldots{}/\ldots{}/\ldots & 43/36/39 \\
       Italian &\ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
     \end{tabular}
   \end{center}
@@ -455,7 +473,7 @@ The CNLM outperforms KN5 in the setting where both are estimated using only the 
     \begin{tabular}{l|l|l|l|l}
       \multicolumn{1}{c}{}& Model \\
 % eadj-aonoun
-LSTM CNLM	    &      34.1/46.8/54.4 \\
+LSTM CNLM	    &      34.1/59.0/59.2 \\
 	    RNN CNLM & \\
 	    Word LSTM \\ \hline
 	    Random & 20 \\

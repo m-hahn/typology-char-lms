@@ -12,7 +12,7 @@ In accordance with prior work, higher entropy and lower PMI correlate with bound
 \begin{figure}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-pmis-german.png}
-	\caption{Entropy over the next character (left) and PMI (right) at word boundaries (blue), compared to all positions (red). }\label{fig:boundaries-entropy}
+	\caption{Entropy over the next character (left) and PMI between left and right contexts (right) around word boundaries (blue); the x-axis indicates position relative to a word boundary. The red line indicates the overall average of the quantity. }\label{fig:boundaries-entropy}
 \end{figure}
 
 
@@ -23,7 +23,7 @@ We constructed a logistic regression predicting whether a character was the firs
 %It is also the transition probability for the next characters
 %(3) can also be interpreted as the result of normalizi transition probability
 We collected these quantities for each position and for the preceding and following three characters.
-In total, the classifier has 21 coefficients.
+%In total, the classifier has 21 coefficients.
 We also conducted the same experiment with a character-level 8-gram model estimated on the training set, closer to the setup of earlier non-neural work.
 
 
@@ -70,19 +70,20 @@ We used 90 \% to train our language model, 5 \% to fit the logistic regression, 
 
 \begin{table*}[t]
   \begin{center}
-    \begin{tabular}{l|l|l|l|l}
-      \multicolumn{1}{c}{}&P/R/F & Lexical & Boundaries\\      \hline
-      CNLM & 0.75/0.76/0.75 & 0.41/0.61/0.49 & 0.91/0.90/0.90 \\
-     log-probability & 0.453/0.510/0.48 \\
-     entropy & 0.504/0.533/0.518 \\
-     PMI & 0.708/0.729/0.718 \\ \hline
-	    \cite{goldwater-bayesian-2009} & 0.752/0.696/0.723 & 0.635/0.552/0.591 & 0.903/0.808/0.852
+    \begin{tabular}{ll|l|l|l|l}
+      \multicolumn{2}{c|}{}&Tokens & Lexical & Boundaries\\      \hline
+	    \multirow{4}{*}{CNLM} & Full model & 0.75/0.76/0.75 & 0.41/0.61/0.49 & 0.91/0.90/0.90 \\
+	    &     log-probability & 0.510/0.453/0.480 & 0.488/0.195/0.279 & 0.805/0.716/0.758 \\
+	    &     entropy & 0.504/0.533/0.518 & 0.520/0.211/0.300 & 0.790/0.747/0.768\\
+	    &     PMI & 0.708/0.729/0.718 & 0.576/0.346/0.432 &0.899/0.873/0.886  \\ \hline
+	    \multicolumn{2}{c|}{\citet{goldwater-bayesian-2009}} & 0.752/0.696/0.723 & 0.635/0.552/0.591 & 0.903/0.808/0.852
     \end{tabular}
   \end{center}
-	\caption{\label{tab:segmentation-results-brent} Word segmentation results on the Brent corpus for our model, for the three individual predictors, and the Bayesian model of (CITE).}
+	\caption{\label{tab:segmentation-results-brent} Word segmentation results on the Brent corpus for our model, for the three individual predictors, and the Bayesian model of \cite{goldwater-bayesian-2009}. Following \cite{goldwater-bayesian-2009}, we evaluate on the level of tokens, the lexicon of induced word types, and boundaries.}
 \end{table*}
 
 Results in Table~\ref{tab:segmentation-results-brent} show that the performance is broadly comparable to that of a sophisticated Bayesian segmentation method.
+This suggests that statistical properties as modeled by the CNLM provide reliable cues to word boundaries.\footnote{We also created a logistic regression on hidden states, obtaining accuracy over 90 \% in classifying word boundaries on unseen words, outperforming an n-gram-count baseline. This suggests that the model internally tracks word boundaries.}
 In contrast to the Wikipedia experiments, PMI emerges as the most important predictor on this dataset.
 
 Unlike our method, the Bayesian method is fully unsupervised, but it has a built-in bias towards a discrete lexicon with a power-law frequency distribution.
@@ -124,15 +125,15 @@ oversegmentations (\emph{la, le, ma, na, ra, ro, se, ta}).
 We hypothesized that similar statistical correlates exist for hierarchical syntactic structure.
 We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
 For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
-This number is zero if both characters belong to the same word.
+This number is zero if and only if both characters belong to the same word.
 
 Figure~\ref{fig:syntax-depth} plots PMI by hierarchical ditance.
-The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI.
+The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI, generalizing the finding for word boundaries.
 This illustrates how it is useful for segmentation knowledge to be implicit, as the model ``knows'' about different kinds of boundaries in a continuous manner.
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
-\caption{PMIs by syntactic hierarchical distance.}\label{fig:syntax-depth}
+\caption{PMI between left and right contexts, estimated by the CNLM, by syntactic hierarchical distance between subsequent characters.}\label{fig:syntax-depth}
 \end{figure}
 
 

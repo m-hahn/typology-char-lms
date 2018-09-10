@@ -1,3 +1,5 @@
+
+
 \section{Experiments}
 \label{sec:experiments}
 
@@ -111,22 +113,23 @@ Note that the model makes these phonotactic generalizations entirely on the basi
 \subsection{Discovering morphological categories}
 \label{sec:categories}
 
-Dpes the CNLM discover morphological categories?
+Does the CNLM discover morphological categories?
+Note that these are lexical
+properties, probed in a model that has no explicit notion of word.
 We again focus on German and Italian given massive morphosyntactic ambiguity
-and impoverished morphology of English. Note that these are lexical
-properties, probed in a model that has no explicit notion of word!
+and impoverished morphology of English.
 
 \paragraph{Word classes (nouns vs.~verbs)}
 
 Does the model implicitly encode word classes?
-We sampled 500 verbs and 500 nouns from the training set, each with the requirement that they end in -en (German) or -re (Italian).
+We sampled 500 verbs and 500 nouns from the training set, each with the requirement that they end in -\emph{en} (German) or -\emph{re} (Italian), and that they did not occur both as nouns and verbs.
 We did this since these final syllables are common among both verbs and nouns, setting the bar higher for methods relying on surface cues.
-We then recorded the hidden states of the CNLM after reading each of these words.
+We then recorded the hidden states of the CNLM after reading each of these words, without context.
 We randomly selected N=20 training examples, balanced between the two POS classes, to create a logistic classifier distinguishing nouns and verbs from the hidden states of the LSTMs, and tested on the remaining examples.
 We repeated this experiment 100 times to control for variation between the random train-test splits.
 
 As a baseline, we created a character-level LSTM autoencoder which was been trained to reconstruct individual words in isolation.
-We expect that the hidden state of the autoencoder encodes orthographic features relevant for German.
+We expect that the hidden state of the autoencoder encodes orthographic features relevant for the languages.
 We further considered word embeddings from the output layer of the word-based language model, removing OOV words from the evaluation of this model.
 
 Results are shown in Table~\ref{tab:pos-results}.
@@ -134,7 +137,8 @@ Across the board, models based on language models outperform those constructed f
 
 
 We then varied N from 2 to 100.
-Resulting accuracies for German are shown in Figure~\ref{fig:pos-induction}; they confirm that the CNLM-based encodings distinguish the categories well for small training sets, while the autoencoder does not catch up even with 100 training examples.
+Resulting accuracies for German are shown in Figure~\ref{fig:pos-induction}; they confirm that the CNLM-based encodings distinguish the categories well for small training sets, while the autoencoder does not catch up even with 100 training examples per category.
+Results were qualitatively identical in Italian.
 
 \begin{table}[t]
   \begin{center}
@@ -161,7 +165,6 @@ Resulting accuracies for German are shown in Figure~\ref{fig:pos-induction}; the
 
 
 \paragraph{Number}
-
 Does the hidden state of the CNLM store an abstract notion of
 number?
 German nouns can be binned in different classes depending on
@@ -174,13 +177,13 @@ We extracted plural nouns from the German Universal Dependencies treebank \cite{
 We selected plurals formed with -\emph{n}, -\emph{s}, or -\emph{e} suffixation to train the classifier, and tested on plurals formed with -\emph{r} suffixation or vowel change (\emph{umlaut}).
 
 For the training set, we randomly selected 30 singulars and 30 plurals from each of the training classes.
-We used rejection sampling from a single distribution over lengths to ensure that the lengths of the singular and plural examples were approximately matched.
+As plural suffixes make words longer, we used rejection sampling from a single distribution over lengths to ensure that the lengths of the singular and plural examples were approximately matched.
 For the test set, we selected all plurals with -\emph{r} suffix or vowel change together with their respective singulars.
 
 As before, we consider an autoencoder and embeddings from a word-level language model as baselines.
 
 To control for the impact of random selection of training samples, we repeated this 200 times and averaged the resulting accuracies on number classification.
-Results are summarized as in Table \ref{tab:number-results}.
+Results are summarized in Table \ref{tab:number-results}.
 
 
 \begin{table}[t]
@@ -210,12 +213,11 @@ In contrast, almost no generalization to plurals formed by vowel change is found
 \subsection{Capturing syntactic dependencies}
 \label{sec:dependencies}
 
-Despite not having pre-defined information about words and morphemes,
-is the model able to capture non-adjacent syntactic dependencies?
-Note that, for a CNLM even \emph{``\textbf{la} bell\textbf{a}''} is long
-distance.
-Constructions will be language-specific, so we discuss
-German and Italian separately (not much in English).
+Despite not having pre-defined information about words and morphemes, is the model able to capture non-adjacent syntactic dependencies?
+In particular, is it able to do so when dependencies cross one or more words, and thus cannot be reduced to surface n-gram counts?
+Note that, for a CNLM, dependencies across even a single word are often already long-distance. % even \emph{``\textbf{la} bell\textbf{a}''} is long distance.
+We again focus on German and Italian due to the richness of inflectional morphology in these languages.
+Constructions will be language-specific, so we discuss the languages separately. %German and Italian separately (not much in English).
 
 %As usual, specifics of training etc that depart from general setup.
 
@@ -231,21 +233,23 @@ German and Italian separately (not much in English).
 Each German noun belongs to one of three genders (masculine, feminine, neuter), which are morphologically marked on the article.
 As the article and the noun can be separated by adjectives and adverbs, we can probe not only the CNLM's knowledge of nouns' genders, but also its ability to model gender agreement across distances.
 We create stimuli of the form
-\begin{tabular}{lllllll}
+\begin{enumerate}[label={(\arabic*)}]
+	\item \begin{tabular}[t]{lllllll}
 	\{\underline{der}, die, das\}& sehr& rote& Baum \\
 	article & adverb & adjective & noun \\
 	the & very & red & tree
 \end{tabular}
+\end{enumerate}
 where the correct nominative singular article (\emph{der}, in this case) matches the gender of the noun.
 We then run the CNLM on the three versions of this phrase (removing whitespace) and record the probabilities it assigns to them.
 If it systematically assigns the highest probability to the correct version, we have evidence that the CNLM has learnt the association between the noun and the form of the article.
 To indicate that there are word boundaries at the beginning and end of the phrase (e.g., \emph{der} could also be the end of another word), we add a full stop before and after the stimulus when running the CNLM.
 
 %  \cite{de2006generating,mcdonald2013universal}
-We select all nominative singular nouns from the German Universal Dependencies treebank, and all adjectives from the training set.
-We construct four conditions varying the number of adverbs and adjectives between the article and the noun:
+We select all nominative singular nouns from the German Universal Dependencies treebank. %, and all adjectives from the training set.
+We construct four conditions varying the number of adverbs and adjectives between the article and the noun.
 We first consider stimuli where no material intervenes.\footnote{Due to syncretism in the article paradigm, there sometimes is ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is nominative singular. As this affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective is present, as their form uniquely indicates that the phrase is nominative singular.}
-In the second condition, a randomly selected adjective with the correct (nominative singular) case ending is added.
+In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added.
 Crucially, the ending of the adjective does not reveal the gender of the noun.
 In the third and fourth condition, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervened between the article and the adjective.
 These also do not reveal the noun's gender.
@@ -257,7 +261,7 @@ In Figure~\ref{fig:gender}, we report accuracy for nouns from each of the three 
 Across genders and conditions, the word-level LSTM tends to perform best, followed by the CNLM.
 While the n-gram baseline performs similarly to the CNLM when there is no intervening material, accuracy drops to the random baseline (0.33) in the presence of an adjective.
 %This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
-Note that this would not be mitigated by models that include interplation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus.
+Note that this would not be mitigated by models that include interpolation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus.
 This contrast shows that, while the association between articles and nouns can be learnt from simple corpus statistics, the CNLM has some capability to preserve the relevant information across more than a dozen timesteps.
 The RNN CNLM is weaker across conditions, and its accuracy drops to random as more intervening material is present.
 
@@ -276,6 +280,7 @@ The exclusion of OOVs and thus limiting experiments on word-level models to freq
 Here we test the model's knowledge of case agreement between articles and nouns.
 We selected the two determiners \emph{dem} and \emph{des}, which unambigously indicate dative and genitive case, respectively, for masculine and neuter nouns.
 We also selected all nouns of the appropriate genders that unambigously mark these two cases.
+We selected noun lemmas from the Universal Dependencies treebank, and extracted morphological paradigms for Wiktionary to obtain case-marked forms.
 We created four conditions, varying the amount of intervening material, as in the gender agreement experiment.
 
 Results are shown in Figure~\ref{fig:case}.
@@ -304,14 +309,16 @@ We take all adjectives that occur at least 100 times in the training data, exclu
 
 We then selected all sentences containing a `mit' prepositional phrase in the German Universal Dependencies treebank, subject to the constraints that (1) the object is not a pronoun (such objects often are relative or interrogative pronouns and cannot be replaced with a nominal object without sacrificing grammaticality), and (2) the object is a continuous phrase.
 For each sentence, we remove the prepositional phrase and replace it by a phrase of the form
-\begin{tabular}{lllllll}
-	mit & der & sehr& extrem& \{rote, \underline{roten}\} \\
-	prep & article & adverb & adverb & adjective \\
-	with & the & very & extremely & red 
+\begin{enumerate}[label={(\arabic*)}]
+	\item \begin{tabular}[t]{lllllll}
+	mit & der & sehr& \{rote, \underline{roten}\} \\
+	prep & article  & adverb & adjective \\
+	with & the & very  & red one 
 \end{tabular}
-where only the -en version of the adjective is compatible with the case requirement of the preposition.
-We construct three conditions by varying the presence and number of adverbs, as before.
+\end{enumerate}
+where only the \emph{-en} version of the adjective is compatible with the case requirement of the preposition.
 Note that this correct version is longer than the incorrect one; this ensures that the bias for shorter sequences works against the model.
+We construct three conditions by varying the presence and number of adverbs (\emph{sehr} `very', \emph{sehr extrem} `very extremely', \emph{sehr extrem unglaublich} `very extremely incredibly').
 As a control for baseline probabilities of the two versions of the adjective, we also created control stimuli where all words up to the preposition were removed, and computed accuracy on these stimuli.
 If accuracy is lower on these stimuli than on the full stimuli, we can conclude that baseline probabilities of the two adjective forms cannot explain success on the task.
 
@@ -343,14 +350,17 @@ same-length strings, limited to stimuli unseen in training corpus.
 
 Similar to German, Italian articles agree with the noun in gender; however, while gender is often unpredictable in German, Italian has a productive system of forming masculine and feminine versions of nouns that differ in the final vowel (-o for masculine, -a for feminine).
 We construct stimuli of the form:
-\begin{tabular}{lllllll}
-	(a) & \{\underline{il}, la\} & congeniale & candidato \\
-   &  the & congenial & candidate (male) \\
+\begin{enumerate}[label={(\arabic*)}]
+	\item 
+		\begin{tabular}[t]{lllllll}
+	a. & \{\underline{il}, la\} & congeniale & candidato \\
+   &  the & congenial & candidate (m.) \\
 	& \multicolumn{4}{l}{`The congenial male candidate.'} \\
-	(b) & \{il, \underline{la}\} & congeniale & candidata \\
-    &the & congenial & candidate (female) \\
+	b. & \{il, \underline{la}\} & congeniale & candidata \\
+    &the & congenial & candidate (f.) \\
 	& \multicolumn{4}{l}{`The congenial female candidate.'} \\
 \end{tabular}
+\end{enumerate}
 
 Note that the intervening adjective, ending in -\emph{e}, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
 
@@ -364,12 +374,15 @@ Even the RNN CNLM performs strongly above chance.
 
 \paragraph{Article-Adjective Gender Agreement}
 We then created an experiment where an adverb intervened between an article and an adjective, both of which were marked for gender:
-\begin{tabular}{lllllll}
+\begin{enumerate}[label={(\arabic*)}]
+	\item 
+		\begin{tabular}[t]{lllllll}
 	(a) & il & meno & \{ \underline{alieno}, aliena \} \\
    &  the & less & alien one  \\
 	(b) & la & meno & \{ alieno, \underline{aliena} \} \\
     &the & less & alien one \\
 \end{tabular}
+\end{enumerate}
 where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less', \emph{tanto} `so much'.
 We considered only adjectives that occurred 1K times in the training corpus, as this is the most common kind of adjective in Italian.
 We excluded all cases in which the adverb-adjective combination occurred in the training corpus, in either feminine or masculine form.
@@ -382,7 +395,8 @@ Results are shown in the second line in Table~\ref{tab:ital-agr-results}; all th
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{LSTM CNLM}&\emph{RNN CNLM}&\emph{Word LSTM}\\
+	    & \multicolumn{2}{c|}{CNLM} & \multirow{2}{*}{Word LSTM}\\
+  &\emph{LSTM}&\emph{RNN}&\\ \hline
 % eadj-aonoun
 	    Noun Gender & 97/90  & 84/73 & 99/96 \\
 %      adv-aoadj
@@ -397,12 +411,15 @@ Results are shown in the second line in Table~\ref{tab:ital-agr-results}; all th
 \paragraph{Article-Adjective Number Agreement}
 We then constructed a version of the last test that probed number agreement instead of gender agreement; number marking is similarly very systematic in Italian.
 Stimuli had the form
-\begin{tabular}{lllllll}
-(a) & la & meno & \{ aliena, aliene \} \\
+\begin{enumerate}[label={(\arabic*)}]
+	\item 
+\begin{tabular}[t]{lllllll}
+	a. & la & meno & \{ \underline{aliena}, aliene \} \\
    &  the & less & alien one(s)  \\
-(b) & le & meno & \{ aliena, aliene \} \\
+	b. & le & meno & \{ aliena, \underline{aliene} \} \\
     &the & less & alien one(s) \\
 \end{tabular}
+\end{enumerate}
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
 Selection of stimuli was  as before, but  we took a 500-occurrences threshold, as feminine plurals are less common.
 Further, we manually removed adjectives that did not combine well semantically with the adverbs under consideration (pi{\`u}, meno, tanto).

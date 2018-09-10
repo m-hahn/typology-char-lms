@@ -5,6 +5,7 @@ We downloaded full Wikipedia dumps for English, German, and Italian, and extract
 For each language, we randomly extracted testing and validation sections consisting of 50,000 paragraphs each, and used the remainder as training sets.
 The training sets contained 16M (German), 9M (Italian), and 41M (English) paragraphs, corresponding to 819M (German), 463M (Italian), and 2333M (English) words.
 Order of paragraphs was shuffled for training; we did not attempt to split by sentences.
+All characters were lower-cased.
 For word segmentation and word-based language models, we tokenized and tagged all corpora using TreeTagger.\footnote{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}
 
 For the vocabulary, we extracted the most frequent characters from each corpus, setting thresholds so as to ensure that all characters representing phonemes of the languages were included.

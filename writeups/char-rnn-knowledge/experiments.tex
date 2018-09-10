@@ -5,10 +5,10 @@
 \subsection{Discovering phonological classes}
 
 We conducted agglomerative clustering of character embeddings in the output layer.
-
 We found that, in all three languages, the highest-level clusters separated characters into consonants, vowels, numerals, punctuation, and various non-phonetic or rare characters.
 In Figure~\ref{fig:char-clustering}, we show a clustering of English character embeddings restricted to alphabetic characters.
 The top-level split partitions characters into vowels and consonants.
+%Parts of the finer clustering can be phonologically motivated, e.g., the liquids r, l form a cluster
 %consonant and vowel clusters each can, to a large extent, be phonologically motivated
 %
 %Within the vowel cluster: in German, vowels and their fronted umlauts together (understandable as a consequence of morphological alternations), also e/i 
@@ -57,7 +57,7 @@ In the invalid bigram, the consonant was followed by a stop or nasal.
 For each onset consonant and each of the two types, we considered valid vowels or sonorants satisfying the constraint on unigram frequencies, and randomly selected one if there were several.
 
 Results are shown in \ref{tab:phonotactics-results}.
-The LSTM assignes higher probability to the valid bigrams in all but two cases.
+The LSTM assigns higher probability to the valid bigrams in all but two cases.
 The RNN, on the other hand, prefers the invalid bigrams, presumably because they have higher unigram probability.
 
 This confirms that the LSTM CNLM has learnt a notion of phonological categories such as vowels and consonants, and phonotactic generalizations about them.
@@ -170,12 +170,12 @@ train a number classifier on a subset of these classes, test on the
 others: if model generalizes correctly, it means that it knows about
 number independently of its surface expression.
 
-We extracted plural nouns from the German Universal Dependencies treebank (CITE).
-We selected plurals formed with -n, -s, or -e suffixation to train the classifier, and tested on plurals formed with -r suffixation or vowel change (\emph{umlaut}).
+We extracted plural nouns from the German Universal Dependencies treebank \cite{de2006generating,mcdonald2013universal}.
+We selected plurals formed with -\emph{n}, -\emph{s}, or -\emph{e} suffixation to train the classifier, and tested on plurals formed with -\emph{r} suffixation or vowel change (\emph{umlaut}).
 
 For the training set, we randomly selected 30 singulars and 30 plurals from each of the training classes.
 We used rejection sampling from a single distribution over lengths to ensure that the lengths of the singular and plural examples were approximately matched.
-For the test set, we selected all plurals with -r suffix or vowel change together with their respective singulars.
+For the test set, we selected all plurals with -\emph{r} suffix or vowel change together with their respective singulars.
 
 As before, we consider an autoencoder and embeddings from a word-level language model as baselines.
 
@@ -202,9 +202,9 @@ Results are summarized as in Table \ref{tab:number-results}.
 
 
 The classifier based on word embeddings is overall the most successful, confirming that word embeddings encode number reliably.
-Encodings from the CNLM outperform the autoencoder on plurals formed with suffixes, indicating generalization to unseen plurals beyond orthographic cues.
-In the case of -r plurals, the CNLM LSTM generalizes better than the word NLM.
-In contrast, almost no generalization to plurals formed by vowel change is found, suggesting that the CNLM does not consistently encode noun number in a generalizable ways -- at least not in a way accessible to a logistic classifier..
+Encodings from the CNLM outperform the autoencoder on plurals formed with suffixes, indicating some generalization to unseen plurals beyond orthographic cues.
+In the case of -\emph{r} plurals, the CNLM LSTM generalizes better than the word NLM.
+In contrast, almost no generalization to plurals formed by vowel change is found, suggesting that the CNLM does not consistently encode noun number in a fully generalizable way -- at least not in a way accessible to a logistic classifier.
 
 
 \subsection{Capturing syntactic dependencies}
@@ -232,34 +232,36 @@ Each German noun belongs to one of three genders (masculine, feminine, neuter), 
 As the article and the noun can be separated by adjectives and adverbs, we can probe not only the CNLM's knowledge of nouns' genders, but also its ability to model gender agreement across distances.
 We create stimuli of the form
 \begin{tabular}{lllllll}
-	\{\underline{der}, die, das\}& sehr& extrem& rote& Baum \\
-	article & adverb & adverb & adjective & noun \\
-	the & very & extremely & red & tree
+	\{\underline{der}, die, das\}& sehr& rote& Baum \\
+	article & adverb & adjective & noun \\
+	the & very & red & tree
 \end{tabular}
 where the correct nominative singular article (\emph{der}, in this case) matches the gender of the noun.
 We then run the CNLM on the three versions of this phrase (removing whitespace) and record the probabilities it assigns to them.
 If it systematically assigns the highest probability to the correct version, we have evidence that the CNLM has learnt the association between the noun and the form of the article.
 To indicate that there are word boundaries at the beginning and end of the phrase (e.g., \emph{der} could also be the end of another word), we add a full stop before and after the stimulus when running the CNLM.
 
-
-We select all nominative singular nouns from the German Universal Dependencies treebank \cite{de2006generating,mcdonald2013universal}, and all adjectives from the training set.
-We construct four conditions varying the number of words between the article and the noun:
+%  \cite{de2006generating,mcdonald2013universal}
+We select all nominative singular nouns from the German Universal Dependencies treebank, and all adjectives from the training set.
+We construct four conditions varying the number of adverbs and adjectives between the article and the noun:
 We first consider stimuli where no material intervenes.\footnote{Due to syncretism in the article paradigm, there sometimes is ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is nominative singular. As this affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective is present, as their form uniquely indicates that the phrase is nominative singular.}
 In the second condition, a randomly selected adjective with the correct (nominative singular) case ending is added.
 Crucially, the ending of the adjective does not reveal the gender of the noun.
-In the third and fourth condition, one (sehr) or two adverbs (sehr extrem) intervened between the article and the adjective.
+In the third and fourth condition, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervened between the article and the adjective.
+These also do not reveal the noun's gender.
 
 Besides the CNLMs and the word-level language model, we also construct an n-gram baseline that chooses the version that occurs most frequently in the training data, and randomly chooses in case of a tie (e.g., if no version was observed).
-When running the word-level model, we excluded nouns that were out of the vocabulary.
+When running the word-level model, we excluded nouns that were out of vocabulary.
 
-In Figure~\ref{fig:gender}, we report accuracy for nouns from each of the three genders and averaged over the genders.
+In Figure~\ref{fig:gender}, we report accuracy for nouns from each of the three genders, and the average over the genders.
 Across genders and conditions, the word-level LSTM tends to perform best, followed by the CNLM.
 While the n-gram baseline performs similarly to the CNLM when there is no intervening material, accuracy drops to the random baseline (0.33) in the presence of an adjective.
-This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
+%This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
 Note that this would not be mitigated by models that include interplation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus.
+This contrast shows that, while the association between articles and nouns can be learnt from simple corpus statistics, the CNLM has some capability to preserve the relevant information across more than a dozen timesteps.
 The RNN CNLM is weaker across conditions, and its accuracy drops to random as more intervening material is present.
 
-The exclusion of OOVs and thus limiting experiments on word-level models to frequent words might create an unfair advantage; running the other models only on those stimuli given to the word-level model results in slightly better accuracies but the same pattern of results.
+The exclusion of OOVs and thus limiting experiments on word-level models to frequent words might create an unfair advantage; running the CNLM only on those stimuli given to the word-level model results in slightly better accuracies but the same pattern of results.
 
 \begin{figure*}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-m.pdf}
@@ -284,8 +286,7 @@ Accuracy of the RNN CNLM remains above chance for one or two intervening element
 Considering the results for the dative and genitive separately, accuracy slightly increases in the dative case and decreases in the genitive case.
 This can be attributed to the higher baseline frequency of dative in German, suggesting that both word- and character-based networks are impacted by unigram frequencies as more words intervene.
 This effect is far more pronounced for the RNN CNLM, explaining its overall decrease to chance level.
-
-As for the gender experiment, restricting to words that are in the word-level vocabulary does not change the pattern of results.
+Again, restricting to words that are in the word-level vocabulary did not change the pattern of results.
 \begin{figure}
 \includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
 \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
@@ -304,7 +305,7 @@ We take all adjectives that occur at least 100 times in the training data, exclu
 We then selected all sentences containing a `mit' prepositional phrase in the German Universal Dependencies treebank, subject to the constraints that (1) the object is not a pronoun (such objects often are relative or interrogative pronouns and cannot be replaced with a nominal object without sacrificing grammaticality), and (2) the object is a continuous phrase.
 For each sentence, we remove the prepositional phrase and replace it by a phrase of the form
 \begin{tabular}{lllllll}
-	mit & der & sehr& extrem& \{rote, roten\} \\
+	mit & der & sehr& extrem& \{rote, \underline{roten}\} \\
 	prep & article & adverb & adverb & adjective \\
 	with & the & very & extremely & red 
 \end{tabular}
@@ -327,8 +328,7 @@ The CNLM slightly outperforms the word-level language model, even though the CNL
 Neither model shows accuracy decay as the number of adverbs increases.
 As before, the n-gram model drops to chance as adverbs intervene, while the RNN CNLM starts with low accuracy that decays below chance.
 
-\paragraph{Italian} We consider further constructions from Italian,
-that confirm the results we got in German.
+\paragraph{Italian} We consider further constructions from Italian that confirm the results we got in German.
 Here, we focus in a  subset of Italian morphology where gender and number are explicitly and systematically
 encoded while allowing for tightly controlled comparison of
 same-length strings, limited to stimuli unseen in training corpus.
@@ -346,10 +346,13 @@ We construct stimuli of the form:
 \begin{tabular}{lllllll}
 	(a) & \{\underline{il}, la\} & congeniale & candidato \\
    &  the & congenial & candidate (male) \\
+	& \multicolumn{4}{l}{`The congenial male candidate.'} \\
 	(b) & \{il, \underline{la}\} & congeniale & candidata \\
     &the & congenial & candidate (female) \\
+	& \multicolumn{4}{l}{`The congenial female candidate.'} \\
 \end{tabular}
-Note that the intervening adjective, ending in -e, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
+
+Note that the intervening adjective, ending in -\emph{e}, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
 
 We constructed these stimuli such that none of the adjective-noun pairs appear in the training data, and all single words appear at least 100 times.
 Further, the nouns in -a and  -o have reasonably balanced frequency (neither form is twice more frequent than the other), or they are both frequent (appear at least 500 times)
@@ -449,15 +452,15 @@ LSTM CNLM	    &      34.1/59.0/59.2 \\
 	    RNN CNLM &     24.3/24.0/27.1 \\
 	    Word LSTM & TODO \\ \hline
 	    Random & 20 \\
-	    KN5  \cite{Mikolov:2012} & 40.0 \\
+	    KN5   & 40.0 \\
             Word RNN & 45.0 \\
-	    Word LSTM \cite{zhang2016top} & 55.96 \\
-Skipgram + RNNs \cite{Mikolov:etal:2013b} & 58.9 \\
-LdTreeLSTM \cite{zhang2016top} & 60.67 \\
-            \cite{woods2016exploiting} &  61.44 \\
+	    Word LSTM  & 55.96 \\
+Skipgram + RNNs  & 58.9 \\
+LdTreeLSTM  & 60.67 \\
+            \citet{woods2016exploiting} &  61.44 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion}
+  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. KN5 is from \cite{Mikolov:2012}, Word LSTM and LdTreeLSTM are from\cite{zhang2016top}, Skipgram+RNNs from \cite{Mikolov:etal:2013b}.}
 \end{table}
 
 

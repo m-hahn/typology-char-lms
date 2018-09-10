@@ -4,44 +4,27 @@
 
 
 Does the model develop an implicit notion of word?
-Early work on word segmentation suggests that high uncertainty and low transition probabilities serve as statistical cues to word segmentation (CITE).
-In Figure~\ref{fig:syntax-depth}, we plot (1) entropy of the predicted distribution over the net character around word boundaries, compared to other positions, and (2) the pmi between left and right contexts (TODO describe).
-
+Early work on word segmentation suggests that high uncertainty about the next character \cite{cohen-algorithm-2001, feng-accessor-2004},  low transition probabilities \cite{harris-distributional-1954, saffran-word-1996} and low mutual information \cite{sun-chinese-1998} serve as statistical cues to word segmentation.
+In Figure~\ref{fig:syntax-depth}, we plot (1) entropy of the predicted distribution over the net character around word boundaries, compared to other positions, and (2) the pointwise mutual information (PMI) between left and right contexts, computed by subtracting the unconditional likelihood of the next 20 characters from their likelihood conditioned on the prior context, both computed by the CNLM on a section of the German training set.
+In accordance with prior work, higher entropy and lower PMI correlate with boundaries.
 
 
 \begin{figure}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
 \includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-pmis-german.png}
-	\caption{Entropy at word boundaries (blue), compared to all positions (red). }\label{fig:boundaries-entropy}
+	\caption{Entropy over the next character (left) and PMI (right) at word boundaries (blue), compared to all positions (red). }\label{fig:boundaries-entropy}
 \end{figure}
 
 
-
-%Use only one of the low-parameter-count methods, compare to Bayes
-%although it's not entirely fair (clarify that). (report in text or
-%footnote that, when training on the hidden state, we get super-high
-%accuracy, indicating that the information is there).
-%
-%LSTM vs RNN vs Bayes vs n-gram baseline (collect transition
-%probabilities across fixed n-gram windows, optimize threshold on
-%validation data).
-%
-%Results could be summarized as in Table \ref{tab:segmentation-results}.
-%
-%How reliable is this signal?
-
-
-How reliable are such statistical cues?
+How reliable are these statistical cues, when computed by the CNLM?
 We constructed a logistic regression predicting whether a character was the first one of a word or not, based on the following predictors:
 (1) \emph{log-probability} of the character given prior context, (2) \emph{entropy} of the distribution over the character given prior context, (3) \emph{pmi of left and right contexts}, that is, the total likelihood of the next 20 characters, minus the unconditional likelihood estimated by starting the CNLM at the current position.
-The rationale of (3) is that it measures the pointwise mutual information, and thus the statistical association, between the subsequent characters and the prior context, which we hypothesize will be higher inside words.
+%The rationale of (3) is that it measures the pointwise mutual information, and thus the statistical association, between the subsequent characters and the prior context, which we hypothesize will be higher inside words.
 %It is also the transition probability for the next characters
 %(3) can also be interpreted as the result of normalizi transition probability
 We collected these quantities for each position and for the preceding and following three characters.
 In total, the classifier has 21 coefficients.
-We also conducted the same experiment with a character-level 8-gram model estimated on the training set.
-
-The goal of this experiment is not to construct a word segmentation system, but to evaluate how strongly the CNLM's probabilities are indicative of word boundaries.
+We also conducted the same experiment with a character-level 8-gram model estimated on the training set, closer to the setup of earlier non-neural work.
 
 
 \begin{table*}[t]
@@ -71,15 +54,18 @@ The goal of this experiment is not to construct a word segmentation system, but 
 %P 59.85 R 53.75 F 56.63 English
 
 
-Results are shown in Figure~\ref{tab:segmentation-results}.
 For each language model and language, we compute how many of the extracted tokens were correct (precision) and how many of the actual tokens were found by the classifier (recall), together with F1.
-Ablation shows that the entropy is most predictive, reaching an F1 of 56.63 (English), 48.08 (German), 55.08 (Italian) alone.
+The goal of this experiment is not to construct a new word segmentation system, but to evaluate how strongly the CNLM's probabilities are indicative of word boundaries.
+
+Results are shown in Figure~\ref{tab:segmentation-results}, showing that the CNLM-based classifiers robustly segment more than half of the tokens correctly, and do considerably better than the character 8-gram model.
+Ablation shows that entropy is most predictive, reaching an F1 of 56.63 (English), 48.08 (German), 55.08 (Italian) alone.
 Surprisal reaches 28.08 (English), 22.4 (German), 22.38 (Italian); PMI reaches 33.69 (English), 24.61 (German), 25.34 (Italian).
 %Setting N to other values shows that larger values of N increase performance (N =10: 62.45, N=20: 63.24).
 
 How does the LSTM CNLM compare to unsupervised word segmentation models?
-Running Bayesian methods on the Wikipedia dumps is infeasible; thus we also created a CNLM on the Brent corpus (CITE).
-To compare with unsupervised word segmentation models, we repeated our experiment on the Brent corpus, using 90 \% to train our language model, 5 \% to fit the logistic regression, and 5 \% to evaluate word segmentation.
+We compare to the Bayesian bigram model of \cite{goldwater-bayesian-2009}, an elegant model using a hierarchical Dirichlet process.
+Running Bayesian methods on the Wikipedia dumps is computationally infeasible; thus we also created a CNLM on the Brent corpus \cite{brent-efficient-1999} of child-directed speech.
+We used 90 \% to train our language model, 5 \% to fit the logistic regression, and 5 \% to evaluate word segmentation.
 (This compares with the Bayesian models that train and evaluate on the full dataset, but incorporate no word boundary information in their training signal).
 
 \begin{table*}[t]
@@ -89,15 +75,15 @@ To compare with unsupervised word segmentation models, we repeated our experimen
       CNLM & 0.75/0.76/0.75 & 0.41/0.61/0.49 & 0.91/0.90/0.90 \\
      log-probability & 0.453/0.510/0.48 \\
      entropy & 0.504/0.533/0.518 \\
-     pmi & 0.708/0.729/0.718 \\ \hline
-	    (CITE Goldwater 2006) & 0.740/0.794 & 0.679/0.589
+     PMI & 0.708/0.729/0.718 \\ \hline
+	    \cite{goldwater-bayesian-2009} & 0.752/0.696/0.723 & 0.635/0.552/0.591 & 0.903/0.808/0.852
     \end{tabular}
   \end{center}
 	\caption{\label{tab:segmentation-results-brent} Word segmentation results on the Brent corpus for our model, for the three individual predictors, and the Bayesian model of (CITE).}
 \end{table*}
 
 Results in Table~\ref{tab:segmentation-results-brent} show that the performance is broadly comparable to that of a sophisticated Bayesian segmentation method.
-In contrast to the Wikipedia experiments, pmi emerges as the most important predictor on this dataset.
+In contrast to the Wikipedia experiments, PMI emerges as the most important predictor on this dataset.
 
 Unlike our method, the Bayesian method is fully unsupervised, but it has a built-in bias towards a discrete lexicon with a power-law frequency distribution.
 Note that, unlike supervised word segmentation methods, our classifier does not have access to the character strings directly; instead, it evaluates how strongly quantities computed by the CNLM \emph{correlate} with word boundaries.
@@ -135,18 +121,18 @@ unreasonably segmented out of compounds. It's hard, on the other hand,
 to find a linguistically sound motivation for the 8 remaining top
 oversegmentations (\emph{la, le, ma, na, ra, ro, se, ta}).
 
-We hypothesized that the same might be true for hierarchical syntactic structure.
+We hypothesized that similar statistical correlates exist for hierarchical syntactic structure.
 We created constituency trees for the German validation set using the Berkeley Parser~\ref{petrov2007improved}.
 For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
 This number is zero if both characters belong to the same word.
 
-Figure~\ref{fig:syntax-depth} plots MI by height.
+Figure~\ref{fig:syntax-depth} plots PMI by hierarchical ditance.
 The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI.
 This illustrates how it is useful for segmentation knowledge to be implicit, as the model ``knows'' about different kinds of boundaries in a continuous manner.
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
-\caption{PMIs by syntactic depth.}\label{fig:syntax-depth}
+\caption{PMIs by syntactic hierarchical distance.}\label{fig:syntax-depth}
 \end{figure}
 
 

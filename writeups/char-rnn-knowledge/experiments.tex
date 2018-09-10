@@ -8,10 +8,11 @@
 
 We conducted agglomerative clustering of character embeddings in the output layer.
 We found that, in all three languages, the highest-level clusters separated characters into consonants, vowels, numerals, punctuation, and various non-phonetic or rare characters.
-In Figure~\ref{fig:char-clustering}, we show a clustering of English character embeddings restricted to alphabetic characters.
+In Figure~\ref{fig:char-clustering}, we show a clustering of German character embeddings restricted to alphabetic characters.
 The top-level split partitions characters into vowels and consonants.
 %Parts of the finer clustering can be phonologically motivated, e.g., the liquids r, l form a cluster
-%consonant and vowel clusters each can, to a large extent, be phonologically motivated
+Consonant and vowel clusters each can, to a large extent, be phonologically motivated, though not along a single consistent dimensions:
+(TODO describe)
 %
 %Within the vowel cluster: in German, vowels and their fronted umlauts together (understandable as a consequence of morphological alternations), also e/i 
 %
@@ -20,10 +21,10 @@ The top-level split partitions characters into vowels and consonants.
 %
 
 \begin{figure}
-%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.png}
-\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-english-nospaces-bptt-282506230.png}
-	%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-italian-nospaces-bptt-855947412.png}
-\caption{Clustering of English character embeddings (alphabetic characters only)}\label{fig:char-clustering}
+\includegraphics[width=0.50\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.pdf}
+%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-english-nospaces-bptt-282506230.pdf}
+	%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-italian-nospaces-bptt-855947412.pdf}
+\caption{Clustering of German character embeddings (alphabetic characters only)}\label{fig:char-clustering}
 \end{figure}
 
 
@@ -69,43 +70,26 @@ Note that the model makes these phonotactic generalizations entirely on the basi
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{ll|cc}
-      \multicolumn{2}{c}{\emph{bigrams}}&\emph{LSTM}&\emph{RNN}\\
+	  \begin{tabular}{p{0.2cm}p{0.2cm}|p{0.6cm}p{0.6cm}||p{0.2cm}p{0.2cm}|p{0.99cm}p{0.8cm}}
+	    \multicolumn{4}{c||}{\emph{German}}   &       \multicolumn{4}{c}{\emph{Italian}}\\      \hline
+	    \multicolumn{2}{c}{\emph{}}&\emph{LSTM}&\emph{RNN} & \multicolumn{2}{c}{\emph{}}&  \emph{LSTM}&\emph{RNN}\\      \hline
+                     bu &  bt &  \textbf{ 4.6} &  0.22             &  bu & bd & \textbf{ 1.001} & 6e-5 \\            
+                     do &  dd &  \textbf{ 1.9} &  0.05             &  du & dt & \textbf{ 1.3} & 0.008 \\             
+                     fu &  ft &  \textbf{ 6.5} &  0.03             &  fu & ft & \textbf{ 30.5} & 0.01 \\             
+                     po &  pt &  \textbf{ 6.4} &  0.10             &  pu & pt & \textbf{ 6.8} & 0.008 \\             
+                     tu &  tt &  \textbf{ 5.4} &  0.02             &  tu & td &  0.2 & 3e-5 \\                       
+		     zu &  zt &  \textbf{ 2.4} &  0.17             &  vu & vd & \textbf{ 2.0} & 2e-5 \\              \cline{1-4}
+                     bl &  bd &   0.8          & 0.18              &  zu & zt & \textbf{ 55.7} & 0.01 \\              \cline{5-8} 
+                     fl &  fd &  \textbf{ 2.1} & 0.82              &  br & bt & \textbf{ 1.001}  &  0.006           \\ 
+                     fr &  fn &  \textbf{ 2.7} & 0.10              &  dr & dt & \textbf{ 2.5} & 0.4 \\               
+                     kl &  kt &  \textbf{ 3.8} & 0.10              &  fr & ft & \textbf{ 2.9} & 0.001 \\             
+                     pl &  pt &  \textbf{ 2.5} & 0.86              &  pr & pt & \textbf{ 5.0} & 0.008 \\              \hline
+	    \multicolumn{2}{c|}{AM}      & \textbf{3.6} & 0.24     & 	    \multicolumn{2}{c|}{AM}   & \textbf{10.7}  & 0.041          \\
+	    \multicolumn{2}{c|}{GM} & \textbf{3.0} & 0.13          & 	    \multicolumn{2}{c|}{GM}   & \textbf{3.2} & 0.0021           \\
       \hline
-      \multicolumn{4}{c}{\emph{German}}\\
-      \hline
-           bu &  bt &  \textbf{ 4.6} &  0.22     \\
-           do &  dd &  \textbf{ 1.9} &  0.05     \\
-           fu &  ft &  \textbf{ 6.5} &  0.03     \\
-           po &  pt &  \textbf{ 6.4} &  0.10     \\
-           tu &  tt &  \textbf{ 5.4} &  0.02     \\
-           zu &  zt &  \textbf{ 2.4} &  0.17     \\ \hline
-           bl &  bd &   0.8          & 0.18       \\
-           fl &  fd &  \textbf{ 2.1} & 0.82      \\
-           fr &  fn &  \textbf{ 2.7} & 0.10      \\
-           kl &  kt &  \textbf{ 3.8} & 0.10      \\
-           pl &  pt &  \textbf{ 2.5} & 0.86      \\
-	    \multicolumn{2}{l|}{Ar. Mean}      & \textbf{3.6} & 0.24 \\
-	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.0} & 0.13 \\
-      \hline
-      \multicolumn{4}{c}{\emph{Italian}}\\
-      \hline
-	    bu & bd & \textbf{ 1.001} & 6e-5 \\
-	    du & dt & \textbf{ 1.3} & 0.008 \\
-	    fu & ft & \textbf{ 30.5} & 0.01 \\
-	    pu & pt & \textbf{ 6.8} & 0.008 \\
-	    tu & td &  0.2 & 3e-5 \\
-	    vu & vd & \textbf{ 2.0} & 2e-5 \\
-	    zu & zt & \textbf{ 55.7} & 0.01 \\ \hline
-	    br & bt & \textbf{ 1.001}  &  0.006 \\
-	    dr & dt & \textbf{ 2.5} & 0.4 \\
-	    fr & ft & \textbf{ 2.9} & 0.001 \\
-	    pr & pt & \textbf{ 5.0} & 0.008 \\
-	    \multicolumn{2}{l|}{Ar. Mean} & \textbf{10.7}  & 0.041  \\
-	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.2} & 0.0021 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams, with arithmetic and geometric means. Values $>1$ in bold.}
+	\caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams, with arithmetic (AM) and geometric (GM) means. Values $>1$ in bold.}
 \end{table}
 
 \input{segmentation}
@@ -143,7 +127,7 @@ Results were qualitatively identical in Italian.
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l}
-      \multicolumn{1}{c}{}&\emph{German}&\emph{Italian}\\
+   &\emph{German}&\emph{Italian}\\
       \hline
       LSTM & 89.0 & 94.0 \\
       RNN & 82.0 & 91.9 \\
@@ -189,8 +173,7 @@ Results are summarized in Table \ref{tab:number-results}.
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{training plurals n, s, e}&\emph{-r}&\emph{Umlaut}\\
-      \hline
+      &\emph{-n, -s, -e}&\emph{-r}&\emph{Umlaut}\\      \hline
       LSTM& 82.1/68.0/83.7  & \textbf{88.2} & 52.8 \\
       RNN& 77.6/60.0/73.4 & 81.3 & 53.3\\
       Autoencoder& 73.2/54.5/64.4 & 73.8 & 59.2\\
@@ -273,7 +256,7 @@ The exclusion of OOVs and thus limiting experiments on word-level models to freq
 \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
 
-\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
+\centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 \caption{Accuracy on the Gender Agreement task as a function of the number of intervening elements, for masculine, feminine, and neuter nouns, and across all three classes.}\label{fig:gender}
 \end{figure*}
 
@@ -298,7 +281,7 @@ Again, restricting to words that are in the word-level vocabulary did not change
 \includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
 \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
 
-\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
+\centering\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
 
 \includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 	\caption{Accuracy on the Case Agreement task as a function of the number of intervening elements, for dative and genitive phrases (top), and across the two cases (bottom).}\label{fig:case}

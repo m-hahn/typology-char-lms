@@ -19,6 +19,11 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
+matplotlib.rc('xtick', labelsize=15) 
+matplotlib.rc('ytick', labelsize=15) 
+
+
+
 for gender, genderName in zip(range(3), ["Accuracy", "Control", "Ratio"]):
   for name, acc in zip(names, accs):
    plt.plot(range(0, 4), [x[gender] for x in acc], label=name, linewidth=4.0)
@@ -26,7 +31,7 @@ for gender, genderName in zip(range(3), ["Accuracy", "Control", "Ratio"]):
   plt.legend()
   plt.ylim((0.2, 1.0))
   plt.show()
-  plt.savefig("german-prep-"+genderName+".pdf")
+  plt.savefig("german-prep-"+genderName+".pdf", bbox_inches='tight')
   plt.close()
 
 
@@ -37,7 +42,7 @@ plt.xticks(range(0,4))
 #plt.legend()
 plt.ylim((0.2, 1.0))
 plt.show()
-plt.savefig("german-prep-with-control.pdf")
+plt.savefig("german-prep-with-control.pdf", bbox_inches='tight')
 plt.close()
 
 

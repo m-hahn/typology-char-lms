@@ -157,7 +157,7 @@ Results were qualitatively identical in Italian.
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{figures/german_pos_nouns_verbs.png}
-	\caption{POS accuracy as a function of training examples for the LSTM (blue) and the autoencoder (orange) in German.}\label{fig:pos-induction}
+	\caption{POS accuracy as a function of training examples.}\label{fig:pos-induction}
 \end{figure}
 
 
@@ -272,6 +272,8 @@ The exclusion of OOVs and thus limiting experiments on word-level models to freq
 \includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
+
+\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 \caption{Accuracy on the Gender Agreement task as a function of the number of intervening elements, for masculine, feminine, and neuter nouns, and across all three classes.}\label{fig:gender}
 \end{figure*}
 
@@ -297,6 +299,8 @@ Again, restricting to words that are in the word-level vocabulary did not change
 \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
 
 \includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
+
+\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 	\caption{Accuracy on the Case Agreement task as a function of the number of intervening elements, for dative and genitive phrases (top), and across the two cases (bottom).}\label{fig:case}
 \end{figure}
 
@@ -326,6 +330,8 @@ For the n-gram count model, we only counted the occurrences of the prepositional
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
+
+\includegraphics[width=0.48\textwidth]{figures/german-legend.pdf}
 \caption{Accuracy on the Subcategorization task as a function of the number of intervening elements. For eavh model, the dashed line indicates accuracy on the control stimuli that do not contain the preposition.}\label{fig:prep}
 \end{figure}
 
@@ -424,7 +430,7 @@ Stimuli had the form
 Selection of stimuli was  as before, but  we took a 500-occurrences threshold, as feminine plurals are less common.
 Further, we manually removed adjectives that did not combine well semantically with the adverbs under consideration (pi{\`u}, meno, tanto).
 
-Results are shown in the second line in Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, while the RNN still performs strongly above chance.
+Results are shown in the third line in Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, while the RNN still performs strongly above chance.
 
 
 
@@ -454,7 +460,7 @@ We both consider a fresh model trained on that data, and initializing it with th
 
 Results are shown in Figure~\ref{tab:msr-completion-results}.
 The models trained on Wikipedia perform poorly but above chance, reflecting the domain mismatch.
-When trained on data from the appropriate domain, the LSTM CNLM outperforms many previously reported results from word-level neural models, and approaches the best published results.
+When trained on data from the appropriate domain, the LSTM CNLM outperforms many previously reported results from word-level neural models. %, and approaches the best published results.
 %, held by approaches developed for the completion task \cite{woods2016exploiting}.
 % The best results I could find, https://github.com/ctr4si/sentence-completion, are much better than the best peer-reviewed published ones
 The vanilla RNN is not successful even when trained on the in-domain data, contrasting with \emph{word}-based vanilla RNNs, whose performance, while below that of LSTMs, is much stronger.
@@ -467,7 +473,7 @@ This experiment shows that a CNLM, trained without word boundaries, learns lexic
       \multicolumn{1}{c}{}& Model \\
 LSTM CNLM	    &      34.1/59.0/59.2 \\
 	    RNN CNLM &     24.3/24.0/27.1 \\
-	    Word LSTM & TODO \\ \hline
+	    Word LSTM & 37.1/.../... \\ \hline
 	    Random & 20 \\
 	    KN5   & 40.0 \\
             Word RNN & 45.0 \\
@@ -475,6 +481,7 @@ LSTM CNLM	    &      34.1/59.0/59.2 \\
 Skipgram + RNNs  & 58.9 \\
 LdTreeLSTM  & 60.67 \\
             \citet{woods2016exploiting} &  61.44 \\
+\citet{melamud2016context2vec} & 65.1 \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. KN5 is from \cite{Mikolov:2012}, Word LSTM and LdTreeLSTM are from\cite{zhang2016top}, Skipgram+RNNs from \cite{Mikolov:etal:2013b}.}

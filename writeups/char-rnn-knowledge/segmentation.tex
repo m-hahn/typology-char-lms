@@ -10,8 +10,10 @@ In accordance with prior work, higher entropy and lower PMI correlate with bound
 
 
 \begin{figure}
-\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-german.png}
-\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-pmis-german.png}
+	\begin{center}
+\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-entropies-english.pdf}
+\includegraphics[width=0.22\textwidth]{figures/segmentation-profile-flattened-pmis-english.pdf}
+	\end{center}
 	\caption{Entropy over the next character (left) and PMI between left and right contexts (right) around word boundaries (blue); the x-axis indicates position relative to a word boundary. The red line indicates the overall average of the quantity. }\label{fig:boundaries-entropy}
 \end{figure}
 
@@ -127,13 +129,25 @@ We created constituency trees for the German validation set using the Berkeley P
 For each character in the data, we counted its hierarchical distance from the preceding character, operationalized as the number of intervening closing and opening brackets.
 This number is zero if and only if both characters belong to the same word.
 
-Figure~\ref{fig:syntax-depth} plots PMI by hierarchical ditance.
+Figure~\ref{fig:syntax-depth} plots PMI by hierarchical distance, for all distances for which at least 1000 datapoints occurred in the dataset.
 The plot shows that longer hierarchical distance between neighboring characters corresponds to lower average MI, generalizing the finding for word boundaries.
 This illustrates how it is useful for segmentation knowledge to be implicit, as the model ``knows'' about different kinds of boundaries in a continuous manner.
 
 \begin{figure}
-\includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights.png}
-\caption{PMI between left and right contexts, estimated by the CNLM, by syntactic hierarchical distance between subsequent characters.}\label{fig:syntax-depth}
+\includegraphics[width=0.48\textwidth]{figures/segmentation-profile-pmis-german-all-heights-ci.pdf}
+\caption{PMI between left and right contexts, estimated by the CNLM, by syntactic hierarchical distance between subsequent characters, and bootstrapped 95 \% confidence intervals.}\label{fig:syntax-depth}
 \end{figure}
+
+
+
+%687112
+%73757
+%46716
+%22847
+%7896
+%2587
+%827
+%234
+%80
 
 

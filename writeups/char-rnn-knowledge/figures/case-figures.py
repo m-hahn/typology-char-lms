@@ -28,7 +28,7 @@ for gender, genderName in zip(range(2), ["Dative", "Genitive"]):
   for name, acc in zip(names, accs):
    plt.plot(range(0, 4), [x[gender] for x in acc], label=name, linewidth=4.0)
   plt.xticks(range(0,4))
-  plt.legend()
+  #plt.legend()
   plt.show()
   plt.savefig("german-case-"+genderName+".pdf")
   plt.close()
@@ -37,7 +37,7 @@ for gender, genderName in zip(range(2), ["Dative", "Genitive"]):
 for name, acc in zip(names, accs):
  plt.plot(range(0, 4), [sum(x)/2 for x in acc], label=name, linewidth=4.0)
 plt.xticks(range(0,4))
-plt.legend()
+#plt.legend()
 plt.show()
 plt.savefig("german-case-total.pdf")
 plt.close()

@@ -13,7 +13,7 @@ ax = fig.add_subplot(111)
 lines = ax.plot(range(2), range(2), range(2), range(2), range(2), range(2), range(2), range(2))
 fig_legend.legend(lines, names, loc='center', frameon=False, ncol=4)
 plt.show()
-plt.savefig("german-legend.pdf")
+plt.savefig("german-legend.pdf", bbox_inches='tight')
 plt.close()
 
 

@@ -19,8 +19,8 @@ We terminated training after 72 hours; none of the models had overfitted, as mea
 Performance on the test partitions is shown in Table~\ref{tab:lm-results}.
 Direct comparison with the state-of-the-art in character-based language modeling is hindered by the fact that we train on text without whitespace.
 The best models of \cite{merity2018analysis} achieved 1.232 BPC on enwiki8 \cite{hutter2018}, a dataset also derived from English Wikipedia. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
-On Europarl data, \cite{cotterell2018all} report 0.85 for English, 0.9 for German, and 0.82 for Italian.
-Our BPC values are higher, but this is expected given that we do not provide whitespace to the model: Whitespace is both relatively easy to predict, and it makes predicting other characters easier.
+%On Europarl data, \cite{cotterell2018all} report 0.85 for English, 0.9 for German, and 0.82 for Italian. % I strongly suspect that their numbers are in nats, not bits, even though they call it BPC
+Our BPC values are higher, but this is expected given that we do not provide whitespace to the model: Whitespace is both relatively easy to predict, and it makes predicting other characters easier.\footnote{Refitting our models to data with whitespace, without retuning hyperparameters, yields ....}
 
 \begin{table}[t]
   \begin{center}

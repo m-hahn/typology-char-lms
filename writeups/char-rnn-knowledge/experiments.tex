@@ -8,10 +8,11 @@
 
 We conducted agglomerative clustering of character embeddings in the output layer.
 We found that, in all three languages, the highest-level clusters separated characters into consonants, vowels, numerals, punctuation, and various non-phonetic or rare characters.
-In Figure~\ref{fig:char-clustering}, we show a clustering of English character embeddings restricted to alphabetic characters.
+In Figure~\ref{fig:char-clustering}, we show a clustering of German character embeddings restricted to alphabetic characters.
 The top-level split partitions characters into vowels and consonants.
 %Parts of the finer clustering can be phonologically motivated, e.g., the liquids r, l form a cluster
-%consonant and vowel clusters each can, to a large extent, be phonologically motivated
+Consonant and vowel clusters each can, to a large extent, be phonologically motivated, though not along a single consistent dimensions:
+(TODO describe)
 %
 %Within the vowel cluster: in German, vowels and their fronted umlauts together (understandable as a consequence of morphological alternations), also e/i 
 %
@@ -20,10 +21,10 @@ The top-level split partitions characters into vowels and consonants.
 %
 
 \begin{figure}
-%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.png}
-\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-english-nospaces-bptt-282506230.png}
-	%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-italian-nospaces-bptt-855947412.png}
-\caption{Clustering of English character embeddings (alphabetic characters only)}\label{fig:char-clustering}
+\includegraphics[width=0.50\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-german-nospaces-bptt-910515909.pdf}
+%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-english-nospaces-bptt-282506230.pdf}
+	%\includegraphics[width=0.48\textwidth]{figures/char-emb-clustering-output_output-phonetic-wiki-italian-nospaces-bptt-855947412.pdf}
+\caption{Clustering of German character embeddings (alphabetic characters only)}\label{fig:char-clustering}
 \end{figure}
 
 
@@ -69,43 +70,26 @@ Note that the model makes these phonotactic generalizations entirely on the basi
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{ll|cc}
-      \multicolumn{2}{c}{\emph{bigrams}}&\emph{LSTM}&\emph{RNN}\\
+	  \begin{tabular}{p{0.2cm}p{0.2cm}|p{0.6cm}p{0.6cm}||p{0.2cm}p{0.2cm}|p{0.99cm}p{0.8cm}}
+	    \multicolumn{4}{c||}{\emph{German}}   &       \multicolumn{4}{c}{\emph{Italian}}\\      \hline
+	    \multicolumn{2}{c}{\emph{}}&\emph{LSTM}&\emph{RNN} & \multicolumn{2}{c}{\emph{}}&  \emph{LSTM}&\emph{RNN}\\      \hline
+                     bu &  bt &  \textbf{ 4.6} &  0.22             &  bu & bd & \textbf{ 1.001} & 6e-5 \\            
+                     do &  dd &  \textbf{ 1.9} &  0.05             &  du & dt & \textbf{ 1.3} & 0.008 \\             
+                     fu &  ft &  \textbf{ 6.5} &  0.03             &  fu & ft & \textbf{ 30.5} & 0.01 \\             
+                     po &  pt &  \textbf{ 6.4} &  0.10             &  pu & pt & \textbf{ 6.8} & 0.008 \\             
+                     tu &  tt &  \textbf{ 5.4} &  0.02             &  tu & td &  0.2 & 3e-5 \\                       
+		     zu &  zt &  \textbf{ 2.4} &  0.17             &  vu & vd & \textbf{ 2.0} & 2e-5 \\              \cline{1-4}
+                     bl &  bd &   0.8          & 0.18              &  zu & zt & \textbf{ 55.7} & 0.01 \\              \cline{5-8} 
+                     fl &  fd &  \textbf{ 2.1} & 0.82              &  br & bt & \textbf{ 1.001}  &  0.006           \\ 
+                     fr &  fn &  \textbf{ 2.7} & 0.10              &  dr & dt & \textbf{ 2.5} & 0.4 \\               
+                     kl &  kt &  \textbf{ 3.8} & 0.10              &  fr & ft & \textbf{ 2.9} & 0.001 \\             
+                     pl &  pt &  \textbf{ 2.5} & 0.86              &  pr & pt & \textbf{ 5.0} & 0.008 \\              \hline
+	    \multicolumn{2}{c|}{AM}      & \textbf{3.6} & 0.24     & 	    \multicolumn{2}{c|}{AM}   & \textbf{10.7}  & 0.041          \\
+	    \multicolumn{2}{c|}{GM} & \textbf{3.0} & 0.13          & 	    \multicolumn{2}{c|}{GM}   & \textbf{3.2} & 0.0021           \\
       \hline
-      \multicolumn{4}{c}{\emph{German}}\\
-      \hline
-           bu &  bt &  \textbf{ 4.6} &  0.22     \\
-           do &  dd &  \textbf{ 1.9} &  0.05     \\
-           fu &  ft &  \textbf{ 6.5} &  0.03     \\
-           po &  pt &  \textbf{ 6.4} &  0.10     \\
-           tu &  tt &  \textbf{ 5.4} &  0.02     \\
-           zu &  zt &  \textbf{ 2.4} &  0.17     \\ \hline
-           bl &  bd &   0.8          & 0.18       \\
-           fl &  fd &  \textbf{ 2.1} & 0.82      \\
-           fr &  fn &  \textbf{ 2.7} & 0.10      \\
-           kl &  kt &  \textbf{ 3.8} & 0.10      \\
-           pl &  pt &  \textbf{ 2.5} & 0.86      \\
-	    \multicolumn{2}{l|}{Ar. Mean}      & \textbf{3.6} & 0.24 \\
-	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.0} & 0.13 \\
-      \hline
-      \multicolumn{4}{c}{\emph{Italian}}\\
-      \hline
-	    bu & bd & \textbf{ 1.001} & 6e-5 \\
-	    du & dt & \textbf{ 1.3} & 0.008 \\
-	    fu & ft & \textbf{ 30.5} & 0.01 \\
-	    pu & pt & \textbf{ 6.8} & 0.008 \\
-	    tu & td &  0.2 & 3e-5 \\
-	    vu & vd & \textbf{ 2.0} & 2e-5 \\
-	    zu & zt & \textbf{ 55.7} & 0.01 \\ \hline
-	    br & bt & \textbf{ 1.001}  &  0.006 \\
-	    dr & dt & \textbf{ 2.5} & 0.4 \\
-	    fr & ft & \textbf{ 2.9} & 0.001 \\
-	    pr & pt & \textbf{ 5.0} & 0.008 \\
-	    \multicolumn{2}{l|}{Ar. Mean} & \textbf{10.7}  & 0.041  \\
-	    \multicolumn{2}{l|}{Geom. Mean} & \textbf{3.2} & 0.0021 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams, with arithmetic and geometric means. Values $>1$ in bold.}
+	\caption{\label{tab:phonotactics-results} Likelihood ratio between acceptable and unacceptable bigrams, with arithmetic (AM) and geometric (GM) means. Values $>1$ in bold.}
 \end{table}
 
 \input{segmentation}
@@ -143,7 +127,7 @@ Results were qualitatively identical in Italian.
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l}
-      \multicolumn{1}{c}{}&\emph{German}&\emph{Italian}\\
+   &\emph{German}&\emph{Italian}\\
       \hline
       LSTM & 89.0 & 94.0 \\
       RNN & 82.0 & 91.9 \\
@@ -156,7 +140,7 @@ Results were qualitatively identical in Italian.
 
 
 \begin{figure}
-\includegraphics[width=0.48\textwidth]{figures/german_pos_nouns_verbs.png}
+\includegraphics[width=0.48\textwidth]{figures/german_pos_nouns_verbs.pdf}
 	\caption{POS accuracy as a function of training examples.}\label{fig:pos-induction}
 \end{figure}
 
@@ -189,8 +173,7 @@ Results are summarized in Table \ref{tab:number-results}.
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{training plurals n, s, e}&\emph{-r}&\emph{Umlaut}\\
-      \hline
+      &\emph{-n, -s, -e}&\emph{-r}&\emph{Umlaut}\\      \hline
       LSTM& 82.1/68.0/83.7  & \textbf{88.2} & 52.8 \\
       RNN& 77.6/60.0/73.4 & 81.3 & 53.3\\
       Autoencoder& 73.2/54.5/64.4 & 73.8 & 59.2\\
@@ -220,6 +203,9 @@ We again focus on German and Italian due to the richness of inflectional morphol
 Constructions will be language-specific, so we discuss the languages separately. %German and Italian separately (not much in English).
 
 %As usual, specifics of training etc that depart from general setup.
+
+
+
 
 \paragraph{German} We consider 4 constructions:
 \begin{inparaenum}[i)]
@@ -273,7 +259,7 @@ The exclusion of OOVs and thus limiting experiments on word-level models to freq
 \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
 \includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
 
-\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
+\centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 \caption{Accuracy on the Gender Agreement task as a function of the number of intervening elements, for masculine, feminine, and neuter nouns, and across all three classes.}\label{fig:gender}
 \end{figure*}
 
@@ -298,7 +284,7 @@ Again, restricting to words that are in the word-level vocabulary did not change
 \includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
 \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
 
-\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
+\centering\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
 
 \includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 	\caption{Accuracy on the Case Agreement task as a function of the number of intervening elements, for dative and genitive phrases (top), and across the two cases (bottom).}\label{fig:case}
@@ -341,10 +327,21 @@ The CNLM slightly outperforms the word-level language model, even though the CNL
 Neither model shows accuracy decay as the number of adverbs increases.
 As before, the n-gram model drops to chance as adverbs intervene, while the RNN CNLM starts with low accuracy that decays below chance.
 
+
+
+%Results are shown in Table~\ref{tab:ital-agr-results}.
+%The word LSTM shows the highest overall performance, closely followed by the LSTM CNLM.
+%The RNN performs well on adjective gender, and considerably worse than the CNLM on the other tasks.
+%For the CNLMs, the most challenging task was article-noun gender agreement.
+%Discussion case-by-case, including how we control for n-gram frequency
+%and length.
+%Results table with a row for each pattern and a column for each model.
+
+
 \paragraph{Italian} We consider further constructions from Italian that confirm the results we got in German.
-Here, we focus in a  subset of Italian morphology where gender and number are explicitly and systematically
+Here, we focus on a  subset of Italian morphology where gender and number are explicitly and systematically
 encoded while allowing for tightly controlled comparison of
-same-length strings, limited to stimuli unseen in training corpus.
+same-length strings, limited to stimuli unseen in the training corpus.
 \begin{inparaenum}[i)]
 \item article-noun gender agreement with material in the middle,
 \item article-adjective gender agreement, with an adverb in the middle,
@@ -354,7 +351,7 @@ same-length strings, limited to stimuli unseen in training corpus.
 \paragraph{Article-Noun Gender Agreement}
 %(1) eadj-aonoun:
 
-Similar to German, Italian articles agree with the noun in gender; however, while gender is often unpredictable in German, Italian has a productive system of forming masculine and feminine versions of nouns that differ in the final vowel (-o for masculine, -a for feminine).
+Similar to German, Italian articles agree with the noun in gender; however, while gender is often unpredictable in German, Italian has a productive system of forming masculine and feminine versions of nouns that differ in the final vowel (-\emph{o} for masculine, -\emph{a} for feminine).
 We construct stimuli of the form:
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
@@ -371,11 +368,11 @@ We construct stimuli of the form:
 Note that the intervening adjective, ending in -\emph{e}, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
 
 We constructed these stimuli such that none of the adjective-noun pairs appear in the training data, and all single words appear at least 100 times.
-Further, the nouns in -a and  -o have reasonably balanced frequency (neither form is twice more frequent than the other), or they are both frequent (appear at least 500 times)
+Further, the nouns in -\emph{a} and  -\emph{o} have reasonably balanced frequency (neither form is twice more frequent than the other), or they are both frequent (appear at least 500 times)
 As the prenominal adjectives are somewhat marked in Italian, we  we considered only -e adjectives that occur at least with 10 different nouns in the prenominal position.
 
 Results are shown in the first line in Table~\ref{tab:ital-agr-results}.
-The word LSTM shows the strongest performance, closely followd by the LST< CNLM.
+The word LSTM shows the strongest performance, closely followd by the LSTM CNLM.
 Even the RNN CNLM performs strongly above chance.
 
 \paragraph{Article-Adjective Gender Agreement}
@@ -383,9 +380,9 @@ We then created an experiment where an adverb intervened between an article and 
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
 		\begin{tabular}[t]{lllllll}
-	(a) & il & meno & \{ \underline{alieno}, aliena \} \\
+	a. & il & meno & \{ \underline{alieno}, aliena \} \\
    &  the & less & alien one  \\
-	(b) & la & meno & \{ alieno, \underline{aliena} \} \\
+	b. & la & meno & \{ alieno, \underline{aliena} \} \\
     &the & less & alien one \\
 \end{tabular}
 \end{enumerate}
@@ -400,18 +397,18 @@ Results are shown in the second line in Table~\ref{tab:ital-agr-results}; all th
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{l|l|l|l|l}
-	    & \multicolumn{2}{c|}{CNLM} & \multirow{2}{*}{Word LSTM}\\
-  &\emph{LSTM}&\emph{RNN}&\\ \hline
+    \begin{tabular}{l|ll|ll|ll}
+	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c}{\multirow{2}{*}{Word LSTM}}\\
+	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} &\\ \hline
 % eadj-aonoun
-	    Noun Gender & 97/90  & 84/73 & 99/96 \\
+	    Noun Gender & 97&90  & 84&73 & 99&96 \\
 %      adv-aoadj
-	    Adj. Gender & 99/100 & 100/97 & 98/100 \\
+	    Adj. Gender & 99&100 & 100&97 & 98&100 \\
 % adv-aeadj
-	    Adj. Number & 99/99 & 99/70 & 100/100 \\
+	    Adj. Number & 99&99 & 99&70 & 100&100 \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:ital-agr-results} Results for morphosyntactic tests in Italian}
+	\caption{\label{tab:ital-agr-results} Results for morphosyntactic tests in Italian. For each model and test, we show accuracy on the two types of stimuli (masculine/feminine for gender, singular/plural for number).}
 \end{table}
 
 \paragraph{Article-Adjective Number Agreement}
@@ -428,19 +425,13 @@ Stimuli had the form
 \end{enumerate}
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
 Selection of stimuli was  as before, but  we took a 500-occurrences threshold, as feminine plurals are less common.
-Further, we manually removed adjectives that did not combine well semantically with the adverbs under consideration (pi{\`u}, meno, tanto).
+Further, we manually removed adjectives that did not combine well semantically with the adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
 
 Results are shown in the third line in Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, while the RNN still performs strongly above chance.
 
 
 
-%Results are shown in Table~\ref{tab:ital-agr-results}.
-%The word LSTM shows the highest overall performance, closely followed by the LSTM CNLM.
-%The RNN performs well on adjective gender, and considerably worse than the CNLM on the other tasks.
-%For the CNLMs, the most challenging task was article-noun gender agreement.
-%Discussion case-by-case, including how we control for n-gram frequency
-%and length.
-%Results table with a row for each pattern and a column for each model.
+
 
 
 \subsection{Lexical semantics}

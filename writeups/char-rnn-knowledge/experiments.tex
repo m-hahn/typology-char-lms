@@ -83,14 +83,18 @@ stop or nasal.  % For each onset consonant and each of the two types, we
 Results are shown in Table \ref{tab:phonotactics-results} for all
 bigram pairs (acceptable: left, impossible: right).  The LSTM CNLM
 assigns higher probability to the acceptable bigrams in all but two
-cases.  Interestingly, the RNN CNLM, on the other hand, systematically
-prefers the impossible bigrams, presumably because they have higher
-unigram probability. This confirms that the LSTM CNLM has learnt a
-notion of phonological categories such as vowels and consonants, and
-phonotactic generalizations about them.  Note that the model makes
-these phonotactic generalizations entirely on the basis of
-distributional evidence, with no aid from perceptual or acrticulatory
-cues.
+cases.  This confirms that the LSTM CNLM has learnt a notion of
+phonological categories such as vowels and consonants, and phonotactic
+generalizations about them.  Note that the model makes these
+phonotactic generalizations entirely on the basis of distributional
+evidence, with no aid from perceptual or acrticulatory
+cues. Interestingly, the RNN CNLM systematically prefers the
+impossible bigrams, presumably because they have higher unigram
+probability. The dramatic difference is surprising, since the relevant
+generalizations pertain to adjacent symbols that either model should
+capture. Possibly, although the rules at hand are local, phonological
+categories are better learnt by a model that can extract
+generalizations from wider contexts.
 
 \begin{table}[t]
   \begin{center}

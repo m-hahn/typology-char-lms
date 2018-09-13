@@ -27,6 +27,7 @@ In the second condition, an adjective with the correct (nominative singular) cas
 Crucially, the ending of the adjective does not reveal the gender of the noun.
 In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective.
 These do not cue gender either.
+In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
 
 Besides the CNLMs and the word-level LSTM, we constructed an n-gram baseline that chooses the article that occurs most frequently before the phrase in the training data, making a random choice in case of ties (e.g., if no article was observed). Here and below, when running the word-level model, we excluded nouns that were out of its vocabulary, reducing in a slightly easier test for this rival model. However, running the CNLMs on this reduced set only led to slight improvements, that we do not report here. 
 
@@ -48,7 +49,7 @@ Gender, Case, Subcategorization
 \includegraphics[width=0.33\textwidth]{figures/german-prep-with-control.pdf}
 
 \centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
-\caption{(\textbf{Reduce to single figure, 1}) Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
+\caption{Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
 \end{figure*}
 
 
@@ -56,12 +57,29 @@ Gender, Case, Subcategorization
 To test the model's knowledge of case agreement between articles and
 nouns, we selected the two determiners \emph{dem} and \emph{des},
 which unambiguously indicate dative and genitive case, respectively
-(for masculine and neuter nouns). \textbf{Give one example.}  We selected all noun lemmas of the
+(for masculine and neuter nouns): %\textbf{Give one example.}
+\begin{enumerate}[label={(\arabic*)}]
+	\item \begin{tabular}[t]{lllllll}
+	\{\underline{dem}, des\}& sehr& roten& Baum \\
+	article & adverb & adjective & noun \\
+	the & very & red & tree
+\end{tabular}
+\item \begin{tabular}[t]{lllllll}
+	\{dem, \underline{des}\}& sehr& roten& Baums \\
+	article & adverb & adjective & noun \\
+	the & very & red & tree
+\end{tabular}
+
+\end{enumerate}
+
+
+We selected all noun lemmas of the
 appropriate genders from the Universal Dependencies, and extracted
 morphological paradigms from Wiktionary to obtain case-marked forms,
 retaining only nouns that unambiguously mark the two cases.  We created
 four conditions, varying the amount of intervening material, as in the
 gender agreement experiment.
+In each condition, there were 4509 stimuli.
 
 Results are shown in Figure~\ref{fig:case}.  Again, the word LSTM has
 the strongest overall performance, but the CNLM is competitive as more
@@ -96,7 +114,9 @@ is very regular.  We take all adjectives that occur at least 100 times
 in the training data, excluding those that end in -\emph{r}, as these
 often reflected lemmatization problems.
 
-We then select all sentences containing a \emph{mit} prepositional phrase in Universal Dependencies, subject to the constraints that (1) the object is not a pronoun (such objects often are relative or interrogative pronouns and cannot be replaced with a nominal object without sacrificing grammaticality), and (2) the object is a continuous phrase \textbf{(please explain the latter more clearly)}. For each sentence, we remove the prepositional phrase and replace it by a phrase of the form
+We then select all sentences containing a \emph{mit} prepositional phrase in Universal Dependencies, subject to the constraints that (1) the object is not a pronoun (such objects often are relative or interrogative pronouns and cannot be replaced with a nominal object without sacrificing grammaticality), and (2) the object is a continuous phrase, i.e., it is not interrupted by words that do not belong to it. %\textbf{(please explain the latter more clearly)}.
+We obtained 1629 such sentences.
+For each sentence, we remove the prepositional phrase and replace it by a phrase of the form
 \begin{enumerate}[label={(\arabic*)}]
 	\item \begin{tabular}[t]{lllllll}
 	mit & der & sehr& \{rote, \underline{roten}\} \\

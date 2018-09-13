@@ -1,5 +1,5 @@
 
-\subsubsection{Italian} \textbf{Also here, add data-set sizes.}
+\subsubsection{Italian} %\textbf{Also here, add data-set sizes.}
 \textbf{For the examples, you know the linguex packet, right?}
 \textbf{Given that you itemize by gender, can you add a baseline based
   on picking the most frequent variant of the noun/adjective?} We
@@ -12,7 +12,7 @@ n-gram model would be at chance level.
 \paragraph{Article-noun gender agreement}
 %(1) eadj-aonoun:
 
-Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of feminine and masculine nouns differing only in the final vowel vowel (-\emph{o} and -\emph{a}, respectively). We construct stimuli of the form:
+Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of feminine and masculine nouns differing only in the final vowel vowel (-\emph{o} and -\emph{a}, respectively). We construct pairs of stimuli of the form:
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
 		\begin{tabular}[t]{lllllll}
@@ -34,7 +34,8 @@ reasonably balanced in frequency (neither form is twice more frequent
 than the other), or both rather frequent (appear at least 500
 times). As the prenominal adjectives are somewhat marked, we only
 considered -\emph{e} adjectives that occur prenominally with at least
-10 distinct nouns in the training corpus. Here and below, stimuli
+10 distinct nouns in the training corpus. We obtained 15,005 pairs of stimuli.
+Here and below, stimuli
 where checked for strong semantic anomalies.
 
 Results are shown in the first line of
@@ -57,7 +58,7 @@ where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
 \emph{tanto} `so much'. We considered only adjectives that occurred 1K
 times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
 the most common class). We excluded all cases in which the
-adverb-adjective combination occurred in the training corpus. %
+adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli. %
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
 Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
 
@@ -90,7 +91,7 @@ Finally, we constructed a version of the last test that probed number agreement;
 \end{enumerate}
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
 Selection of stimuli was as above, but we used a 500-occurrences
-threshold, as feminine plurals are less common. %  Further, we manually
+threshold, as feminine plurals are less common, obtaining 99 pairs of stimuli. %  Further, we manually
 % removed adjectives that did not combine well semantically with the
 % adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
 Results are shown in the third line in Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, while the RNN still performs strongly above chance.

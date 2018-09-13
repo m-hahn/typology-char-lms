@@ -37,6 +37,7 @@ considered -\emph{e} adjectives that occur prenominally with at least
 10 distinct nouns in the training corpus. We obtained 15,005 pairs of stimuli.
 Here and below, stimuli
 where checked for strong semantic anomalies.
+In addition to the CNLMs and the Word NLM, we also constructed a frequency baseline that chooses the option with the more frequent article.
 
 Results are shown in the first line of
 Table~\ref{tab:ital-agr-results}.  The word LSTM shows the strongest
@@ -59,24 +60,25 @@ where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
 times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
 the most common class). We excluded all cases in which the
 adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli. %
+Here and in the next experiment, the frequency baseline chose the version with the more common adjective.
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
 Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
 
-\begin{table}[t]
+\begin{table*}[t]
   \begin{center}
-    \begin{tabular}{l|ll|ll|ll}
-	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c}{\multirow{2}{*}{WordNLM}}\\
-	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} &\\ \hline
+    \begin{tabular}{l|ll|ll|ll|ll}
+	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{2}{c}{\multirow{2}{*}{Frequency}}\\
+	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} & & & \\ \hline
 % eadj-aonoun
-	    Noun Gender & 97&90  & 84&73 & 99&96 \\
+	    Noun Gender & 96.6&89.6  & 84.4&73.9 & 99.1&95.6 & 100.0 & 0.0\\
 %      adv-aoadj
-	    Adj.~Gender & 99&100 & 100&97 & 98&100 \\
+	    Adj.~Gender & 98.9&100.0 & 100.0&97.8 & 98.9&100.0 & 55.7 & 44.3 \\
 % adv-aeadj
-	    Adj.~Number & 99&99 & 99&70 & 100&100 \\
+	    Adj.~Number & 99.0&99.0 & 99.0&70.0 & 100.0&100.0 & 86.7 & 13.3 \\
     \end{tabular}
   \end{center}
 	\caption{\label{tab:ital-agr-results} Italian agreement results. For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
-\end{table}
+\end{table*}
 
 \paragraph{Article-adjective number agreement}
 Finally, we constructed a version of the last test that probed number agreement; number marking is similarly very systematic in Italian, and for feminine forms (illustrated below) it's possible to compare same-length phrases:

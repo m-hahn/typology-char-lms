@@ -21,7 +21,7 @@ accWord = [[[0.77, 0.15, 0.08], [0.05, 0.92, 0.03], [0.11, 0.14, 0.74]],
 
 names = ["CNLM", "N-Grams", "RNN CNLM", "Word LSTM"]
 accs = [accLSTM, accNgram, accRNN, accWord]
-
+colors = ["blue", "orange", "green", "red"]
 
 import matplotlib
 matplotlib.use('agg')
@@ -29,25 +29,21 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-matplotlib.rc('xtick', labelsize=30) 
-matplotlib.rc('ytick', labelsize=30) 
+matplotlib.rc('xtick', labelsize=20) 
+matplotlib.rc('ytick', labelsize=20) 
 
 
 for gender, genderName in zip(range(3), ["m", "f", "n"]):
   for name, acc in zip(names, accs):
    plt.plot(range(0, 4), [x[gender][gender] for x in acc], label=name, linewidth=4.0)
   plt.xticks(range(0,4))
- # plt.legend()
-
   plt.show()
   plt.savefig("german-gender-"+genderName+".pdf", bbox_inches='tight')
   plt.close()
 
-for name, acc in zip(names, accs):
- plt.plot(range(0, 4), [sum([x[gender][gender] for gender in range(3)])/3 for x in acc], label=name, linewidth=4.0)
+for name, acc, color in zip(names, accs, colors):
+ plt.plot(range(0, 4), [sum([x[gender][gender] for gender in range(3)])/3 for x in acc], label=name, linewidth=4.0, color=color)
 plt.xticks(range(0,4))
-#plt.legend()
-
 plt.show()
 plt.savefig("german-gender-total.pdf", bbox_inches='tight')
 plt.close()

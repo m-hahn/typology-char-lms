@@ -19,8 +19,8 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-matplotlib.rc('xtick', labelsize=15) 
-matplotlib.rc('ytick', labelsize=15) 
+matplotlib.rc('xtick', labelsize=20) 
+matplotlib.rc('ytick', labelsize=20) 
 
 
 

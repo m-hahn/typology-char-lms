@@ -11,9 +11,9 @@ For word segmentation and word-based language models, we tokenized and tagged al
 For the vocabulary, we extracted the most frequent characters from
 each corpus, setting thresholds so as to ensure that all characters
 representing phonemes of the languages were included, resulting in vocabularies of 60 (English), 73 (German), and 59 (Italian) characters.
-%\textbf{Give  sizes for the 3 languages.}
 The vocabulary of the word-based models
 included the most frequent 50,000 words per corpus.
+
 
 
 For LSTM and RNN CNLMs, and for the word-level model, we specified a range of hyperparameter settings, and applied random search to find models that performed best on the validation set. \textbf{Report range of hyperparameters and best choices (possibly in appendix?).}
@@ -30,12 +30,15 @@ below the state of the art is expected. For example, the best model of
 \newcite{merity2018analysis} achieved 1.232 BPC on enwiki8
 \cite{hutter2018}, a dataset also derived from English
 Wikipedia. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
+\textbf{I think that the Cotterell et al numbers might actually not be in BPC but in nat per character. We should ask them.}
 On EuroParl data, \newcite{cotterell2018all} report 0.85 for English,
 0.9 for German, and 0.82 for Italian. Still, our English BPC is
 comparable, for example, to that reported by \newcite{Graves:2014} for
 his static character-level LSTM trained on space-delimited Wikipedia data,
 suggesting that we are working with reasonably high-performance language
-models. The perplexity of the word-level model might not be comparable to
+models.
+\footnote{Training our models on text with whitespace, without further hyperparameter tuning to adjust to that setting, resulted in cross-entropies of 0.91, 1.32 BPC (English), 0.89, 1.28 BPC (German), and 0.86, 1.24 BPC (Italian).}
+The perplexity of the word-level model might not be comparable to
 that of highly-optimized state-of-the-art architectures, but it is at the
 expected level for a well-tuned vanilla LSTM language model. For
 example, \newcite{Gulordava:etal:2018} report 51.9 perplexity for
@@ -62,7 +65,5 @@ size as ours.
   \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report cross-entropy and bits-per-character (BPC). For word-based models, we report cross-entropy and perplexity.}
 \end{table}
 
-\textbf{Maybe training/testing the best-hyperparameter English model
-  on wikipedia text with space?}
 
 

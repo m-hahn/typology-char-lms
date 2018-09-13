@@ -41,10 +41,14 @@ Note that this problem would not be mitigated by interpolation with or backoff t
 % \includegraphics[width=0.24\textwidth]{figures/german-gender-m.pdf}
 % \includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
 % \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
-\includegraphics[width=0.24\textwidth]{figures/german-gender-total.pdf}
+Gender, Case, Subcategorization
+
+\includegraphics[width=0.33\textwidth]{figures/german-gender-total.pdf}
+\includegraphics[width=0.33\textwidth]{figures/german-case-total.pdf}
+\includegraphics[width=0.33\textwidth]{figures/german-prep-with-control.pdf}
 
 \centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
-\caption{(\textbf{Reduce to single figure, 1}) Accuracy on the gender agreement task as a function of the number of intervening elements.}\label{fig:gender}
+\caption{(\textbf{Reduce to single figure, 1}) Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
 \end{figure*}
 
 
@@ -71,15 +75,15 @@ drops considerably.
 % This can be attributed to the higher baseline frequency of dative in German, suggesting that both word- and character-based networks are impacted by unigram frequencies as more words intervene.
 % This effect is far more pronounced for the RNN CNLM, explaining its overall decrease to chance level.
 % Again, restricting to words that are in the word-level vocabulary did not change the pattern of results.
-\begin{figure}
-% \includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
-% \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
-
-\centering\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
-
-\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
-	\caption{\textbf{(Reduce to single figure, 2)} Accuracy on the case agreement task as a function of the number of intervening elements.}\label{fig:case}
-\end{figure}
+%\begin{figure}
+%% \includegraphics[width=0.23\textwidth]{figures/german-case-Dative.pdf}
+%% \includegraphics[width=0.23\textwidth]{figures/german-case-Genitive.pdf} \\
+%
+%\centering\includegraphics[width=0.24\textwidth]{figures/german-case-total.pdf}
+%
+%\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
+%	\caption{\textbf{(Reduce to single figure, 2)} Accuracy on the case agreement task as a function of the number of intervening elements.}\label{fig:case}
+%\end{figure}
 
 \paragraph{Case subcategorization}
 German verbs and prepositions lexically specify the case appropriate
@@ -116,13 +120,13 @@ cannot explain success on the task. For the n-gram count model, we
 only counted the occurrences of the prepositional phrase, omitting the
 sentence environment.
 
-\begin{figure}
-\includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
-
-\includegraphics[width=0.48\textwidth]{figures/german-legend.pdf}
-\caption{\textbf{(Reduce to single figure, 3)} Accuracy on the subcategorization task as a function of the number of intervening elements. The dashed lines indicate accuracies on the control stimuli that do not contain the preposition.}\label{fig:prep}
-\end{figure}
-
+%\begin{figure}
+%\includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
+%
+%\includegraphics[width=0.48\textwidth]{figures/german-legend.pdf}
+%\caption{\textbf{(Reduce to single figure, 3)} Accuracy on the subcategorization task as a function of the number of intervening elements. The dashed lines indicate accuracies on the control stimuli that do not contain the preposition.}\label{fig:prep}
+%\end{figure}
+%
 Results are shown in Figure~\ref{fig:prep}. All models except the one
 based on n-gram counts outperform the accuracy achieved on the control
 stimuli that did not include the preposition, showing that their

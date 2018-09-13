@@ -1,18 +1,18 @@
 
-\subsubsection{Italian} We focus on a  subset of Italian morphology where gender and number are explicitly and systematically
-encoded while allowing for tightly controlled comparison of
-same-length strings, limited to stimuli unseen in the training corpus.
-\begin{inparaenum}[i)]
-\item article-noun gender agreement with material in the middle,
-\item article-adjective gender agreement, with an adverb in the middle,
-\item article-adjective number agreement, with an adverb in the middle.
-\end{inparaenum}
+\subsubsection{Italian} \textbf{Also here, add data-set sizes.}
+\textbf{For the examples, you know the linguex packet, right?}
+\textbf{Given that you itemize by gender, can you add a baseline based
+  on picking the most frequent variant of the noun/adjective?} We
+focus on a subset of Italian morphology where gender and number are
+explicitly and systematically encoded while allowing for tightly
+controlled comparison of same-length strings. We are able to extract
+enough stimuli that never occur in the training corpus, so that an
+n-gram model would be at chance level.
 
 \paragraph{Article-noun gender agreement}
 %(1) eadj-aonoun:
 
-Similar to German, Italian articles agree with the noun in gender; however, while gender is often unpredictable in German, Italian has a productive system of forming masculine and feminine versions of nouns that differ in the final vowel (-\emph{o} for masculine, -\emph{a} for feminine).
-We construct stimuli of the form:
+Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of feminine and masculine nouns differing only in the final vowel vowel (-\emph{o} and -\emph{a}, respectively). We construct stimuli of the form:
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
 		\begin{tabular}[t]{lllllll}
@@ -25,35 +25,41 @@ We construct stimuli of the form:
 \end{tabular}
 \end{enumerate}
 
-Note that the intervening adjective, ending in -\emph{e}, does not reveal the noun's gender, increasing the distance across which gender information has to be transported.
+The intervening adjective, ending in -\emph{e}, does not reveal the
+noun's gender, increasing the distance across which gender information
+has to be transported. We constructed the stimuli out of single words
+appearing at least 100 times in the training corpus. We required
+moreover that the \emph{-a} and \emph{-o} forms of a noun are
+reasonably balanced in frequency (neither form is twice more frequent
+than the other), or both rather frequent (appear at least 500
+times). As the prenominal adjectives are somewhat marked, we only
+considered -\emph{e} adjectives that occur prenominally with at least
+10 distinct nouns in the training corpus. Here and below, stimuli
+where checked for strong semantic anomalies.
 
-We constructed these stimuli such that none of the adjective-noun pairs appear in the training data, and all single words appear at least 100 times.
-Further, the nouns in -\emph{a} and  -\emph{o} have reasonably balanced frequency (neither form is twice more frequent than the other), or they are both frequent (appear at least 500 times)
-As the prenominal adjectives are somewhat marked in Italian, we  we considered only -e adjectives that occur at least with 10 different nouns in the prenominal position.
-
-Results are shown in the first line in Table~\ref{tab:ital-agr-results}.
-The word LSTM shows the strongest performance, closely followed by the LSTM CNLM.
-Even the RNN CNLM performs strongly above chance.
+Results are shown in the first line of
+Table~\ref{tab:ital-agr-results}.  The word LSTM shows the strongest
+performance, closely followed by the LSTM CNLM.  Even the RNN CNLM
+performs strongly above chance, but again lags behind the LSTM.
 
 \paragraph{Article-adjective gender agreement}
-We then created an experiment where an adverb intervened between an article and an adjective, both of which were marked for gender:
+We next consider agreement between articles and adjectives with an intervening an adverb:
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
 		\begin{tabular}[t]{lllllll}
 	a. & il & meno & \{ \underline{alieno}, aliena \} \\
-   &  the & less & alien one  \\
+   &  the (m.)& less & alien  \\
 	b. & la & meno & \{ alieno, \underline{aliena} \} \\
-    &the & less & alien one \\
+    &the (f.)& less & alien one \\
 \end{tabular}
 \end{enumerate}
-where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less', \emph{tanto} `so much'.
-We considered only adjectives that occurred 1K times in the training corpus, as this is the most common kind of adjective in Italian.
-We excluded all cases in which the adverb-adjective combination occurred in the training corpus, in either feminine or masculine form.
-
-
+where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
+\emph{tanto} `so much'. We considered only adjectives that occurred 1K
+times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
+the most common class). We excluded all cases in which the
+adverb-adjective combination occurred in the training corpus. %
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
-
-Results are shown in the second line in Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
+Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
 
 \begin{table}[t]
   \begin{center}
@@ -63,30 +69,29 @@ Results are shown in the second line in Table~\ref{tab:ital-agr-results}; all th
 % eadj-aonoun
 	    Noun Gender & 97&90  & 84&73 & 99&96 \\
 %      adv-aoadj
-	    Adj. Gender & 99&100 & 100&97 & 98&100 \\
+	    Adj.~Gender & 99&100 & 100&97 & 98&100 \\
 % adv-aeadj
-	    Adj. Number & 99&99 & 99&70 & 100&100 \\
+	    Adj.~Number & 99&99 & 99&70 & 100&100 \\
     \end{tabular}
   \end{center}
-	\caption{\label{tab:ital-agr-results} Results for morphosyntactic tests in Italian. For each model and test, we show accuracy on the two types of stimuli (masculine/feminine for gender, singular/plural for number).}
+	\caption{\label{tab:ital-agr-results} Italian agreement results. For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
 \end{table}
 
 \paragraph{Article-adjective number agreement}
-We then constructed a version of the last test that probed number agreement instead of gender agreement; number marking is similarly very systematic in Italian.
-Stimuli had the form
+Finally, we constructed a version of the last test that probed number agreement; number marking is similarly very systematic in Italian, and for feminine forms (illustrated below) it's possible to compare same-length phrases:
 \begin{enumerate}[label={(\arabic*)}]
 	\item 
 \begin{tabular}[t]{lllllll}
 	a. & la & meno & \{ \underline{aliena}, aliene \} \\
-   &  the & less & alien one(s)  \\
+   &  the (s.)& less & alien one(s)  \\
 	b. & le & meno & \{ aliena, \underline{aliene} \} \\
-    &the & less & alien one(s) \\
+    &the (p.)& less & alien one(s) \\
 \end{tabular}
 \end{enumerate}
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
-Selection of stimuli was  as before, but  we took a 500-occurrences threshold, as feminine plurals are less common.
-Further, we manually removed adjectives that did not combine well semantically with the adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
-
+Selection of stimuli was as above, but we used a 500-occurrences
+threshold, as feminine plurals are less common. %  Further, we manually
+% removed adjectives that did not combine well semantically with the
+% adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
 Results are shown in the third line in Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, while the RNN still performs strongly above chance.
-
 

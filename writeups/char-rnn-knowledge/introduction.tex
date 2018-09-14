@@ -55,7 +55,7 @@ already possess a few months after birth
 \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
 
 After training the networks on the unsupervised character-level
-language modeling task, we probe them with phonological,
+language modeling task, we probe them with phonological, lexical,
 morphological, syntactic and semantic tests in English, German and
 Italian. Taken together, our experiments show that
 near-\emph{tabula-rasa} CNLMs acquire an impressive spectrum of
@@ -64,15 +64,4 @@ given abundant input (large Wikipedia dumps), a learning device whose
 only prior architectural bias consists in the LSTM cell to propagate
 memory across time steps implicitly acquires a variety of linguistic
 rules that one would intuitively expect to require much more prior
-knowledge. One aspect that we find particularly intriguing is that,
-unlike word-based models, our CNLMs do not have a morpheme- or
-word-based lexicon. Any information the network might possess about
-units larger than characters must be stored in its recurrent
-weights. Given that nearly all contemporary linguistics recognizes a
-central role to the lexicon \cite[see, e.g.,][for different
-perspectives]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016},
-in future work we would like to explore how lexical knowledge is
-implicitly encoded in the distributed memory of our CNLMs.
-
-
-
+knowledge.

@@ -9,13 +9,18 @@
 \paragraph{Gender agreement}
 Each German noun belongs to one of three genders (masculine, feminine, neuter), which are morphologically marked on the article. As the article and the noun can be separated by adjectives and adverbs, we can probe knowledge of nouns' lexical gender together with long-distance agreement.
 We create stimuli of the form
-\begin{enumerate}[label={(\arabic*)}]
-	\item \begin{tabular}[t]{lllllll}
-	\{\underline{der}, die, das\}& sehr& rote& Baum \\
-	article & adverb & adjective & noun \\
-	the & very & red & tree
-\end{tabular}
-\end{enumerate}
+\exg. \{\underline{der},die,das\} sehr rote Baum \\
+the very red tree \\
+%    article adverb adjective noun\\
+%    `the very red tree'
+
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item \begin{tabular}[t]{lllllll}
+%	\{\underline{der}, die, das\}& sehr& rote& Baum \\
+%	article & adverb & adjective & noun \\
+%	the & very & red & tree
+%\end{tabular}
+%\end{enumerate}
 where the correct nominative singular article (\emph{der}, in this case) matches the gender of the noun.
 We then run the CNLM on the three versions of this phrase (removing whitespace) and record the probabilities it assigns to them. If the model assigns the highest probability to the version with the right article, we count it as a hit for the model. To avoid phrase segmentation ambiguities, we present phrases preceded and followed by a full stop.
 
@@ -31,7 +36,7 @@ In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
 
 Besides the CNLMs and the word-level LSTM, we constructed an n-gram baseline that chooses the article that occurs most frequently before the phrase in the training data, making a random choice in case of ties (e.g., if no article was observed). Here and below, when running the word-level model, we excluded nouns that were out of its vocabulary, reducing in a slightly easier test for this rival model. However, running the CNLMs on this reduced set only led to slight improvements, that we do not report here. 
 
-Results are presented in Figure~\ref{fig:gender}. The word LSTM  performs best, followed by the LSTM CNLM.
+Results are presented in the left part of Figure~\ref{fig:german-syntax}. The word LSTM  performs best, followed by the LSTM CNLM.
 While the n-gram baseline performs similarly to the CNLM when there is no intervening material, accuracy drops to the random baseline (0.33) in the presence of an adjective.
 %This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
 Note that this problem would not be mitigated by interpolation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus. The contrast shows that, while direct association between articles and nouns can be learnt from simple corpus statistics, the CNLM has some capability to preserve the relevant information across more than a dozen timesteps. The RNN CNLM is much worse than the LSTM counterpart and even the n-gram model for the adjacent context, and its accuracy drops to random as more material intervenes. Note that, at the character level, even ``adjacent'' agreement requires carrying information through multiple steps (for example, in this specific case, the agreement violation would not emerge until enough characters of the noun have been processed to disambiguate its gender with respect to other forms beginning with the same prefixes). This might explain the lower performance of the RNN with respect to the LSTM.
@@ -60,19 +65,23 @@ To test the model's knowledge of case agreement between articles and
 nouns, we selected the two determiners \emph{dem} and \emph{des},
 which unambiguously indicate dative and genitive case, respectively
 (for masculine and neuter nouns): %\textbf{Give one example.}
-\begin{enumerate}[label={(\arabic*)}]
-	\item \begin{tabular}[t]{lllllll}
-	\{\underline{dem}, des\}& sehr& roten& Baum \\
-	article & adverb & adjective & noun \\
-	the & very & red & tree
-\end{tabular}
-\item \begin{tabular}[t]{lllllll}
-	\{dem, \underline{des}\}& sehr& roten& Baums \\
-	article & adverb & adjective & noun \\
-	the & very & red & tree
-\end{tabular}
-
-\end{enumerate}
+\ex.\ag. \{\underline{dem},des\} sehr roten Baum \\
+the very reed tree\ (dative)\\
+\bg. \{dem,\underline{des}\} sehr roten Baums \\
+the very red tree\ (genitive) \\
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item \begin{tabular}[t]{lllllll}
+%	\{\underline{dem}, des\}& sehr& roten& Baum \\
+%	article & adverb & adjective & noun \\
+%	the & very & red & tree
+%\end{tabular}
+%\item \begin{tabular}[t]{lllllll}
+%	\{dem, \underline{des}\}& sehr& roten& Baums \\
+%	article & adverb & adjective & noun \\
+%	the & very & red & tree
+%\end{tabular}
+%
+%\end{enumerate}
 
 
 We selected all noun lemmas of the
@@ -83,7 +92,7 @@ four conditions, varying the amount of intervening material, as in the
 gender agreement experiment.
 In each condition, there were 4509 stimuli.
 
-Results are shown in Figure~\ref{fig:case}.  Again, the word LSTM has
+Results are shown in the central part of Figure~\ref{fig:german-syntax}.  Again, the word LSTM has
 the strongest overall performance, but the CNLM is competitive as more
 elements intervene. Accuracy stays well above 80\% even as three
 words intervene.  The n-gram model performs well if there is no
@@ -119,13 +128,16 @@ often reflected lemmatization problems.
 We then select all sentences containing a \emph{mit} prepositional phrase in Universal Dependencies, subject to the constraints that (1) the object is not a pronoun (such objects often are relative or interrogative pronouns and cannot be replaced with a nominal object without sacrificing grammaticality), and (2) the object is a continuous phrase, i.e., it is not interrupted by words that do not belong to it. %\textbf{(please explain the latter more clearly)}.
 We obtained 1629 such sentences.
 For each sentence, we remove the prepositional phrase and replace it by a phrase of the form
-\begin{enumerate}[label={(\arabic*)}]
-	\item \begin{tabular}[t]{lllllll}
-	mit & der & sehr& \{rote, \underline{roten}\} \\
-	prep & article  & adverb & adjective \\
-	with & the & very  & red one 
-\end{tabular}
-\end{enumerate}
+\exg. mit der sehr \{rote,\ \underline{roten}\} \\
+with the very red\ one \\
+
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item \begin{tabular}[t]{lllllll}
+%	mit & der & sehr& \{rote, \underline{roten}\} \\
+%	prep & article  & adverb & adjective \\
+%	with & the & very  & red one 
+%\end{tabular}
+%\end{enumerate}
 where only the \emph{-en} version of the adjective is compatible with
 the case requirement of the preposition. Note that this correct
 version is longer than the wrong one. This ensures that the
@@ -149,7 +161,7 @@ sentence environment.
 %\caption{\textbf{(Reduce to single figure, 3)} Accuracy on the subcategorization task as a function of the number of intervening elements. The dashed lines indicate accuracies on the control stimuli that do not contain the preposition.}\label{fig:prep}
 %\end{figure}
 %
-Results are shown in Figure~\ref{fig:prep}. All models except the one
+Results are shown in the right part of Figure~\ref{fig:german-syntax}. All models except the one
 based on n-gram counts outperform the accuracy achieved on the control
 stimuli that did not include the preposition, showing that their
 performance cannot be attributed to baseline frequencies of the

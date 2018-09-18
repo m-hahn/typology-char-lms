@@ -21,10 +21,11 @@ likelihood.
 The domain of the task (Sherlock Holmes novels) is very different from
 the Wikipedia data-set we are using; thus we additionally trained our
 models on the training set provided for the task, consisting of 19th
-century English novels.  We both consider a fresh model trained on
-that data, and initializing it with the Wikipedia model.
-For the WNLM, we additionally created a fresh model whose vocabulary consisted
-of the 50,000 most common words in the in-domain training set.
+century English novels. 
+%We both consider a fresh model trained on
+%that data, and initializing it with the Wikipedia model.
+\footnote{For the WNLM, the vocabulary consisted
+of the 50,000 most common words in the in-domain training set.}
 %For comparison, we report results (KN5 from , LSTM from ) from previous work that were trained on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
 
 Results are shown in Figure~\ref{tab:msr-completion-results}.  The
@@ -38,7 +39,7 @@ models. %, and approaches the best published results.
 The vanilla RNN is not successful even when trained on the in-domain
 data, contrasting with \emph{word}-based vanilla RNNs, whose
 performance, while below that of LSTMs, is much stronger.
-The WNLM suffers from the domain mismatch in the vocabulary; using the in-domain vocabulary gives a slight boost over the CNLM.
+The WNLM shows a slight boost over the CNLM.\footnote{Results were significantly degraded (50.1 \%) when using the Wikipedia vocabulary instead.}
 
 This experiment shows that a CNLM, trained without word boundaries, learns forms of semantic/world knowledge to a degree competitive with models trained on words.
 
@@ -46,9 +47,9 @@ This experiment shows that a CNLM, trained without word boundaries, learns forms
   \begin{center}
     \begin{tabular}{l|l|l|l|llllll}
       \multicolumn{1}{c}{}& Model \\
-LSTM CNLM	    &      34.1/59.0/59.2 \\
-	    RNN CNLM &     24.3/24.0/27.1 \\
-	    WordNLM & 37.1/50.1/52.4/63.3 \\ \hline
+LSTM CNLM	    &      34.1/59.0 \\ % /59.2
+	    RNN CNLM &     24.3/24.0 \\ % /27.1
+	    WordNLM & 37.1/63.3 \\ \hline % 50.1/52.4/
 	    Random & 20 \\
 	    KN5   & 40.0 \\
             Word RNN & 45.0 \\
@@ -59,9 +60,11 @@ LdTreeLSTM  & 60.67 \\
 \citet{melamud2016context2vec} & 65.1 \\
     \end{tabular}
   \end{center}
-	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show numbers for (1) the Wikipedia model, (2) a fresh model trained on in-domain data, (3) the Wikipedia model posttrained on the in-domain data. For the WNLM, we additionally provide accuracy for a model with vocabulary derived from the in-domain training data. We compare with language models from prior work: Kneser-Ney 5-gram model, \newcite{Mikolov:2012}, Word LSTM and LdTreeLSTM from \newcite{zhang2016top}, Skipgram+RNNs from \newcite{Mikolov:etal:2013b}. We further report models specifically designed to capture semantics: a PMI-based model from \citet{woods2016exploiting}, and a context-embedding based approach by \citet{melamud2016context2vec}.}
+	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show numbers for the Wikipedia model and for a model trained on in-domain data. We compare with language models from prior work: Kneser-Ney 5-gram model, \newcite{Mikolov:2012}, Word LSTM and LdTreeLSTM from \newcite{zhang2016top}, Skipgram+RNNs from \newcite{Mikolov:etal:2013b}. We further report models specifically designed to capture semantics: a PMI-based model from \citet{woods2016exploiting}, and a context-embedding based approach by \citet{melamud2016context2vec}.}
 \end{table}
 
+% , (3) the Wikipedia model posttrained on the in-domain data
+% For the WNLM, we additionally provide accuracy for a model with vocabulary derived from the in-domain training data. 
 % \textbf{Explain what these are}
 
 

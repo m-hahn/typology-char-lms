@@ -45,22 +45,22 @@ This experiment shows that a CNLM, trained without word boundaries, learns forms
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{l|l|l|l|llllll}
-      \multicolumn{1}{c}{}& Model \\
-LSTM CNLM	    &      34.1/59.0 \\ % /59.2
-	    RNN CNLM &     24.3/24.0 \\ % /27.1
-	    WordNLM & 37.1/63.3 \\ \hline % 50.1/52.4/
-	    Random & 20 \\
+    \begin{tabular}{l|l}
+   %   \multicolumn{1}{c}{}& Model \\
+        LSTM 	    &      34.1/59.0 \\ % /59.2
+	    RNN  &     24.3/24.0 \\ % /27.1
+	    WNLM & 37.1/63.3 \\ \hline \hline % 50.1/52.4/
+	    Random & 20 \\ \hline
 	    KN5   & 40.0 \\
             Word RNN & 45.0 \\
-	    WordNLM  & 55.96 \\
+	    Word LSTM & 56.0 \\ 
+	    LdTreeLSTM  & 60.67 \\	    \hline
 Skipgram + RNNs  & 58.9 \\
-LdTreeLSTM  & 60.67 \\
-            \citet{woods2016exploiting} &  61.44 \\
+            \citet{woods2016exploiting} &  61.4 \\
 \citet{melamud2016context2vec} & 65.1 \\
     \end{tabular}
   \end{center}
-	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show numbers for the Wikipedia model and for a model trained on in-domain data. We compare with language models from prior work: Kneser-Ney 5-gram model, \newcite{Mikolov:2012}, Word LSTM and LdTreeLSTM from \newcite{zhang2016top}, Skipgram+RNNs from \newcite{Mikolov:etal:2013b}. We further report models specifically designed to capture semantics: a PMI-based model from \citet{woods2016exploiting}, and a context-embedding based approach by \citet{melamud2016context2vec}.}
+	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show numbers for the Wikipedia model and for a model trained on in-domain data. We compare with language models from prior work: Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics: Skipgram+RNNs from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and a context-embedding based approach by \citet{melamud2016context2vec}.}
 \end{table}
 
 % , (3) the Wikipedia model posttrained on the in-domain data

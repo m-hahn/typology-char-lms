@@ -14,9 +14,9 @@ segmentation.  In Figure~\ref{fig:syntax-depth}, we plot (1) entropy
 of the predicted distribution over the next character around word
 boundaries, compared to other positions, and (2) the pointwise mutual
 information (PMI) between left and right contexts, computed by
-subtracting the unconditional likelihood of the next 20 characters
-from their likelihood conditioned on the prior context, both computed
-using our pre-trained LSTM CNLM on a section of the German training
+subtracting the unconditional log-likelihood of the next 20 characters
+from their log-likelihood conditioned on the prior context, both computed
+using our pre-trained LSTM on a section of the German training
 set.  We see that higher entropy and lower PMI computed on
 model-generated probabilities correlate with word boundaries,
 suggesting that the model internalized statistics that cue segmentation.
@@ -43,9 +43,11 @@ context, (3) \emph{PMI of left and right contexts}, as defined above.
 %(3) can also be interpreted as the result of normalizi transition probability
 We collected these quantities for each position and for the preceding and following three characters.
 %In total, the classifier has 21 coefficients.
+
 We also conducted the same experiment with features extracted from a
 character-level 8-gram model estimated on the training set, closer to
-the setup of earlier non-neural work. \textbf{Cite some refs here.}
+the setup of earlier non-neural work
+(\citet{saffran-word-1996, feng-accessor-2004}, and other work cited above).
 
 
 \begin{table}[t]
@@ -88,7 +90,7 @@ predictive, reaching an F1 of 56.6\% (English), 48.1\% (German), 55.1\%
 % (Italian).
 %Setting N to other values shows that larger values of N increase performance (N =10: 62.45, N=20: 63.24).
 
-How does the LSTM CNLM compare to \emph{ad-hoc} word segmentation
+How does the LSTM  compare to \emph{ad-hoc} word segmentation
 models?  We compare it to the Bayesian bigram model of
 \newcite{goldwater-bayesian-2009}, an elegant model using a
 hierarchical Dirichlet process.  The latter, unlike our approach, is
@@ -101,7 +103,7 @@ towards a discrete lexicon with a power-law frequency distribution.
 %  latter point.}
 
 Running Bayesian methods on the Wikipedia dumps is computationally
-unfeasible. Thus, we re-trained instead the CNLM (with fixed
+unfeasible. Thus, we re-trained instead the LSTM (with fixed
 hyperparameters) on the Brent corpus of child-directed speech
 \cite{brent-efficient-1999} also used by Goldwater and colleagues.  We
 used 90\% to train our language model, 5\% to fit the logistic
@@ -127,16 +129,31 @@ segmentation method.
 % \end{table*}
 
 
-\begin{table*}[t]
+\begin{table}[t]
   \begin{center}
-    \begin{tabular}{l|l|l|l|l}
-      &Tokens & Lexical & Boundaries\\      \hline
-	    CNLM & 75.3/76.6/76.0 & 41.2/61.2/49.2 & 91.3/90.0/90.5 \\
-	    \citet{goldwater-bayesian-2009} & 75.2/69.6/72.3 & 63.5/55.2/59.1 & 90.3/80.8/85.2
+    \begin{tabular}{l|ll}
+	    &	     CNLM & Bayesian \\ \hline %\citet{goldwater-bayesian-2009} \\ \hline
+	    Tokens & 75.3/76.6/76.0 & 75.2/69.6/72.3 \\
+	    Lexical & 41.2/61.2/49.2 &63.5/55.2/59.1  \\
+	    Boundaries & 91.3/90.0/90.5 & 90.3/80.8/85.2 \\
     \end{tabular}
   \end{center}
 	\caption{\label{tab:segmentation-results-brent} Word segmentation results (percentage precision/recall/F1)  on the Brent corpus for our CNLM-based model and the Bayesian approach of \newcite{goldwater-bayesian-2009}. Following them, we evaluate at the level of tokens, the lexicon of induced word types, and boundaries.}
-\end{table*}
+\end{table}
+
+
+
+
+%\begin{table*}[t]
+%  \begin{center}
+%    \begin{tabular}{l|l|l|l|l}
+%      &Tokens & Lexical & Boundaries\\      \hline
+%	    CNLM & 75.3/76.6/76.0 & 41.2/61.2/49.2 & 91.3/90.0/90.5 \\
+%	    \citet{goldwater-bayesian-2009} & 75.2/69.6/72.3 & 63.5/55.2/59.1 & 90.3/80.8/85.2
+%    \end{tabular}
+%  \end{center}
+%	\caption{\label{tab:segmentation-results-brent} Word segmentation results (percentage precision/recall/F1)  on the Brent corpus for our CNLM-based model and the Bayesian approach of \newcite{goldwater-bayesian-2009}. Following them, we evaluate at the level of tokens, the lexicon of induced word types, and boundaries.}
+%\end{table*}
 
 As a final piece of evidence that the CNLM has internalized a notion
 of word, we trained logistic classifiers directly on the hidden states

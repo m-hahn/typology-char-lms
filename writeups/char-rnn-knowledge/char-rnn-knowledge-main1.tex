@@ -124,6 +124,31 @@ As recurrent neural networks (RNNs) have recently reached striking performance l
 \bibliography{marco,michael}
 \bibliographystyle{acl_natbib}
 
+
+
+\appendix
+
+\begin{table*}[t]
+	\begin{tabular}{l|lll|lll|lllllll}
+		&  \multicolumn{3}{c}{LSTM} & \multicolumn{3}{|c|}{RNN} & \multicolumn{3}{c}{WNLM} \\
+		       &  En.     &  Ge.    & It.    & En.    &    Ge.   &  It.     &  En.     &   Ge.   &    It. \\  \hline
+	Batch Size     &  128   &  512  & 128  & 256  & 256    &  256   &  128   &   128 &  128   \\              
+	Embedding Size &  200   &  100  & 200  & 200  & 50     &  50    &  1024  &   200 &  200   \\             
+	Dimension      &  1024  &  1024 & 1024 & 2048 & 2048   &  2048  &  1024  &  1024 &  1024  \\  
+	Layers         &  3     &  2    & 2    & 2    & 2      &  2     &  2     &  2    &  2     \\   
+	Learning Rate  &  3.6   &  2.0  & 3.2  & 0.01 & 0.1    &  0.1   &  1.1   &  0.9  &  1.2   \\ 
+	Decay          &  0.95  &  1.0  & 0.98 & 0.9  & 0.95   &  0.95  &  1.0   &  1.0  &  0.98  \\
+	BPTT Length    &  80    &  50   & 80   & 50   & 30     &  30    &  50    &  50   &  50    \\
+	Hidden Dropout &  0.01  &  0.0  & 0.0  & 0.05 & 0.0    &  0.0   &  0.15  &  0.15 &  0.05  \\   
+	Embedding Dropout  & 0.0& 0.01  & 0.0  & 0.01 & 0.0    &  0.0   &  0.0   &  0.1  &  0.0   \\   
+	Input Dropout  & 0.001 &  0.0   & 0.0  & 0.001& 0.01   &  0.01  &  0.01  &  0.001&  0.01  \\ 
+        Nonlinearity   &   --  & --     & --   & ReLu & tanh   &  tanh  &   --   &  --   &  --    \\                   
+\end{tabular}
+	\caption{Hyperparameters identified \textbf{probably we cannot put this into the submission within the 10 page limit?}}
+\end{table*}
+
+
+
 \end{document}
 
 

@@ -6,7 +6,7 @@ qualitatively, whether CNLMs are discovering distributional
 generalizations about the phonological system of a language (as
 noisily reflected in the language orthography). For these purposes, we
 produced agglomerative clusterings of the character embeddings in the
-trained LSTM CNLM input and output embeddings. No clear pattern
+trained LSTM  input and output embeddings. No clear pattern
 emerged in the input embedding clusterings, whereas the output
 embeddings (probably more tuned to capture contextual dependencies)
 captured meaningful phonological classes. This is illustrated for
@@ -61,7 +61,7 @@ such that the independent unigram probability of the unacceptable
 bigram is higher than that of the acceptable one. For example,
 ``\emph{br}'' is an acceptable Italian sequence and ``\emph{bt}''
 isn't, although \emph{t} is more frequent than \emph{r}.  For each
-such pair, we re-train the CNLM on a version of the training partition
+such pair, we re-train the CNLMs on a version of the training partition
 from which all words containing either bigram have been removed.  We
 then look at the likelihood the model assigns to both sequences. If
 the model systematically assigns a larger probability to correct
@@ -77,14 +77,14 @@ stop or nasal.  % For each onset consonant and each of the two types, we
 % unigram frequencies, and randomly selected one if there were several.
 
 Results are shown in Table \ref{tab:phonotactics-results} for all
-bigram pairs (acceptable: left, impossible: right).  The LSTM CNLM
+bigram pairs (acceptable: left, impossible: right).  The LSTM 
 assigns higher probability to the acceptable bigrams in all but two
-cases.  This confirms that the LSTM CNLM has learnt a notion of
+cases.  This confirms that the LSTM  has learnt a notion of
 phonological categories such as vowels and consonants, and phonotactic
 generalizations about them.  Note that the model makes these
 phonotactic generalizations entirely on the basis of distributional
 evidence, with no aid from perceptual or articulatory
-cues. Interestingly, the RNN CNLM systematically prefers the
+cues. Interestingly, the RNN  systematically prefers the
 impossible bigrams, presumably because they have higher unigram
 probability. The dramatic difference is surprising, since the relevant
 generalizations pertain to adjacent symbols that either model should

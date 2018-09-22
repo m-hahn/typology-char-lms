@@ -26,8 +26,8 @@ As a baseline, we used a character-level LSTM autoencoder trained to
 reconstruct individual words in isolation.  We expect that the hidden
 state of the autoencoder encodes orthographic features relevant for
 the languages.  We further considered word embeddings from the output
-layer of the word NLM, removing OOV words from the evaluation of this
-model. Finally, we ran a version where the word NLM was run on all words,
+layer of the WordNLM, removing OOV words from the evaluation of this
+model. Finally, we ran a version where the WordNLM was run on all words,
 randomly guessing for OOV words.
 %\textbf{This needs to be further discussed: can you compute  performance with random guess for OOV words?}
 
@@ -50,7 +50,7 @@ We then studied how performance evolves as we change training set size from 2 to
 	    RNN & 82.0 ($\pm$ 0.64) & 91.9 ($\pm$ 0.24) \\
 	    Autoencoder & 65.1 ($\pm$ 0.22) & 82.8 ($\pm$ 0.26) \\
 	    WordNLM & 97.4 ($\pm$ 0.05) & 96.0 ($\pm$ 0.06) \\
-	    WNLM (OOV) & 53.5 ($\pm$ 0.18)  & 62.5 ($\pm$ 0.26) \\
+	    WordNLM (all words) & 53.5 ($\pm$ 0.18)  & 62.5 ($\pm$ 0.26) \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:pos-results} Word  accuracy (20 training examples per category), with standard errors computed from 100 runs.}
@@ -86,24 +86,26 @@ suffixation to train the classifier (e.g., \emph{Geschichte-n} `stories'), and t
 
 For the training set, we randomly selected 30 singulars and 30 plurals
 from each of the training classes.  As plural suffixes make words
-longer, we used rejection sampling \textbf{(cite something?)} from a
+longer, we sampled singulars and plurals %used rejection sampling \textbf{(cite something?)}
+from a
 single distribution over lengths to ensure that the lengths of the
 singular and plural examples were approximately matched.  For the test
 set, we selected all plurals with the -\emph{r} suffix (127 items) or vowel change (38 items)
 together with their respective singulars. %\textbf{(how many?)}.
 To
 control for the impact of random selection of training samples, we
-repeat the experiment 200 times and averaged the resulting accuracies
+repeat the experiment 200 times and average the resulting accuracies
 on number classification.  We extract word representations as above,
-and we compare to an autoencoder and embeddings from the word-level
-LSTM. Results are summarized in Table \ref{tab:number-results}.
+and we compare to an autoencoder and embeddings from the WordNLM.
+Results are summarized in Table \ref{tab:number-results}.
 
 
 
 \begin{table}[t]
+	\footnotesize
   \begin{center}
-    \begin{tabular}{l|l|l|lllllll}
-      &train classes&\multicolumn{2}{|c}{test classes}\\
+    \begin{tabular}{l|c|l|lllllll}
+      &train classes&\multicolumn{2}{c}{test classes}\\
       &\emph{-n/-s/-e}&\emph{-r}&\emph{Umlaut}\\      \hline
 	    LSTM& 77.9 ($\pm$ 0.8) & \textbf{88.2} ($\pm$ 0.3) & 52.8 ($\pm$ 0.6) \\
 	    RNN& 70.3 ($\pm$ 0.9) & 81.3 ($\pm$ 0.7) & 53.3 ($\pm$ 0.6)\\
@@ -158,7 +160,7 @@ successful, confirming that word embeddings encode number reliably
 on plurals formed with suffixes, indicating some capability to
 generalize to unseen plurals that go beyond relying on orthographic
 cues.  For -\emph{r} plurals, the CNLM LSTM even generalizes better
-than the word NLM.  In contrast, almost no generalization to plurals
+than the WordNLM.  In contrast, almost no generalization to plurals
 formed by vowel change is found (the CNLMs are \emph{worse} than the
 autoencoder here), suggesting that the CNLM number encoding is not
 general enough to generalize across very different surface

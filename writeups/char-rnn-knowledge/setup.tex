@@ -11,11 +11,11 @@ For word segmentation and word-based language models, we tokenized and tagged al
 For the vocabulary, we extracted the most frequent characters from
 each corpus, setting thresholds so as to ensure that all characters
 representing phonemes of the languages were included, resulting in vocabularies of 60 (English), 73 (German), and 59 (Italian) characters.
-We further constructed \emph{word-level neural language models} (WNLMs); 
+We further constructed \emph{word-level neural language models} (WordNLMs); 
 their vocabulary included the most frequent 50,000 words per corpus.
 
-We constructed CNLMs using vanilla RNN cells and using LSTM cells; we will refer to these as RNN and LSTM, respectively.
-We used LSTM cells for WNLMs.
+We constructed CNLMs using vanilla RNN cells and using LSTM cells; we will refer to these as \emph{RNN} and \emph{LSTM}, respectively.
+We used LSTM cells for WordNLMs.
 For each model and each language, we specified a range of hyperparameter settings, and applied random search to find models that performed best on the validation set.
 We terminated training after 72 hours; none of the models had overfitted, as measured by performance on the validation set.
 
@@ -52,15 +52,15 @@ size as ours.
 
 \begin{table}[t]
   \begin{center}
-    \begin{tabular}{l|l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Word LSTM}\\
+    \begin{tabular}{l|l|l|l}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{WordNLM}\\
       \hline
 	    English & 1.62 & 2.08 & 48.99  \\
 	    German &  1.51 & 1.83 & 37.96   \\
 	    Italian & 1.47 & 1.97 & 42.02  \\
     \end{tabular}
   \end{center}
-  \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report bits-per-character (BPC). For word-based models, we report perplexity.}
+  \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report bits-per-character (BPC). For WordNLMs, we report perplexity.}
 \end{table}
 
 %\begin{table}[t]

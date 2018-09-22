@@ -47,13 +47,14 @@ We collected these quantities for each position and for the preceding and follow
 We also conducted the same experiment with features extracted from a
 character-level 8-gram model estimated on the training set, closer to
 the setup of earlier non-neural work
-(\citet{saffran-word-1996, feng-accessor-2004}, and other work cited above).
+\cite{saffran-word-1996, feng-accessor-2004}.
 
 
 \begin{table}[t]
+	\footnotesize
   \begin{center}
-    \begin{tabular}{l|l|l|l|l}
-      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{8-grams}\\
+    \begin{tabular}{l|l|l|l}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{8-grams}\\
       \hline
       English & 65.8/60.4/63.0 &   63.3/59.8/61.5 & 55.7/51.0/53.3    \\ % \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\
       German &  57.0/52.5/54.7 &  53.2/49.3/51.1 & 42.9/36.3/39.3   \\ %   \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots & \ldots{}/\ldots{}/\ldots &\ldots{}/\ldots{}/\ldots\\

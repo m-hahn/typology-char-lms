@@ -43,10 +43,10 @@ considered -\emph{e} adjectives that occur prenominally with at least
 10 distinct nouns in the training corpus. We obtained 15,005 pairs of stimuli.
 Here and below, stimuli
 where checked for strong semantic anomalies.
-In addition to the CNLMs and the Word NLM, we also constructed a frequency baseline that chooses the option with the higher unigram probability (note that corpus frequencies of stimuli would be at chance by construction).
+In addition to the CNLMs and the WordNLM, we also constructed a frequency baseline that chooses the option with the higher unigram probability (note that corpus frequencies of stimuli would be at chance by construction).
 
 Results are shown in the first line of
-Table~\ref{tab:ital-agr-results}.  The word LSTM shows the strongest
+Table~\ref{tab:ital-agr-results}.  The WordNLM shows the strongest
 performance, closely followed by the LSTM CNLM.  Even the RNN CNLM
 performs strongly above chance, but again lags behind the LSTM.
 
@@ -78,7 +78,7 @@ Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all th
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{l|ll|l|l}
-	    & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c|}{\multirow{2}{*}{WNLM}}  & \multicolumn{1}{c}{\multirow{2}{*}{Freq.}}\\
+	    & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{1}{c}{\multirow{2}{*}{Freq.}}\\
 	    &\emph{LSTM}&\emph{RNN} &  \\ \hline
 % eadj-aonoun
 	    Noun Gender & 93.1  & 79.2 & 97.4 & 50.0\\

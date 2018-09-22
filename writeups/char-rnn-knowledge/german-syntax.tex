@@ -34,9 +34,9 @@ In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr
 These do not cue gender either.
 In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
 
-Besides the CNLMs and the word-level LSTM, we constructed an n-gram baseline that chooses the article that occurs most frequently before the phrase in the training data, making a random choice in case of ties (e.g., if no article was observed). Here and below, when running the word-level model, we excluded nouns that were out of its vocabulary, reducing in a slightly easier test for this rival model. However, running the CNLMs on this reduced set only led to slight improvements, that we do not report here. 
+Besides the CNLMs and the WordNLM, we constructed an n-gram baseline that chooses the article that occurs most frequently before the phrase in the training data, making a random choice in case of ties (e.g., if no article was observed). Here and below, when running the word-level model, we excluded nouns that were out of its vocabulary, reducing in a slightly easier test for this rival model. However, running the CNLMs on this reduced set only led to slight improvements, that we do not report here. 
 
-Results are presented in the left part of Figure~\ref{fig:german-syntax}. The word LSTM  performs best, followed by the LSTM CNLM.
+Results are presented in the left part of Figure~\ref{fig:german-syntax}. The WordNLM  performs best, followed by the LSTM CNLM.
 While the n-gram baseline performs similarly to the CNLM when there is no intervening material, accuracy drops to the random baseline (0.33) in the presence of an adjective.
 %This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
 Note that this problem would not be mitigated by interpolation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus. The contrast shows that, while direct association between articles and nouns can be learnt from simple corpus statistics, the CNLM has some capability to preserve the relevant information across more than a dozen timesteps. The RNN CNLM is much worse than the LSTM counterpart and even the n-gram model for the adjacent context, and its accuracy drops to random as more material intervenes. Note that, at the character level, even ``adjacent'' agreement requires carrying information through multiple steps (for example, in this specific case, the agreement violation would not emerge until enough characters of the noun have been processed to disambiguate its gender with respect to other forms beginning with the same prefixes). This might explain the lower performance of the RNN with respect to the LSTM.
@@ -92,7 +92,7 @@ four conditions, varying the amount of intervening material, as in the
 gender agreement experiment.
 In each condition, there were 4509 stimuli.
 
-Results are shown in the central part of Figure~\ref{fig:german-syntax}.  Again, the word LSTM has
+Results are shown in the central part of Figure~\ref{fig:german-syntax}.  Again, the WordNLM has
 the strongest overall performance, but the CNLM is competitive as more
 elements intervene. Accuracy stays well above 80\% even as three
 words intervene.  The n-gram model performs well if there is no

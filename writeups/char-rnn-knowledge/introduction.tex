@@ -2,12 +2,12 @@
 \label{sec:introduction}
 
 Recurrent neural networks \cite[RNNs,][]{Elman:1990}, in particular
-their Long-Short-Term-Memory variant
+in their Long-Short-Term-Memory variant
 \cite[LSTMs,][]{Hochreiter:Schmidhuber:1997}, are the current
-workhorse of natural language processing. These models, often
+workhorse of natural language processing. RNNs, often
 pre-trained on the simple \emph{language modeling} objective of
-predicting the next symbol in raw natural text, form a crucial
-component of state-of-the-art architectures for tasks such as machine
+predicting the next symbol in natural text, are a crucial
+component of state-of-the-art architectures for machine
 translation, natural language inference and text categorization
 \cite{Goldberg:2017}.
 
@@ -15,26 +15,25 @@ RNNs are very general devices for sequence processing, assuming little
 prior bias. Moreover, the simple prediction task they are trained on
 in language modeling seems well-aligned with the core role prediction
 plays in cognition \cite[e.g.,][]{Bar:2007,Clark:2016}. RNNs have thus
-long attracted the attention of cognitive scientists and linguists
-interested in language acquisition and processing, and their recent successes in
+long attracted the attention of researchers
+interested in language acquisition and processing. Their recent successes in
 realistic large-scale tasks has strongly rekindled this interest
 \cite[see, e.g.,][and references there]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,McCoy:etal:2018,Pater:2018}.
 
-Adopting the standard pre-processing pipeline for modern RNNs, the
-latter studies assume that the input has been tokenized into word
-units that are pre-stored in the RNN vocabulary. This is a reasonable
-practical approach, but it makes simulations less interesting from a
-linguistic point of view. First, discovering words is one of the major
-challenges a learner faces, and by pre-encoding them in the RNN we are
-facilitating its task in a very unnatural way (not even the staunchest
-nativists would take a specific word dictionary to be part of our
-genetic code). Second, assuming a unique tokenization into a finite
-number of discrete word units is in any case problematic. The very
-notion of what counts as a word in languages with a rich morphology is
-far from clear \cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally,
-mental lexicons are probably organized into a
-not-necessarily-consistent hierarchy of units at different levels:
-morphemes, words, compounds, constructions,
+The standard pre-processing pipeline of modern RNNs assumes that the
+input has been tokenized into word units that are pre-stored in the
+RNN vocabulary. This is a reasonable practical approach, but it makes
+simulations less interesting from a linguistic point of view. First,
+discovering words is one of the major challenges a learner faces, and
+by pre-encoding them in the RNN we are facilitating its task in an
+unnatural way (not even the staunchest nativists would take a specific
+word dictionary to be part of our genetic code). Second, assuming a
+unique tokenization into a finite number of discrete word units is in
+any case problematic. The very notion of what counts as a word in
+languages with a rich morphology is far from clear
+\cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally, mental lexicons
+are probably organized into a not-necessarily-consistent hierarchy of
+units at different levels: morphemes, words, compounds, constructions,
 etc.~\cite[e.g.,][]{Goldberg:2005}.
 
 Motivated by these considerations, we present here an extensive study
@@ -46,22 +45,21 @@ that, like children learning a language, they don't have access to
 explicit cues to wordhood.\footnote{We do not erase punctuation marks,
   reasoning that they have a similar function to prosodic cues in
   spoken language.} This setup is almost as \emph{tabula rasa} as it
-goes: by taking unsegmented orthographic output (and assuming that, in
+goes: by using unsegmented orthographic input (and assuming that, in
 the alphabetic writing systems we work with, there is a reasonable
 correspondence between letters and phonetic segments), we are only
-assuming that a learner has figured out how to segment a continuous
-speech stream into phonological units, an ability that children
-already possess a few months after birth
+postulating that the learner figured out how to segment the continuous
+speech stream into phonological units, an ability children
+already possess few months after birth
 \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
 
 After training the networks on the unsupervised character-level
 language modeling task, we probe them with phonological, lexical,
 morphological, syntactic and semantic tests in English, German and
-Italian. Taken together, our experiments show that
-near-\emph{tabula-rasa} CNLMs acquire an impressive spectrum of
-linguistic knowledge at various levels.  This in turn suggests that,
-given abundant input (large Wikipedia dumps), a learning device whose
-only prior architectural bias consists in the LSTM cell to propagate
-memory across time steps implicitly acquires a variety of linguistic
+Italian. Our results show that near-\emph{tabula-rasa} CNLMs acquire
+an impressive spectrum of linguistic knowledge at various levels.
+This in turn suggests that, given abundant input (large Wikipedia
+dumps), a learning device whose only prior architectural bias consists
+in the LSTM memory cell implicitly acquires a variety of linguistic
 rules that one would intuitively expect to require much more prior
-knowledge.
+knowledge.\footnote{Upon publication, we will make our input data, test sets and pre-trained model available.}

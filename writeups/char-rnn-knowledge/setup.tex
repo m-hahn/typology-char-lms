@@ -1,40 +1,48 @@
 \section{Experimental setup}
 \label{sec:setup}
 
-We downloaded full Wikipedia dumps for English, German, and Italian, and extracted plain text with WikiExtractor.\footnote{\url{https://github.com/attardi/wikiextractor}}
-For each language, we randomly extracted testing and validation sections consisting of 50,000 paragraphs each, and used the remainder as training sets.
-The training sets contained 16M (German), 9M (Italian), and 41M (English) paragraphs, corresponding to 819M (German), 463M (Italian), and 2,333M (English) words.
-Order of paragraphs was shuffled for training; we did not attempt to split by sentences.
-All characters were lower-cased.
-For word segmentation and word-based language models, we tokenized and tagged all corpora using TreeTagger.\footnote{\url{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}}
+We extracted plain text from full English, German and Italian
+Wikipedia dumps with
+WikiExtractor.\footnote{\url{https://github.com/attardi/wikiextractor}}
+We randomly extracted testing and validation sections consisting of
+50,000 paragraphs each, and used the remainder for training. The
+training sets contained 16M (German), 9M (Italian), and 41M (English)
+paragraphs, corresponding to 819M, 463M and 2,333M words,
+respectively. Order of paragraphs was shuffled for training; we did
+not attempt to split by sentences. All characters were lower-cased.
+For word segmentation and word-based language models, we tokenized and
+tagged the corpora with
+TreeTagger.\footnote{\url{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}}
 
-For the vocabulary, we extracted the most frequent characters from
+We used as vocabularies the most frequent characters from
 each corpus, setting thresholds so as to ensure that all characters
-representing phonemes of the languages were included, resulting in vocabularies of 60 (English), 73 (German), and 59 (Italian) characters.
+representing phonemes were included, resulting in vocabularies of 60 (English), 73 (German), and 59 (Italian) characters.
 We further constructed \emph{word-level neural language models} (WordNLMs); 
 their vocabulary included the most frequent 50,000 words per corpus.
 
-We constructed CNLMs using vanilla RNN cells and using LSTM cells; we will refer to these as \emph{RNN} and \emph{LSTM}, respectively.
-We used LSTM cells for WordNLMs.
-For each model and each language, we specified a range of hyperparameter settings, and applied random search to find models that performed best on the validation set.
-We terminated training after 72 hours; none of the models had overfitted, as measured by performance on the validation set.
+We constructed vanilla RNN and LSTM CNLMs; we will refer to them as
+\emph{RNN} and \emph{LSTM}, respectively. We used LSTM cells for
+WordNLMs.  For each model and each language, we applied random
+hyperparameter search.  We terminated training after 72 hours; none of
+the models had overfitted, as measured by performance on the
+validation set, that we used for model selection.\footnote{The selected
+  hyperparameters are reported in supplementary material to be made
+  available upon publication.}
 
-%<<<<<<< HEAD
 Language modeling performance on the test partitions is shown in
-Table~\ref{tab:lm-results}.  Direct comparison with the state of the art is hindered by
-the fact that we train on text without whitespace: Whitespace is both
-relatively easy to predict, and it makes predicting other
-characters easier. Consequently, the fact that our character-level models are
-below the state of the art is expected. For example, the best model of
-\newcite{merity2018analysis} achieved 1.232 BPC on enwiki8
-\cite{hutter2018}, a dataset also derived from English
-Wikipedia. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
+Table~\ref{tab:lm-results}. Recall that we removed whitespace, which
+is both easy to predict, and aiding prediction of other
+characters. Consequently, the fact that our character-level models are
+below the state of the art is expected.\footnote{Training our models
+  with whitespace, without further hyperparameter tuning, resulted in
+  BPCs of 1.32 (English), 1.28 (German), and 1.24 (Italian).}
+For example, the best model of \newcite{merity2018analysis} achieved
+1.23 English BPC on a Wikipedia-derived dataset. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
 On EuroParl data, \newcite{cotterell2018all} report 0.85 for English,
-0.9 for German, and 0.82 for Italian. Still, our English BPC is
-comparable, for example, to that reported by \newcite{Graves:2014} for
-his static character-level LSTM trained on space-delimited Wikipedia data,
-suggesting that we are working with reasonably high-performance language
-models.\footnote{Training our models on text with whitespace, without further hyperparameter tuning to adjust to that setting, resulted in BPCs of 1.32 BPC (English), 1.28 (German), and 1.24 BPC (Italian).}
+0.90 for German, and 0.82 for Italian. Still, our English BPC is
+comparable to that reported by \newcite{Graves:2014} for his static
+character-level LSTM trained on space-delimited Wikipedia data,
+suggesting that we are achieving reasonable performance.
 %\footnote{Training our models on text with whitespace, without further hyperparameter tuning to adjust to that setting, resulted in cross-entropies of 0.91, 1.32 BPC (English), 0.89, 1.28 BPC (German), and 0.86, 1.24 BPC (Italian).}
 The perplexity of the word-level model might not be comparable to
 that of highly-optimized state-of-the-art architectures, but it is at the
@@ -51,6 +59,7 @@ size as ours.
 %>>>>>>> 86b9fd533dc18bab83a010158126d7366aae3681
 
 \begin{table}[t]
+  \begin{small}
   \begin{center}
     \begin{tabular}{l|l|l|l}
       \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{WordNLM}\\
@@ -60,6 +69,7 @@ size as ours.
 	    Italian & 1.47 & 1.97 & 42.02  \\
     \end{tabular}
   \end{center}
+  \end{small}
   \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report bits-per-character (BPC). For WordNLMs, we report perplexity.}
 \end{table}
 

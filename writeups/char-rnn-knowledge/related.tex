@@ -1,10 +1,8 @@
 \section{Related work}
 \label{sec:related}
 
-\paragraph{Character-based neural language models} Character-level
-RNN-based language models have received some attention in the last
-decade because of their potential greater generality with respect to
-word-based models, and because, intuitively, they should be able to
+\paragraph{Character-based neural language models} have received some attention in the last
+decade because of their greater generality, and because, intuitively, they should be able to
 use cues, such as morphological information, that word-based models
 miss by design. Early studies such as \newcite{Mikolov:etal:2011},
 \newcite{Sutskever:etal:2011} and \newcite{Graves:2014} established
@@ -29,13 +27,13 @@ e.g.,][and references
 there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}. For
 example, the influential model of Kim and colleagues performs
 prediction at the word level, but uses a character-based convolutional
-network to generate the representation of each work. There is also
+network to generate word representation. There is also
 work on segmenting words into morphemes with character-level RNNs
 \cite{Kann:etal:2016}, with emphasis on optimizing segmentation, as
 opposed to our interest in probing what the network implicitly learned
 about morphemes and other units during generic language
-modeling. Moreover, these networks are not exposed to constituents
-larger than words.
+modeling.%  Moreover, these networks are not exposed to constituents
+% larger than words.
 
 
 \paragraph{Probing linguistic knowledge of neural language models} There is extensive work on probing the linguistic properties of
@@ -44,39 +42,37 @@ architectures such as sequence-to-sequence systems: see, e.g.,
 \newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Hupkes:etal:2017,Kadar:etal:2017,Li:etal:2017,Conneau:etal:2018}.
 
 Early work by Jeffrey Elman is close in spirit to ours. In particular,
-\newcite{Elman:1990} reports phonotactics and word segmentation
-experiments similar to ours, but using small-size toy input. More
-recently, \newcite{Sennrich:2017} tests character- and
-subword-unit-level models that are used as components of a machine
-translation system on a variety of grammatical phenomena. He concludes
-that current character-based decoders generalize better to unseen
-words, but capture less grammatical knowledge than subword
-units. Still, his character-based systems lag only marginal behind the
-subword architectures on grammatical tasks such as handling agreement
-and negation. \newcite{Radford:etal:2017} also study CNLMs (or, more
+\newcite{Elman:1990} reported phonotactics and word segmentation
+experiments similar to ours, but using toy inputs. More recently,
+\newcite{Sennrich:2017} explored the grammatical properties of
+character- and subword-unit-level models that are used as components
+of a machine translation system. He concluded that current
+character-based decoders generalize better to unseen words, but
+capture less grammatical knowledge than subword units. Still, his
+character-based systems lagged only marginally behind the subword
+architectures on grammatical tasks such as handling agreement and
+negation. \newcite{Radford:etal:2017} also studied CNLMs (or, more
 precisely, byte-level models) with focus on understanding their
 properties, but only in the domain of sentiment
-analysis. \newcite{Godin:etal:2018} investigate the rules implicitly
+analysis. \newcite{Godin:etal:2018} investigated the rules implicitly
 used by supervised character-aware neural morphological segmentation
 methods, finding in particular that the networks discover
 linguistically sensible patterns. More closely related to our goals,
-\newcite{Alishahi:etal:2017} study the linguistic knowledge induced by
-a neural network that receives unsegmented acoustic input. They use
+\newcite{Alishahi:etal:2017} probed the linguistic knowledge induced by
+a neural network that receives unsegmented acoustic input. They used
 however a considerably more complex architecture, trained on
-multimodal data, and focus on the phonological level. Finally, very
-recently \newcite{Kementchedjhieva:Lopez:2018} presented another study
+multimodal data, and they focused on the phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a related study
 probing the linguistic knowledge of plain character-level neural
-language models. Their results are aligned with ours, as they show
-that these models possess knowledge of lexical and morphological
+language models. Their results are aligned with ours, as they showed
+that these models have knowledge of lexical and morphological
 structure, and they capture morphosyntactic categories as well as
-constraints on possible morpheme combinations. One of the most
-intriguing results in this study is that their model tracks morpheme
-boundaries in a localist fashion through a single unit (we did not
-replicate the result with our model). Besides the fact that they do
-not explore syntactic or semantic knowledge, and limit their study to
-English, a fundamental difference between
-\newcite{Kementchedjhieva:Lopez:2018} and us is that we remove
-whitespace from the training data, thus depriving the model of a major
-(and cognitively artificial) cue to word boundaries.
+constraints on possible morpheme combinations. One of their most
+intriguing results is that the model tracks morpheme boundaries in a
+localist fashion through a single unit (we did not replicate the
+result with our model).  They do not explore syntactic or semantic
+knowledge, and they limit their study to English. Moreover, they
+trained their models on input with whitespace, thus providing the
+model with a major (and cognitively artificial) cue to word
+boundaries.
 
 

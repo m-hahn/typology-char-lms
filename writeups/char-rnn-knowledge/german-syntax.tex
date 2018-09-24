@@ -7,10 +7,12 @@
 
 
 \paragraph{Gender agreement}
-Each German noun belongs to one of three genders (masculine, feminine, neuter), which are morphologically marked on the article. As the article and the noun can be separated by adjectives and adverbs, we can probe knowledge of nouns' lexical gender together with long-distance agreement.
+Each German noun belongs to one of three genders (masculine, feminine, neuter), morphologically marked on the article. As the article and the noun can be separated by adjectives and adverbs, we can probe knowledge of nouns' lexical gender together with long-distance agreement.
 We create stimuli of the form
+
 \exg. \{\underline{der},\ die,\ das\} sehr rote Baum \\
 the very red tree \\
+
 %    article adverb adjective noun\\
 %    `the very red tree'
 
@@ -22,24 +24,41 @@ the very red tree \\
 %\end{tabular}
 %\end{enumerate}
 where the correct nominative singular article (\emph{der}, in this case) matches the gender of the noun.
-We then run the CNLM on the three versions of this phrase (removing whitespace) and record the probabilities it assigns to them. If the model assigns the highest probability to the version with the right article, we count it as a hit for the model. To avoid phrase segmentation ambiguities, we present phrases preceded and followed by a full stop.
+We then run the CNLM on the three versions of this phrase (removing whitespace) and record the probabilities it assigns to them. If the model assigns the highest probability to the version with the right article, we count it as a hit for the model. To avoid phrase segmentation ambiguities, we present phrases surrounded by full stops.
 
 %  \cite{de2006generating,mcdonald2013universal}
-We select all nominative singular nouns from the German Universal Dependencies treebank. %, and all adjectives from the training set.
-We construct four conditions varying the number of adverbs and adjectives between the article and the noun.
-We first consider stimuli where no material intervenes.\footnote{Due to syncretism in the article paradigm, there is sometimes ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is a nominative singular from. As this equally affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective intervenes, as its form disambiguates case.}
-In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added.
-Crucially, the ending of the adjective does not reveal the gender of the noun.
-In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective.
-These do not cue gender either.
-In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
+We select all nominative singular nouns from the German UD treebank. %, and all adjectives from the training set.
+We construct four conditions varying the number of adverbs and adjectives between  article and noun.
+We first consider stimuli where no material intervenes. % \footnote{Due to syncretism in the article paradigm, there is sometimes ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is a nominative singular from. As this equally affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective intervenes, as its form disambiguates case.}
+In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added. Crucially, the ending of the adjective does not reveal the gender of the noun.
+In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective. These do not cue gender either. In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
 
-Besides the CNLMs and the WordNLM, we constructed an n-gram baseline that chooses the article that occurs most frequently before the phrase in the training data, making a random choice in case of ties (e.g., if no article was observed). Here and below, when running the word-level model, we excluded nouns that were out of its vocabulary, reducing in a slightly easier test for this rival model. However, running the CNLMs on this reduced set only led to slight improvements, that we do not report here. 
+We constructed an n-gram baseline that chooses the article that occurs
+most frequently before the phrase in the training data, choosing
+randomly in case of ties. Here and below, when running the
+WordNLM, we excluded OOV nouns, resulting in a slightly easier test
+for this rival model. However, testing the CNLMs on the reduced set
+only led to slight improvements, that we do not report here.
 
-Results are presented in the left part of Figure~\ref{fig:german-syntax}. The WordNLM  performs best, followed by the LSTM CNLM.
-While the n-gram baseline performs similarly to the CNLM when there is no intervening material, accuracy drops to the random baseline (0.33) in the presence of an adjective.
-%This can partly be attributed to our choice to choose the adjective randomly from the vocabulary.
-Note that this problem would not be mitigated by interpolation with or backoff to lower-order n-grams, as the relevant gender information is present only on the first and last word of each stimulus. The contrast shows that, while direct association between articles and nouns can be learnt from simple corpus statistics, the CNLM has some capability to preserve the relevant information across more than a dozen timesteps. The RNN CNLM is much worse than the LSTM counterpart and even the n-gram model for the adjacent context, and its accuracy drops to random as more material intervenes. Note that, at the character level, even ``adjacent'' agreement requires carrying information through multiple steps (for example, in this specific case, the agreement violation would not emerge until enough characters of the noun have been processed to disambiguate its gender with respect to other forms beginning with the same prefixes). This might explain the lower performance of the RNN with respect to the LSTM.
+Results are presented in Figure~\ref{fig:german-syntax}
+(left). WordNLM performs best, followed by the LSTM CNLM.  While the
+n-gram baseline performs similarly to the CNLM when there is no
+intervening material, accuracy drops to chance level (0.33) in the
+presence of an adjective. This problem would not be mitigated by
+interpolation with or backoff to lower-order n-grams, as the relevant
+gender information is present only on the first and last word of each
+stimulus. We conclude that, while direct association between articles
+and nouns can be learnt from simple corpus statistics, the CNLM has
+some capability to preserve the relevant information across more than
+a dozen timesteps. The RNN CNLM is much worse than the LSTM
+counterpart and even the n-gram model for the adjacent context, and
+its accuracy drops to random as more material intervenes, further
+confirming the importance of storing long-distance information. Note
+that, at the character level, even ``adjacent'' agreement requires
+carrying information through multiple time steps (the agreement
+violation will not emerge until enough characters of the noun have
+been processed to disambiguate its gender with respect to its
+prefix-sharing cohort).
 
 % The exclusion of OOVs and thus limiting experiments on word-level models to frequent words might create an unfair advantage; running the CNLM only on those stimuli given to the word-level model results in slightly better accuracies but the same pattern of results.
 
@@ -49,15 +68,31 @@ Note that this problem would not be mitigated by interpolation with or backoff t
 % \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
 	\begin{tabular}{ccc}
 Gender & Case & Subcategorization \\
-\includegraphics[width=0.33\textwidth]{figures/german-gender-total.pdf} 
+\includegraphics[width=0.28\textwidth]{figures/german-gender-total.pdf} 
 		&
-		\includegraphics[width=0.33\textwidth]{figures/german-case-total.pdf}
+		\includegraphics[width=0.28\textwidth]{figures/german-case-total.pdf}
 		&
-\includegraphics[width=0.33\textwidth]{figures/german-prep-with-control.pdf}
+\includegraphics[width=0.28\textwidth]{figures/german-prep-with-control.pdf}
 	\end{tabular}
 \centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
 \caption{Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
 \end{figure*}
+
+% \begin{figure*}
+% % \includegraphics[width=0.24\textwidth]{figures/german-gender-m.pdf}
+% % \includegraphics[width=0.24\textwidth]{figures/german-gender-f.pdf}
+% % \includegraphics[width=0.24\textwidth]{figures/german-gender-n.pdf}
+% 	\begin{tabular}{ccc}
+% Gender & Case & Subcategorization \\
+% \includegraphics[width=0.33\textwidth]{figures/german-gender-total.pdf} 
+% 		&
+% 		\includegraphics[width=0.33\textwidth]{figures/german-case-total.pdf}
+% 		&
+% \includegraphics[width=0.33\textwidth]{figures/german-prep-with-control.pdf}
+% 	\end{tabular}
+% \centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
+% \caption{Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
+% \end{figure*}
 
 
 \paragraph{Case agreement}

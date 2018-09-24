@@ -76,16 +76,17 @@ adverb-adjective combination occurred in the training corpus, obtaining 88 pairs
 Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
 
 \begin{table}[t]
-  \begin{center}
-    \begin{tabular}{l|ll|l|l}
-	    & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{1}{c}{\multirow{2}{*}{Freq.}}\\
-	    &\emph{LSTM}&\emph{RNN} &  \\ \hline
+  \begin{small}
+    \begin{center}
+      \begin{tabular}{l|ll|l|l}
+        & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{1}{c}{\multirow{2}{*}{Freq.}}\\
+        &\emph{LSTM}&\emph{RNN} &  \\ \hline
 % eadj-aonoun
-	    Noun Gender & 93.1  & 79.2 & 97.4 & 50.0\\
+        Noun Gender & 93.1  & 79.2 & 97.4 & 50.0\\
 %      adv-aoadj
-	    Adj.~Gender & 99.5 & 98.9 & 99.5 & 50.0\\
+        Adj.~Gender & 99.5 & 98.9 & 99.5 & 50.0\\
 % adv-aeadj
-	    Adj.~Number & 99.0 & 84.5 & 100.0 & 50.0 \\
+        Adj.~Number & 99.0 & 84.5 & 100.0 & 50.0 \\
 %	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{2}{c}{\multirow{2}{*}{Frequency}}\\
 %	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} & & & \\ \hline
 %% eadj-aonoun
@@ -95,9 +96,10 @@ Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all th
 %% adv-aeadj
 %	    Adj.~Number & 99.0&99.0 & 99.0&70.0 & 100.0&100.0 & 86.7 & 13.3 \\
 %
-    \end{tabular}
-  \end{center}
-	\caption{\label{tab:ital-agr-results} Italian agreement results.} % For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
+      \end{tabular}
+    \end{center}
+  \end{small}
+  \caption{\label{tab:ital-agr-results} Italian agreement results.} % For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
 \end{table}
 
 \paragraph{Article-adjective number agreement}

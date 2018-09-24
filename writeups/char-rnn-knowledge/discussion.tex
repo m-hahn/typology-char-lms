@@ -1,41 +1,37 @@
 \section{Discussion}
 \label{sec:discussion}
 
-We probed the linguistic information induced by an LSTM language model
-trained on unsegmented text at the character level. We found that the
-model stores implicit knowledge about phonotactic constraints, word
-units, major morphosyntactic classes, non-adjacent syntactic agreement
-and subcategorization phenomena and even some degree of semantic
-knowledge. While a more standard model pre-initialized with a word
+We probed the linguistic information induced by a character-level LSTM
+language model trained on unsegmented text. The model was found to
+possess implicit knowledge about phonotactics, word units,
+morphosyntactic classes, syntactic agreement phenomena and basic
+semantics. A more standard model pre-initialized with a word
 vocabulary and reading tokenized input was in general superior on the
-higher-level tasks, the performance of our agnostic model did not
-generally lag much behind, suggesting that the word bias is helpful
-but not fundamental. The performance of character-level RNN was
-considerably less consistent than that of the equivalent LSTM, suggesting that
-the ability of the latter to track information across longer time
-steps is important to extract linguistic generalizations from the raw
-input. Importantly, n-gram baselines only relying on adjacent string
-statistics fail almost all tests, showing that the neural models
-are tapping into somewhat deeper linguistic templates.
+higher-level tasks, but the performance of our agnostic model did not
+generally lag much behind, suggesting that the word prior is helpful
+but not fundamental. The performance of a character-level RNN was less
+consistent than that of the LSTM, suggesting that the ability of the
+latter to track information across longer time stretches is important
+to extract the correct linguistic generalizations. N-gram baselines
+relying on adjacent-string statistics failed almost everywhere,
+showing that the neural models are tapping into somewhat deeper
+linguistic templates.
 
-Our results are very preliminary in many ways. The tests we used are
-generally simple \cite[we did not attempt, for example, to model
+Our results are preliminary in many ways. The tests we used are
+generally quite simple \cite[we did not attempt, for example, to model
 long-distance subject-verb agreement, a task that is challenging even
-for word-based models:][]{Linzen:etal:2016}, and they only probe a
-small subset of linguistic rules. Still, they do suggest that a large
-corpus, combined with the very weak priors encoded in an LSTM, might
-suffice to discover generalizations that appear to be of a genuine
-linguistic nature. It is entirely plausible, of course, that much
-stronger priors would be needed when using smaller amounts of training
-data, an hypothesis that we would like to study in future work.
+for word-based models:][]{Linzen:etal:2016}. Still, they do suggest
+that a large corpus, combined with the very weak priors encoded in an
+LSTM, might suffice to support genuine linguistic generalizations. In
+future work, we would like to check if stronger priors are needed when
+learning from smaller amounts of training data.
 
-One aspect that we find particularly intriguing is that, unlike the
-standard word-based models, our CNLMs do not have a morpheme- or
-word-based lexicon. Any information the network might acquire about
-units larger than characters must be stored in its recurrent
-weights. Given that nearly all contemporary linguistics recognizes a
-central role to the lexicon \cite[see, e.g.,][for different
-perspectives]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016},
+Unlike standard word-level models, CNLMs lack a word-based
+lexicon. Any information they might acquire about units larger than
+characters must be stored in their recurrent weights. Given that
+nearly all contemporary linguistics recognizes a central role to the
+lexicon \cite[see,
+e.g.,][]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016},
 in future work we would like to explore how lexical knowledge is
 implicitly encoded in the distributed memory of our CNLMs.
 

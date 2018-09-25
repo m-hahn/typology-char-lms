@@ -38,7 +38,8 @@ word-based model fares better, but the gap, especially in Italian, is
 rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
 
 \begin{table}[t]
-  \begin{small}
+%  \begin{small}
+\footnotesize
     \begin{center}
       \begin{tabular}{l|l|l}
         &\emph{German}&\emph{Italian}\\
@@ -50,7 +51,7 @@ rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref
         WordNLM (all words) & 53.5 ($\pm$ 0.18)  & 62.5 ($\pm$ 0.26) \\
       \end{tabular}
     \end{center}
-  \end{small}
+ % \end{small}
   \caption{\label{tab:pos-results} Word class accuracy (20 training examples), with standard errors.}
 \end{table}
 
@@ -82,7 +83,7 @@ suffixation to train the classifier (e.g., \emph{Geschichte-n} `stories'), and t
 %\textbf{Add one
 %  example from training, one from testing.}
 
-For the training set, we randomly selected 30 singulars and plurals
+For the training set, we randomly selected 15 singulars and plurals
 from each training class.  As plural suffixes make words longer, we
 sampled singulars and
 plurals %used rejection sampling \textbf{(cite something?)}
@@ -90,7 +91,8 @@ from a single distribution over lengths, to ensure that their lengths
 were approximately matched.  For the test set, we selected all plurals
 in -\emph{r} (127 items) or Umlaut (38 items), with their respective
 singulars. %\textbf{(how many?)}.
-\textbf{Need information on the test set for the training classes.}
+We further selected all remaining plurals ending in -\emph{n} (1467 items), -\emph{s} (98 items) and -\emph{e} (832 items) as test data.
+%\textbf{Need information on the test set for the training classes.}
 To control for the impact of random training sample selection, we
 report accuracies averaged over 200 repetitions.  We extract word
 representations as above, and we compare to an autoencoder and
@@ -100,7 +102,7 @@ Results are summarized in Table \ref{tab:number-results}.
 \begin{table}[t]
 	\footnotesize
   \begin{center}
-    \begin{tabular}{l|c|l|lllllll}
+    \begin{tabular}{@{\hspace{0.5em}}l@{\hspace{0.5em}}|@{\hspace{0.5em}}c@{\hspace{0.5em}}|@{\hspace{0.5em}}l@{\hspace{0.7em}}l@{\hspace{0.5em}}}
       &train classes&\multicolumn{2}{c}{test classes}\\
       &\emph{-n/-s/-e}&\multicolumn{1}{c}{\emph{-r}}&\multicolumn{1}{c}{\emph{Umlaut}}\\      \hline
 	    LSTM& 77.9 ($\pm$ 0.8) & 88.2 ($\pm$ 0.3) & 52.8 ($\pm$ 0.6) \\

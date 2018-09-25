@@ -40,27 +40,99 @@ while below that of LSTMs, is much stronger. %  The WordNLM shows a
 
 % This experiment shows that a CNLM, trained without word boundaries, learns forms of semantic/world knowledge to a degree competitive with models trained on words.
 
+%\begin{table}[t]
+%  \begin{small}
+%    \begin{center}
+%      \begin{tabular}{l|l}
+%        % \multicolumn{1}{c}{}& Model \\
+%        LSTM 	    &      34.1/59.0 \\ % /59.2
+%        RNN  &     24.3/24.0 \\ % /27.1
+%        WordNLM & 37.1/63.3 \\ \hline % 50.1/52.4/
+%%        Random & 20.0 \\ \hline
+%        KN5   & 40.0 \\
+%        Word RNN & 45.0 \\
+%        Word LSTM & 56.0 \\ 
+%        LdTreeLSTM  & 60.67 \\	    \hline
+%        Skipgram + RNNs  & 58.9 \\
+%        \citet{woods2016exploiting} &  61.4 \\
+%        \citet{melamud2016context2vec} & 65.1 \\
+%      \end{tabular}
+%    \end{center}
+%  \end{small}
+%  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show accuracies for  Wikipedia/in-domain training. We compare with language models from prior work: Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics: Skipgram+RNNs from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
+%\end{table}
+%
+%
+%
+
+%
+%\begin{table}[t]
+%  \footnotesize{
+%    \begin{center}
+%\begin{tabular}{l|l||l|l}
+%        % \multicolumn{1}{c}{}& Model \\
+%\hline
+%        LSTM 	    &      34.1/59.0 \\ % /59.2
+%        RNN  &     24.3/24.0 \\ % /27.1
+%        WordNLM & 37.1/63.3 \\ \hline % 50.1/52.4/
+%%        Random & 20.0 \\ \hline
+%\hline
+%        KN5   & 40.0            & Skipgram + RNNs  & 58.9 \\                                 
+%        Word RNN & 45.0         & \citet{woods2016exploiting} &  61.4 \\                      
+%        Word LSTM & 56.0        & \citet{melamud2016context2vec} & 65.1 \\                    
+%        LdTreeLSTM  & 60.7     &                     \\	    \hline
+%             \end{tabular}
+%    \end{center}
+%  }
+%  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show accuracies for  Wikipedia/in-domain training. We compare with language models from prior work: Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics: Skipgram+RNNs from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
+%\end{table}
+%
+%
+
+
+
 \begin{table}[t]
-  \begin{small}
+  \footnotesize{
     \begin{center}
       \begin{tabular}{l|l}
         % \multicolumn{1}{c}{}& Model \\
+\hline
         LSTM 	    &      34.1/59.0 \\ % /59.2
         RNN  &     24.3/24.0 \\ % /27.1
         WordNLM & 37.1/63.3 \\ \hline % 50.1/52.4/
 %        Random & 20.0 \\ \hline
-        KN5   & 40.0 \\
-        Word RNN & 45.0 \\
-        Word LSTM & 56.0 \\ 
-        LdTreeLSTM  & 60.67 \\	    \hline
-        Skipgram + RNNs  & 58.9 \\
-        \citet{woods2016exploiting} &  61.4 \\
-        \citet{melamud2016context2vec} & 65.1 \\
-      \end{tabular}
+\end{tabular}
+
+\begin{tabular}{l|l||l|l}
+\hline
+        KN5   & 40.0            & Skipgram         & 48.0    \\                                
+        Word RNN & 45.0         & Skipgram + RNNs  & 58.9 \\                                  
+        Word LSTM & 56.0        & \citet{woods2016exploiting} &  61.4 \\                      
+        LdTreeLSTM  & 60.7     &  \citet{melamud2016context2vec} & 65.1 \\       \hline
+             \end{tabular}
     \end{center}
-  \end{small}
-  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show accuracies for  Wikipedia/in-domain training. We compare with language models from prior work: Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics: Skipgram+RNNs from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
+  }
+  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models (top), we show accuracies for  Wikipedia/in-domain training. We compare with language models from prior work (left): Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics (right): Skipgram(+RNNs) from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
 \end{table}
+
+
+%
+%
+%\begin{table*}[t]
+%  \begin{small}
+%    \begin{center}
+%      \begin{tabular}{l|llllllllllllllllll}
+%        % \multicolumn{1}{c}{}& Model \\
+%        LSTM 	    &      34.1/59.0  &     KN5   & 40.0          & Skipgram + RNNs  & 58.9 \\           
+%        RNN  &     24.3/24.0          &     Word RNN & 45.0       & \citet{woods2016exploiting} &  61.4 \\ 
+%        WordNLM & 37.1/63.3           &     Word LSTM & 56.0      & \citet{melamud2016context2vec} & 65.1 \\ 
+%                &                     &      LdTreeLSTM  & 60.67  &                 \\
+%             \end{tabular}
+%    \end{center}
+%  \end{small}
+%  \caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models, we show accuracies for  Wikipedia/in-domain training. We compare with language models from prior work: Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics: Skipgram+RNNs from \newcite{Mikolov:etal:2013b}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
+%\end{table*}
+
 
 
 

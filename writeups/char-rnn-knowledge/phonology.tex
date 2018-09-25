@@ -62,9 +62,9 @@ bigram is higher than that of the acceptable one. For example,
 isn't, although \emph{t} is more frequent than \emph{r}.  For each
 such pair, we re-train the CNLMs on a version of the training partition
 from which all words containing either bigram have been removed.  We
-then look at the likelihood the model assigns to both sequences. If
-the model systematically assigns a larger probability to correct
-sequences, this provides evidence that it implicitly possesses a
+then look at the likelihood the re-trained model assigns to both sequences. If
+the re-trained models systematically assign a larger probability to correct
+sequences, this provides evidence that the CNLM implicitly possesses a
 notion of phonological categories such as stops and sonorants, which
 allows it to correctly generalize from attested sequences (e.g.,
 ``\emph{tr}'') to unattested ones (\emph{``br''}). In both languages,

@@ -20,12 +20,12 @@ representing phonemes were included, resulting in vocabularies of 60 (English), 
 We further constructed \emph{word-level neural language models} (WordNLMs); 
 their vocabulary included the most frequent 50,000 words per corpus.
 
-We constructed vanilla RNN and LSTM CNLMs; we will refer to them as
+We trained RNN and LSTM CNLMs; we will refer to them simply as
 \emph{RNN} and \emph{LSTM}, respectively. We used LSTM cells for
-WordNLMs.  For each model and each language, we applied random
+WordNLMs.  For each model/language, we applied random
 hyperparameter search.  We terminated training after 72 hours; none of
 the models had overfitted, as measured by performance on the
-validation set, that we used for model selection.\footnote{The selected
+validation set, used for model selection.\footnote{The selected
   hyperparameters are reported in supplementary material to be made
   available upon publication.}
 

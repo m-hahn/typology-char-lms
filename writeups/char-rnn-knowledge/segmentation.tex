@@ -1,7 +1,7 @@
 \subsection{Word segmentation}
 \label{sec:segmentation}
 
-We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and not being exposed to the most obvious cue to word boundaries, namely whitespace. %
+We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and not being cued to wordhood by whitespace. %
 % (whitespace), if it is distilling meaningful linguistic knowledge, we
 % expect that it should develop some implicit notion of word-like units.
 Early work on word segmentation has shown that low transition
@@ -41,12 +41,12 @@ context, (3) \emph{PMI of left and right contexts}, that is, the total
 %The rationale of (3) is that it measures the pointwise mutual information, and thus the statistical association, between the subsequent characters and the prior context, which we hypothesize will be higher inside words.
 %It is also the transition probability for the next characters
 %(3) can also be interpreted as the result of normalizi transition probability
- We collected these quantities for each position and for the preceding
+ We collected these quantities for each position and the preceding
  and following three characters, resulting in a 21-feature classifier. %
 %In total, the classifier has 21 coefficients.
-We also conducted the same experiment with features extracted from a
+We repeated the  experiment with features extracted from a
 character-level 8-gram model estimated on the training set, closer to
-the setup of earlier non-neural work
+ earlier non-neural work
 \cite{saffran-word-1996, feng-accessor-2004}.
 
 
@@ -96,7 +96,7 @@ the setup of earlier non-neural work
 % For each language model and language, we compute how many of the extracted tokens were correct (precision) and how many of the actual tokens were found by the classifier (recall), together with F1.
 % The goal of this experiment is not to construct a new word segmentation system, but to evaluate how strongly the CNLM's probabilities are indicative of word boundaries.
 
-Results are shown in Table~\ref{tab:segmentation-results}. The
+Results are in Table~\ref{tab:segmentation-results}. The
 CNLM-based classifiers robustly segment more than half of the tokens
 correctly, and do considerably better than the 8-gram model,
 with a slight edge for the LSTM.%  Ablation shows that entropy is most
@@ -121,7 +121,7 @@ logistic classifier trained on 21 features.
 %\emph{correlate} with word boundaries. \textbf{Not sure I got the
 %  latter point.}
 
-Running Bayesian methods on the Wikipedia dumps is computationally
+Running Bayesian methods on Wikipedia dumps is computationally
 unfeasible. We re-trained instead the LSTM (with fixed
 hyperparameters) on the Brent corpus of child-directed speech
 \cite{brent-efficient-1999} also used by Goldwater and colleagues.  We
@@ -130,7 +130,7 @@ classifier, and 5\% for word segmentation evaluation.  The Bayesian
 model is trained and evaluated on the full dataset, as it does not
 rely on word boundary information during training. Results in
 Table~\ref{tab:segmentation-results-brent} show that the CNLM
-performance is broadly comparable to that of the sophisticated Bayesian
+performance is comparable to that of the sophisticated Bayesian
 segmentation method.
 
 % \begin{table*}[t]
@@ -184,10 +184,9 @@ segmentation method.
 
 %In contrast to the Wikipedia experiments, PMI emerges as the most important predictor on this dataset.
 
-Looking at the main errors made by our English CNLM-based segmenter is
-instructive. We consider first the 30 most common undersegmentations
+We looked at common errors made by the English CNLM-based segmenter. Considering first the 30 most common undersegmentations
 in the test set (that is, cases in which the model failed to split two
-or more words). About half (16) of them are common function word
+or more words): About half (16) are function word
 sequences that could reasonably be re-analyzed as single words (e.g.,
 \emph{more than}, \emph{as well as}, \emph{such as}). Of the remaining
 cases, 8 follow the \emph{N of} pattern, where \emph{N} is a

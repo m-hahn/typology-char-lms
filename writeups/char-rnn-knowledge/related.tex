@@ -18,25 +18,24 @@ some extent, of hierarchical structure. In particular, they are able
 to correctly balance parentheses when generating text.
 
 Our aim here is to understand to what extent CNLMs trained on
-unsegmented input learn various linguistic constructs. This is
-different from much work in the area, that has focused on
-\emph{character-aware} architectures combining character- and
-word-level information to develop state-of-the-art language models
-that are also effective in morphologically rich languages \citep[see,
-e.g.,][and references
+unsegmented input learn various linguistic constructs. This differs
+from most recent work in the area, that has focused on \emph{character-aware}
+architectures combining character- and word-level information to
+develop state-of-the-art language models that are also effective in
+morphologically rich languages \citep[see, e.g.,][and references
 there]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}. For
 example, the influential model of Kim and colleagues performs
 prediction at the word level, but uses a character-based convolutional
-network to generate word representation. There is also
-work on segmenting words into morphemes with character-level RNNs
-\cite{Kann:etal:2016}, with emphasis on optimizing segmentation, as
+network to generate word representations. Other work focuses on
+segmenting words into morphemes with character-level RNNs
+\cite[e.g.,][]{Kann:etal:2016}, with emphasis on optimizing segmentation, as
 opposed to our interest in probing what the network implicitly learned
-about morphemes and other units during generic language
-modeling.%  Moreover, these networks are not exposed to constituents
+about morphemes and other units through generic language
+modeling.% Moreover, these networks are not exposed to constituents
 % larger than words.
 
 
-\paragraph{Probing linguistic knowledge of neural language models} There is extensive work on probing the linguistic properties of
+\paragraph{Probing linguistic knowledge of neural language models} Extensive work probes the linguistic properties of
 word-based neural language models, as well as more complex
 architectures such as sequence-to-sequence systems: see, e.g.,
 \newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Hupkes:etal:2017,Kadar:etal:2017,Li:etal:2017,Conneau:etal:2018}.
@@ -51,8 +50,7 @@ character-based decoders generalize better to unseen words, but
 capture less grammatical knowledge than subword units. Still, his
 character-based systems lagged only marginally behind the subword
 architectures on grammatical tasks such as handling agreement and
-negation. \newcite{Radford:etal:2017} also studied CNLMs (or, more
-precisely, byte-level models) with focus on understanding their
+negation. \newcite{Radford:etal:2017} also studied CNLMs with focus on understanding their
 properties, but only in the domain of sentiment
 analysis. \newcite{Godin:etal:2018} investigated the rules implicitly
 used by supervised character-aware neural morphological segmentation
@@ -61,14 +59,14 @@ linguistically sensible patterns. More closely related to our goals,
 \newcite{Alishahi:etal:2017} probed the linguistic knowledge induced by
 a neural network that receives unsegmented acoustic input. They used
 however a considerably more complex architecture, trained on
-multimodal data, and they focused on the phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a related study
+multimodal data, and they focused on phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a related study
 probing the linguistic knowledge of plain character-level neural
-language models. Their results are aligned with ours, as they showed
+language models. Their results are aligned with ours, as they show
 that these models have knowledge of lexical and morphological
 structure, and they capture morphosyntactic categories as well as
 constraints on possible morpheme combinations. One of their most
 intriguing results is that the model tracks morpheme boundaries in a
-localist fashion through a single unit (we did not replicate the
+localist fashion through a single unit (we could not replicate the
 result with our model).  They do not explore syntactic or semantic
 knowledge, and they limit their study to English. Moreover, they
 trained their models on input with whitespace, thus providing the

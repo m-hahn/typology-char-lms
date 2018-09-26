@@ -3,9 +3,9 @@
 
 \paragraph{Discovering phonological classes} Are CNLMs discovering distributional
 generalizations about the phonological system of a language (as
-noisily reflected in the orthography). To answer this, we
-produced agglomerative clusterings of the character embeddings in the
-trained LSTM  input and output embeddings. No clear pattern
+noisily reflected in the orthography)? We
+produced agglomerative clusterings of the
+trained LSTM  input and output character embeddings. No clear pattern
 emerged from the input embeddings, whereas the output
 embeddings (probably more tuned to capture contextual dependencies)
 led to meaningful phonological classes in all languages. This is illustrated for
@@ -15,8 +15,7 @@ between vowels and consonants. Within the vowels, the front vowels
 observe a cluster of alveolar sonorants (\emph{n, l, r}). The
 labial/labiodental \emph{f, p, b, v, w} plus intruder \emph{g}
 form a cluster. Symbols often denoting velar or palatal sounds, such
-as \emph{c}, \emph{k} and \emph{q} cluster together. Not surprisingly,
-\emph{s} and \emph{{\ss}}, that, depending on context, denote the same
+as \emph{c}, \emph{k} and \emph{q} cluster together. The \emph{s} and \emph{{\ss}} letters, that, depending on context, denote the same
 or closely related sounds, cluster together. While the
  clustering does not reflect a single,
 consistent phonological dimension, it definitely suggests that the
@@ -88,7 +87,7 @@ dramatic difference is surprising, since the relevant generalizations
 pertain to adjacent symbols that either model should
 capture. Possibly, although the tested rules are local, phonological
 categories are better learnt by a model that can extract
-generalizations from wider contexts.
+generalizations about phoneme classes from wider contexts.
 
 \begin{table}[t]
   \begin{small}

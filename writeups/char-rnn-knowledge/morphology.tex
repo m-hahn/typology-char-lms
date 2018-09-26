@@ -74,11 +74,10 @@ classifier on a subset of these classes, and test on the others. If a
 model generalizes correctly, it means that it is sensitive to number
 as an abstract feature, independently of its surface expression.
 
-We extracted plural nouns from the German Universal Dependencies
+We extracted plural nouns from the German UD
 treebank \cite{de2006generating,mcdonald2013universal}.  We selected
-nouns with plurals formed with -\emph{n}, -\emph{s}, or -\emph{e}
-suffixation to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
--\emph{r} suffixation or vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter').
+nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
+-\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter').
 %\textbf{Add one
 %  example from training, one from testing.}
 
@@ -90,7 +89,7 @@ from a single distribution over lengths, to ensure that their lengths
 were approximately matched.  For the test set, we selected all plurals
 in -\emph{r} (127) or Umlaut (38), with their respective
 singulars. %\textbf{(how many?)}.
-We alsu used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
+We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
 %\textbf{Need information on the test set for the training classes.}
 To control for the impact of training sample selection, we
 report accuracies averaged over 200 repetitions.  We extract word

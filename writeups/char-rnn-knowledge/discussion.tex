@@ -4,7 +4,7 @@
 We probed the linguistic information induced by a character-level LSTM
 language model trained on unsegmented text. The model was found to
 possess implicit knowledge about phonotactics, word units,
-morphosyntactic classes, syntactic agreement phenomena and basic
+morphological features, syntactic agreement phenomena and basic
 semantics. A more standard model pre-initialized with a word
 vocabulary and reading tokenized input was in general superior on the
 higher-level tasks, but the performance of our agnostic model did not
@@ -19,12 +19,13 @@ linguistic templates.
 
 Our results are preliminary in many ways. The tests we used are
 generally quite simple \cite[we did not attempt, for example, to model
-long-distance subject-verb agreement, a task that is challenging even
-for word-based models:][]{Linzen:etal:2016}. Still, they do suggest
-that a large corpus, combined with the very weak priors encoded in an
-LSTM, might suffice to support genuine linguistic generalizations. In
-future work, we would like to check if stronger priors are needed when
-learning from smaller amounts of training data.
+long-distance agreement in presence of distractors, a
+challenging task even for word-based models and
+humans:][]{Gulordava:etal:2018}. Still, they  suggest that a large
+corpus, combined with the weak priors encoded in an LSTM, might
+suffice to support genuine linguistic generalizations. In future work,
+we will check if stronger priors are needed when learning
+from smaller amounts of training data.
 
 Unlike standard word-level models, CNLMs lack a word-based
 lexicon. Any information they might acquire about units larger than
@@ -33,7 +34,7 @@ nearly all contemporary linguistics recognizes a central role to the
 lexicon \cite[see,
 e.g.,][]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016},
 in future work we would like to explore how lexical knowledge is
-implicitly encoded in the distributed memory of our CNLMs.
+implicitly encoded in the distributed memory of the CNLMs.
 
-One of our original motivations for not assuming word primitives is that a rigid word notion is problematic both cross-linguistically (cf.~polysynthetic and agglutinative languages) and when analyzing a single language (cf.~the common  view  that the lexicon hosts units at different levels of the linguistic hierarchy, from  morphemes to large syntactic constructions). Our brief analysis of the CNLM over- and undersegmentations suggested that it is indeed capable to flexibly store information about units at different levels. However, this topic  remained largely unexplored, and we plan to systematically tackle it in future work.
+One of our original motivations for not assuming word primitives is that a rigid word notion is problematic both cross-linguistically (cf.~polysynthetic and agglutinative languages) and within a single linguistic system (cf.~the common  view  that the lexicon hosts units at different levels of the linguistic hierarchy, from  morphemes to large syntactic constructions). Our brief analysis of the CNLM over- and undersegmentations suggested that it is indeed capable to flexibly store information about units at different levels. However, this topic  remained largely unexplored, and we plan to tackle it in future work.
 

@@ -8,12 +8,12 @@ systematically encoded and it is possible to compare same-length
 strings. We are able to extract enough stimuli that never occur in the
 training corpus, so that an n-gram control would be at chance
 level. Moreover, by experiment construction, baselines relying on
-unigram frequency would also be at chance level.
+unigram frequency are also at chance level.
 
 \paragraph{Article-noun gender agreement}
 %(1) eadj-aonoun:
 
-Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of masculine and feminine nouns differing only in the final vowel vowel (-\emph{o} and -\emph{a}, respectively). We construct pairs %of stimuli
+Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of masculine and feminine nouns differing only in the final vowel (-\emph{o} and -\emph{a}, respectively). We construct pairs %of stimuli
 of the form:
 \ex.\ag. \{\underline{il},\ la\}  congeniale  candidato \\
 the congenial candidate\ (m.) \\
@@ -32,8 +32,8 @@ the congenial candidate\ (f.) \\
 %\end{tabular}
 %\end{enumerate}
 
-The intervening adjective, ending in -\emph{e}, does not reveal the
-noun's gender, increasing the distance across which gender information
+The intervening adjective, ending in -\emph{e}, does not reveal
+noun gender, increasing the distance across which gender information
 has to be transported. We constructed the stimuli with words appearing
 at least 100 times in the training corpus. We required moreover that
 the \emph{-a} and \emph{-o} forms of a noun are reasonably balanced in
@@ -42,7 +42,7 @@ both rather frequent (appear at least 500 times). As the prenominal
 adjectives are somewhat marked, we only considered -\emph{e}
 adjectives that occur prenominally with at least 10 distinct nouns in
 the training corpus. We obtained 15,005 pairs of stimuli.  Here and
-below, stimuli where checked for strong semantic anomalies. %  In
+below, stimuli were checked for strong semantic anomalies. %  In
 % addition to CNLMs and WordNLM, we tested frequency baseline choosing
 % the option with the higher unigram probability (whole-stimulus corpus
 % frequencies are at chance by construction).

@@ -25,9 +25,8 @@ We trained RNN and LSTM CNLMs; we will refer to them simply as
 WordNLMs.  For each model/language, we applied random
 hyperparameter search.  We terminated training after 72 hours; none of
 the models had overfitted, as measured by performance on the
-validation set, used for model selection.\footnote{The selected
-  hyperparameters are reported in supplementary material to be made
-  available upon publication.}
+validation set, used for model selection.\footnote{Hyperparameter range and choices are in supplementary material to be made
+  available upon publication. Chosen architectures (layers/embedding size/hidden size): LSTM: En.~3/200/1024, Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048, It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}
 
 Language modeling performance on the test partitions is shown in
 Table~\ref{tab:lm-results}. Recall that we removed whitespace, which

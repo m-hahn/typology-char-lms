@@ -12,21 +12,28 @@ parser.add_argument("--gpu", dest="gpu", type=bool)
 
 import random
 
-parser.add_argument("--batchSize", type=int, default=32)
+parser.add_argument("--batchSize", type=int, default=16)
 parser.add_argument("--char_embedding_size", type=int, default=100)
-parser.add_argument("--hidden_dim", type=int, default=512)
+parser.add_argument("--hidden_dim", type=int, default=1024)
 parser.add_argument("--layer_num", type=int, default=1)
-parser.add_argument("--weight_dropout_in", type=float, default=0.3)
+parser.add_argument("--weight_dropout_in", type=float, default=0.01)
 parser.add_argument("--weight_dropout_hidden", type=float, default=0.1)
-parser.add_argument("--char_dropout_prob", type=float, default=0.05)
-parser.add_argument("--char_noise_prob", type = float, default= 0.0)
-parser.add_argument("--learning_rate", type = float, default= 0.4)
+parser.add_argument("--char_dropout_prob", type=float, default=0.33)
+parser.add_argument("--char_noise_prob", type = float, default= 0.01)
+parser.add_argument("--learning_rate", type = float, default= 0.1)
 parser.add_argument("--myID", type=int, default=random.randint(0,1000000000))
 parser.add_argument("--sequence_length", type=int, default=50)
 
 
 args=parser.parse_args()
 print(args)
+
+
+def device(x):
+    if args.gpu:
+        return x.cuda()
+    else:
+        return x
 
 
 
@@ -78,13 +85,7 @@ print(torch.__version__)
 from weight_drop import WeightDrop
 
 
-def device(x):
-    if args.gpu:
-        return x.cuda()
-    else:
-        return x
-
-rnn = device(torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num))
+rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num).cuda()
 
 rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
@@ -93,9 +94,9 @@ print(rnn_parameter_names)
 
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
-output = device(torch.nn.Linear(args.hidden_dim, len(itos)+3))
+output = torch.nn.Linear(args.hidden_dim, len(itos)+3).cuda()
 
-char_embeddings = device(torch.nn.Embedding(num_embeddings=len(itos)+3, embedding_dim=args.char_embedding_size))
+char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)+3, embedding_dim=args.char_embedding_size).cuda()
 
 logsoftmax = torch.nn.LogSoftmax(dim=2)
 
@@ -164,8 +165,8 @@ def prepareDataset(data, train=True):
 
 
 def forward(numeric, train=True, printHere=False):
-      input_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[:-1]), requires_grad=False)
-      target_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[1:]), requires_grad=False)
+      input_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[:-1].cuda(), requires_grad=False)
+      target_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[1:].cuda(), requires_grad=False)
 
 
     #  print(char_embeddings)
@@ -186,10 +187,10 @@ def forward(numeric, train=True, printHere=False):
   #    print(log_probs)
  #     print(target_tensor)
 
-      loss = train_loss(log_probs.view(-1, len(itos)+3), target_tensor.contiguous().view(-1))
+      loss = train_loss(log_probs.view(-1, len(itos)+3), target_tensor.view(-1))
 
       if printHere:
-         lossTensor = print_loss(log_probs.view(-1, len(itos)+3), target_tensor.contiguous().view(-1)).view(args.sequence_length, len(numeric))
+         lossTensor = print_loss(log_probs.view(-1, len(itos)+3), target_tensor.view(-1)).view(args.sequence_length, len(numeric))
          losses = lossTensor.data.cpu().numpy()
 #         boundaries_index = [0 for _ in numeric]
          for i in range((args.sequence_length-1)-1):
@@ -278,8 +279,6 @@ for epoch in range(10000):
    if len(devLosses) > 1 and devLosses[-1] > devLosses[-2]:
       break
    if args.save_to is not None:
-      torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+"_EPOCH_"+str(epoch)+".pth.tar")
       torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+".pth.tar")
-
 
 

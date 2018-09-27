@@ -1,30 +1,36 @@
-from config import VOCAB_HOME, CHAR_VOCAB_HOME, CHECKPOINT_HOME
-
-
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--language", dest="language", type=str)
 parser.add_argument("--load-from", dest="load_from", type=str)
 #parser.add_argument("--save-to", dest="save_to", type=str)
+parser.add_argument("--gpu", dest="gpu", type=bool)
+
 
 import random
 
-parser.add_argument("--batchSize", type=int, default=32)
+parser.add_argument("--batchSize", type=int, default=16)
 parser.add_argument("--char_embedding_size", type=int, default=100)
-parser.add_argument("--hidden_dim", type=int, default=512)
+parser.add_argument("--hidden_dim", type=int, default=1024)
 parser.add_argument("--layer_num", type=int, default=1)
-parser.add_argument("--weight_dropout_in", type=float, default=0.3)
+parser.add_argument("--weight_dropout_in", type=float, default=0.01)
 parser.add_argument("--weight_dropout_hidden", type=float, default=0.1)
-parser.add_argument("--char_dropout_prob", type=float, default=0.05)
-parser.add_argument("--char_noise_prob", type = float, default= 0.0)
-parser.add_argument("--learning_rate", type = float, default= 0.4)
+parser.add_argument("--char_dropout_prob", type=float, default=0.33)
+parser.add_argument("--char_noise_prob", type = float, default= 0.01)
+parser.add_argument("--learning_rate", type = float, default= 0.1)
 parser.add_argument("--myID", type=int, default=random.randint(0,1000000000))
-parser.add_argument("--sequence_length", type=int, default=50)
+parser.add_argument("--sequence_length", type=int, default=20)
 
 
 args=parser.parse_args()
 print(args)
+
+
+def device(x):
+    if args.gpu:
+        return x.cuda()
+    else:
+        return x
 
 
 
@@ -42,21 +48,22 @@ def plus(it1, it2):
    for x in it2:
       yield x
 
+# read the character vocabulary
 try:
-   with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "r") as inFile:
+   with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "r") as inFile:
      itos = inFile.read().strip().split("\n")
-except FileNotFoundError:
+except FileNotFoundError: # or, if that fails, construct one for the language
     print("Creating new vocab")
     char_counts = {}
     # get symbol vocabulary
-    with open(VOCAB_HOME+args.language+"-vocab.txt", "r") as inFile:
+    with open("/private/home/mhahn/data/acqdiv/"+args.language+"-vocab.txt", "r") as inFile:
       words = inFile.read().strip().split("\n")
       for word in words:
          for char in word.lower():
             char_counts[char] = char_counts.get(char, 0) + 1
     char_counts = [(x,y) for x, y in char_counts.items()]
-    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))]
-    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile:
+    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))] # if y > 5]
+    with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "w") as outFile:
        print("\n".join(itos), file=outFile)
 #itos = sorted(itos)
 itos.append("\n")
@@ -66,36 +73,20 @@ stoi = dict([(itos[i],i) for i in range(len(itos))])
 
 halfSequenceLength = int(args.sequence_length/2)
 
-
-
 import random
-
-
 import torch
-
 print(torch.__version__)
-
 from weight_drop import WeightDrop
 
-def device(x):
-    if args.gpu:
-        return x.cuda()
-    else:
-        return x
-
-
-rnn = device(torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num))
-
+# Create the neural model
+rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num).cuda()
 rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
-#quit()
-
-
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
-# -1, because whitespace doesn't actually appear
-output = device(torch.nn.Linear(args.hidden_dim, len(itos)-1+3))
-char_embeddings = device(torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size))
+
+output = torch.nn.Linear(args.hidden_dim, len(itos)-1+3).cuda() # -1, because whitespace doesn't actually appear
+char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size).cuda()
 
 logsoftmax = torch.nn.LogSoftmax(dim=2)
 
@@ -115,8 +106,10 @@ optim = torch.optim.SGD(parameters(), lr=args.learning_rate, momentum=0.0) # 0.0
 
 named_modules = {"rnn" : rnn, "output" : output, "char_embeddings" : char_embeddings, "optim" : optim}
 
+
+# Load the model from the checkpoint
 if args.load_from is not None:
-  checkpoint = torch.load(CHECKPOINT_HOME+args.load_from+".pth.tar")
+  checkpoint = torch.load("/checkpoint/mhahn/"+args.load_from+".pth.tar")
   for name, module in named_modules.items():
       module.load_state_dict(checkpoint[name])
 
@@ -126,32 +119,31 @@ from torch.autograd import Variable
 data = AcqdivReaderPartition(acqdivCorpusReader, partition="train").reshuffledIterator(blankBeforeEOS=False)
 
 
+# Read the data into a list of integers
 numeric_with_blanks = []
 count = 0
 print("Prepare chunks")
 for chunk in data:
   numeric_with_blanks.append(stoi[" "]+3)
   for char in chunk:
-#    print((char if char != "\n" else "\\n", stoi[char]+3 if char in stoi else 2))
     count += 1
     if char not in stoi:
         print(char)
     numeric_with_blanks.append(stoi[char]+3 if char in stoi else 2)
 
 # select a portion
-numeric_with_blanks = numeric_with_blanks[:10000]
+numeric_with_blanks = numeric_with_blanks[:100000]
 
-boundaries = []
-numeric_full = []
+# record word boundaries
+boundaries = [] # the positions of word boundaries in numeric_full -- that is, the indices of every first character of a word
+numeric_full = [] # the corpus without word boundaries ( as a list of integers)
 for entry in numeric_with_blanks:
- # print((entry-3, itos[entry-3]))
-  #assert entry > 3
   if entry > 3 and itos[entry-3] == " ":
      boundaries.append(len(numeric_full))
   else:
      numeric_full.append(entry)
 
-
+# recording the statistics that word segmemtation is based on
 future_surprisal_with = [None for _ in numeric_full]
 future_surprisal_without = [None for _ in numeric_full]
 
@@ -166,8 +158,8 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
         numeric[i] = numeric[i] + [0]*(maxLength-len(numeric[i]))
 
 
-      input_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[:-1]), requires_grad=False)
-      target_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[1:]), requires_grad=False)
+      input_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[:-1].cuda(), requires_grad=False)
+      target_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[1:].cuda(), requires_grad=False)
       embedded = char_embeddings(input_tensor)
 
 
@@ -178,7 +170,7 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
       entropy = (- log_probs * torch.exp(log_probs)).sum(2).view((maxLength-1), args.batchSize).data.cpu().numpy()
 
       # 
-      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.contiguous().view(-1)).view((maxLength-1), args.batchSize)
+      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.view(-1)).view((maxLength-1), args.batchSize)
       losses = loss.data.cpu().numpy()
 #      for i in range(len(numeric[0])-1):
 
@@ -281,102 +273,30 @@ for char, predicted, real, predictor in zip(chars_test, predictions, y_test, x_t
 
 realLexicon = set()
 extractedLexicon = {}
-extractedLexiconWithReal = {}
 currentWord = ""
 currentWordReal = ""
 realWords = 0
 predictedWords = 0
-
-# for each predicted word, count whether it is an example of:
 agreement = 0
-oversegmented = 0
-undersegmented = 0
-missegmented = 0
 
-# for each REAL word
-wasOversegmented = 0
-wasUndersegmented = 0
-
-
-lastPredictedStartCoincidedWithRealStart = True
 
 for char, predicted, real in zip(chars_test, predictions, y_test):
    assert char != " "
    if real ==1:
+       realWords += 1
        if predicted == 1 and currentWord == currentWordReal:
            agreement += 1
-       elif predicted == 1 and lastPredictedStartCoincidedWithRealStart:
-         wasUndersegmented += 1
-       elif predicted == 1 and lastRealStartCoincidedWithPredictedStart:
-         wasOversegmented += 1
-# oversegmentation:
-       # wasOversegmented
-       #  wasUndersegmented
-       # wasMissegmented
-
-
-
-#       realLexicon.add(currentWordReal)
- #      currentWordReal = char
-   #else:
-  #     currentWordReal += char
-
-   if predicted == 1:
-       if real == 1 and lastPredictedStartCoincidedWithRealStart:
-           # correct or undersegmented
-          if currentWord == currentWordReal:
-             _ = _
-          elif len(currentWord) == len(currentWordReal):
-              assert currentWord == currentWordReal, (currentWord, currentWordReal)
-          elif len(currentWord) < len(currentWordReal):
-              print(currentWord, currentWordReal)
-              quit()
-          else:
-             assert len(currentWord) > len(currentWordReal)
-             undersegmented += 1
-       elif real == 1 and not lastPredictedStartCoincidedWithRealStart:
-          if len(currentWord) > len(currentWordReal): # missegmented
-             missegmented += 1
-          else:
-             assert len(currentWord) < len(currentWordReal), (currentWord, currentWordReal)
-             oversegmented += 1
-       elif real == 0 and len(currentWord) <= len(currentWordReal):
-             oversegmented += 1
-       elif real == 0 and len(currentWord) > len(currentWordReal):
-            missegmented += 1
-
-       if real == 1:
-          lastPredictedStartCoincidedWithRealStart = True
-       else:
-          lastPredictedStartCoincidedWithRealStart = False
-  
-   if real == 1:
-       if predicted == 1:
-          lastRealStartCoincidedWithPredictedStart = True
-       else:
-          lastRealStartCoincidedWithPredictedStart = False
- 
-   if predicted == 1:
-       predictedWords += 1
-       extractedLexicon[currentWord] = extractedLexicon.get(currentWord, 0) + 1
-       extractedLexiconWithReal[(currentWord, currentWordReal, real==1)] = extractedLexiconWithReal.get((currentWord, currentWordReal, real==1), 0) + 1
-
-       currentWord = char
-   else:
-       currentWord += char
-
-
-   if real ==1:
-       realWords += 1
        realLexicon.add(currentWordReal)
        currentWordReal = char
    else:
        currentWordReal += char
-   print((lastPredictedStartCoincidedWithRealStart, currentWord, currentWordReal))
 
-
-
-assert agreement + oversegmented + undersegmented + missegmented == predictedWords
+   if predicted == 1:
+       predictedWords += 1
+       extractedLexicon[currentWord] = extractedLexicon.get(currentWord, 0) + 1
+       currentWord = char
+   else:
+       currentWord += char
 
 print("Extracted words")
 print(sorted(list(extractedLexicon.items()), key=lambda x:x[1]))
@@ -386,17 +306,13 @@ print(sorted(incorrectWords, key=lambda x:x[1]))
 print("Correct words")
 correctWords = [(x,y) for (x,y) in extractedLexicon.items() if x in set(list(extractedLexicon)).intersection(realLexicon)]
 print(sorted(correctWords, key=lambda x:x[1]))
-annotatedWords = [(x,y) for (x,y) in extractedLexiconWithReal.items()]
-print(sorted(annotatedWords, key=lambda x:x[1]))
-
 print("Lexicon")
 print("Precision")
 print(len(correctWords)/len(extractedLexicon))
 print("Recall")
 print(len(correctWords)/len(realLexicon))
 print("..")
-print("Classifying the predicted words", ["Agreement", agreement, "Oversegmented", oversegmented, "Undersegmented", undersegmented, "Missegmented", missegmented])
-print("Classifying the real endpoints", ["over", wasOversegmented, "under", wasUndersegmented])
+
 print("quality")
 print("Precision")
 print(agreement/predictedWords)
@@ -422,36 +338,3 @@ print(score)
 
 
 
-#import matplotlib.pyplot as plt
-#import seaborn as sns
-#from sklearn import metrics
-#
-#cm = metrics.confusion_matrix(y_test, predictions)
-#print(cm)
-
-
-
-#print([x-y if x is not None and y is not None else None for x,y in zip(future_surprisal_without, future_surprisal_with)])
-
-##      print(train[batch*args.batchSize:(batch+1)*args.batchSize])
-#      numeric = [([0] + [stoi[data[x]]+1 for x in range(b, b+args.sequence_length) if x < len(data)]) for b in train[batch*args.batchSize:(batch+1)*batchSize]]
-#     # print(numeric)
-#      input_tensor = Variable(torch.LongTensor(numeric[:-1]).transpose(0,1).cuda(), requires_grad=False)
-#      target_tensor = Variable(torch.LongTensor(numeric[1:]).transpose(0,1).cuda(), requires_grad=False)
-#
-#    #  print(char_embeddings)
-#      embedded = char_embeddings(input_tensor)
-#      out, _ = rnn(embedded, None)
-#      logits = output(out) 
-#      log_probs = logsoftmax(logits)
-#   #   print(logits)
-#  #    print(log_probs)
-# #     print(target_tensor)
-#      loss = train_loss(log_probs.view(-1, len(itos)+1), target_tensor.view(-1))
-#      optim.zero_grad()
-#      if batch % 10 == 0:
-#         print(loss)
-#      loss.backward()
-#      optim.step()
-#      
-#

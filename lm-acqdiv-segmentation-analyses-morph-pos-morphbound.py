@@ -1,21 +1,20 @@
-from config import VOCAB_HOME, CHAR_VOCAB_HOME, CHECKPOINT_HOME
-
-
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--language", dest="language", type=str)
 parser.add_argument("--load-from", dest="load_from", type=str)
 #parser.add_argument("--save-to", dest="save_to", type=str)
+parser.add_argument("--gpu", dest="gpu", type=bool)
+
 
 import random
 
-parser.add_argument("--batchSize", type=int, default=32)
+parser.add_argument("--batchSize", type=int, default=64)
 parser.add_argument("--char_embedding_size", type=int, default=100)
-parser.add_argument("--hidden_dim", type=int, default=512)
-parser.add_argument("--layer_num", type=int, default=1)
+parser.add_argument("--hidden_dim", type=int, default=2048)
+parser.add_argument("--layer_num", type=int, default=2)
 parser.add_argument("--weight_dropout_in", type=float, default=0.3)
-parser.add_argument("--weight_dropout_hidden", type=float, default=0.1)
+parser.add_argument("--weight_dropout_hidden", type=float, default=0.25)
 parser.add_argument("--char_dropout_prob", type=float, default=0.05)
 parser.add_argument("--char_noise_prob", type = float, default= 0.0)
 parser.add_argument("--learning_rate", type = float, default= 0.4)
@@ -25,6 +24,13 @@ parser.add_argument("--sequence_length", type=int, default=50)
 
 args=parser.parse_args()
 print(args)
+
+
+def device(x):
+    if args.gpu:
+        return x.cuda()
+    else:
+        return x
 
 
 
@@ -43,20 +49,20 @@ def plus(it1, it2):
       yield x
 
 try:
-   with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "r") as inFile:
+   with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "r") as inFile:
      itos = inFile.read().strip().split("\n")
 except FileNotFoundError:
     print("Creating new vocab")
     char_counts = {}
     # get symbol vocabulary
-    with open(VOCAB_HOME+args.language+"-vocab.txt", "r") as inFile:
+    with open("/private/home/mhahn/data/acqdiv/"+args.language+"-vocab.txt", "r") as inFile:
       words = inFile.read().strip().split("\n")
       for word in words:
          for char in word.lower():
             char_counts[char] = char_counts.get(char, 0) + 1
     char_counts = [(x,y) for x, y in char_counts.items()]
     itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))]
-    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile:
+    with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "w") as outFile:
        print("\n".join(itos), file=outFile)
 #itos = sorted(itos)
 itos.append("\n")
@@ -77,14 +83,8 @@ print(torch.__version__)
 
 from weight_drop import WeightDrop
 
-def device(x):
-    if args.gpu:
-        return x.cuda()
-    else:
-        return x
 
-
-rnn = device(torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num))
+rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num).cuda()
 
 rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
@@ -94,8 +94,8 @@ print(rnn_parameter_names)
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
 # -1, because whitespace doesn't actually appear
-output = device(torch.nn.Linear(args.hidden_dim, len(itos)-1+3))
-char_embeddings = device(torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size))
+output = torch.nn.Linear(args.hidden_dim, len(itos)-1+3).cuda()
+char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size).cuda()
 
 logsoftmax = torch.nn.LogSoftmax(dim=2)
 
@@ -116,41 +116,63 @@ optim = torch.optim.SGD(parameters(), lr=args.learning_rate, momentum=0.0) # 0.0
 named_modules = {"rnn" : rnn, "output" : output, "char_embeddings" : char_embeddings, "optim" : optim}
 
 if args.load_from is not None:
-  checkpoint = torch.load(CHECKPOINT_HOME+args.load_from+".pth.tar")
+  checkpoint = torch.load("/checkpoint/mhahn/"+args.load_from+".pth.tar")
   for name, module in named_modules.items():
       module.load_state_dict(checkpoint[name])
 
 from torch.autograd import Variable
 
 
-data = AcqdivReaderPartition(acqdivCorpusReader, partition="train").reshuffledIterator(blankBeforeEOS=False)
+data = AcqdivReaderPartition(acqdivCorpusReader, partition="train").iterator(blankBeforeEOS=False, originalIterator=AcqdivReader.iteratorMorph)
+#data = AcqdivReaderPartition(acqdivCorpusReader, partition="train").reshuffledIterator(blankBeforeEOS=False, originalIterator=AcqdivReader.iteratorMorph)
+
 
 
 numeric_with_blanks = []
+
+indices_with_blanks = []
 count = 0
 print("Prepare chunks")
 for chunk in data:
+  indices_with_blanks.append((chunk, -1))
   numeric_with_blanks.append(stoi[" "]+3)
-  for char in chunk:
+  countInChunk = 0
+  wordsSoFar = 0
+  for char in chunk[0]:
+    if char == " ":
+       wordsSoFar += 1
 #    print((char if char != "\n" else "\\n", stoi[char]+3 if char in stoi else 2))
+    indices_with_blanks.append((chunk, countInChunk, wordsSoFar))
+
     count += 1
+    countInChunk += 1
     if char not in stoi:
         print(char)
     numeric_with_blanks.append(stoi[char]+3 if char in stoi else 2)
-
+  if len(numeric_with_blanks) > 10:
+     break
+quit()
+ #   print((char, chunk))
+#quit()
 # select a portion
-numeric_with_blanks = numeric_with_blanks[:10000]
+numeric_with_blanks = numeric_with_blanks[:100000]
+indices_with_blanks = indices_with_blanks[:100000]
 
 boundaries = []
 numeric_full = []
-for entry in numeric_with_blanks:
+indices_full = []
+for entry in zip(numeric_with_blanks, indices_with_blanks, range(len(numeric_with_blanks))):
  # print((entry-3, itos[entry-3]))
   #assert entry > 3
-  if entry > 3 and itos[entry-3] == " ":
+  if entry[0] > 3 and itos[entry[0]-3] == " ":
      boundaries.append(len(numeric_full))
   else:
-     numeric_full.append(entry)
-
+     numeric_full.append(entry[0])
+     indices_full.append(entry[1])
+  if len(boundaries) > 0:
+       assert len(numeric_full) - boundaries[-1] < 100, "".join([itos[x-3] for x in numeric_with_blanks[max(0,entry[2]-150):entry[2]+150]])
+ #    print(itos[entry[0]-3],entry[1])
+#quit()
 
 future_surprisal_with = [None for _ in numeric_full]
 future_surprisal_without = [None for _ in numeric_full]
@@ -166,8 +188,8 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
         numeric[i] = numeric[i] + [0]*(maxLength-len(numeric[i]))
 
 
-      input_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[:-1]), requires_grad=False)
-      target_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[1:]), requires_grad=False)
+      input_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[:-1].cuda(), requires_grad=False)
+      target_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[1:].cuda(), requires_grad=False)
       embedded = char_embeddings(input_tensor)
 
 
@@ -178,7 +200,7 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
       entropy = (- log_probs * torch.exp(log_probs)).sum(2).view((maxLength-1), args.batchSize).data.cpu().numpy()
 
       # 
-      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.contiguous().view(-1)).view((maxLength-1), args.batchSize)
+      loss = print_loss(log_probs.view(-1, len(itos)-1+3), target_tensor.view(-1)).view((maxLength-1), args.batchSize)
       losses = loss.data.cpu().numpy()
 #      for i in range(len(numeric[0])-1):
 
@@ -212,13 +234,21 @@ dependent = []
 utteranceBoundaries = []
 lastWasUtteranceBoundary = False
 
+timeSinceLastBoundary = 0
+
+indices_without_boundaries = []
 boundaries_index = 0
 for i in range(len(numeric_full)):
-   if boundaries_index < len(boundaries) and i == boundaries[boundaries_index]:
+   if boundaries_index < len(boundaries):
+       assert i <= boundaries[boundaries_index]
+   boundary = False
+   while boundaries_index < len(boundaries) and i == boundaries[boundaries_index]:
       boundary = True
       boundaries_index += 1
-   else:
-      boundary = False
+   #   if boundaries_index < len(boundaries):
+   #       assert i < boundaries[boundaries_index], (i, boundaries[boundaries_index])
+   #else:
+      
    pmiFuturePast = mi(future_surprisal_without[i], future_surprisal_with[i])
    print((itos[numeric_full[i]-3], char_surprisal[i], pmiFuturePast, pmiFuturePast < 0 if pmiFuturePast is not None else None, boundary)) # pmiFuturePast < 2 if pmiFuturePast is not None else None,
    if pmiFuturePast is not None:
@@ -230,8 +260,10 @@ for i in range(len(numeric_full)):
        chars.append(character)
        predictor.append([pmiFuturePast, char_surprisal[i], char_entropy[i], 1 if lastWasUtteranceBoundary else 0]) #char_surprisal[i], pmiFuturePast]) #pmiFuturePast])
        dependent.append(1 if boundary else 0)
+       timeSinceLastBoundary = timeSinceLastBoundary+1 if boundary == False else 0
+       assert timeSinceLastBoundary < 100, (i, boundaries[boundaries_index])
        lastWasUtteranceBoundary = False
-
+       indices_without_boundaries.append(indices_full[i])
 
 # TODO exclude utterance boundaries from the logistic classification, and record where they were
 
@@ -260,7 +292,7 @@ predictor = [a+b+c+d+e+f+g for a, b, c, d, e, f, g in zip(predictor, predictorSh
 
 
 from sklearn.model_selection import train_test_split
-x_train, x_test, y_train, y_test, chars_train, chars_test = train_test_split(predictor, dependent, chars, test_size=0.5, random_state=0, shuffle=False)
+x_train, x_test, y_train, y_test, chars_train, chars_test, indices_train, indices_test = train_test_split(predictor, dependent, chars, indices_without_boundaries, test_size=0.5, random_state=0, shuffle=False)
 
 
 from sklearn.linear_model import LogisticRegression
@@ -288,27 +320,44 @@ realWords = 0
 predictedWords = 0
 
 # for each predicted word, count whether it is an example of:
-agreement = 0
+agreement = {}
+agreementTotal = 0
 oversegmented = 0
 undersegmented = 0
 missegmented = 0
 
 # for each REAL word
-wasOversegmented = 0
-wasUndersegmented = 0
+wasOversegmented = {}
+wasUndersegmented = {}
 
 
 lastPredictedStartCoincidedWithRealStart = True
+lastRealStartCoincidedWithPredictedStart = True
 
-for char, predicted, real in zip(chars_test, predictions, y_test):
+lastIndex = None
+currentWordAnnotation = None
+posOfCurrentWord = None
+
+for char, predicted, real, indices in zip(chars_test, predictions, y_test, indices_test):
    assert char != " "
-   if real ==1:
+
+#   print(indices)
+   if predicted == 1:
+     print(currentWord)
+   if indices[0] is not lastIndex:
+#     print((lastPredictedStartCoincidedWithRealStart, currentWord, currentWordReal, indices))
+     print("")
+     print(list(indices[0][-1]))
+     lastIndex = indices[0]
+   
+   if real ==1 and posOfCurrentWord is not None:
        if predicted == 1 and currentWord == currentWordReal:
-           agreement += 1
+           agreement[posOfCurrentWord] = agreement.get(posOfCurrentWord, 0) + 1
+           agreementTotal += 1
        elif predicted == 1 and lastPredictedStartCoincidedWithRealStart:
-         wasUndersegmented += 1
+         wasUndersegmented[posOfCurrentWord] = wasUndersegmented.get(posOfCurrentWord, 0) + 1
        elif predicted == 1 and lastRealStartCoincidedWithPredictedStart:
-         wasOversegmented += 1
+         wasOversegmented[posOfCurrentWord] = wasOversegmented.get(posOfCurrentWord, 0) + 1
 # oversegmentation:
        # wasOversegmented
        #  wasUndersegmented
@@ -330,7 +379,7 @@ for char, predicted, real in zip(chars_test, predictions, y_test):
               assert currentWord == currentWordReal, (currentWord, currentWordReal)
           elif len(currentWord) < len(currentWordReal):
               print(currentWord, currentWordReal)
-              quit()
+              assert False
           else:
              assert len(currentWord) > len(currentWordReal)
              undersegmented += 1
@@ -360,23 +409,35 @@ for char, predicted, real in zip(chars_test, predictions, y_test):
        predictedWords += 1
        extractedLexicon[currentWord] = extractedLexicon.get(currentWord, 0) + 1
        extractedLexiconWithReal[(currentWord, currentWordReal, real==1)] = extractedLexiconWithReal.get((currentWord, currentWordReal, real==1), 0) + 1
-
+#       print(["LASTINDEX", lastIndex])
+ #      print(indices)
        currentWord = char
    else:
        currentWord += char
 
 
    if real ==1:
+       #print(["CURRENT WORD ANNO", currentWordReal, currentWordAnnotation])
+       assert currentWordAnnotation is None or currentWordReal == currentWordAnnotation[0]
        realWords += 1
        realLexicon.add(currentWordReal)
        currentWordReal = char
+       currentWordAnnotation = indices[0][1][indices[2]]
+       posOfCurrentWord = currentWordAnnotation[3].split("-")[0].split(":")[0]
+       print(["POS", posOfCurrentWord])
    else:
        currentWordReal += char
-   print((lastPredictedStartCoincidedWithRealStart, currentWord, currentWordReal))
+   #print(currentWord, currentWordReal, lastPredictedStartCoincidedWithRealStart)
+   assert len(currentWordReal) < 100, currentWordReal
+
+   #assert posOfCurrentWord is not None
+
+posTags = set(agreement).union(set(wasOversegmented)).union(set(wasUndersegmented))
 
 
+#quit()
 
-assert agreement + oversegmented + undersegmented + missegmented == predictedWords
+#assert agreement + oversegmented + undersegmented + missegmented == predictedWords
 
 print("Extracted words")
 print(sorted(list(extractedLexicon.items()), key=lambda x:x[1]))
@@ -395,13 +456,14 @@ print(len(correctWords)/len(extractedLexicon))
 print("Recall")
 print(len(correctWords)/len(realLexicon))
 print("..")
-print("Classifying the predicted words", ["Agreement", agreement, "Oversegmented", oversegmented, "Undersegmented", undersegmented, "Missegmented", missegmented])
-print("Classifying the real endpoints", ["over", wasOversegmented, "under", wasUndersegmented])
+print("Classifying the predicted words", ["Agreement", agreementTotal, "Oversegmented", oversegmented, "Undersegmented", undersegmented, "Missegmented", missegmented])
+for pos in posTags:
+   print("Classifying the real endpoints", [pos, "Agreement", agreement.get(pos, 0), "over", wasOversegmented.get(pos, 0), "under", wasUndersegmented.get(pos,0)])
 print("quality")
 print("Precision")
-print(agreement/predictedWords)
+print(agreementTotal/predictedWords)
 print("Recall")
-print(agreement/realWords)
+print(agreementTotal/realWords)
 
 predictedBoundariesTotal = 0
 predictedBoundariesCorrect = 0
@@ -419,7 +481,16 @@ print(predictedAndReal/targetCount)
 score = logisticRegr.score(x_test, y_test)
 print(score)
 
+quantities = {"agreement" : agreementTotal, "oversegmented" : oversegmented, "undersegmented" : undersegmented, "missegmented" : missegmented, "lexical_precision" : len(correctWords)/len(extractedLexicon), "lexical_recall" : len(correctWords)/len(realLexicon), "token_precision" : agreementTotal/predictedWords, "token_recall" : agreementTotal/realWords, "boundary_precision" : predictedAndReal/predictedCount, "boundary_recall" : predictedAndReal/targetCount, "boundary_accuracy" : score}
 
+with open("/checkpoint/mhahn/trajectories/"+__file__+"_"+args.load_from, "w") as outFile:
+     for key, value in quantities.items():
+        outFile.write("\t".join(list(map(str, ([key, value, "all"]))))+"\n")
+     for pos in posTags:
+       for key, value in {"over" : wasOversegmented, "under" : wasUndersegmented, "correct" : agreement}.items():
+          outFile.write("\t".join(list(map(str, ([key, value.get(pos, 0), pos]))))+"\n")
+
+# , 
 
 
 #import matplotlib.pyplot as plt

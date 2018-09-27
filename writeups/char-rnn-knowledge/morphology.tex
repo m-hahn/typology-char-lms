@@ -52,7 +52,7 @@ rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref
       \end{tabular}
     \end{center}
  % \end{small}
-  \caption{\label{tab:pos-results} Word class accuracy (20 training examples), with standard errors.}
+  \caption{\label{tab:pos-results} Word class accuracy, with standard errors.} % (20 training examples)
 \end{table}
 
 
@@ -94,7 +94,9 @@ We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) an
 To control for the impact of training sample selection, we
 report accuracies averaged over 200 repetitions.  We extract word
 representations as above, and we compare to an autoencoder and
-embeddings from the WordNLM, excluding OOVs when testing the latter.
+embeddings from the WordNLM.
+As before, we report results ignoring OOV words, and with random classification for OOV words.
+%, excluding OOVs when testing the latter.
 Results are summarized in Table \ref{tab:number-results}.
 
 \begin{table}[t]
@@ -106,7 +108,8 @@ Results are summarized in Table \ref{tab:number-results}.
 	    LSTM& 77.9 ($\pm$ 0.8) & 88.2 ($\pm$ 0.3) & 52.8 ($\pm$ 0.6) \\
 	    RNN& 70.3 ($\pm$ 0.9) & 81.3 ($\pm$ 0.7) & 53.3 ($\pm$ 0.6)\\
 	    Autoencoder& 64.0 ($\pm$ 1.0) & 73.8 ($\pm$ 0.6) & 59.2 ($\pm$ 0.5)\\
-	    WordNLM& 97.8 ($\pm$ 0.3) & 86.6 ($\pm$ 0.2) & 96.7 ($\pm$ 0.2)  \\ % when including OOVs: 81.0/83.8/81.5 & 72.9 & 77.6\\
+	    WordNLM& 97.8 ($\pm$ 0.3) & 86.6 ($\pm$ 0.2) & 96.7 ($\pm$ 0.2)  \\ 
+	    WordNLM (A) & 82.1 ($\pm$ 0.1) & 73.1 ($\pm$ 0.1) & 77.6 ($\pm$ 0.1)  \\ 
     \end{tabular}
   \end{center}
 	\caption{\label{tab:number-results} German number classification accuracy, with standard errors computed from 200 runs.}

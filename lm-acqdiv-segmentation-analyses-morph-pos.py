@@ -79,7 +79,15 @@ print(torch.__version__)
 from weight_drop import WeightDrop
 
 
-rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num)
+def device(x):
+    if args.gpu:
+        return x.cuda()
+    else:
+        return x
+
+
+
+rnn = device(torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num))
 
 rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
@@ -88,8 +96,8 @@ print(rnn_parameter_names)
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
 # -1, because whitespace doesn't actually appear
-output = torch.nn.Linear(args.hidden_dim, len(itos)-1+3)
-char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size)
+output = device(torch.nn.Linear(args.hidden_dim, len(itos)-1+3))
+char_embeddings = device(torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size))
 
 logsoftmax = torch.nn.LogSoftmax(dim=2)
 
@@ -191,8 +199,8 @@ for start in range(0, len(numeric_full)-args.sequence_length, args.batchSize):
         numeric[i] = numeric[i] + [0]*(maxLength-len(numeric[i]))
 
 
-      input_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[:-1], requires_grad=False)
-      target_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[1:], requires_grad=False)
+      input_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[:-1]), requires_grad=False)
+      target_tensor = Variable(device(torch.LongTensor(numeric).transpose(0,1)[1:]), requires_grad=False)
       embedded = char_embeddings(input_tensor)
 
 

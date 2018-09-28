@@ -56,6 +56,13 @@ language = sys.argv[1]
 # extract data for specific language
 basePath = ACQDIV_HOME+"/tsv/"
 basePathOut = ACQDIV_HOME+"/tsv/"+language.lower()+"/"
+
+import os
+if not os.path.exists(basePathOut):
+    os.makedirs(basePathOut)
+
+
+
 names = ["speakers","morphemes",  "utterances", "words", "uniquespeakers"]
 
 

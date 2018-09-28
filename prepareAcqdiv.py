@@ -47,8 +47,16 @@ def mergeCSV(infiles, outfile):
              outFile.write(inFile.read())
 
 
+
+
 basePath = ACQDIV_HOME+"/csv/"
 basePathOut = ACQDIV_HOME+"/tsv/"
+
+import os
+if not os.path.exists(basePathOut):
+    os.makedirs(basePathOut)
+
+
 names = ["speakers","morphemes",  "utterances", "words", "uniquespeakers"]
 
 

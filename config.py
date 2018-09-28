@@ -1,3 +1,5 @@
+# Note: The path names shown in the template can be ignored. No two of the paths have to be the same, even when they are the same in the template.
+
 # link to a local copy of the Acqdiv Github repo
 ACQDIV_HOME = "acqdiv-database/"
 
@@ -18,4 +20,15 @@ TRAJECTORIES_HOME = "checkpoint/"
 
 # for storing visualizations
 VISUALIZATIONS_HOME = "checkpoint/figures/"
+
+
+# For safety, add a slash.
+ACQDIV_HOME += "/"
+CHECKPOINT_HOME += "/"
+VOCAB_HOME += "/"
+CHAR_VOCAB_HOME += "/"
+TRAJECTORIES_HOME += "/"
+VISUALIZATIONS_HOME += "/"
+
+
 

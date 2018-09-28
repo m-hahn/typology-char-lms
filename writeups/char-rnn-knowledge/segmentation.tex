@@ -126,13 +126,16 @@ unfeasible. We re-trained instead the LSTM (with fixed
 hyperparameters) on the Brent corpus of English child-directed speech
 \cite{brent-efficient-1999} also used by Goldwater and colleagues.  We
 used 90\% to train our language model, 5\% to fit the logistic
-classifier, and 5\% for word segmentation evaluation.  The Bayesian
-model is trained and evaluated on the full data-set, as it does not
+classifier, and 5\% for evaluating both the classifier and the Bayesian model on word segmentation.
+The Bayesian
+model is trained %and evaluated
+on the full data-set, as it does not
 rely on word boundary information during training. Results in
 Table~\ref{tab:segmentation-results-brent} show that the CNLM
 performance is comparable to that of the sophisticated Bayesian
-segmentation method.\footnote{We found very similar results when
-testing the Bayesian model only on the subset used to test  our logistic classifier.}
+segmentation method.
+%\footnote{We found very similar results when
+%testing the Bayesian model only on the subset used to test  our logistic classifier.}
 
 % \begin{table*}[t]
 %   \begin{center}
@@ -149,20 +152,34 @@ testing the Bayesian model only on the subset used to test  our logistic classif
 % \end{table*}
 
 
+%\begin{table}[t]
+%  \begin{small}
+%    \begin{center}
+%      \begin{tabular}{l|ll}
+%        &	     LSTM & Bayesian \\ \hline %\citet{goldwater-bayesian-2009} \\ \hline
+%        Tokens & 75.3/76.6/76.0 & 75.2/69.6/72.3 \\
+%        Lexical & 41.2/61.2/49.2 &63.5/55.2/59.1  \\
+%        Boundaries & 91.3/90.0/90.5 & 90.3/80.8/85.2 \\
+%      \end{tabular}
+%    \end{center}
+%  \end{small}
+%  \caption{\label{tab:segmentation-results-brent} Word segmentation results (percentage precision/recall/F1)  on the Brent corpus for our CNLM-based model and the Bayesian approach of \newcite{goldwater-bayesian-2009}. Following them, we evaluate at the level of tokens, the lexicon of induced word types, and boundaries.}
+%\end{table}
+%
+
 \begin{table}[t]
   \begin{small}
     \begin{center}
       \begin{tabular}{l|ll}
         &	     LSTM & Bayesian \\ \hline %\citet{goldwater-bayesian-2009} \\ \hline
-        Tokens & 75.3/76.6/76.0 & 75.2/69.6/72.3 \\
-        Lexical & 41.2/61.2/49.2 &63.5/55.2/59.1  \\
-        Boundaries & 91.3/90.0/90.5 & 90.3/80.8/85.2 \\
+        Tokens & 75.3/76.6/76.0 & 74.9/69.8/72.3 \\
+        Lexical & 41.2/61.2/49.2 & 63.6/60.2/61.9 \\
+        Boundaries & 91.3/90.0/90.5 & 93.0/86.7/89.8 \\
       \end{tabular}
     \end{center}
   \end{small}
-  \caption{\label{tab:segmentation-results-brent} Word segmentation results (percentage precision/recall/F1)  on the Brent corpus for our CNLM-based model and the Bayesian approach of \newcite{goldwater-bayesian-2009}. Following them, we evaluate at the level of tokens, the lexicon of induced word types, and boundaries.}
+  \caption{\label{tab:segmentation-results-brent} Word segmentation results (percentage precision/recall/F1) on our test partition of the Brent corpus for our CNLM-based model and the Bayesian approach of \newcite{goldwater-bayesian-2009}. Following them, we evaluate at the level of tokens, the lexicon of induced word types, and boundaries.}
 \end{table}
-
 
 
 

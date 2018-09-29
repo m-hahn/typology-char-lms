@@ -5,12 +5,12 @@
 decade because of their greater generality, and because, intuitively, they should be able to
 use cues, such as morphological information, that word-based models
 miss by design. Early studies such as \newcite{Mikolov:etal:2011},
-\newcite{Sutskever:etal:2011} and \newcite{Graves:2014} established
+\newcite{Sutskever:etal:2011} and \newcite{DBLP:journals/corr/Graves13} established
 that CNLMs (trained with whitespace where relevant) are in general not
 as good at language modeling as their word-based counterparts, but lag
 only slightly behind (note that character-level sentence prediction
 involves a much larger search space than predicting at the word
-level). \newcite{Sutskever:etal:2011} and \newcite{Graves:2014}
+level). \newcite{Sutskever:etal:2011} and \newcite{DBLP:journals/corr/Graves13}
 presented informal qualitative analyses showing that CNLMs are
 learning basic linguistic properties of their input. The latter, who
 trained LSTM-based models, also showed that they can keep track, to
@@ -38,7 +38,7 @@ modeling.% Moreover, these networks are not exposed to constituents
 \paragraph{Probing linguistic knowledge of neural language models} Extensive work probes the linguistic properties of
 word-based neural language models, as well as more complex
 architectures such as sequence-to-sequence systems: see, e.g.,
-\newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Hupkes:etal:2017,Kadar:etal:2017,Li:etal:2017,Conneau:etal:2018}.
+\newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Kadar:etal:2017,DBLP:journals/corr/LiMJ16a,DBLP:conf/ijcai/HupkesZ18,Conneau:etal:2018}.
 
 Early work by Jeffrey Elman is close in spirit to ours. In particular,
 \newcite{Elman:1990} reported phonotactics and word segmentation
@@ -50,7 +50,7 @@ character-based decoders generalize better to unseen words, but
 capture less grammatical knowledge than subword units. Still, his
 character-based systems lagged only marginally behind the subword
 architectures on grammatical tasks such as handling agreement and
-negation. \newcite{Radford:etal:2017} also studied CNLMs with focus on understanding their
+negation. \newcite{DBLP:journals/corr/RadfordJS17} also studied CNLMs with focus on understanding their
 properties, but only in the domain of sentiment
 analysis. \newcite{Godin:etal:2018} investigated the rules implicitly
 used by supervised character-aware neural morphological segmentation

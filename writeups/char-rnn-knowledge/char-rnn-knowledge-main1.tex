@@ -38,12 +38,12 @@
 
 
 \documentclass[11pt,a4paper]{article}
-\usepackage[hyperref]{tacl2018} % use ``nohyperref'' to disable  hyperref
+\usepackage[hyperref]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
 \usepackage{times,latexsym}
 \usepackage{url}
 \usepackage[T1]{fontenc}
 
-\taclfinalfalse % For camera-ready, replace "\taclfinalfalse" with
+%\taclfinalfalse % For camera-ready, replace "\taclfinalfalse" with
 % "\taclfinalcopy"
 
 %%%%
@@ -62,28 +62,6 @@
 
 %\newcommand{\ex}[1]{{\sf #1}}
 
-%
-\iftaclfinal
-\newcommand{\taclpaper}{camera-ready\xspace}
-\newcommand{\taclpapers}{camera-readies\xspace}
-\newcommand{\Taclpaper}{Camera-ready\xspace}
-\newcommand{\Taclpapers}{Camera-readies\xspace}
-\else
-\newcommand{\taclpaper}{submission\xspace}
-\newcommand{\taclpapers}{{\taclpaper}s\xspace}
-\newcommand{\Taclpaper}{Submission\xspace}
-\newcommand{\Taclpapers}{{\Taclpaper}s\xspace}
-\fi
-
-\newif\iftaclinstructions
-\taclinstructionsfalse % AUTHORS: do NOT set this to true
-\iftaclinstructions
-\renewcommand{\confidential}{}
-\renewcommand{\anonsubtext}{(No author info supplied here, for consistency with
-TACL-submission anonymization requirements)}
-\fi
-%%%% End TACL-instructions-specific macro block
-%%%%
 
 \title{\emph{Tabula} nearly \emph{rasa:} Probing the linguistic knowledge of character-level neural language models trained on unsegmented text}
 

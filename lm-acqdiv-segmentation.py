@@ -8,7 +8,7 @@ parser.add_argument("--language", dest="language", type=str)
 parser.add_argument("--load-from", dest="load_from", type=str)
 #parser.add_argument("--save-to", dest="save_to", type=str)
 parser.add_argument("--gpu", dest="gpu", type=bool)
-
+parser.add_argument("--print_extracted_tokens", action='store_true')
 
 import random
 
@@ -303,6 +303,9 @@ predictedWords = 0 # how many tokens are extracted by the model
 agreement = 0 # how many tokens are extracted correctly by the model
 
 # go through the test data to evaluate the segmentation
+if (args.print_extracted_tokens):
+    print("TOKENS_BEGIN")
+
 for char, predicted, real in zip(chars_test, predictions, y_test):
    assert char != " "
    # "real" is a boolean indicating whether the current position is a real (ground-truth) word boundary
@@ -319,9 +322,14 @@ for char, predicted, real in zip(chars_test, predictions, y_test):
    if predicted == 1: # similar to the "real == 1" case: there is a predicted boundary here
        predictedWords += 1
        extractedLexicon[currentWord] = extractedLexicon.get(currentWord, 0) + 1
+       if (args.print_extracted_tokens):
+           print(currentWord)
        currentWord = char # start recording the next predicted word
    else:
        currentWord += char # continue recording the current word
+
+if (args.print_extracted_tokens):
+    print("TOKENS_END")
 
 print("Extracted words")
 print(sorted(list(extractedLexicon.items()), key=lambda x:x[1]))
@@ -338,7 +346,7 @@ print("Recall")
 print(len(correctWords)/len(realLexicon))
 print("..")
 
-print("=====Tokens"=====)
+print("=====Tokens=====")
 print("Precision")
 print(agreement/predictedWords)
 print("Recall")

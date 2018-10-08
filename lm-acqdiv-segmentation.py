@@ -50,20 +50,20 @@ def plus(it1, it2):
 
 # read the character vocabulary
 try:
-   with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "r") as inFile:
+   with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "r") as inFile:
      itos = inFile.read().strip().split("\n")
 except FileNotFoundError: # or, if that fails, construct one for the language
     print("Creating new vocab")
     char_counts = {}
     # get symbol vocabulary
-    with open("/private/home/mhahn/data/acqdiv/"+args.language+"-vocab.txt", "r") as inFile:
+    with open(VOCAB_HOME+args.language+"-vocab.txt", "r") as inFile:
       words = inFile.read().strip().split("\n")
       for word in words:
          for char in word.lower():
             char_counts[char] = char_counts.get(char, 0) + 1
     char_counts = [(x,y) for x, y in char_counts.items()]
-    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))] # if y > 5]
-    with open("/checkpoint/mhahn/char-vocab-acqdiv-"+args.language, "w") as outFile:
+    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))]
+    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile:
        print("\n".join(itos), file=outFile)
 #itos = sorted(itos)
 itos.append("\n")
@@ -113,7 +113,7 @@ named_modules = {"rnn" : rnn, "output" : output, "char_embeddings" : char_embedd
 
 # Load the model from the checkpoint, if there is one
 if args.load_from is not None:
-  checkpoint = torch.load("/checkpoint/mhahn/"+args.load_from+".pth.tar")
+  checkpoint = torch.load(CHECKPOINT_HOME+args.load_from+".pth.tar")
   for name, module in named_modules.items():
       module.load_state_dict(checkpoint[name])
 

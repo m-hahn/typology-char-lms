@@ -1,3 +1,6 @@
+from config import VOCAB_HOME, CHAR_VOCAB_HOME, CHECKPOINT_HOME
+
+
 
 import argparse
 parser = argparse.ArgumentParser()

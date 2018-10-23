@@ -51,21 +51,27 @@ def plus(it1, it2):
    for x in it2:
       yield x
 
-try:
+
+# For each language, a character vocabulary is expected/generated at CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language
+# This vocabulary is a text file where each line contains one character.
+
+# For reproducibility and usability of models, the vocabularies should probably best be put onto the Github / otherwise backed up and then reused once they have been generated.
+
+try: # First, try to open the existing vocabulary.
    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "r") as inFile:
      itos = inFile.read().strip().split("\n")
-except FileNotFoundError:
+except FileNotFoundError: # If it does not exist, generate it on the fly and then save it at the intended place
     print("Creating new vocab")
     char_counts = {}
-    # get symbol vocabulary
+    # open the word-level vocabulary generated in th preprocessing of the corpus using acqdivPrepareVocab.py
     with open(VOCAB_HOME+args.language+"-vocab.txt", "r") as inFile:
       words = inFile.read().strip().split("\n")
       for word in words:
          for char in word.lower():
-            char_counts[char] = char_counts.get(char, 0) + 1
-    char_counts = [(x,y) for x, y in char_counts.items()]
-    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))]
-    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile:
+            char_counts[char] = char_counts.get(char, 0) + 1 # Collect counts for all the characters that occur in the word-level vocabulary
+    char_counts = [(x,y) for x, y in char_counts.items()] # a list of character - count tuples
+    itos = [x for x,y in sorted(char_counts, key=lambda z:(z[0],-z[1]))] # sort characters by frequency in decreasing order
+    with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile: # Save the character list
        print("\n".join(itos), file=outFile)
 #itos = sorted(itos)
 itos.append("\n")

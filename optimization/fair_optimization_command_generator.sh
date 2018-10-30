@@ -16,7 +16,9 @@ do
                     do
                         for learning_rate in 0.05 0.5 1
                         do
-			    echo python3 /private/home/mbaroni/acqdiv/char-lms/lm-acqdiv.py --language $language --batchSize $batchsize --char_embedding_size 100 --hidden_dim $hidden_dim --layer_num $layer_num --weight_dropout_in $weight_dropout_in --weight_dropout_hidden $weight_dropout_hidden --char_dropout_prob $char_dropout_prob --char_noise_prob 0.0 --learning_rate $learning_rate --sequence_length 50
+			    lossfilename="/private/home/mbaroni/acqdiv/char-lms/optimization/"$language"_hp/loss_batchsize_"$batchsize"_hidden_dim_"$hidden_dim"_layer_num_"$layer_num"_weight_dropout_in_"$weight_dropout_in"_weight_dropout_hidden_"$weight_dropout_hidden"_char_dropout_prob_"$char_dropout_prob"_learning_rate_"$learning_rate".txt"
+
+			    echo python3 /private/home/mbaroni/acqdiv/char-lms/lm-acqdiv.py --language $language --batchSize $batchsize --char_embedding_size 100 --hidden_dim $hidden_dim --layer_num $layer_num --weight_dropout_in $weight_dropout_in --weight_dropout_hidden $weight_dropout_hidden --char_dropout_prob $char_dropout_prob --char_noise_prob 0.0 --learning_rate $learning_rate --sequence_length 50 --out-loss-filename $lossfilename
                         done
                     done
                 done

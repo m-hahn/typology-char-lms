@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--language", dest="language", type=str)
 parser.add_argument("--load-from", dest="load_from", type=str)
 parser.add_argument("--save-to", dest="save_to", type=str)
+parser.add_argument("--out-loss-filename", dest="out_loss_filename", type=str)
 
 import random
 
@@ -270,6 +271,6 @@ for epoch in range(10000):
 
 print(min_loss)
 
-
-
-	
+if args.out_loss_filename is not None:
+   with open(args.out_loss_filename, 'w') as out_loss_file:
+          out_loss_file.write(min_loss + '\n')

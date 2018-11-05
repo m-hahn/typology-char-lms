@@ -15,7 +15,7 @@ CHECKPOINT_HOME = "/private/home/mbaroni/acqdiv/georgia_data/checkpoint"
 VOCAB_HOME = "/private/home/mbaroni/acqdiv/georgia_data/data"
 
 # for storing a character-level vocabulary
-CHAR_VOCAB_HOME = "/private/home/mbaroni/acqdiv/georgia_data/checkpoint/temp"
+CHAR_VOCAB_HOME = "/private/home/mbaroni/acqdiv/georgia_data/checkpoint/"
 
 # for storing numerical results after different numbers of epochs
 TRAJECTORIES_HOME = "/private/home/mbaroni/acqdiv"

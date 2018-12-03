@@ -1,0 +1,91 @@
+\section{Experimental setup}
+\label{sec:setup}
+
+We extracted plain text from full English, German and Italian
+Wikipedia dumps with
+WikiExtractor.\footnote{\url{https://github.com/attardi/wikiextractor}}
+We randomly extracted testing and validation sections consisting of
+50,000 paragraphs each, and used the remainder for training. The
+training sets contained 16M (German), 9M (Italian), and 41M (English)
+paragraphs, corresponding to 819M, 463M and 2,333M words,
+respectively. Order of paragraphs was shuffled for training; we did
+not attempt to split by sentences. All characters were lower-cased.
+For word segmentation and word-based language models, we tokenized and
+tagged the corpora with
+TreeTagger.\footnote{\url{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}}
+
+We used as vocabularies the most frequent characters from
+each corpus, setting thresholds so as to ensure that all characters
+representing phonemes were included, resulting in vocabularies of 60 (English), 73 (German), and 59 (Italian) characters.
+We further constructed \emph{word-level neural language models} (WordNLMs); 
+their vocabulary included the most frequent 50,000 words per corpus.
+
+We trained RNN and LSTM CNLMs; we will refer to them simply as
+\emph{RNN} and \emph{LSTM}, respectively. We used LSTM cells for
+WordNLMs.  For each model/language, we applied random
+hyperparameter search.  We terminated training after 72 hours; none of
+the models had overfitted, as measured by performance on the
+validation set, used for model selection.\footnote{Hyperparameter range and choices are in supplementary material to be made
+  available upon publication. Chosen architectures (layers/embedding size/hidden size): LSTM: En.~3/200/1024, Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048, It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}
+
+Language modeling performance on the test partitions is shown in
+Table~\ref{tab:lm-results}. Recall that we removed whitespace, which
+is both easy to predict, and aids prediction of other
+characters. Consequently, the fact that our character-level models are
+below the state of the art is expected.\footnote{Training our models
+  with whitespace, without further hyperparameter tuning, resulted in
+  BPCs of 1.32 (English), 1.28 (German), and 1.24 (Italian).}
+For example, the best model of \newcite{merity2018analysis} achieved
+1.23 English BPC on a Wikipedia-derived dataset. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
+On EuroParl data, \newcite{cotterell2018all} report 0.85 for English,
+0.90 for German, and 0.82 for Italian. Still, our English BPC is
+comparable to that reported by \newcite{DBLP:journals/corr/Graves13} for his static
+character-level LSTM trained on space-delimited Wikipedia data,
+suggesting that we are achieving reasonable performance.
+%\footnote{Training our models on text with whitespace, without further hyperparameter tuning to adjust to that setting, resulted in cross-entropies of 0.91, 1.32 BPC (English), 0.89, 1.28 BPC (German), and 0.86, 1.24 BPC (Italian).}
+The perplexity of the word-level model might not be comparable to
+that of highly-optimized state-of-the-art architectures, but it is at the
+expected level for a well-tuned vanilla LSTM language model. For
+example, \newcite{Gulordava:etal:2018} report 51.9 and 44.9 perplexities respectively in English and Italian for
+their best LSTMs trained on Wikipedia data with the same vocabulary
+size as ours.
+%=======
+%Performance on the test partitions is shown in Table~\ref{tab:lm-results}.
+%Direct comparison with the state-of-the-art in character-based language modeling is hindered by the fact that we train on text without whitespace.
+%The best models of \cite{merity2018analysis} achieved 1.232 BPC on enwiki8 \cite{hutter2018}, a dataset also derived from English Wikipedia. % (Hutter 2018). %, and 1.175 on a version of PTBenglish 0.85 german 0.9, italian 0.82
+%On Europarl data, \cite{cotterell2018all} report 0.85 for English, 0.9 for German, and 0.82 for Italian. 
+%Our BPC values are higher, but this is expected given that we do not provide whitespace to the model: Whitespace is both relatively easy to predict, and it makes predicting other characters easier.\footnote{Refitting our models to data with whitespace, without retuning hyperparameters, yields ....}
+%>>>>>>> 86b9fd533dc18bab83a010158126d7366aae3681
+
+\begin{table}[t]
+  \begin{small}
+  \begin{center}
+    \begin{tabular}{l|l|l|l}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{WordNLM}\\
+      \hline
+	    English & 1.62 & 2.08 & 48.99  \\
+	    German &  1.51 & 1.83 & 37.96   \\
+	    Italian & 1.47 & 1.97 & 42.02  \\
+    \end{tabular}
+  \end{center}
+  \end{small}
+  \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report bits-per-character (BPC). For WordNLMs, we report perplexity.}
+\end{table}
+
+%\begin{table}[t]
+%  \begin{center}
+%    \begin{tabular}{l|l|l|l|l}
+%      \multicolumn{1}{c}{}&\emph{LSTM}&\emph{RNN}&\emph{Word LSTM}\\
+%      \hline
+%	    English & 1.12 / 1.62 & 1.44 / 2.08 & 3.89 / 48.99  \\
+%	    German &  1.05 / 1.51 & 1.27 / 1.83 & 3.63 / 37.96   \\
+%	    Italian & 1.02 / 1.47 & 1.37 / 1.97 & 3.85 / 42.02  \\
+%    \end{tabular}
+%  \end{center}
+%  \caption{\label{tab:lm-results} Performance of language models. For CNLMs, we report cross-entropy and bits-per-character (BPC). For word-based models, we report cross-entropy and perplexity.}
+%\end{table}
+
+
+
+
+

@@ -1,0 +1,23 @@
+\subsection{Capturing syntactic dependencies}
+\label{sec:dependencies}
+
+%\textbf{Please provide size for all evaluation sets.}
+
+%\textbf{In the interest of space, please reduce figures ~\ref{fig:gender}, ~\ref{fig:case} and \ref{fig:prep} to a single figure with 3 panels: the averaged gender and case results, and the subcategorization case. Also, either put titles on the figures, or at least label them as a), b) c). Legends should be LSTM, RNN and WordNLM (or WNLM) for coherence.}XS
+
+We take a further step up the linguistic hierarchy, probing CNLMs for their ability to capture syntactic dependencies between non-adjacent words. %
+% --a rather challenging task for models that work entirely at the character level, and do not even have information about what words are.
+We again focus on German and Italian, due to their rich inflectional morphology, which makes it easier to construct controlled evaluation sets.%  As each tested construction has different characteristics, leading to different setups and controls, we discuss them separately. 
+% % Despite not having predefined information about words and
+% % morphemes, is the model able to capture non-adjacent syntactic
+% % dependencies?
+% In particular, is it able to do so when dependencies cross one or more words, and thus cannot be reduced to surface n-gram counts?
+% Note that, for a CNLM, dependencies across even a single word are often already long-distance. % even \emph{``\textbf{la} bell\textbf{a}''} is long distance.
+% We again focus on German and Italian due to the richness of inflectional morphology in these languages.
+% Constructions will be language-specific, so we discuss the languages separately. %German and Italian separately (not much in English).
+
+%As usual, specifics of training etc that depart from general setup.
+
+\input{german-syntax}
+
+\input{italian-syntax}

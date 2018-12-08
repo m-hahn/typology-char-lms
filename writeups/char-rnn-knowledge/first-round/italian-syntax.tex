@@ -1,0 +1,160 @@
+
+\subsubsection{Italian} %\textbf{Also here, add data-set sizes.}
+%\textbf{For the examples, you know the linguex packet, right?}
+%\textbf{Given that you itemize by gender, can you add a baseline based
+%  on picking the most frequent variant of the noun/adjective?}
+We focus on paradigms where gender and number are explicitly and
+systematically encoded and it is possible to compare same-length
+strings. We are able to extract enough stimuli that never occur in the
+training corpus, so that an n-gram control would be at chance
+level. Moreover, by experiment construction, baselines relying on
+unigram frequency are also at chance level.
+
+\paragraph{Article-noun gender agreement}
+%(1) eadj-aonoun:
+
+Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of masculine and feminine nouns differing only in the final vowel (-\emph{o} and -\emph{a}, respectively). We construct pairs %of stimuli
+of the form:
+\ex.\ag. \{\underline{il},\ la\}  congeniale  candidato \\
+the congenial candidate\ (m.) \\
+\bg.  \{il,\ \underline{la}\}  congeniale  candidata \\
+the congenial candidate\ (f.) \\
+
+
+
+
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item 
+%		\begin{tabular}[t]{lllllll}
+%	a. & \{\underline{il}, la\} & congeniale & candidato \\
+%   &  the & congenial & candidate (m.) \\
+%	& \multicolumn{4}{l}{`The congenial male candidate.'} \\
+%	b. & \{il, \underline{la}\} & congeniale & candidata \\
+%    &the & congenial & candidate (f.) \\
+%	& \multicolumn{4}{l}{`The congenial female candidate.'} \\
+%\end{tabular}
+%\end{enumerate}
+
+The intervening adjective, ending in -\emph{e}, does not reveal
+noun gender, increasing the distance across which gender information
+has to be transported. We constructed the stimuli with words appearing
+at least 100 times in the training corpus. We required moreover that
+the \emph{-a} and \emph{-o} forms of a noun are reasonably balanced in
+frequency (neither form is twice more frequent than the other), or
+both rather frequent (appear at least 500 times). As the prenominal
+adjectives are somewhat marked, we only considered -\emph{e}
+adjectives that occur prenominally with at least 10 distinct nouns in
+the training corpus. We obtained 15,005 pairs of stimuli.  Here and
+below, stimuli were checked for strong semantic anomalies. %  In
+% addition to CNLMs and WordNLM, we tested frequency baseline choosing
+% the option with the higher unigram probability (whole-stimulus corpus
+% frequencies are at chance by construction).
+
+Results are shown in the first line of
+Table~\ref{tab:ital-agr-results}.  WordNLM shows the strongest
+performance, closely followed by the LSTM CNLM.  The RNN CNLM
+performs strongly above chance (50\%), but again lags behind the LSTM.
+
+\paragraph{Article-adjective gender agreement}
+We next consider agreement between articles and adjectives with an intervening adverb:
+\ex.\ag. il meno \{\underline{alieno},\ aliena\} \\
+the\ (m.) less alien\ one \\
+\bg. la meno \{alieno,\ \underline{aliena}\} \\
+the\ (f.) less alien\ one \\
+
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item 
+%		\begin{tabular}[t]{lllllll}
+%	a. & il & meno & \{ \underline{alieno}, aliena \} \\
+%   &  the (m.)& less & alien  \\
+%	b. & la & meno & \{ alieno, \underline{aliena} \} \\
+%    &the (f.)& less & alien one \\
+%\end{tabular}
+%\end{enumerate}
+where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
+\emph{tanto} `so much'. We considered only adjectives that occurred 1K
+times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
+very common). We excluded all cases in which the
+adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli. %
+%Here and in the next experiment, the frequency baseline chose the version with the more common adjective.
+% /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
+Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
+
+\begin{table}[t]
+  \begin{small}
+    \begin{center}
+      \begin{tabular}{l|ll|c}
+        & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c}{\multirow{2}{*}{WordNLM}}\\
+        &\emph{LSTM}&\emph{RNN} &  \\ \hline
+% eadj-aonoun
+        Noun Gender & 93.1  & 79.2 & 97.4\\
+%      adv-aoadj
+        Adj.~Gender & 99.5 & 98.9 & 99.5\\
+% adv-aeadj
+        Adj.~Number & 99.0 & 84.5 & 100.0\\
+%	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{2}{c}{\multirow{2}{*}{Frequency}}\\
+%	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} & & & \\ \hline
+%% eadj-aonoun
+%	    Noun Gender & 96.6&89.6  & 84.4&73.9 & 99.1&95.6 & 100.0 & 0.0\\
+%%      adv-aoadj
+%	    Adj.~Gender & 98.9&100.0 & 100.0&97.8 & 98.9&100.0 & 55.7 & 44.3 \\
+%% adv-aeadj
+%	    Adj.~Number & 99.0&99.0 & 99.0&70.0 & 100.0&100.0 & 86.7 & 13.3 \\
+%
+      \end{tabular}
+    \end{center}
+  \end{small}
+  \caption{\label{tab:ital-agr-results} Italian agreement results.} % For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
+\end{table}
+
+% \begin{table}[t]
+%   \begin{small}
+%     \begin{center}
+%       \begin{tabular}{l|ll|l|l}
+%         & \multicolumn{2}{c|}{CNLM} & \multicolumn{1}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{1}{c}{\multirow{2}{*}{Freq.}}\\
+%         &\emph{LSTM}&\emph{RNN} &  \\ \hline
+% % eadj-aonoun
+%         Noun Gender & 93.1  & 79.2 & 97.4 & 50.0\\
+% %      adv-aoadj
+%         Adj.~Gender & 99.5 & 98.9 & 99.5 & 50.0\\
+% % adv-aeadj
+%         Adj.~Number & 99.0 & 84.5 & 100.0 & 50.0 \\
+% %	    & \multicolumn{4}{c|}{CNLM} & \multicolumn{2}{c|}{\multirow{2}{*}{WordNLM}}  & \multicolumn{2}{c}{\multirow{2}{*}{Frequency}}\\
+% %	    &\multicolumn{2}{c|}{\emph{LSTM}}&\multicolumn{2}{c|}{\emph{RNN}} & & & \\ \hline
+% %% eadj-aonoun
+% %	    Noun Gender & 96.6&89.6  & 84.4&73.9 & 99.1&95.6 & 100.0 & 0.0\\
+% %%      adv-aoadj
+% %	    Adj.~Gender & 98.9&100.0 & 100.0&97.8 & 98.9&100.0 & 55.7 & 44.3 \\
+% %% adv-aeadj
+% %	    Adj.~Number & 99.0&99.0 & 99.0&70.0 & 100.0&100.0 & 86.7 & 13.3 \\
+% %
+%       \end{tabular}
+%     \end{center}
+%   \end{small}
+%   \caption{\label{tab:ital-agr-results} Italian agreement results.} % For each model and test, we report percentage accuracy on two stimulus classes (masculine/feminine for gender, singular/plural for number).}
+% \end{table}
+
+
+\paragraph{Article-adjective number agreement}
+Finally, we constructed a version of the last test that probed number agreement. For feminine forms (illustrated below) it's possible to compare same-length phrases:
+\ex.\ag. la meno \{\underline{aliena},\ aliene\} \\
+the\ (s.) less alien\ one(s) \\
+\bg. le meno \{aliena,\ \underline{aliene}\} \\
+the\ (p.) less alien\ one(s) \\
+
+%\begin{enumerate}[label={(\arabic*)}]
+%	\item 
+%\begin{tabular}[t]{lllllll}
+%	a. & la & meno & \{ \underline{aliena}, aliene \} \\
+%   &  the (s.)& less & alien one(s)  \\
+%	b. & le & meno & \{ aliena, \underline{aliene} \} \\
+%    &the (p.)& less & alien one(s) \\
+%\end{tabular}
+%\end{enumerate}
+% /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
+Selection of stimuli was as above, but we used a 500-occurrences
+threshold, as feminine plurals are less common, obtaining 99 pairs of stimuli. %  Further, we manually
+% removed adjectives that did not combine well semantically with the
+% adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
+Results are shown in the third line of Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, and the RNN still is strongly above chance.
+

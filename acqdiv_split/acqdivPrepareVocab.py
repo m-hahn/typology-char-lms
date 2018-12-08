@@ -13,23 +13,31 @@ print(args)
 
 acqdivCorpusReader = AcqdivReader("train", args.language)
 
+vocabularychar = set()
 vocabulary = set()
 iterator = acqdivCorpusReader.iterator()
 for utterance in iterator:
    utterance = utterance.split(" ; ")
    for word in utterance:
        vocabulary.add(word)
-print(vocabulary)
+#print(vocabulary)
+
+iterator = acqdivCorpusReader.iterator()
+for utterance in iterator:
+   utterancenew = utterance.replace(" ; ", " ")
+   utterancenew = utterancenew.split(" ")
+   for char in utterancenew:
+    if char != "\n":
+     vocabularychar.add(char)
+print(vocabularychar)
+
 
 with open(VOCAB_HOME+args.language+'-vocab.txt', "w") as outFile:
  for word in vocabulary:
   word=word.strip()
   outFile.write(word + "\n")
+
+with open(VOCAB_HOME+args.language+'-char.txt', "w") as outcharFile:
+ for char in vocabularychar:
+  outcharFile.write("%s\n" % char)
   
-# for word in vocabulary:
-   # for x in word:
-    # outFile.write(x)    
-#with open(VOCAB_HOME+args.language+'-vocab.txt', "w") as outFile:
-#  for line in outFile:
-#    if line.rstrip():
-#      print(line)

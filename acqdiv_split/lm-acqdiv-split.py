@@ -6,6 +6,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--language", dest="language", type=str)
 parser.add_argument("--load-from", dest="load_from", type=str)
 parser.add_argument("--save-to", dest="save_to", type=str)
+parser.add_argument("--out-loss-filename", dest="out_loss_filename", type=str)
+
 
 import random
 
@@ -29,11 +31,8 @@ print(args)
 from acqdivReadersplit import AcqdivReader, AcqdivReaderPartition
 
 acqdivCorpusReadertrain = AcqdivReader("train", args.language)
-
 acqdivCorpusReaderdev = AcqdivReader("dev", args.language)
-
 acqdivCorpusReadertest = AcqdivReader("test", args.language)
-
 
 
 def plus(it1, it2):
@@ -42,28 +41,11 @@ def plus(it1, it2):
    for x in it2:
       yield x
 
-#try:
-#   with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "r") as inFile:
-#      itos = inFile.read().strip().split("\n")
-#except FileNotFoundError:
-print("Creating new vocab")
-char_counts = {}
-char_counts1 = {}   
-# get symbol vocabulary
-with open(VOCAB_HOME+args.language+"-vocab.txt", "r") as inFile:
-      words = inFile.read().strip().split("\n")
-      for word in words:
-         char1 = word.split(" ")
-         for char in char1:
-            char_counts[char] = char_counts.get(char, 0) + 1
-            char_counts1 = [(x,y) for x, y in char_counts.items()]
-            itos = [x for x,y in sorted(char_counts1, key=lambda z:(z[0],-z[1]))]
-with open(CHAR_VOCAB_HOME+"/char-vocab-acqdiv-"+args.language, "w") as outFile:
-     for character in itos:
-      outFile.write("%s\n" % character)
-      #itos = sorted(itos)
+itos=[]
+with open(VOCAB_HOME + args.language + '-char.txt', "r") as inFile:
+     for line in inFile:
+      line=line.strip()
 itos.append("\n")
-print(itos)
 stoi = dict([(itos[i],i) for i in range(len(itos))])
 
 
@@ -83,7 +65,6 @@ rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num).c
 
 rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
-#quit()
 
 
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
@@ -277,11 +258,11 @@ for epoch in range(10000):
 
 print(min_loss)
 
-#with open(CHECKPOINT_HOME + "/results.txt", 'a') as f:
- #  if len(devLosses) > 1 and devLosses[-1] > devLosses[-2]:
-  #    f.write(' '.join(( args, (epoch-1), devLosses [-2])) + '\n')
-   #else:
-    #  if len(devLosses)>1:
-     # 		f.write(' '.join(( args, epoch, devLosses [-1])) + '\n')
+if args.out_loss_filename is not None:
+   with open(args.out_loss_filename, 'w') as out_loss_file:
+          out_loss_file.write(min_loss + '\n')
+
+
 
 	
+

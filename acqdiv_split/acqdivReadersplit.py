@@ -298,18 +298,3 @@ class AcqdivReaderPartition():
         for x in iterator:
           yield x
 	
-
-#reader = AcqdivReaderPartition(AcqdivReader("train", "Chintang"), "train").reshuffledIterator()
-#print(list(reader))
-
-#dev_data = AcqdivReaderPartition(AcqdivReader("dev", "Japanese"), "dev").reshuffledIterator()
-#print(list(dev_data))
-
-#acqdivCorpusReader = AcqdivReader("train", "Chintang")
-#print(list(acqdivCorpusReader))
-
-#acqdivCorpusReader = AcqdivReader("train", args.language)
-#iterator = acqdivCorpusReader.iterator()
-
-#AcqdivReaderPartition(AcqdivReader("train", "Chintang"))
-#print(list(AcqdivReaderPartition))

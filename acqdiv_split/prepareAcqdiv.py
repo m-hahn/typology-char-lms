@@ -48,8 +48,8 @@ def mergeCSV(infiles, outfile):
              outFile.write(inFile.read())
 
 
-basePath = "/Users/lscpuser/Documents/fair_project/acqdiv_final_data/indonesian/"
-basePathOut = "/Users/lscpuser/Documents/fair_project/acqdiv_final_data/indonesian/"
+basePath = ACQDIV_HOME + "/csv/"
+basePathOut = ACQDIV_HOME + "/tsv/"
 names = ["utterances_train", "utterances_dev", "utterances_test", "speakers", "morphemes", "words", "uniquespeakers"]
 
 for name in names:

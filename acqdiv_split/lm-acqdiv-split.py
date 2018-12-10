@@ -45,10 +45,12 @@ itos=[]
 with open(VOCAB_HOME + args.language + '-char.txt', "r") as inFile:
      for line in inFile:
       line=line.strip()
+      itos.append(line)
 itos.append("\n")
 stoi = dict([(itos[i],i) for i in range(len(itos))])
 
-
+print(itos)
+print(stoi)
 
 
 import random

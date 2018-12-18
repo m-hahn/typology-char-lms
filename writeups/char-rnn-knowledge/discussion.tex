@@ -27,6 +27,14 @@ suffice to support genuine linguistic generalizations. In future work,
 we will check if stronger priors are needed when learning
 from smaller amounts of training data.
 
+Of course, the written Wikipedia text our RNNs receive as input is
+very far from what children hear, and future work should explore
+character/phoneme-level learning from corpora of child-directed
+speech. Still, arguably, by feeding the RNNs directly long-winded
+grown-up prose, we are making the job of identifying basic
+constituents harder than it might be from the short utterances
+characterizing early child-directed speech \cite{Tomasello:2003}.
+
 Unlike standard word-level models, CNLMs lack a word-based
 lexicon. Any information they might acquire about units larger than
 characters must be stored in their recurrent weights. Given that
@@ -37,4 +45,6 @@ in future work we would like to explore how lexical knowledge is
 implicitly encoded in the distributed memory of the CNLMs.
 
 One of our original motivations for not assuming word primitives is that a rigid word notion is problematic both cross-linguistically (cf.~polysynthetic and agglutinative languages) and within a single linguistic system (cf.~the common  view  that the lexicon hosts units at different levels of the linguistic hierarchy, from  morphemes to large syntactic constructions). Our brief analysis of the CNLM over- and undersegmentations suggested that it is indeed capable to flexibly store information about units at different levels. However, this topic  remained largely unexplored, and we plan to tackle it in future work.
+
+
 

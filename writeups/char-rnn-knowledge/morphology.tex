@@ -1,11 +1,29 @@
 \subsection{Discovering morphological categories}
 \label{sec:categories}
 
-Besides being sensitive, to some extent, to word boundaries, does
-the CNLM also store linguistic properties of words, such as their part
-of speech and number? These experiments focus on German and
-Italian, as it's harder to design reliable test sets for
-morphologically impoverished English.
+A fundamental characteristic of words is that they belong to
+part-of-speech categories such as nouns and verbs. Moreover, in
+synthetic languages such as those we study, they carry inflectional
+features such as number. We start by probing whether the
+representations learned by our CNLM contains information about such
+properties. We use here the popular model of ``diagnostic
+classifiers'' \cite{Hupkes:etal:2017}. That is, we use the fixed,
+language-modeling-trained representations produced by the CNLM to
+train a shallow (logistic) classifier to distinguish the property of
+interest (e.g., plural vs.~singular). If the classifier is successful,
+this means that the representations provided by the model are encoding
+the relevant information. In our case, we want to ask questions about
+word properties to a model that has been trained at the character
+level. In order to do that, we let the model read each training/test
+word character-by-character, and we take the state of the model hidden
+layer after having processed the last character in the word to be the
+model's implicit representation of the word, on which we train the
+diagnostic classifier.
+% Besides being sensitive, to some extent, to word boundaries, does
+% the CNLM also store linguistic properties of words, such as their part
+% of speech and number? These experiments focus on German and
+% Italian, as it's harder to design reliable test sets for
+% morphologically impoverished English.
 
 \paragraph{Word classes (nouns vs.~verbs)}
 

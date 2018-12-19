@@ -59,19 +59,22 @@ months after birth
 
 After training the networks on the unsupervised character-level
 language modeling task, we then task on a bank of morphological,
-syntactic and semantic tests, in German, Italian and English. These
-tasks intuitively require a model to have developed a latent ability
-to parse characters into word-like units associated to morphological,
-grammatical and broadly semantic features. We find that our RNNs pass
-most of the tests, thus suggesting that the regularities they
-encounter in their input at training time suffice to let them extract
-and use lexical knowledge despite the lack of word-centric priors. In
-a final experiment, we thus proceed to test more directly whether the
-hidden activities of the RNNs is tracking information about word
-boundaries, finding that indeed they do.  In the conclusion, we
-discuss the broader implications and limits of our
-simulations.\footnote{Upon publication, we will make our input data,
-  test sets and pre-trained model available.}
+syntactic and semantic tests, in German, Italian and
+English.\footnote{We focus in this first study on these languages due
+  to resource availability and ease for us to construct the relevant
+  benchmarks in them.}  These tasks intuitively require a model to
+have developed a latent ability to parse characters into word-like
+units associated to morphological, grammatical and broadly semantic
+features. We find that our RNNs pass most of the tests, thus
+suggesting that the regularities they encounter in their input at
+training time suffice to let them extract and use lexical knowledge
+despite the lack of word-centric priors. In a final experiment, we
+thus proceed to test more directly whether the hidden activities of
+the RNNs is tracking information about word boundaries, finding that
+indeed they do.  In the conclusion, we discuss the broader
+implications and limits of our simulations.\footnote{Upon publication,
+  we will make our input data, test sets and pre-trained model
+  available.}
 
 % probe them with phonological, lexical,
 % morphological, syntactic and semantic tests in English, German and

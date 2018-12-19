@@ -1,6 +1,28 @@
 \section{Related work}
 \label{sec:related}
 
+\paragraph{On the primacy of (orthographic) words} Our work is
+inspired by linguistic studies that have proposed, from different
+perspectives and theoretical backgrounds, that words, at least as
+delimited by whitespace in some written languages, are neither
+necessary nor sufficient units for linguistic analysis. This ranges
+from the very direct claim of \newcite{Haspelmath:2011} that there is
+no good criterion to define what a word is cross-linguistically, to
+the difficulty of characterizing a consistent notion of word in
+polysynthetic languages \cite{Bickel:Zuniga:2017}. Children are
+clearly not exposed to words in isolation during learning
+\cite{Tomasello:2003}, and several linguists have suggested that the
+units that speakers eventually store in their lexicon are of variable
+size, both smaller and larger than conventional words
+\cite[e.g.,]{Jackendoff:2002,Goldberg:2005}. Our study shows that a
+powerful sequence learning devise, such as an LSTM, can learn, from
+naturally occurring language data, to capture several linguistic
+phenomena that appear to be word-mediated without overt word-boundary
+information and lacking an internal data structure for a word
+vocabulary. Our results thus contribute to the theoretical debate on
+word primacy, suggesting that learning or representational word priors
+might not be as crucial as typically assumed.
+
 \paragraph{Character-based neural language models} have received some attention in the last
 decade because of their greater generality, and because, intuitively, they should be able to
 use cues, such as morphological information, that word-based models
@@ -35,14 +57,15 @@ modeling.% Moreover, these networks are not exposed to constituents
 % larger than words.
 
 
-\paragraph{Probing linguistic knowledge of neural language models} Extensive work probes the linguistic properties of
-word-based neural language models, as well as more complex
-architectures such as sequence-to-sequence systems: see, e.g.,
-\newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Kadar:etal:2017,DBLP:journals/corr/LiMJ16a,DBLP:conf/ijcai/HupkesZ18,Conneau:etal:2018}.
+\paragraph{Probing linguistic knowledge of neural language models}
+Extensive work probes the linguistic properties of word-based neural
+language models, as well as more complex architectures such as
+sequence-to-sequence systems: see, e.g.,
+\newcite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Kadar:etal:2017,DBLP:journals/corr/LiMJ16a,DBLP:conf/ijcai/HupkesZ18,Conneau:etal:2018,Ettinger:etal:2018,Linzen:etal:2018}.
 
 Early work by Jeffrey Elman is close in spirit to ours. In particular,
-\newcite{Elman:1990} reported phonotactics and word segmentation
-experiments similar to ours, but using toy inputs. More recently,
+\newcite{Elman:1990} reported a proof-of-concept experiment on
+implicit learning of word segmentation. More recently,
 \newcite{Sennrich:2017} explored the grammatical properties of
 character- and subword-unit-level models that are used as components
 of a machine translation system. He concluded that current
@@ -50,27 +73,40 @@ character-based decoders generalize better to unseen words, but
 capture less grammatical knowledge than subword units. Still, his
 character-based systems lagged only marginally behind the subword
 architectures on grammatical tasks such as handling agreement and
-negation. \newcite{DBLP:journals/corr/RadfordJS17} also studied CNLMs with focus on understanding their
-properties, but only in the domain of sentiment
-analysis. \newcite{Godin:etal:2018} investigated the rules implicitly
-used by supervised character-aware neural morphological segmentation
-methods, finding in particular that the networks discover
-linguistically sensible patterns. More closely related to our goals,
-\newcite{Alishahi:etal:2017} probed the linguistic knowledge induced by
-a neural network that receives unsegmented acoustic input. They used
-however a considerably more complex architecture, trained on
-multimodal data, and they focused on phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a related study
-probing the linguistic knowledge of plain character-level neural
-language models. Their results are aligned with ours, as they show
-that these models have knowledge of lexical and morphological
-structure, and they capture morphosyntactic categories as well as
-constraints on possible morpheme combinations. One of their most
-intriguing results is that the model tracks morpheme boundaries in a
-localist fashion through a single unit (we could not replicate the
-result with our model).  They do not explore syntactic or semantic
-knowledge, and they limit their study to English. Moreover, they
-trained their models on input with whitespace, thus providing the
-model with a major (and cognitively artificial) cue to word
-boundaries.
+negation. \newcite{DBLP:journals/corr/RadfordJS17} also studied CNLMs
+with focus on understanding their properties, but only in the domain
+of sentiment analysis. \newcite{Godin:etal:2018} investigated the
+rules implicitly used by supervised character-aware neural
+morphological segmentation methods, finding in particular that the
+networks discover linguistically sensible patterns. More closely
+related to our goals, \newcite{Alishahi:etal:2017} probed the
+linguistic knowledge induced by a neural network that receives
+unsegmented acoustic input. Their results are however not directly
+comparable with ours, since they used a considerably more complex
+architecture, they trained it on multimodal data, and they focused on
+phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a
+related study probing the linguistic knowledge of plain
+character-level neural language models. Their results are aligned with
+ours, as they show that these models have knowledge of lexical and
+morphological structure, and they capture morphosyntactic categories
+as well as constraints on possible morpheme combinations. One of their
+most intriguing results is that the model tracks morpheme boundaries
+through a single unit. We were not able to find a similar sparse
+encoding of morpheme- or word-boundaries in our network (the results
+we will report in Section \ref{sec:segmentation} suggest that our
+model is also tracking boundaries in its hidden state, but through a
+distributed code). The most obvious difference between our experiment
+and that of Kementchedjhieva and Lopez is that they keep whitespace in
+the input training.  However, they observe that their
+morpheme-tracking unit is not simply predicting white space,
+suggesting that the encoding difference between our model and theirs
+cannot be (entirely) explained away by the difference in training
+input. As we do not attempt here to characterize the inner dynamics of
+our network, we leave a systematic comparison to future work.
 
 
+% They do not explore syntactic or semantic
+% knowledge, and they limit their study to English. Moreover, they
+% trained their models on input with whitespace, thus providing the
+% model with a major (and cognitively artificial) cue to word
+% boundaries.

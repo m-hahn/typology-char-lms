@@ -39,13 +39,15 @@ Nearly all contemporary linguistics recognizes a central role to the
 lexicon \cite[see, e.g.,][for very different
 perspectives]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016}. Linguistic
 formalisms always assume that such lexicon is essentially a dictionary
-of words and possibly other units.  Very intriguingly, our CNLMs
-captured a range of phenomena that require lexical information
-\emph{without} anything resembling a dictionary. Any information the
-CNLM might acquire about units larger than characters must be stored
-in its recurrent weights. This suggests a radically different view of
-lexical knowledge as implicitly encoded in a distributed memory, that
-we will strive to characterize more precisely and test in future work.
+of words and possibly other units, not completely unlike the list of
+words and associated embeddings in a standard word-based NLM. Very
+intriguingly, our CNLMs captured a range of phenomena that require
+lexical information \emph{without} anything resembling a
+dictionary. Any information the CNLM might acquire about units larger
+than characters must be stored in its recurrent weights. This suggests
+a radically different view of lexical knowledge as implicitly encoded
+in a distributed memory, that we will strive to characterize more
+precisely and test in future work.
 
 Another important direction to extend this work concerns the input. To
 what extent does the ability of the CNLM to extract the correct
@@ -60,8 +62,23 @@ grown-up prose, we are making the job of identifying basic
 constituents harder than it might be from the short utterances
 characterizing early child-directed speech \cite{Tomasello:2003}.
 
+Even more importantly one of our original motivations for dispensing
+with word primitives is that a rigid word notion is problematic both
+cross-linguistically (cf.~polysynthetic and agglutinative languages)
+and within a single linguistic system \cite[cf.~the common view that
+the lexicon hosts units at different levels of the linguistic
+hierarchy, from morphemes to large syntactic constructions,
+e.g.,]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. In this
+perspective, the current paper provides a necessary preliminary check
+that the word-free model can account for intuitively word-based
+phenomena. However, the most exciting future work should focus on
+testing whether such models can also account for grammatical patterns
+that are harder to explain in word-based formalisms, extending the
+research both to a typologically wider range of language and to a
+broader range of grammatical tests.
 
-One of our original motivations for not assuming word primitives is that a rigid word notion is problematic both cross-linguistically (cf.~polysynthetic and agglutinative languages) and within a single linguistic system (cf.~the common  view  that the lexicon hosts units at different levels of the linguistic hierarchy, from  morphemes to large syntactic constructions). Our brief analysis of the CNLM over- and undersegmentations suggested that it is indeed capable to flexibly store information about units at different levels. However, this topic  remained largely unexplored, and we plan to tackle it in future work.
+
+
 
 
 

@@ -18,42 +18,57 @@ level. In order to do that, we let the model read each training/test
 word character-by-character, and we take the state of the model hidden
 layer after having processed the last character in the word to be the
 model's implicit representation of the word, on which we train the
-diagnostic classifier.
+diagnostic classifier. %
 % Besides being sensitive, to some extent, to word boundaries, does
 % the CNLM also store linguistic properties of words, such as their part
-% of speech and number? These experiments focus on German and
-% Italian, as it's harder to design reliable test sets for
-% morphologically impoverished English.
+% of speech and number?
+The experiments focus on German and Italian, as it's harder to design
+reliable test sets for morphologically impoverished English.
 
 \paragraph{Word classes (nouns vs.~verbs)}
 
-We sampled 500 verbs and 500 nouns from the Wikipedia training sets,
-requiring that they end in -\emph{en} (German) or -\emph{re} (Italian)
-(so that models can't rely on the affix for classification), and that
-they are unambiguously tagged in the corpus. %The first constraint sets
-% the bar higher for methods relying on surface cues, as all verbs and
-% nouns share the same endings.
-We randomly selected 20 training
-examples (10 nouns and 10 verbs), and tested on the
-remaining items.  We repeated the experiment 100 times to control
-for random train-test split variation. We recorded the final
-hidden state of a pre-trained CNLM after reading a word, without
-context, and trained a logistic noun-verb classifier on these
-representations.
+For both German and Italian, we sampled 500 verbs and 500 nouns from
+the Wikipedia training sets, requiring that they are unambiguously
+tagged in the corpus. Since in many cases verbs and nouns are cued by
+affixes, we selected the examples to have the same ending across the
+two categories (\emph{-en} in German and \emph{-re} in Italian), so
+that the models could not rely on affixes to disambiguate the part of
+speech. We randomly selected 20 training examples (10 nouns and 10
+verbs), and tested on the remaining items.  We repeated the experiment
+100 times to control for random train-test split variation.
+%  We recorded the final
+% hidden state of a pre-trained CNLM after reading a word, without
+% context, and trained a logistic noun-verb classifier on these
+% representations.
 
-As a baseline, we used a character-level LSTM autoencoder trained to
-reconstruct words in isolation.  The hidden state of the autoencoder
-should capture relevant orthographic features.  We further considered
-word embeddings from the output layer of the WordNLM, reporting its test accuracy both when OOV words are ignored and when they are randomly classified.
-%\textbf{This needs to be further discussed: can you compute  performance with random guess for OOV words?}
+While we controlled for the final affix as described above, it could
+still be the case that other substrings inside words tend to cue verbs
+or nouns. In order to assess to what extent the models are relying on
+information gathered from broader contexts, we consider a baseline
+that is only trained on word-internal information. This is a
+character-level LSTM autoencoder trained to reconstruct words in
+isolation.  The hidden state of the autoencoder should capture
+discriminating orthographic features, but, by design, the latter has
+no access to broader contexts.  We further considered word embeddings
+from the output layer of the WordNLM. Unlike the character-based
+models, the WordNLM cannot make educated guesses about words that are
+not in its training vocabulary. These OOV words are by construction
+less frequent, and thus likely to be in general more difficult. To get
+a sense of both best-case-scenario and more realistic WordNLM
+performance, we report its accuracy both excluding and including OOV
+items (WordNLM$_{\textit{subs.}}$ and WordNLM in Table
+\ref{tab:pos-results}, respectively). In the latter case, we let the
+model make a random guess for OOV items.
 
 Results are shown in Table~\ref{tab:pos-results}.  All language models
 outperform the autoencoders, showing that they learned categories
 based on broader distributional evidence, not just typical strings
 cuing nouns and verbs. Moreover, the LSTM CNLM outperforms the RNN,
 probably because it can track broader contexts. Not surprisingly, the
-word-based model fares better, but the gap, especially in Italian, is
-rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
+word-based model fares better on in-vocabulary words, but the gap,
+especially in Italian, is rather narrow, and there is a strong
+negative impact of OOV
+words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
 
 \begin{table}[t]
 %  \begin{small}
@@ -70,7 +85,7 @@ rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Word class accuracy, with standard errors. `\emph{subs.}' marks in-vocabulary subset evaluation.} % (20 training examples)
+	\caption{\label{tab:pos-results} Word class accuracy, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation.} % (20 training examples)
 \end{table}
 
 
@@ -86,8 +101,8 @@ rather narrow, and there is a strong negative impact of OOV words. % Figure~\ref
 
 \paragraph{Number}
 We turn next to number, a more granular morphological feature. We
-study German as it possesses nominal classes that form plural
-through different morphological processes. We train a number
+study German, as it possesses a rich system of nominal classes forming
+plural through different morphological processes. We train a number
 classifier on a subset of these classes, and test on the others. If a
 model generalizes correctly, it means that it is sensitive to number
 as an abstract feature, independently of its surface expression.
@@ -110,10 +125,8 @@ singulars. %\textbf{(how many?)}.
 We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
 %\textbf{Need information on the test set for the training classes.}
 To control for the impact of training sample selection, we
-report accuracies averaged over 200 repetitions.  We extract word
-representations as above, and we compare to an autoencoder and
-embeddings from the WordNLM.
-As before, we report results ignoring OOV words, and with random classification for OOV words.
+report accuracies averaged over 200 random train-test splits.  We extract word
+representations as above, and we compare the same models. %
 %, excluding OOVs when testing the latter.
 Results are summarized in Table \ref{tab:number-results}.
 
@@ -130,7 +143,9 @@ Results are summarized in Table \ref{tab:number-results}.
 	    WordNLM & 82.1 ($\pm$ 0.1) & 73.1 ($\pm$ 0.1) & 77.6 ($\pm$ 0.1)  \\ 
     \end{tabular}
   \end{center}
-	\caption{\label{tab:number-results} German number classification accuracy, with standard errors computed from 200 runs.}
+  \caption{\label{tab:number-results} German number classification
+    accuracy, with standard errors computed from 200 random train-test
+    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation.}
 \end{table}
 
 
@@ -185,14 +200,33 @@ Results are summarized in Table \ref{tab:number-results}.
 %python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-RNN.py  --batchSize 256 --char_dropout_prob 0.01 --char_embedding_size 50 --char_noise_prob 0.0 --hidden_dim 2048 --language german --layer_num 2 --learning_rate 0.1 --nonlinearity tanh --load-from wiki-german-nospaces-bptt-rnn-237671415 --sequence_length 30 --weight_dropout_hidden 0.0 --weight_dropout_in 0.0
 %python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846
 
-
 The classifier based on word embeddings is the most successful,
-confirming that the latter reliably encode number
-\cite{Mikolov:etal:2013a}.  CNLM encodings outperform the autoencoder
-on plurals formed with suffixes, indicating some capability to detect
-number beyond orthographic cues.  For -\emph{r} plurals, the CNLM LSTM
-even outperforms the WordNLM.  In contrast, the CNLMs do not
-generalize to Umlaut plurals, where they are virtually at chance level,
-and \emph{worse} than the autoencoder. Evidently, CNLM number encoding
-is not abstract enough to generalize across very different surface
-morphological processes (adding a suffix vs.~changing the root vowel).
+outperforming in most cases the best CNLM even in the more cogent
+OOV-inclusive evaluation. This confirms the common observation that
+word embeddings reliably encode number \cite{Mikolov:etal:2013a}. The
+CNLM results are more mixed. Again the LSTM variant outperforms the
+RNN one, but neither has problems detecting number for new words in
+the training paradigms. They are also able to detect number in a new
+paradigm (\emph{-r} plurals), showing that they are, to some extent,
+inducing an abstract notion of number that is not tied to specific
+orthographic exponents. In these experiments, the CNLMs significantly
+outperform the autoencoder, and the LSTM even does better than the
+word model in \emph{-r}-class generalization.
+
+In contrast, the CNLMs fail to generalize to Umlaut plurals, where
+they are virtually at chance level, and \emph{worse} than the
+autoencoder. The most obvious difference between this type and
+\emph{-r} pluralization is that the latter is an affixation process,
+whereas Umlaut pluralization changes the stressed vowel of the
+stem. Thus, a cautious interpretation is that the CNLMs developed a
+representation of plural that is sufficiently abstract to generalize
+to different affixation processes than the ones seen in training,
+but. Note that, as we control for length, we are confident that the
+network is not simply relying on this superficial feature to detect
+plurals (which would explain why affixation cases are
+easier). Similarly, the network can't simply rely on consonants cuing
+plurals, both because many singular forms also end with consonants, and
+because one of the training classes had \emph{-e} as plural marker.
+% Evidently, CNLM number encoding is not abstract enough to
+% generalize across very different surface morphological processes
+% (adding a suffix vs.~changing the root vowel).

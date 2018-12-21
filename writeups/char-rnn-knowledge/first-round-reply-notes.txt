@@ -1,3 +1,17 @@
+We thank the editor and the reviewers for their insightful comments, that helped us in re-focusing the paper, which we believe is now sending a stronger, more coherent message than in the first version.
+
+The editor letter and the reviews pointed out that the paper contained too many experiments, that were not always clearly outlined, and did not make a clear case about their purpose. Several specific issues were also raised, in particular concerning the phonology and segmentation sections.
+
+The revised version focuses on the question of whether out word-less models can learn to handle linguistic phenomena, such as the ones we analyze in the morphology, syntax and semantics sections, that are intuitively word-mediated. In this perspective, that we now thoroughly discuss in the introduction and in the conclusion, the phonological experiments do not fit the paper anymore, as they do not relate to the notion of word-hood. By removing them, we remove some of the claims the reviewers found most problematic, and we make room for a more thorough analysis of the other results. Moreover, under the new organization, the segmentation experiment has been moved to the last slot in the experimental section, as it now naturally addresses the question of whether the (relative) successes we observed in modeling word-mediated phenomena means that our models are implicitly keeping track of word boundaries.
+
+We changed the main experiment in the segmentation section to test more directly this latter hypothesis. Instead of training a word segmenter on features derived from model-produced likelihoods, we directly probe the hidden state of the trained models for information about word breaks using a "diagnostic classifier".
+
+We have also rewritten the related-work section, to remove the "defensive" tone that had been noted by a reviewer, as well as to place the paper in the broader contexts of studies on the primacy of the word in linguistics.
+
+We describe other changes we made below, where we explain in detail how we addressed the comments by the editor and the reviewers.
+
+
+
 E:
 
 The main objections are that the many small insights in the individual

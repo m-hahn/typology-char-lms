@@ -18,7 +18,11 @@ level. In order to do that, we let the model read each training/test
 word character-by-character, and we take the state of the model hidden
 layer after having processed the last character in the word to be the
 model's implicit representation of the word, on which we train the
-diagnostic classifier. %
+diagnostic classifier. Note that the classifier is deliberately
+shallow and trained on a small set of examples, as we want to probe
+weather the properties of interests are robustly encoded in the
+representations produced by the CNLMs, amenable to a simple linear
+readout \cite{Fusi:etal:2016}. %
 % Besides being sensitive, to some extent, to word boundaries, does
 % the CNLM also store linguistic properties of words, such as their part
 % of speech and number?

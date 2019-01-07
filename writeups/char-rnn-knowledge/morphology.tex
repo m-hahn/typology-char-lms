@@ -222,16 +222,49 @@ they are virtually at chance level, and \emph{worse} than the
 autoencoder. The most obvious difference between this type and
 \emph{-r} pluralization is that the latter is an affixation process,
 whereas Umlaut pluralization changes the stressed vowel of the
-stem. Thus, a cautious interpretation is that the CNLMs developed a
-representation of plural that is sufficiently abstract to generalize
-to different affixation processes than the ones seen in training,
-but. Note that, as we control for length, we are confident that the
-network is not simply relying on this superficial feature to detect
-plurals (which would explain why affixation cases are
-easier). Similarly, the network can't simply rely on consonants cuing
-plurals, both because many singular forms also end with consonants, and
-because one of the training classes had \emph{-e} as plural marker.
-\textbf{We need some kind of story here!!!}
-% Evidently, CNLM number encoding is not abstract enough to
-% generalize across very different surface morphological processes
-% (adding a suffix vs.~changing the root vowel).
+stem.
+
+
+%Thus, a cautious interpretation is that the CNLMs developed a
+%representation of plural that is sufficiently abstract to generalize
+%to different affixation processes than the ones seen in training,
+%but. Note that, as we control for length, we are confident that the
+%network is not simply relying on this superficial feature to detect
+%plurals (which would explain why affixation cases are
+%easier). Similarly, the network can't simply rely on consonants cuing
+%plurals, both because many singular forms also end with consonants, and
+%because one of the training classes had \emph{-e} as plural marker.
+%\textbf{We need some kind of story here!!!}
+%% Evidently, CNLM number encoding is not abstract enough to
+%% generalize across very different surface morphological processes
+%% (adding a suffix vs.~changing the root vowel).
+%
+Interestingly, many of the Umlaut words end in \emph{-n} and \emph{-r}, and these singulars are mostly misclassified as plurals. 
+We hypothesized that the CNLMs-based classifiers classify number based on the orthographic endings, not based on abstract number representations.
+To test this, we extracted from Wiktionary singular nouns ending in \emph{-n, -s, -e, -r}, excluding nouns that have identical singular and plural forms.
+We also extracted nouns ending in one of the two most common final characters of singular nouns in the dataset that can \emph{not} act as the last character of a plural, which are \emph{g} and \emph{t}.
+We then ran the number classifier on these nouns, again with 200 random choices of the training set.
+
+Resulting accuracies are shown in Table~\ref{tab:number-foils-results}.
+Classifiers based on CNLM or autoencoder representations show below-chance accuracy on the singulars ending in \emph{-n, -s, -e, -r}, i.e., the diagnostic classifiers mistake many singulars for plurals based on their ending.
+Conversely, they mostly recognize singulars when the final consonant makes this unambiguous.
+This shows that -- to the extent accessible to a shallow diagnostic classifier -- the CNLM encodes not an abstract number feature, but orthographic features typical of plurals.
+
+
+\begin{table}[t]
+	\footnotesize
+  \begin{center}
+    \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}c@{\hspace{0.45em}}@{\hspace{0.45em}}l@{\hspace{0.65em}}|l@{\hspace{0.15em}}}
+	    &\emph{-n}/\emph{-s}/\emph{-e}&\emph{-r}&\emph{-g}/\emph{-t}  \\ \hline
+	    LSTM& 38.6 ($\pm$ 0.5)  & 24.5 ($\pm$ 0.4) & 83.2 ($\pm$ 0.5) \\
+	    RNN& 45.5 ($\pm$ 0.6) &  28.9 ($\pm$ 0.8) & 78.3 ($\pm$ 1.3) \\
+	    Autoencoder& 49.7 ($\pm$ 0.2) & 34.0 ($\pm$ 0.6) & 71.1 ($\pm$ 0.9) \\
+	    WordNLM$_{\textit{subs.}}$& TODO ($\pm$ ) &  ($\pm$ ) &  ($\pm$ ) \\
+	    WordNLM & TODO ($\pm$ ) &  ($\pm$ ) &  ($\pm$ ) \\
+    \end{tabular}
+  \end{center}
+	\caption{\label{tab:number-foils-results} Accuracy on singulars ending in characters that can (n, s, e, r) or cannot (g, t) be plural endings. }
+\end{table}
+
+
+

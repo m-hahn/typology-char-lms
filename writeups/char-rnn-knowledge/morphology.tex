@@ -106,13 +106,13 @@ words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as 
 \paragraph{Number}
 We turn next to number, a more granular morphological feature. We
 study German, as it possesses a rich system of nominal classes forming
-plural through different morphological processes. We train a number
+plural through different morphological processes. We train a diagnostic number
 classifier on a subset of these classes, and test on the others. If a
-model generalizes correctly, it means that it is sensitive to number
+model generalizes correctly, it means that the CNLM is sensitive to number
 as an abstract feature, independently of its surface expression.
 
 We extracted plural nouns from the German UD
-treebank \cite{de2006generating,mcdonald2013universal}.  We selected
+treebank \cite{mcdonald2013universal,brants2002tiger}.  We selected % de2006generating,
 nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
 -\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter').
 %\textbf{Add one

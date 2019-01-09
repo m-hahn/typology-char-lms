@@ -18,6 +18,7 @@ In the German snippet, we see peaks at the morpheme boundaries of the compound \
 To investigate how consistently this unit detects word boundaries, we trained a threshold classifier on this single unit (i.e., a classifier with a single parameter) on 1,000 positions from the development set, using the remainder as test data, predicting whether the last character read by the CNLM represents the end of a word, as tokenzied by TreeTagger.
 For both the training and test data, we balanced the number of word-final and word-initial/word-medial positions.
 
+TODO say how many test samples
 
 We carried out the same procedure for the CNLMs we trained with whitespace, similar to the setup of \newcite{Kementchedjhieva:Lopez:2018}.
 We expect that the explicit encoding of words would lead to even stronger encodings in such a network than in our CNLMs.
@@ -58,23 +59,15 @@ Across languages, the LSTM CNLM units are more predictive than the RNN ones, and
 % output in 
 % results/segmentation-english-frequent-errors-unit-disjoint.txt
 
+
+
 We next ask how much information is additionally stored in the entire hidden state, returning to the method of diagnostic classifiers.
-
-
-
-probing: at the end of a word (and/or the first char of a word)
-
-- CNLM (LSTM, RNN)
-
-- lexicon-based: this is the best one could do when (1) knowing where the word starts, (2) isn't given the prior context. Note that this baseline has access to a very large lexicon
-
-
-We applied the method of diagnostic classifiers to investigate whether the CNLM's internal states encode knowledge about word boundaries.
-
-While running the CNLM, we randomly selected positions, such that half of these were the last character of a token, and the other half were not.
-We collected 100, 1000, and 1000 such points as training data, and as many as possible as test data, from the development partitions of the corpora.
+As before, we randomly selected positions form the development partition such that half of these were the last character of a token, and the other half were not.
+We collected 100, 1000, and 10000 such points as training data for the diagnostic classifiers, and the remainder for testing.
 Both sets were balanced between (1) and (2).
-We sampled the test data points subject to the constraint that the word or prefix ending at the selected character does not overlap with the training set.
+We sampled the test data points subject to the constraint that the word or word prefix ending at the selected character does not overlap with the training set.
+
+TODO say how many test samples
 
 
 We compared this to the following lexicon-based classifier:
@@ -85,17 +78,11 @@ First, unlike the CNLM, it has oracle access to the beginning of the current wor
 With this, it represents the \emph{optimal} classifier for this task when the beginning of the current word is known, but the prior context is not given.
 Second, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
 It seems that the only way a CNLM-based classifier could be more successful than this classifier is by drawing on the prior context.
-
-
-
-accuracy
-
-
+%
+Results are shown in Table~\ref{tab:segmentation-results}.
 We find that the diagnostic classifier shows above-random performance with few training samples.
 With 1000 training samples, it performs similarly to the strong lexicon-based classifier.
-
 This shows that the CNLM's representations provide strong cues regarding word boundaries.
-
 Performance is strongest in English and weakest in German, both for the CNLM-based diagnostic classifier and for the lexicon-based baseline.
 The preponderance of compound words in German may be responsible for this.
 
@@ -112,18 +99,6 @@ The preponderance of compound words in German may be responsible for this.
   \end{center}
   \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on recognizing word boundaries, with 100/1000/10000 training samples. Random baseline accuracy is 50 \%.}
 \end{table}
-
-
-TODO how well does a classifier do on the unit?
-
-Single unit:
-Without whitespace: German 519 $R^2 = $0.69, Italian 1508 0.57, English 2044 0.59
-Strong correlation with `has read the last character'
-Result looked just like this in the with-whitespace version.
-% python detectBoundariesUnit_Hidden_NoWhitespace.py --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 100 --char_noise_prob 0.0 --hidden_dim 1024 --language german --layer_num 2 --learning_rate 2.0 --weight_dropout_hidden 0.05 --weight_dropout_in 0.01 --load-from wiki-german-nospaces-bptt-910515909
-With whitespace, we found units that strongly correlate with the presence of a word boundary (Pearson > 0.8 when `after reading the whitespace').
-
-% Nice visualization for the unit?
 
 
 

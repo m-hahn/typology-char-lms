@@ -129,7 +129,7 @@ Sec 2: This paper may also be relevant: Ettinger et al 2018 `Assessing
 Composition in Sentence Vector Representations'
 https://urldefense.proofpoint.com/v2/url?u=https-3A__aclanthology.coli.uni-2Dsaarland.de_papers_C18-2D1152_c18-2D1152&d=DwIBaQ&c=5VD0RTtNlTh3ycd41b3MUw&r=eW1NdU8kpHF5nrq2Z__Rnw&m=8858iCmrOZOuNi3cLSQjugg77jFv3IG_TiJzC3Wh2ZU&s=C8soDo9_d3O47KTapHf4ZBX9C7Ryoz8J8nRZ8n7Mjqw&e=
 
-=> checkout
+=> checkout (done)
 
 ln 209 It's not clear to me what "in a localist fashion" means.
 
@@ -139,7 +139,7 @@ ln 240 Does "We used LSTM cells for WordNLMs" mean something different
 from "We only tested a word-level LSTM and not a word-level RNN"? If
 so, what?  Also, why not do the word-level RNN?
 
-=> explain
+=> explain (still todo)
 
 ln 325 "The LSTM assigns higher probability to the acceptable bi-grams
 in all but two cases." Are the ratios of "~1" being counted as
@@ -170,13 +170,13 @@ like other word boundaries?
 ln 516 What was the training set used for the Berkeley Parser to be able to
 parse German?
 
-=> clarify
+=> clarify (done)
 
 ln 546 "unambiguously tagged in the corpus":  I think it would be useful to
 remind the reader here that these aren't gold tags but come from TreeTagger
 (right?)
 
-=> clarify
+=> clarify (Michael)
 
 Table 5 I don't understand what the last two lines are. Is WordNLM_subs.
 without OOV and WordNLM the full test set? If so, then ln 578 "the
@@ -184,6 +184,7 @@ word-based model fares better" doesn't seem to make any sense---WordNLM
 scores *lowest*.
 
 => report results with test sets redesigned to only include words in WordNLM vocabulary (and mention this in text)
+(I think we decided to instead keep the previous setting, and explain it better)
 
 ln 582 "We study German as it possesses nominal classes that form plural
 through different morphological processes" This is also true in Italian!
@@ -195,7 +196,7 @@ UD project in general. Surely there's a specific citation for the German UD
 treebank that should be included to give those researchers credit for their
 work.
 
-=> do
+=> do (done)
 
 ln 661 "To avoid phrase segmentation ambiguities, we present phrases
 surrounded by full stops." I'm not sure what this means. What is the system
@@ -203,31 +204,31 @@ presented with at test time? Just a phrase like in (1) (with only one
 article)? Why would not having full stops (before and after??) lead to
 ambiguity?
 
-=> explain
+=> explain (Michael)
 
 ln 744 "as these often reflect lemmatiziation problems": Are these problems
 with TreeTagger, your system, or something else?
 
-=> explain
+=> explain (Michael)
 
 ln 750 When would German ever have discontinuous NPs?
 
-=> explain
+=> explain (Michael)
 
 ln 752 Is it well established that RNNs & LSTMs have the same probabilistic
 bias for shorter sequences that e.g. HMMs do?
 
-=> explain
+=> explain (done)
 
 ln 774-776 I found this too terse. What is the n-gram count model? Why omit
 the sentence environment?
 
-=> explain
+=> explain (Michael)
 
 ln 778 What stimuli not including the preposition? Where are these
 described?
 
-=> explain
+=> explain (Michael)
 
 4.4.2 If the words occur in the corpus, they presumably occur with their
 article, so it's not immediately clear to me that the stimuli don't occur in
@@ -281,7 +282,7 @@ ln 622 I'm not sure what "the latter" is supposed to refer back to.
 ln 720 the Universal Dependencies -> the German UD treebank
 ln 996 capable to flexibly store -> capable of flexibly storing
 
-=> fix these
+=> fix these (Michael)
 
 **************
 **************
@@ -341,14 +342,14 @@ developers for their ongoing work.
    setup (e.g., would this also hold for the model trained with white-space,
    footnote 6?) or what other reasons there could be at play.
 
-=> discuss
+=> discuss (Michael)
 
 - Table 3: check F1 score for Italian (should be 59 rather than 60)
 - Presentation of results in Table 3 and 4: use of different decimal places.
 - Colored figures are unreadable in b/w printing.
 - line 936: in Figure 8 > in Table 8
 
-=> fix
+=> fix (Michael)
 
 **************
 **************
@@ -440,7 +441,7 @@ NO LABELS WHATSOEVER.  No axis labels and no legend labels!  There is only
 one paragraph actually explaining this experiment, and it's not nearly
 enough to understand the results.
 
-=> discuss more in depth
+=> discuss more in depth (Michael)
 
 At this point we begin to veer off course, and the models seem to be trained
 and/or tested on single words, which makes a bit of sense sometimes (e.g.
@@ -482,7 +483,7 @@ line 242, the models were not trained until validation accuracy plateaued?
 That does not seem standard.  How can we know if these models are fit to
 compare against each other if we're not sure they're done training?
 
-=> needs some discussion
+=> needs some discussion (still TODO)
 
 The citations for the figures/tables are missing a lot of information.  It's
 nice to not have to scan through the text to figure out what each figure is
@@ -517,7 +518,7 @@ hard to keep track of what the point of the current experiment is.
 A few tables/figures have STD or bootstrapped CI, but many do not. Would
 like to see them consistently throughout
 
-=> do or explain where we do it
+=> do or explain where we do it (Michael)
 
 Line 616: "as above" there's a lot of stuff above at this point, please
 refer to something more concrete

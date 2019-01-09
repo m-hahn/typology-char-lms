@@ -91,18 +91,20 @@ ours, as they show that these models have knowledge of lexical and
 morphological structure, and they capture morphosyntactic categories
 as well as constraints on possible morpheme combinations. One of their
 most intriguing results is that the model tracks morpheme boundaries
-through a single unit. We were not able to find a similar sparse
-encoding of morpheme- or word-boundaries in our network (the results
-we will report in Section \ref{sec:segmentation} suggest that our
-model is also tracking boundaries in its hidden state, but through a
-distributed code). The most obvious difference between our experiment
-and that of Kementchedjhieva and Lopez is that they keep whitespace in
-the input training.  However, they observe that their
-morpheme-tracking unit is not simply predicting white space,
-suggesting that the encoding difference between our model and theirs
-cannot be (entirely) explained away by the difference in training
-input. As we do not attempt here to characterize the inner dynamics of
-our network, we leave a systematic comparison to future work.
+through a single unit.
+We replicated this finding in our network (Section~\ref{sec:segmentation}).
+%We were not able to find a similar sparse
+%encoding of morpheme- or word-boundaries in our network (the results
+%we will report in Section \ref{sec:segmentation} suggest that our
+%model is also tracking boundaries in its hidden state, but through a
+%distributed code). The most obvious difference between our experiment
+%and that of Kementchedjhieva and Lopez is that they keep whitespace in
+%the input training.  However, they observe that their
+%morpheme-tracking unit is not simply predicting white space,
+%suggesting that the encoding difference between our model and theirs
+%cannot be (entirely) explained away by the difference in training
+%input. As we do not attempt here to characterize the inner dynamics of
+%our network, we leave a systematic comparison to future work.
 
 
 % They do not explore syntactic or semantic

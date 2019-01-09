@@ -176,7 +176,7 @@ ln 546 "unambiguously tagged in the corpus":  I think it would be useful to
 remind the reader here that these aren't gold tags but come from TreeTagger
 (right?)
 
-=> clarify (Michael)
+=> clarify (done)
 
 Table 5 I don't understand what the last two lines are. Is WordNLM_subs.
 without OOV and WordNLM the full test set? If so, then ln 578 "the
@@ -204,16 +204,16 @@ presented with at test time? Just a phrase like in (1) (with only one
 article)? Why would not having full stops (before and after??) lead to
 ambiguity?
 
-=> explain (Michael)
+=> explain (TODO)
 
 ln 744 "as these often reflect lemmatiziation problems": Are these problems
 with TreeTagger, your system, or something else?
 
-=> explain (Michael)
+=> explain (TODO Michael)
 
 ln 750 When would German ever have discontinuous NPs?
 
-=> explain (Michael)
+=> explain (TODO Michael)
 
 ln 752 Is it well established that RNNs & LSTMs have the same probabilistic
 bias for shorter sequences that e.g. HMMs do?
@@ -223,12 +223,12 @@ bias for shorter sequences that e.g. HMMs do?
 ln 774-776 I found this too terse. What is the n-gram count model? Why omit
 the sentence environment?
 
-=> explain (Michael)
+=> explain (TODO Michael)
 
 ln 778 What stimuli not including the preposition? Where are these
 described?
 
-=> explain (Michael)
+=> explain (rephrased a bit)
 
 4.4.2 If the words occur in the corpus, they presumably occur with their
 article, so it's not immediately clear to me that the stimuli don't occur in
@@ -278,11 +278,14 @@ ln 149 model -> models?
 ln 431 ad hoc doesn't need a hyphen
 ln 531 can discover about -> can discover -or- can discover information
 about
+=>(done)
 ln 622 I'm not sure what "the latter" is supposed to refer back to.
 ln 720 the Universal Dependencies -> the German UD treebank
+=>(done)
 ln 996 capable to flexibly store -> capable of flexibly storing
+=>(done)
 
-=> fix these (Michael)
+=> fix these
 
 **************
 **************
@@ -342,14 +345,17 @@ developers for their ongoing work.
    setup (e.g., would this also hold for the model trained with white-space,
    footnote 6?) or what other reasons there could be at play.
 
-=> discuss (Michael)
+=> discuss (done)
 
 - Table 3: check F1 score for Italian (should be 59 rather than 60)
+=> (this is gone)
 - Presentation of results in Table 3 and 4: use of different decimal places.
+=> (apparently solved)
 - Colored figures are unreadable in b/w printing.
 - line 936: in Figure 8 > in Table 8
+=> done
 
-=> fix (Michael)
+=> fix 
 
 **************
 **************
@@ -441,7 +447,7 @@ NO LABELS WHATSOEVER.  No axis labels and no legend labels!  There is only
 one paragraph actually explaining this experiment, and it's not nearly
 enough to understand the results.
 
-=> discuss more in depth (Michael)
+=> discuss more in depth (TODO)
 
 At this point we begin to veer off course, and the models seem to be trained
 and/or tested on single words, which makes a bit of sense sometimes (e.g.
@@ -518,7 +524,8 @@ hard to keep track of what the point of the current experiment is.
 A few tables/figures have STD or bootstrapped CI, but many do not. Would
 like to see them consistently throughout
 
-=> do or explain where we do it (Michael)
+=> do or explain where we do it
+=> We do it in those cases where there is a randomized train/test selection for a diagnostic classifier using small training data sets. For most of our numbers, standard errors/CIs would be very small, due to the large size of stimuli.
 
 Line 616: "as above" there's a lot of stuff above at this point, please
 refer to something more concrete

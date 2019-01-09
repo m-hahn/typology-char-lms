@@ -33,7 +33,7 @@ reliable test sets for morphologically impoverished English.
 
 For both German and Italian, we sampled 500 verbs and 500 nouns from
 the Wikipedia training sets, requiring that they are unambiguously
-tagged in the corpus. Since in many cases verbs and nouns are cued by
+tagged in the corpus by TreeTagger. Since in many cases verbs and nouns are cued by
 affixes, we selected the examples to have the same ending across the
 two categories (\emph{-en} in German and \emph{-re} in Italian), so
 that the models could not rely on affixes to disambiguate the part of
@@ -129,7 +129,7 @@ singulars. %\textbf{(how many?)}.
 We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
 %\textbf{Need information on the test set for the training classes.}
 To control for the impact of training sample selection, we
-report accuracies averaged over 200 random train-test splits.  We extract word
+report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
 representations as above, and we compare the same models. %
 %, excluding OOVs when testing the latter.
 Results are summarized in Table \ref{tab:number-results}.
@@ -246,7 +246,8 @@ We also extracted nouns ending in one of the two most common final characters of
 We then ran the number classifier on these nouns, again with 200 random choices of the training set.
 
 Resulting accuracies are shown in Table~\ref{tab:number-foils-results}.
-Classifiers based on CNLM or autoencoder representations show below-chance accuracy on the singulars ending in \emph{-n, -s, -e, -r}, i.e., the diagnostic classifiers mistake many singulars for plurals based on their ending.
+Classifiers based on CNLM or autoencoder representations show below-chance accuracy on the singulars ending in characters typical of plurals (\emph{-n, -s, -e, -r}), i.e., the diagnostic classifiers mistake many singulars for plurals based on their ending.
+On such singulars, CNLM-derived encodings lead to \emph{lower} accuracies than those from the autoencoder.
 Conversely, they mostly recognize singulars when the final consonant makes this unambiguous.
 This shows that -- to the extent accessible to a shallow diagnostic classifier -- the CNLM encodes not an abstract number feature, but orthographic features typical of plurals.
 

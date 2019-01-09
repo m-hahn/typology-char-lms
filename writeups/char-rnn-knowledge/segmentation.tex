@@ -12,16 +12,15 @@ We then computed, for each hidden unit of the CNLMs, the Pearson correlation bet
 For LSTM CNLMs, we found at least 5 units with strong correlations ($>0.5$). For the RNN CNLMs, we also found at least one unit with correlation $> 0.4$ in each of the languages.
 
 We then used the development partition to further investigate, for each language, the behavior of the unit that showed the strongest correlation.
-The behavior of these units on sample sequences from the development partition is shown in Figure~\ref{fig:word-unit}.
-Qualitatively, the unit consistently shows high activation on word boundaries, but also some peaks at word-medial positions.
+The behavior of these units on sample sequences from the development partition is illustrated in Figure~\ref{fig:word-unit}.
+Qualitatively, the unit consistently shows high activation on token boundaries, but also some peaks at word-medial positions.
 In the German snippet, we see peaks at the morpheme boundaries of the compound \emph{Haupt-auf-gabe}.
 To investigate how consistently this unit detects word boundaries, we trained a threshold classifier on this single unit (i.e., a classifier with a single parameter) on 1,000 positions from the development set, using the remainder as test data, predicting whether the last character read by the CNLM represents the end of a word, as tokenzied by TreeTagger.
 For both the training and test data, we balanced the number of word-final and word-initial/word-medial positions.
 
-TODO say how many test samples
-
 We carried out the same procedure for the CNLMs we trained with whitespace, similar to the setup of \newcite{Kementchedjhieva:Lopez:2018}.
 We expect that the explicit encoding of words would lead to even stronger encodings in such a network than in our CNLMs.
+
 Test accuracies are shown in Table~\ref{tab:segmentation-unit-results}.
 In all languages, the unit is strongly predictive of word boundaries, clearly outperforming the random baseline of 50 \% in our balanced test set.
 Across languages, the LSTM CNLM units are more predictive than the RNN ones, and, across the three languages, competitive with those derived from a CNLM that was trained with whitespace.
@@ -62,12 +61,12 @@ Across languages, the LSTM CNLM units are more predictive than the RNN ones, and
 
 
 We next ask how much information is additionally stored in the entire hidden state, returning to the method of diagnostic classifiers.
-As before, we randomly selected positions form the development partition such that half of these were the last character of a token, and the other half were not.
+As before, we randomly selected positions from the development partition such that half of these were the last character of a token, and the other half were not.
 We collected 100, 1000, and 10000 such points as training data for the diagnostic classifiers, and the remainder for testing.
 Both sets were balanced between (1) and (2).
 We sampled the test data points subject to the constraint that the word or word prefix ending at the selected character does not overlap with the training set.
+This ensures that the diagnostic classifier cannot succeed by looking for encodings reflecting specific words.
 
-TODO say how many test samples
 
 
 We compared this to the following lexicon-based classifier:
@@ -76,12 +75,11 @@ The classifier guesses that a boundary is present if $N_1 > N_2$, and that no bo
 This is a very strong classifier:
 First, unlike the CNLM, it has oracle access to the beginning of the current word.
 With this, it represents the \emph{optimal} classifier for this task when the beginning of the current word is known, but the prior context is not given.
-Second, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
-It seems that the only way a CNLM-based classifier could be more successful than this classifier is by drawing on the prior context.
-%
+Furthermore, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
+
 Results are shown in Table~\ref{tab:segmentation-results}.
-We find that the diagnostic classifier shows above-random performance with few training samples.
-With 1000 training samples, it performs similarly to the strong lexicon-based classifier.
+We find that the diagnostic classifier shows above-random performance with few training samples, though its performance lags behind that of the single-parameter classifiers derived from the units we found above, suggesting overfitting of the diagnostic logistic classifier.
+With 1000 training samples, the diagnostic classifier performs similarly to the strong lexicon-based classifier, and outperforms it with 10,000 training samples.
 This shows that the CNLM's representations provide strong cues regarding word boundaries.
 Performance is strongest in English and weakest in German, both for the CNLM-based diagnostic classifier and for the lexicon-based baseline.
 The preponderance of compound words in German may be responsible for this.
@@ -101,17 +99,15 @@ The preponderance of compound words in German may be responsible for this.
 \end{table}
 
 
+\textbf{TODO} I think we may not need the syntactic depth experiment, as the PMI measure is not used anywhere else.
 
-(error analysis)
-
-
-the pointwise mutual
+We have found that the hidden state of the CNLM encodes information about word boundaries.
+We now investigate whether the probabilities computed by the CNLM are reflective of boundaries.
+We considered the pointwise mutual
 information (PMI) between left and right contexts, computed by
 subtracting the unconditional log-likelihood of the next 20 characters
-from their log-likelihood conditioned on the prior context
-
-Interestingly, the CNLM-generated cues we used for word segmentation
-also cue constituents larger than words. To illustrate this, we created constituency trees for the German
+from their log-likelihood conditioned on the prior context.
+We created constituency trees for the German
 validation set using the Berkeley Parser~\cite{petrov2007improved}, using the provided German model\footnote{https://github.com/slavpetrov/berkeleyparser}.
 For each character in the data, we counted its hierarchical distance
 from the preceding character, operationalized as the number of
@@ -120,10 +116,12 @@ boundaries, larger at larger-constituent boundaries. Figure~\ref{fig:syntax-dept
 hierarchical distance, for all distances for which at least 1,000
 data-points occurred in the data-set.  The plot shows that longer
 hierarchical distance between neighboring characters correspond to
-lower average PMI, generalizing the finding for word boundaries.  This
-illustrates how it is useful for segmentation knowledge to be
-implicit, as the model can discover about different kinds of
-boundaries in a continuous manner.
+lower average PMI.
+
+%This
+%illustrates how it is useful for segmentation knowledge to be
+%implicit, as the model can discover information about different kinds of
+%boundaries in a continuous manner.
 
 \begin{figure}
   \center

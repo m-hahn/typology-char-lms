@@ -123,7 +123,7 @@ the very red {tree \emph{(genitive)}} \\
 %\end{enumerate}
 
 We selected all noun lemmas of the
-appropriate genders from the Universal Dependencies, and extracted
+appropriate genders from the German UD treebank, and extracted
 morphological paradigms from Wiktionary to obtain case-marked forms,
 retaining only nouns unambiguously marking the two cases.  We created
 four conditions, varying the amount of intervening material, as in the
@@ -204,7 +204,7 @@ environment.
 %
 Results are shown in Figure~\ref{fig:german-syntax} (right). Only
 the n-gram model fails to outperform the control accuracy for
-stimuli not including the preposition. Surprisingly, the LSTM CNLM slightly
+stimuli where the preposition is removed. Surprisingly, the LSTM CNLM slightly
 outperforms the WordNLM, even though the CNLM is exposed
 to a harder test set without OOV removal.  Neither model shows
 accuracy decay as the number of adverbs increases.  As before, the

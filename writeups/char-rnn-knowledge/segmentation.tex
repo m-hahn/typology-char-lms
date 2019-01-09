@@ -5,26 +5,26 @@
 We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and being exposed to unsegmented input. %
 
 
+\newcite{Kementchedjhieva:Lopez:2018} found a unit that tracks morpheme boundaries, using an English CNLM that was trained with whitespace (unlike our CNLMs).
+We applied the following method to probe whether our CNLMs had developed such units, even in the absence of any whitespace in the input.
+For each language, we randomly chose 10,000 positions from the training set, balanced between positions that were the last character of a word, and word-initial/word-medial positions.
+We then computed, for each hidden unit of the CNLMs, the Pearson correlation between its activations and the indicator that is 1 for word-final positions and 0 otherwise.
+For LSTM CNLMs, we found at least 5 units with strong correlations ($>0.5$). For the RNN CNLMs, we also found at least one unit with correlation $> 0.4$ in each of the languages.
 
-\newcite{Kementchedjhieva:Lopez:2018} found a unit that tracks morpheme boundaries
-
-
-We randomly chose 10,000 positions from the training set
-
-We then looked for the 
-
-For each language, we found at least 5 neurons with strong correlations ($>0.5$).
-For the RNN, we also found at least one neuron with correlations > 0.4.
-
-
+We then used the development partition to further investigate, for each language, the behavior of the unit that showed the strongest correlation.
 The behavior of these units on sample sequences from the development partition is shown in Figure~\ref{fig:word-unit}.
-Qualitatively, the neuron consistently shows high activation on word boundaries.
+Qualitatively, the unit consistently shows high activation on word boundaries, but also some peaks at word-medial positions.
 In the German snippet, we see peaks at the morpheme boundaries of the compound \emph{Haupt-auf-gabe}.
+To investigate how consistently this unit detects word boundaries, we trained a threshold classifier on this single unit (i.e., a classifier with a single parameter) on 1,000 positions from the development set, using the remainder as test data, predicting whether the last character read by the CNLM represents the end of a word, as tokenzied by TreeTagger.
+For both the training and test data, we balanced the number of word-final and word-initial/word-medial positions.
 
-To investigate how consistently this word unit corresponds to word boundaries, we trained a threshold classifier on this single neuron (i.e., a classifier with a single parameter) on 1,000 positions from the development set, using the remainder as test data.
 
+We carried out the same procedure for the CNLMs we trained with whitespace, similar to the setup of \newcite{Kementchedjhieva:Lopez:2018}.
+We expect that the explicit encoding of words would lead to even stronger encodings in such a network than in our CNLMs.
+Test accuracies are shown in Table~\ref{tab:segmentation-unit-results}.
+In all languages, the unit is strongly predictive of word boundaries, clearly outperforming the random baseline of 50 \% in our balanced test set.
+Across languages, the LSTM CNLM units are more predictive than the RNN ones, and, across the three languages, competitive with those derived from a CNLM that was trained with whitespace.
 
-We chose word unit on subset of training data, and trained \& evaluated threshold classifier on validation data.
 
 % English /home/user/CS_SCR/FAIR18/CHECKPOINTS/boundary-neuron//
 % Italian /home/user/CS_SCR/FAIR18/CHECKPOINTS/boundary-neuron//
@@ -34,21 +34,21 @@ We chose word unit on subset of training data, and trained \& evaluated threshol
 	\includegraphics[width=0.9\textwidth]{figures/{english_wiki-english-nospaces-bptt-282506230_15.txt}.png}
 	\includegraphics[width=0.9\textwidth]{figures/{german_wiki-german-nospaces-bptt-910515909_12.txt}.png}
 	\includegraphics[width=0.9\textwidth]{figures/{italian_wiki-italian-nospaces-bptt-855947412_7.txt}.png}
-	\caption{Behavior of the CNLM `word unit' in English, German, and Italian. TODO do we need to find a better Italian example?}\label{fig:word-unit}
+	\caption{Behavior of the CNLM `word unit' in English, German, and Italian, with word boundaries marked in green. TODO do we need to find a better Italian example?}\label{fig:word-unit}
 \end{figure*}
 
 \begin{table}[t]
 	\small
   \begin{center}
-    \begin{tabular}{l|l|l|l}
-      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}\\
+    \begin{tabular}{l|l|l||l}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM} with whitespace\\
       \hline
-	    English & 77.5 & 65.6  \\ 
-	    German & 80.8 & 66.8 \\ 
-	    Italian & 75.4 & 71.6  \\ 
+	    English & 77.5 & 65.6 & 83.2 \\ 
+	    German & 80.8 & 66.8  & 71.3  \\ 
+	    Italian & 75.4 & 71.6 & 78.1 \\ 
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-neuron-results} Accuracy of threshold classifier based on `word' unit in distinguishing word boundaries from word-internal positions. Random baseline accuracy is 50 \%.}
+  \caption{\label{tab:segmentation-unit-results} Accuracy of threshold classifier based on `word' unit in distinguishing word boundaries from word-internal positions. Random baseline accuracy is 50 \%.}
 \end{table}
 
 
@@ -56,11 +56,9 @@ We chose word unit on subset of training data, and trained \& evaluated threshol
 
 % python detectBoundariesUnit_Hidden_ExtractPattern_NoWhitespace_Classifier.py --language english  --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 200 --char_noise_prob 0.0 --hidden_dim 1024 --language english --layer_num 3 --learning_rate 3.6  --myID 282506230 --load-from wiki-english-nospaces-bptt-282506230 --weight_dropout_hidden 0.01 --weight_dropout_in 0.0
 % output in 
-% results/segmentation-english-frequent-errors-neuron-disjoint.txt
+% results/segmentation-english-frequent-errors-unit-disjoint.txt
 
-
-How much information is contained in the entire hidden state?
-
+We next ask how much information is additionally stored in the entire hidden state, returning to the method of diagnostic classifiers.
 
 
 
@@ -116,16 +114,16 @@ The preponderance of compound words in German may be responsible for this.
 \end{table}
 
 
-TODO how well does a classifier do on the neuron?
+TODO how well does a classifier do on the unit?
 
-Single neuron:
+Single unit:
 Without whitespace: German 519 $R^2 = $0.69, Italian 1508 0.57, English 2044 0.59
 Strong correlation with `has read the last character'
 Result looked just like this in the with-whitespace version.
 % python detectBoundariesUnit_Hidden_NoWhitespace.py --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 100 --char_noise_prob 0.0 --hidden_dim 1024 --language german --layer_num 2 --learning_rate 2.0 --weight_dropout_hidden 0.05 --weight_dropout_in 0.01 --load-from wiki-german-nospaces-bptt-910515909
-With whitespace, we found neurons that strongly correlate with the presence of a word boundary (Pearson > 0.8 when `after reading the whitespace').
+With whitespace, we found units that strongly correlate with the presence of a word boundary (Pearson > 0.8 when `after reading the whitespace').
 
-% Nice visualization for the neuron?
+% Nice visualization for the unit?
 
 
 

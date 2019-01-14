@@ -63,6 +63,10 @@ performance, we report its accuracy both excluding and including OOV
 items (WordNLM$_{\textit{subs.}}$ and WordNLM in Table
 \ref{tab:pos-results}, respectively). In the latter case, we let the
 model make a random guess for OOV items.
+The percentage of OOV items over the entire dataset, balanced for nouns and verbs,
+was 92.3 \% for German and 69.4 \% for Italian.  
+
+
 
 Results are shown in Table~\ref{tab:pos-results}.  All language models
 outperform the autoencoders, showing that they learned categories
@@ -98,7 +102,6 @@ words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as 
 % 	\caption{Word class accuracy as a function of training examples (German). }\label{fig:pos-induction}
 % 	% \textbf{Please rename LM LSTM, Baseline Autoencoder and Words WordNLM}
 % \end{figure}
-
 
 
 
@@ -184,26 +187,27 @@ We found that the classifier mistook most Umlaut singulars for plurals.
 On one randomly chosen split, 100 \% of singulars and plurals were classified as plurals.
 We observed that singulars forming their plural with umlaut have the commonality that their last vowel is an (unstressed) -\emph{e}-.
 This vowel -\emph{e}- is also common in -\emph{r} plurals, many of which add a vowel -\emph{e}- between the consonant-final stem and the ending -\emph{r}.
-We thus hypothesized that the CNLM-based classifier detects the presence of -\emph{e}- towards the end of the word, which would explain why it does well on -\emph{r} plurals and at chance of Umlaut plurals.
+Based on this observation, we hypothesized that the CNLM-based classifier detects the presence of -\emph{e}- towards the end of the word, which would explain why it does well on -\emph{r} plurals and at chance of Umlaut plurals.
 
 To test this hypothesis, we created a `classifier' that classsifies a word as plural if one of the last two characters is \emph{e}.
 On the full dataset, this classification method achieves 73.7 \% accuracy on the train classes, 95.1 \% on -r plurals, and 51.0 \% on Umlaut plurals.
 This accuracy is close to the CNLM on in-domain and umlaut plurals, and even outperforms it on -\emph{r} plurals.
+Across the 200 runs, the agreement between classification decisions made by this classifier and the CNLM-based one was 75.0 \% ($\pm$ 0.8) on the in-domain classes,  89.5 ($\pm$ 0.3) on the -\emph{r} group, and 95.4 ($\pm$ 0.4) on Umlaut stimuli.
+We can conclude that, in the experiment described above, the CNLM classifier was strongly influenced by a very superficial cue (presence of -\emph{e}- close to the end of the word) that correlates with plural-hood reasonably well, but does not generalize well across morphological classes of plural formation.
 
-
-
-TODO confusion matrix is also closely matched?
+% python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource-investigateE.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-910515909
 
 
 Informed by this result, we repeated the experiment with balanced training sets where incidence of -\emph{e}- was balanced across singulars and plurals.
 To balance for the plurals, we made sure that 1/4 of those ending in -r or -s had an -\emph{e}- as their second-to-last character, so that the total fraction of training plurals with -\emph{e}- in the last two characters was 1/2.
-For singulars, we balanced the incidence for each of the classes.
+For singulars, we balanced the incidence of -\emph{e}- for each of the classes.
 Resulting accuracies are shown in Table~\ref{tab:number-results-e}.
 
-Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -r plurals, and stronger than before for Umlaut plurals.
-This is expected, as we had found that the performance in the first experiment could be explained mostly by presence of -\emph{e}-.
-The autoencoder performs essentially at chance on held-out classes.
-This suggests that the CNLM encodes something more abstract than the autoencoder, but, overall, there is only modest evidence that the CNLM encodes any abstract notion of nominal plural in its hidden state.
+Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -\emph{r} plurals, and stronger than before for umlaut plurals.
+That is, performance is weaker where the superficial cue used before (-\emph{e}-) was helpful (-\emph{r} plurals), and stronger where the cue is misleading (umlaut plurals).
+%This is expected, as we had found that the performance in the first experiment could be explained mostly by presence of -\emph{e}-.
+The autoencoder performs essentially at chance on held-out classes, showing that its previous modest success can be explained by the -\emph{e}- cue.
+This shows that the CNLM encodes something more abstract than the autoencoder, but, overall, there is only modest evidence that the CNLM encodes any abstract notion of nominal plural in its hidden state.
 
 
 

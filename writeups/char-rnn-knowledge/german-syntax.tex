@@ -29,6 +29,8 @@ We select all nominative singular nouns from the German UD treebank. %, and all 
 We construct four conditions varying the number of adverbs and adjectives between  article and noun.
 We first consider stimuli where no material intervenes. % \footnote{Due to syncretism in the article paradigm, there is sometimes ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is a nominative singular from. As this equally affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective intervenes, as its form disambiguates case.}
 In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added. Crucially, the ending of the adjective does not reveal the gender of the noun.
+We restricted to adjectives that occurred at least 100 times, and which did not end in -\emph{r}, as the latter ones often represent lemmatization problems.\footnote{TreeTagger occasionally did not remove a final -\emph{r} ending when lemmatizing adjectives.}
+We obtained a pool of 9742 adjectives to sample from, also used in subsequent experiments.
 In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective. These do not cue gender either. In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
 
 We constructed an n-gram baseline that picks the article occurring
@@ -154,16 +156,23 @@ drops considerably.
 \paragraph{Case subcategorization}
 German verbs and prepositions lexically specify their object's case.  We
 study the preposition \textit{mit} `with', which selects a dative
-object. We use objects whose head noun is a nominalized adjective,
-with regular, overtly marked case inflection.  We take all adjectives
-that occur at least 100 times in the training data, excluding those
-that end in -\emph{r}, as these often reflected lemmatization
-problems. We then select all sentences containing a \emph{mit}
+object. We focused on \textit{mit}, as it unambigously requires a dative object,
+and is extremely frequent in the Wikipedia corpus.
+We use objects whose head noun is a nominalized adjective,
+with regular, overtly marked case inflection.
+We used the same adjective pool as in the preceding experiments.
+%We take all adjectives
+%that occur at least 100 times in the training data, excluding those
+%that end in -\emph{r}, as these often reflected lemmatization
+%problems.
+We then select all sentences containing a \emph{mit}
 prepositional phrase in Universal Dependencies, subject to the
 constraints that (1) the object is not a pronoun (replacing such items with a
 nominal object often results in ungrammaticality), and (2) the object
 is a continuous phrase, i.e., it is not interrupted by words that do
-not belong to it. %\textbf{(please explain the latter more clearly)}.
+not belong to it.\footnote{The main source of noun phrase discontinuity
+in the German UD corpus is extraposition, a common phenomenon where part of the noun phrase is
+separated from the rest by the verb.} %\textbf{(please explain the latter more clearly)}.
 We obtained 1,629 such sentences.  For each sentence, we remove the
 prepositional phrase and replace it by a phrase of the form
 \exg. mit der sehr \{rote,\ \underline{roten}\} \\
@@ -185,7 +194,15 @@ probabilistic bias for shorter sequences works against the model~\cite{sountsov2
 We
 construct three conditions by varying the presence and number of
 adverbs (\emph{sehr} `very', \emph{sehr extrem} `very extremely',
-\emph{sehr extrem unglaublich} `very extremely incredibly').  As a
+\emph{sehr extrem unglaublich} `very extremely incredibly').
+
+Note also that in this case we embedded the test phrase into full sentences.
+We did this as sentences beginning with \emph{mit} are somewhat unnatural
+and, more importantly since \emph{mit} is homophonous with a particle
+that does not select for an object, and so that the following context disambiguates
+the last word in the phrase as a nominalization (as opposed to an adjective).
+
+As a
 control for baseline probabilities of the two adjectival forms, we
 also created stimuli where all words up to the preposition were
 removed, and computed accuracy on these stimuli.  If accuracy is lower

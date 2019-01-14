@@ -2,7 +2,54 @@
 \label{sec:segmentation}
 
 
+
+%    we used the same datasets for the full classifier and the one based on single units. In both cases, we could train them on 100 and 10k examples, for consistency? Or maybe just use 10k in all cases, explaining in the text why we use this size, and maybe even remarking that performance is well above chance also with much less data?
+
+
+
+
 We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and being exposed to unsegmented input. %
+To answer this, we return to the method of diagnostic classifiers.
+We randomly selected positions from the development partition such that half of these were the last character of a token, and the other half were not.
+We collected 10000 such points as training data for the diagnostic classifiers, and the remainder for testing.
+Both sets were balanced between (1) and (2).
+We sampled the test data points subject to the constraint that the word or word prefix ending at the selected character does not overlap with the training set.
+This ensures that the diagnostic classifier cannot succeed by looking for encodings reflecting specific words.
+
+
+
+We compared this to the following lexicon-based classifier:
+Given a position where the last word is $x_1...x_n$, we count how often $x_1...x_n$ occurs as a token in the tokenized Wikipedia training set ($N_1$), and how often a longer word starting with $x_1...x_n$ occurs there ($N_2$).
+The classifier guesses that a boundary is present if $N_1 > N_2$, and that no boundary is present if $N_1 < N_2$, and guesses randomly if $N_1 = N_2$.
+This is a very strong classifier:
+First, unlike the CNLM, it has oracle access to the beginning of the current word.
+With this, it represents the \emph{optimal} classifier for this task when the beginning of the current word is known, but the prior context is not given.
+Furthermore, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
+
+Results are shown in Table~\ref{tab:segmentation-results}.
+We find that the diagnostic classifier shows above-random performance with few training samples, though its performance lags behind that of the single-parameter classifiers derived from the units we found above, suggesting overfitting of the diagnostic logistic classifier.
+With 1000 training samples, the diagnostic classifier performs similarly to the strong lexicon-based classifier, and outperforms it with 10,000 training samples.
+This shows that the CNLM's representations provide strong cues regarding word boundaries.
+Performance is strongest in English and weakest in German, both for the CNLM-based diagnostic classifier and for the lexicon-based baseline.
+The preponderance of compound words in German may be responsible for this.
+
+
+
+
+\begin{table}[t]
+	\small
+  \begin{center}
+    \begin{tabular}{l|l|l|l}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{Lexicon}\\
+      \hline
+      English & 72.7/89.9/91.8 &  66.6/76.8/84.5  &  88.7   \\ 
+      German & 61.8/79.8/87.6  &  61.5/75.8/84.3 &  79.3  \\ 
+      Italian &  60.7/83.0/90.2 &  69.1/75.9/86.6  &  84.2   \\ 
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on recognizing word boundaries, with 100/1000/10000 training samples. Random baseline accuracy is 50 \%.}
+\end{table}
+
 
 
 \newcite{Kementchedjhieva:Lopez:2018} found a unit that tracks morpheme boundaries, using an English CNLM that was trained with whitespace (unlike our CNLMs).
@@ -60,81 +107,49 @@ Across languages, the LSTM CNLM units are more predictive than the RNN ones, and
 
 
 
-We next ask how much information is additionally stored in the entire hidden state, returning to the method of diagnostic classifiers.
-As before, we randomly selected positions from the development partition such that half of these were the last character of a token, and the other half were not.
-We collected 100, 1000, and 10000 such points as training data for the diagnostic classifiers, and the remainder for testing.
-Both sets were balanced between (1) and (2).
-We sampled the test data points subject to the constraint that the word or word prefix ending at the selected character does not overlap with the training set.
-This ensures that the diagnostic classifier cannot succeed by looking for encodings reflecting specific words.
 
 
-
-We compared this to the following lexicon-based classifier:
-Given a position where the last word is $x_1...x_n$, we count how often $x_1...x_n$ occurs as a token in the tokenized Wikipedia training set ($N_1$), and how often a longer word starting with $x_1...x_n$ occurs there ($N_2$).
-The classifier guesses that a boundary is present if $N_1 > N_2$, and that no boundary is present if $N_1 < N_2$, and guesses randomly if $N_1 = N_2$.
-This is a very strong classifier:
-First, unlike the CNLM, it has oracle access to the beginning of the current word.
-With this, it represents the \emph{optimal} classifier for this task when the beginning of the current word is known, but the prior context is not given.
-Furthermore, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
-
-Results are shown in Table~\ref{tab:segmentation-results}.
-We find that the diagnostic classifier shows above-random performance with few training samples, though its performance lags behind that of the single-parameter classifiers derived from the units we found above, suggesting overfitting of the diagnostic logistic classifier.
-With 1000 training samples, the diagnostic classifier performs similarly to the strong lexicon-based classifier, and outperforms it with 10,000 training samples.
-This shows that the CNLM's representations provide strong cues regarding word boundaries.
-Performance is strongest in English and weakest in German, both for the CNLM-based diagnostic classifier and for the lexicon-based baseline.
-The preponderance of compound words in German may be responsible for this.
-
-\begin{table}[t]
-	\small
-  \begin{center}
-    \begin{tabular}{l|l|l|l}
-      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{Lexicon}\\
-      \hline
-      English & 72.7/89.9/91.8 &  66.6/76.8/84.5  &  88.7   \\ 
-      German & 61.8/79.8/87.6  &  61.5/75.8/84.3 &  79.3  \\ 
-      Italian &  60.7/83.0/90.2 &  69.1/75.9/86.6  &  84.2   \\ 
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on recognizing word boundaries, with 100/1000/10000 training samples. Random baseline accuracy is 50 \%.}
-\end{table}
-
-
-\textbf{TODO} I think we may not need the syntactic depth experiment, as the PMI measure is not used anywhere else.
-
-We have found that the hidden state of the CNLM encodes information about word boundaries.
-We now investigate whether the probabilities computed by the CNLM are reflective of boundaries.
-We considered the pointwise mutual
-information (PMI) between left and right contexts, computed by
-subtracting the unconditional log-likelihood of the next 20 characters
-from their log-likelihood conditioned on the prior context.
-We created constituency trees for the German
-validation set using the Berkeley Parser~\cite{petrov2007improved}, using the provided German model\footnote{https://github.com/slavpetrov/berkeleyparser}.
-For each character in the data, we counted its hierarchical distance
-from the preceding character, operationalized as the number of
-intervening closing and opening brackets.  This number is zero if both characters belong to the same word, 1 at word
-boundaries, larger at larger-constituent boundaries. Figure~\ref{fig:syntax-depth} plots CNLM-based PMI by
-hierarchical distance, for all distances for which at least 1,000
-data-points occurred in the data-set.  The plot shows that longer
-hierarchical distance between neighboring characters correspond to
-lower average PMI.
-
-%This
-%illustrates how it is useful for segmentation knowledge to be
-%implicit, as the model can discover information about different kinds of
-%boundaries in a continuous manner.
-
-\begin{figure}
-  \center
-\includegraphics[width=0.4\textwidth]{figures/segmentation-profile-pmis-german-all-heights-ci.pdf}
-\caption{PMI between left and right contexts, as estimated by the LSTM CNLM in German, organized by syntactic hierarchical distance between subsequent characters (with bootstrapped 95 \% confidence intervals).}\label{fig:syntax-depth}
-\end{figure}
-
-
-
-%687112
-%73757
-%46716
-%22847
+%
+%
+%
+%
+%
+%\textbf{TODO} I think we may not need the syntactic depth experiment, as the PMI measure is not used anywhere else.
+%
+%We have found that the hidden state of the CNLM encodes information about word boundaries.
+%We now investigate whether the probabilities computed by the CNLM are reflective of boundaries.
+%We considered the pointwise mutual
+%information (PMI) between left and right contexts, computed by
+%subtracting the unconditional log-likelihood of the next 20 characters
+%from their log-likelihood conditioned on the prior context.
+%We created constituency trees for the German
+%validation set using the Berkeley Parser~\cite{petrov2007improved}, using the provided German model\footnote{https://github.com/slavpetrov/berkeleyparser}.
+%For each character in the data, we counted its hierarchical distance
+%from the preceding character, operationalized as the number of
+%intervening closing and opening brackets.  This number is zero if both characters belong to the same word, 1 at word
+%boundaries, larger at larger-constituent boundaries. Figure~\ref{fig:syntax-depth} plots CNLM-based PMI by
+%hierarchical distance, for all distances for which at least 1,000
+%data-points occurred in the data-set.  The plot shows that longer
+%hierarchical distance between neighboring characters correspond to
+%lower average PMI.
+%
+%%This
+%%illustrates how it is useful for segmentation knowledge to be
+%%implicit, as the model can discover information about different kinds of
+%%boundaries in a continuous manner.
+%
+%\begin{figure}
+%  \center
+%\includegraphics[width=0.4\textwidth]{figures/segmentation-profile-pmis-german-all-heights-ci.pdf}
+%\caption{PMI between left and right contexts, as estimated by the LSTM CNLM in German, organized by syntactic hierarchical distance between subsequent characters (with bootstrapped 95 \% confidence intervals).}\label{fig:syntax-depth}
+%\end{figure}
+%
+%
+%
+%%687112
+%%73757
+%%46716
+%%22847
 %7896
 %2587
 %827

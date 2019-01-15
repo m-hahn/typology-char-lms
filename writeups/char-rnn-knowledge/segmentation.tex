@@ -1,12 +1,7 @@
 \subsection{Word segmentation}
 \label{sec:segmentation}
 
-
-
 %    we used the same datasets for the full classifier and the one based on single units. In both cases, we could train them on 100 and 10k examples, for consistency? Or maybe just use 10k in all cases, explaining in the text why we use this size, and maybe even remarking that performance is well above chance also with much less data?
-
-
-
 
 We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and being exposed to unsegmented input. %
 To answer this, we return to the method of diagnostic classifiers.
@@ -56,7 +51,11 @@ The preponderance of compound words in German may be responsible for this.
 We applied the following method to probe whether our CNLMs had developed such units, even in the absence of any whitespace in the input.
 For each language, we randomly chose 10,000 positions from the training set, balanced between positions that were the last character of a word, and word-initial/word-medial positions.
 We then computed, for each hidden unit of the CNLMs, the Pearson correlation between its activations and the indicator that is 1 for word-final positions and 0 otherwise.
-For LSTM CNLMs, we found at least 5 units with strong correlations ($>0.5$). For the RNN CNLMs, we also found at least one unit with correlation $> 0.4$ in each of the languages.
+For each language and model (LSTM and RNN), we selected the unit with the highest correlation.
+For the LSTM CNLMs, we found correlations of 0.58 (English), 0.69 (German), 0.57 (Italian).
+For the RNN CNLMs, the highest correlations were 0.40 (English), 0.46 (German), 0.46 (Italian).
+%Note that the models can have further 
+%For LSTM CNLMs, we found at least 5 units with strong correlations ($>0.5$). For the RNN CNLMs, we also found at least one unit with correlation $> 0.4$ in each of the languages.
 
 We then used the development partition to further investigate, for each language, the behavior of the unit that showed the strongest correlation.
 The behavior of these units on sample sequences from the development partition is illustrated in Figure~\ref{fig:word-unit}.

@@ -118,7 +118,7 @@ as an abstract feature, independently of its surface expression.
 We extracted plural nouns from the Wiktionary and the German UD
 treebank \cite{mcdonald2013universal,brants2002tiger}.  We selected % de2006generating,
 nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
--\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter').
+-\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter'). \textbf{MICHAEL: maybe better to put also exampel with -r, or at least not an Umlaut example ending in -r?}
 %\textbf{Add one
 %  example from training, one from testing.}
 
@@ -134,7 +134,7 @@ We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) an
 %\textbf{Need information on the test set for the training classes.}
 To control for the impact of training sample selection, we
 report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
-representations as above, and we compare the same models. %
+representations as above, and we compare the same models. \textbf{MICHAEL: proportions of OOVs here.} %
 %, excluding OOVs when testing the latter.
 Results are summarized in Table \ref{tab:number-results}.
 
@@ -167,43 +167,69 @@ The classifier based on word embeddings is the most successful,
 outperforming in most cases the best CNLM even in the more cogent
 OOV-inclusive evaluation. This confirms the common observation that
 word embeddings reliably encode number \cite{Mikolov:etal:2013a}. The
-CNLM results are more mixed. Again the LSTM variant outperforms the
-RNN one, but neither has problems detecting number for new words in
+CNLM results are mixed. Again the LSTM variant outperforms the
+RNN, but neither has problems detecting number for new words from
 the training paradigms. They are also able to detect number in a new
 paradigm (\emph{-r} plurals), seemingly suggesting that they are, to some extent,
 inducing an abstract notion of number that is not tied to specific
 orthographic exponents. In these experiments, the CNLMs significantly
-outperform the autoencoder, and the LSTM even does better than the
-word model in \emph{-r}-class generalization.
+outperform the autoencoder. %, and the LSTM even does better than the
+%word model in \emph{-r}-class generalization.
 
 In contrast, the CNLMs fail to generalize to Umlaut plurals, where
 they are virtually at chance level, similar to the autoencoder. %and \emph{worse} than the
 %autoencoder.
-The most obvious difference between this type and
-\emph{-r} pluralization is that the latter is an affixation process,
-whereas Umlaut pluralization changes the stressed vowel of the
-stem.
+% The most obvious difference between this type and
+% \emph{-r} pluralization is that the latter is an affixation process,
+% whereas Umlaut pluralization changes the stressed vowel of the
+% stem.
+By inspecting the results, we found that the CNLM classifiers mistook
+most Umlaut singulars for plurals.  On one randomly chosen split,
+100\% of both singulars and plurals were classified as plurals.  We
+observed that singulars forming their plural with Umlaut have the
+commonality that their last vowel is an (unstressed) -\emph{e}-.  This
+vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
+add a vowel -\emph{e}- between the consonant-final stem and the ending
+-\emph{r}.  Based on this observation, we hypothesized that the
+CNLM-based classifier detects the presence of -\emph{e}- towards the
+end of the word, which would explain why it does well on -\emph{r}
+plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
+  previous paragraph needs to be clarified in a few ways. First, it is
+  NOT always the case that Umlaut-triggering singulard have an
+  unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
+  is the case in your data set? Then, this should be clarified (and
+  explained). Second, I think the argument would be clearer by turning
+  it around: Our training classes tend to have an unstressed final -e-
+  in the plural only. Many singulars in Umlaut have an unstressed
+  final -e-, hence the mishap. No problem with -r, as it follows the
+  pattern of the training classes. Finally, give examples!}
 
-
-We found that the classifier mistook most Umlaut singulars for plurals.
-On one randomly chosen split, 100 \% of singulars and plurals were classified as plurals.
-We observed that singulars forming their plural with umlaut have the commonality that their last vowel is an (unstressed) -\emph{e}-.
-This vowel -\emph{e}- is also common in -\emph{r} plurals, many of which add a vowel -\emph{e}- between the consonant-final stem and the ending -\emph{r}.
-Based on this observation, we hypothesized that the CNLM-based classifier detects the presence of -\emph{e}- towards the end of the word, which would explain why it does well on -\emph{r} plurals and at chance of Umlaut plurals.
-
-To test this hypothesis, we created a `classifier' that classifies a word as plural if one of the last two characters is \emph{e}.
-On the full dataset, this classification method achieves 73.7 \% accuracy on the train classes, 95.1 \% on -r plurals, and 51.0 \% on Umlaut plurals.
-This accuracy is close to the CNLM on in-domain and umlaut plurals, and even outperforms it on -\emph{r} plurals.
-Across the 200 runs, the agreement between classification decisions made by this classifier and the CNLM-based one was 75.0 \% ($\pm$ 0.8) on the in-domain classes,  89.5 ($\pm$ 0.3) on the -\emph{r} group, and 95.4 ($\pm$ 0.4) on Umlaut stimuli.
-We can conclude that, in the experiment described above, the CNLM classifier was strongly influenced by a very superficial cue (presence of -\emph{e}- close to the end of the word) that correlates with plural-hood reasonably well, but does not generalize well across morphological classes of plural formation.
+To test this hypothesis, we created a na\"ive ``classifier'' that
+labels a word as plural if one of the last two characters is \emph{e}.
+On the full dataset, this classification method achieves 73.7 \%
+accuracy on the train classes, 95.1\% on -\emph{r} plurals, and 51.0\%
+on Umlaut plurals.  This accuracy is close to that of the LSTM CNLM on
+in-domain and Umlaut, and even outperforms it on -\emph{r}.  Across
+the 200 runs, average agreement between classification decisions made
+with this simple heuristic and the CNLM-based ones was 75.0\%
+($\pm$0.8) on the in-domain classes, 89.5 ($\pm$ 0.3) on the
+-\emph{r}, and 95.4 ($\pm$0.4) on Umlaut.  We conclude that, in the
+experiment described above, the CNLM classifier was strongly
+influenced by a very superficial cue (presence of -\emph{e}- near the
+word end) that correlates with plural-hood reasonably well, but does
+not generalize well across morphological classes of plural formation.
 
 % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource-investigateE.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-910515909
 
-
-Informed by this result, we repeated the experiment with balanced training sets where incidence of -\emph{e}- was balanced across singulars and plurals.
-To balance for the plurals, we made sure that 1/4 of those ending in -r or -s had an -\emph{e}- as their second-to-last character, so that the total fraction of training plurals with -\emph{e}- in the last two characters was 1/2.
-For singulars, we balanced the incidence of -\emph{e}- for each of the classes.
-Resulting accuracies are shown in Table~\ref{tab:number-results-e}.
+Informed by this result, we repeated the experiment with controlled
+training sets where incidence of -\emph{e}- was balanced across
+singulars and plurals.  To balance for the plurals, we made sure that
+1/4 of those ending in -r or -s had an -\emph{e}- as their
+second-to-last character, so that the total fraction of training
+plurals with -\emph{e}- in the last two characters was 1/2.  For
+singulars, we balanced the incidence of -\emph{e}- for each of the
+classes.  Resulting accuracies are shown in
+Table~\ref{tab:number-results-e}.
 
 Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -\emph{r} plurals, and stronger than before for umlaut plurals.
 That is, performance is weaker where the superficial cue used before (-\emph{e}-) was helpful (-\emph{r} plurals), and stronger where the cue is misleading (umlaut plurals).

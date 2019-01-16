@@ -49,6 +49,7 @@ below, stimuli were checked for strong semantic anomalies. %  In
 % addition to CNLMs and WordNLM, we tested frequency baseline choosing
 % the option with the higher unigram probability (whole-stimulus corpus
 % frequencies are at chance by construction).
+35.8 \% of the stimulus pairs had an adjective or noun that was OOV for the WNLM.
 
 Results are shown in the first line of
 Table~\ref{tab:ital-agr-results}.  WordNLM shows the strongest
@@ -75,7 +76,9 @@ where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
 \emph{tanto} `so much'. We considered only adjectives that occurred 1K
 times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
 very common). We excluded all cases in which the
-adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli. %
+adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli.
+Due to the restriction to common adjectives, there were no OOV items for the WNLM.
+%
 %Here and in the next experiment, the frequency baseline chose the version with the more common adjective.
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
 Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
@@ -154,6 +157,7 @@ the\ (p.) less alien\ one(s) \\
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
 Selection of stimuli was as above, but we used a 500-occurrences
 threshold, as feminine plurals are less common, obtaining 99 pairs of stimuli. %  Further, we manually
+Again, there were no OOV items for the WNLM.
 % removed adjectives that did not combine well semantically with the
 % adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
 Results are shown in the third line of Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, and the RNN still is strongly above chance.

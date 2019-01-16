@@ -35,10 +35,11 @@ For both German and Italian, we sampled 500 verbs and 500 nouns from
 the Wikipedia training sets, requiring that they are unambiguously
 tagged in the corpus by TreeTagger. Since in many cases verbs and
 nouns are cued by affixes, we selected the examples to have the same
-ending across the two categories (\emph{-en} in German and \emph{-re}
-in Italian), so that the models could not rely on affixes to
-disambiguate the part of speech. \textbf{MICHAEL: can you add one
-  example for each language?}  We randomly selected 20 training
+ending across the two categories (\emph{-en} in German, e.g. \emph{Westen} `west'\footnote{German nouns are capitalized; this cue is unavailable to the CNLM as we lower-case the input.}% Just figured a reader might stumble over this, so added this footnote. Feel free to remove.
+, \emph{stehen} `to stand'; and \emph{-re}
+in Italian, e.g. \emph{autore} `author', \emph{dire} `to say'),
+so that the models could not rely on affixes to
+disambiguate the part of speech. We randomly selected 20 training
 examples (10 nouns and 10 verbs), and tested on the remaining items.
 We repeated the experiment 100 times to control for random train-test
 split variation.
@@ -118,9 +119,8 @@ as an abstract feature, independently of its surface expression.
 We extracted plural nouns from the Wiktionary and the German UD
 treebank \cite{mcdonald2013universal,brants2002tiger}.  We selected % de2006generating,
 nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
--\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter'). \textbf{MICHAEL: maybe better to put also exampel with -r, or at least not an Umlaut example ending in -r?}
-%\textbf{Add one
-%  example from training, one from testing.}
+-\emph{r} (e.g., \emph{Lieder} for singular \emph{Lied} `song'), or through vowel change (\emph{Umlaut}, e.g., \emph{{\"A}pfel} for singular \emph{Apfel} `apple'). 
+Certain nouns use both umlaut and an affix; we grouped these together with nouns using the same affix; reserving the Umlaut group for nouns using \emph{only} vowel change.
 
 For the training set, we randomly selected 15 singulars and plurals
 from each training class.  As plural suffixes make words longer, we
@@ -134,8 +134,8 @@ We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) an
 %\textbf{Need information on the test set for the training classes.}
 To control for the impact of training sample selection, we
 report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
-representations as above, and we compare the same models. \textbf{MICHAEL: proportions of OOVs here.} %
-%, excluding OOVs when testing the latter.
+representations as above, and we compare the same models.
+The percentage of singular-plural pairs where at least one of the two words were out of vocabulary for the WNLM was 63.4 \% for the training classes, 68.6 \% for -\emph{r} plurals, and 73.2 \% for the Umlaut plurals.
 Results are summarized in Table \ref{tab:number-results}.
 
 \begin{table}[t]
@@ -183,26 +183,44 @@ they are virtually at chance level, similar to the autoencoder. %and \emph{worse
 % \emph{-r} pluralization is that the latter is an affixation process,
 % whereas Umlaut pluralization changes the stressed vowel of the
 % stem.
-By inspecting the results, we found that the CNLM classifiers mistook
+
+We found that training classes tend to have an unstressed final -e- in
+the plural only, either as a plural ending (\emph{Abend} `evening' $\rightarrow$ \emph{Abend-e}) or as an epenthetic vowel
+intervening before a consonantal plural suffix (\emph{Autor} `author' $\rightarrow$ \emph{Autor-e-n}).
+However, all singulars
+that use only Umlaut to form their plurals have an unstressed final -e-
+in both singular and plural (e.g., \emph{Apfel} `apple' $\rightarrow$ \emph{{\"A}pfel}). 
+If the diagnostic classifier is sensitive to final unstressed -e- as a cue for plurals,
+it is expected that
+it should classify singulars and plurals as plurals.
+Indeed, we found that the CNLM classifiers mistook
 most Umlaut singulars for plurals.  On one randomly chosen split,
-100\% of both singulars and plurals were classified as plurals.  We
-observed that singulars forming their plural with Umlaut have the
-commonality that their last vowel is an (unstressed) -\emph{e}-.  This
-vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
-add a vowel -\emph{e}- between the consonant-final stem and the ending
--\emph{r}.  Based on this observation, we hypothesized that the
-CNLM-based classifier detects the presence of -\emph{e}- towards the
-end of the word, which would explain why it does well on -\emph{r}
-plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
-  previous paragraph needs to be clarified in a few ways. First, it is
-  NOT always the case that Umlaut-triggering singulard have an
-  unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
-  is the case in your data set? Then, this should be clarified (and
-  explained). Second, I think the argument would be clearer by turning
-  it around: Our training classes tend to have an unstressed final -e-
-  in the plural only. Many singulars in Umlaut have an unstressed
-  final -e-, hence the mishap. No problem with -r, as it follows the
-  pattern of the training classes. Finally, give examples!}
+100\% of both singulars and plurals were classified as plurals.  
+No such problem occurs for -\emph{r} plurals, in contrast, as they
+follow the pattern of the training classes (e.g., \emph{Lied} `song' $\rightarrow$ \emph{Lied-e-r}).
+
+\textbf{Marco: Regarding your counterexamples (Kuss, Wurm), they fall under -e/-r plurals in the experiment. I clarified this at the beginning of this section.}
+
+%By inspecting the results, we found that the CNLM classifiers mistook
+%most Umlaut singulars for plurals.  On one randomly chosen split,
+%100\% of both singulars and plurals were classified as plurals.  We
+%observed that singulars using only Umlaut to mark plural have the
+%commonality that their last vowel is an (unstressed) -\emph{e}-.  This
+%vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
+%add a vowel -\emph{e}- between the consonant-final stem and the ending
+%-\emph{r}.  Based on this observation, we hypothesized that the
+%CNLM-based classifier detects the presence of -\emph{e}- towards the
+%end of the word, which would explain why it does well on -\emph{r}
+%plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
+%  previous paragraph needs to be clarified in a few ways. First, it is
+%  NOT always the case that Umlaut-triggering singulard have an
+%  unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
+%  is the case in your data set? Then, this should be clarified (and
+%  explained). Second, I think the argument would be clearer by turning
+%  it around: Our training classes tend to have an unstressed final -e-
+%  in the plural only. Many singulars in Umlaut have an unstressed
+%  final -e-, hence the mishap. No problem with -r, as it follows the
+%  pattern of the training classes. Finally, give examples!}
 
 To test this hypothesis, we created a na\"ive ``classifier'' that
 labels a word as plural if one of the last two characters is \emph{e}.

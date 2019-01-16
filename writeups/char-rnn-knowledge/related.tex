@@ -94,11 +94,13 @@ implicitly used by supervised character-aware neural morphological
 segmentation methods, finding in particular that the networks discover
 linguistically sensible patterns. More closely related to our goals,
 \newcite{Alishahi:etal:2017} probed the linguistic knowledge induced
-by a neural network that receives unsegmented acoustic input. Their
-results are not directly comparable to ours, since they used a
-considerably more complex architecture, they trained it on multimodal
-data, and they focused on
-phonology. \newcite{Kementchedjhieva:Lopez:2018} recently presented a
+by a neural network that receives unsegmented acoustic input. Focusing
+on phonology, they find that phonemic information is processed at a
+fine-grained level by the lower layers of the model, whereas higher
+layers are sensitive to more abstract information. Their model is not
+directly comparable to ours, since it uses a considerably more complex
+architecture and it is trained on multimodal
+data. \newcite{Kementchedjhieva:Lopez:2018} recently presented a
 related study probing the linguistic knowledge of plain
 character-level neural language models (trained with whitespace in the
 input). Their results are aligned with ours, as they show that these

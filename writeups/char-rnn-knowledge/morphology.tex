@@ -7,21 +7,21 @@ synthetic languages such as those we study, they carry inflectional
 features such as number. We start by probing whether the
 representations learned by our CNLM contains information about such
 properties. We use here the popular model of ``diagnostic
-classifiers'' \cite{Hupkes:etal:2017}. That is, we use the fixed,
-language-modeling-trained representations produced by the CNLM to
-train a shallow (logistic) classifier to distinguish the property of
-interest (e.g., plural vs.~singular). If the classifier is successful,
-this means that the representations provided by the model are encoding
-the relevant information. In our case, we want to ask questions about
-word properties to a model that has been trained at the character
-level. In order to do that, we let the model read each training/test
-word character-by-character, and we take the state of the model hidden
+classifiers'' \cite{Hupkes:etal:2017}. That is, we treat the hidden
+activations produced by a CNLM whose weights were fixed after language model training as input features for a shallow (logistic)
+classifier to distinguish the property of interest (e.g., plural
+vs.~singular). If the classifier is successful, this means that the
+representations provided by the model are encoding the relevant
+information. In our case, we want to ask questions about word
+properties to a model that has been trained at the character level. In
+order to do that, we let the model read each training/test word
+character-by-character, and we take the state of the model hidden
 layer after having processed the last character in the word to be the
 model's implicit representation of the word, on which we train the
 diagnostic classifier. Note that the classifier is deliberately
 shallow and trained on a small set of examples, as we want to probe
 weather the properties of interests are robustly encoded in the
-representations produced by the CNLMs, amenable to a simple linear
+representations produced by the CNLMs, and amenable to a simple linear
 readout \cite{Fusi:etal:2016}. %
 % Besides being sensitive, to some extent, to word boundaries, does
 % the CNLM also store linguistic properties of words, such as their part
@@ -33,21 +33,23 @@ reliable test sets for morphologically impoverished English.
 
 For both German and Italian, we sampled 500 verbs and 500 nouns from
 the Wikipedia training sets, requiring that they are unambiguously
-tagged in the corpus by TreeTagger. Since in many cases verbs and nouns are cued by
-affixes, we selected the examples to have the same ending across the
-two categories (\emph{-en} in German and \emph{-re} in Italian), so
-that the models could not rely on affixes to disambiguate the part of
-speech. We randomly selected 20 training examples (10 nouns and 10
-verbs), and tested on the remaining items.  We repeated the experiment
-100 times to control for random train-test split variation.
+tagged in the corpus by TreeTagger. Since in many cases verbs and
+nouns are cued by affixes, we selected the examples to have the same
+ending across the two categories (\emph{-en} in German and \emph{-re}
+in Italian), so that the models could not rely on affixes to
+disambiguate the part of speech. \textbf{MICHAEL: can you add one
+  example for each language?}  We randomly selected 20 training
+examples (10 nouns and 10 verbs), and tested on the remaining items.
+We repeated the experiment 100 times to control for random train-test
+split variation.
 %  We recorded the final
 % hidden state of a pre-trained CNLM after reading a word, without
 % context, and trained a logistic noun-verb classifier on these
 % representations.
 
 While we controlled for the final affix as described above, it could
-still be the case that other substrings inside words tend to cue verbs
-or nouns. In order to assess to what extent the models are relying on
+still be the case that other substrings reliably cue verbs or
+nouns. In order to assess to what extent the models are relying on
 information gathered from broader contexts, we consider a baseline
 that is only trained on word-internal information. This is a
 character-level LSTM autoencoder trained to reconstruct words in
@@ -58,14 +60,13 @@ from the output layer of the WordNLM. Unlike the character-based
 models, the WordNLM cannot make educated guesses about words that are
 not in its training vocabulary. These OOV words are by construction
 less frequent, and thus likely to be in general more difficult. To get
-a sense of both best-case-scenario and more realistic WordNLM
+a sense of both ``best-case-scenario'' and more realistic WordNLM
 performance, we report its accuracy both excluding and including OOV
 items (WordNLM$_{\textit{subs.}}$ and WordNLM in Table
 \ref{tab:pos-results}, respectively). In the latter case, we let the
-model make a random guess for OOV items.
-The percentage of OOV items over the entire dataset, balanced for nouns and verbs,
-was 92.3 \% for German and 69.4 \% for Italian.  
-
+model make a random guess for OOV items.  The percentage of OOV items
+over the entire dataset, balanced for nouns and verbs, was 92.3\% for
+German and 69.4\% for Italian.
 
 
 Results are shown in Table~\ref{tab:pos-results}.  All language models
@@ -76,7 +77,7 @@ probably because it can track broader contexts. Not surprisingly, the
 word-based model fares better on in-vocabulary words, but the gap,
 especially in Italian, is rather narrow, and there is a strong
 negative impact of OOV
-words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
+words (as expected, as WordNLM must make random guesses here). % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
 
 \begin{table}[t]
 %  \begin{small}
@@ -93,7 +94,7 @@ words. % Figure~\ref{fig:pos-induction} shows how German performance evolves as 
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Word class accuracy, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation.} % (20 training examples)
+	\caption{\label{tab:pos-results} Word class accuracy, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.} % (20 training examples)
 \end{table}
 
 
@@ -152,7 +153,8 @@ Results are summarized in Table \ref{tab:number-results}.
   \end{center}
   \caption{\label{tab:number-results} German number classification
     accuracy, with standard errors computed from 200 random train-test
-    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation.}
+    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not
+    comparable to the other results.}
 \end{table}
 
 % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-autoencoder
@@ -175,7 +177,7 @@ outperform the autoencoder, and the LSTM even does better than the
 word model in \emph{-r}-class generalization.
 
 In contrast, the CNLMs fail to generalize to Umlaut plurals, where
-they are virtually at chance level, similar to th autoencoder. %and \emph{worse} than the
+they are virtually at chance level, similar to the autoencoder. %and \emph{worse} than the
 %autoencoder.
 The most obvious difference between this type and
 \emph{-r} pluralization is that the latter is an affixation process,
@@ -189,7 +191,7 @@ We observed that singulars forming their plural with umlaut have the commonality
 This vowel -\emph{e}- is also common in -\emph{r} plurals, many of which add a vowel -\emph{e}- between the consonant-final stem and the ending -\emph{r}.
 Based on this observation, we hypothesized that the CNLM-based classifier detects the presence of -\emph{e}- towards the end of the word, which would explain why it does well on -\emph{r} plurals and at chance of Umlaut plurals.
 
-To test this hypothesis, we created a `classifier' that classsifies a word as plural if one of the last two characters is \emph{e}.
+To test this hypothesis, we created a `classifier' that classifies a word as plural if one of the last two characters is \emph{e}.
 On the full dataset, this classification method achieves 73.7 \% accuracy on the train classes, 95.1 \% on -r plurals, and 51.0 \% on Umlaut plurals.
 This accuracy is close to the CNLM on in-domain and umlaut plurals, and even outperforms it on -\emph{r} plurals.
 Across the 200 runs, the agreement between classification decisions made by this classifier and the CNLM-based one was 75.0 \% ($\pm$ 0.8) on the in-domain classes,  89.5 ($\pm$ 0.3) on the -\emph{r} group, and 95.4 ($\pm$ 0.4) on Umlaut stimuli.
@@ -226,7 +228,7 @@ This shows that the CNLM encodes something more abstract than the autoencoder, b
   \end{center}
   \caption{\label{tab:number-results-e} German number classification
 	accuracy when controlling for -\emph{e}-, with standard errors computed from 200 random train-test
-    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation.}
+    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.}
 \end{table}
 
 % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words-wikisource-balanceE.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846

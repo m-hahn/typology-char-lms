@@ -89,20 +89,20 @@
   Recurrent neural networks (RNNs) recently reached striking
   performance in a variety of natural language processing tasks. This
   has renewed interest in whether these generic sequence processing
-  devices are effectively capturing linguistic knowledge. Nearly all
-  studies of this sort, however, initialize the RNNs with a vocabulary
-  of known words, and feed them tokenized input during training. We
-  present a multi-lingual study of the linguistic knowledge discovered
-  by RNNs trained as language models at the character level, on input
-  data with word boundaries removed. These networks face a tougher and
-  more cognitively realistic task, having to discover and store any
-  useful linguistic unit from scratch, based on input statistics. The
-  results show that our ``near \emph{tabula rasa}'' RNNs are mostly
-  able to solve morphological, syntactic and semantic tasks that
-  require word-level knowledge, and indeed they are accurately
-  encoding word boundaries. They thus opening the door to intriguing
-  speculations about the role of an explicit word lexicon in language
-  learning and usage.
+  devices are inducing genuine linguistic knowledge. Nearly all
+  current analytical studies, however, initialize the RNNs with a
+  vocabulary of known words, and feed them tokenized input during
+  training. We present a multi-lingual study of the linguistic
+  knowledge encoded in RNNs trained as character-level language
+  models, on input data with word boundaries removed. These networks
+  face a tougher and more cognitively realistic task, having to
+  discover and store any useful linguistic unit from scratch, based on
+  input statistics. The results show that our ``near \emph{tabula
+    rasa}'' RNNs are mostly able to solve morphological, syntactic and
+  semantic tasks that intuitively presuppose word-level knowledge, and
+  indeed they are implicitly tracking soft word boundaries. Thus, out
+  study opens the door to intriguing speculations about the role of an
+  explicit word lexicon in language learning and usage.
 \end{abstract}
 
 

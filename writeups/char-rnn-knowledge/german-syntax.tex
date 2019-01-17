@@ -31,7 +31,9 @@ We first consider stimuli where no material intervenes. % \footnote{Due to syncr
 In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added. Crucially, the ending of the adjective does not reveal the gender of the noun.
 We restricted to adjectives that occurred at least 100 times, and which did not end in -\emph{r}, as the latter ones often represent lemmatization problems.\footnote{TreeTagger occasionally did not remove a final -\emph{r} ending when lemmatizing adjectives.}
 We obtained a pool of 9742 adjectives to sample from, also used in subsequent experiments.
+74.9 \% of these were OOV for the WNLM.
 In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective. These do not cue gender either. In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
+The ratio of OOV nouns was 40.0 \% (masculine), 36.2 \% (feminine), 41.5 \% (neuter).
 
 We constructed an n-gram baseline that picks the article occurring
 most frequently before the phrase in the training data, choosing
@@ -130,6 +132,7 @@ morphological paradigms from Wiktionary to obtain case-marked forms,
 retaining only nouns unambiguously marking the two cases.  We created
 four conditions, varying the amount of intervening material, as in the
 gender agreement experiment (4,509 stimuli per condition).
+For 81.3 \% of the nouns, at least one of the two forms was OOV for the WNLM.
 
 Results are in Figure~\ref{fig:german-syntax} (center).  Again, WordNLM has
 the best performance, but the LSTM CNLM is competitive as more

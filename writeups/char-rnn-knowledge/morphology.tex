@@ -116,9 +116,15 @@ model generalizes correctly, it means that the CNLM is sensitive to number
 as an abstract feature, independently of its surface expression.
 
 We extracted plural nouns from the Wiktionary and the German UD
-treebank \cite{mcdonald2013universal,brants2002tiger}.  We selected % de2006generating,
-nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
--\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter'). \textbf{MICHAEL: maybe better to put also exampel with -r, or at least not an Umlaut example ending in -r?}
+treebank \cite{mcdonald2013universal,brants2002tiger}.  We
+selected % de2006generating,
+nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the
+classifier. (e.g., \emph{Geschichte-n} `stories'), and tested on
+plurals formed with -\emph{r} or through vowel change (\emph{Umlaut},
+e.g., \emph{T{\"o}chter} for singular \emph{Tochter}
+`daughter'). \textbf{MICHAEL: can you add examples for all the
+  classes, and for Umlaut pick an example not ending in -r (or other
+  potential plural suffixes?).}
 %\textbf{Add one
 %  example from training, one from testing.}
 
@@ -127,7 +133,11 @@ from each training class.  As plural suffixes make words longer, we
 sampled singulars and
 plurals %used rejection sampling \textbf{(cite something?)}
 from a single distribution over lengths, to ensure that their lengths
-were approximately matched.  For the test set, we selected all plurals
+were approximately matched. Moreover, since we observed that, in
+uncontrolled samples from our training classes, \emph{-e-} as final
+vowel would act as a strong surface cue to plurality, we controlled
+the sampling to balance the distribution of this property across
+singulars and plurals. For the test set, we selected all plurals
 in -\emph{r} (127) or Umlaut (38), with their respective
 singulars. %\textbf{(how many?)}.
 We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
@@ -136,32 +146,7 @@ To control for the impact of training sample selection, we
 report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
 representations as above, and we compare the same models. \textbf{MICHAEL: proportions of OOVs here.} %
 %, excluding OOVs when testing the latter.
-Results are summarized in Table \ref{tab:number-results}.
-
-\begin{table}[t]
-	\footnotesize
-  \begin{center}
-    \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}c@{\hspace{0.45em}}|@{\hspace{0.45em}}l@{\hspace{0.65em}}l@{\hspace{0.15em}}}
-      &train classes&\multicolumn{2}{c}{test classes}\\
-      &\emph{-n/-s/-e}&\multicolumn{1}{c}{\emph{-r}}&\multicolumn{1}{c}{\emph{Umlaut}}\\      \hline
-	    LSTM & 73.5 ($\pm$ 0.7)  & 89.4 ($\pm$ 0.3)  & 53.7 ($\pm$ 0.3)  \\
-	    RNN & 67.0 ($\pm$ 0.9)  & 83.5 ($\pm$ 0.5)  & 53.1 ($\pm$ 0.4)  \\
-	    Autoencoder & 63.6 ($\pm$ 0.9)  & 78.1 ($\pm$ 0.5)  & 52.8 ($\pm$ 0.2)  \\
-	    WordNLM$_{\textit{subs.}}$  & 97.4 ($\pm$ 0.3)  & 90.5 ($\pm$ 0.1)  & 97.3 ($\pm$ 0.1)  \\ 
-	    WordNLM  & 78.2 ($\pm$ 0.7)  & 77.8 ($\pm$ 0.4)  & 75.9 ($\pm$ 0.5)  \\ 
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:number-results} German number classification
-    accuracy, with standard errors computed from 200 random train-test
-    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not
-    comparable to the other results.}
-\end{table}
-
-% python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-autoencoder
-
-% python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words-wikisource.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846
-
-
+Results are summarized in Table~\ref{tab:number-results-e}.
 
 The classifier based on word embeddings is the most successful,
 outperforming in most cases the best CNLM even in the more cogent
@@ -176,60 +161,6 @@ orthographic exponents. In these experiments, the CNLMs significantly
 outperform the autoencoder. %, and the LSTM even does better than the
 %word model in \emph{-r}-class generalization.
 
-In contrast, the CNLMs fail to generalize to Umlaut plurals, where
-they are virtually at chance level, similar to the autoencoder. %and \emph{worse} than the
-%autoencoder.
-% The most obvious difference between this type and
-% \emph{-r} pluralization is that the latter is an affixation process,
-% whereas Umlaut pluralization changes the stressed vowel of the
-% stem.
-By inspecting the results, we found that the CNLM classifiers mistook
-most Umlaut singulars for plurals.  On one randomly chosen split,
-100\% of both singulars and plurals were classified as plurals.  We
-observed that singulars forming their plural with Umlaut have the
-commonality that their last vowel is an (unstressed) -\emph{e}-.  This
-vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
-add a vowel -\emph{e}- between the consonant-final stem and the ending
--\emph{r}.  Based on this observation, we hypothesized that the
-CNLM-based classifier detects the presence of -\emph{e}- towards the
-end of the word, which would explain why it does well on -\emph{r}
-plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
-  previous paragraph needs to be clarified in a few ways. First, it is
-  NOT always the case that Umlaut-triggering singulard have an
-  unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
-  is the case in your data set? Then, this should be clarified (and
-  explained). Second, I think the argument would be clearer by turning
-  it around: Our training classes tend to have an unstressed final -e-
-  in the plural only. Many singulars in Umlaut have an unstressed
-  final -e-, hence the mishap. No problem with -r, as it follows the
-  pattern of the training classes. Finally, give examples!}
-
-To test this hypothesis, we created a na\"ive ``classifier'' that
-labels a word as plural if one of the last two characters is \emph{e}.
-On the full dataset, this classification method achieves 73.7 \%
-accuracy on the train classes, 95.1\% on -\emph{r} plurals, and 51.0\%
-on Umlaut plurals.  This accuracy is close to that of the LSTM CNLM on
-in-domain and Umlaut, and even outperforms it on -\emph{r}.  Across
-the 200 runs, average agreement between classification decisions made
-with this simple heuristic and the CNLM-based ones was 75.0\%
-($\pm$0.8) on the in-domain classes, 89.5 ($\pm$ 0.3) on the
--\emph{r}, and 95.4 ($\pm$0.4) on Umlaut.  We conclude that, in the
-experiment described above, the CNLM classifier was strongly
-influenced by a very superficial cue (presence of -\emph{e}- near the
-word end) that correlates with plural-hood reasonably well, but does
-not generalize well across morphological classes of plural formation.
-
-% python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource-investigateE.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-910515909
-
-Informed by this result, we repeated the experiment with controlled
-training sets where incidence of -\emph{e}- was balanced across
-singulars and plurals.  To balance for the plurals, we made sure that
-1/4 of those ending in -r or -s had an -\emph{e}- as their
-second-to-last character, so that the total fraction of training
-plurals with -\emph{e}- in the last two characters was 1/2.  For
-singulars, we balanced the incidence of -\emph{e}- for each of the
-classes.  Resulting accuracies are shown in
-Table~\ref{tab:number-results-e}.
 
 Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -\emph{r} plurals, and stronger than before for umlaut plurals.
 That is, performance is weaker where the superficial cue used before (-\emph{e}-) was helpful (-\emph{r} plurals), and stronger where the cue is misleading (umlaut plurals).
@@ -256,6 +187,160 @@ This shows that the CNLM encodes something more abstract than the autoencoder, b
 	accuracy when controlling for -\emph{e}-, with standard errors computed from 200 random train-test
     splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.}
 \end{table}
+
+
+% PREVIOUS VERSION FROM HERE
+% We turn next to number, a more granular morphological feature. We
+% study German, as it possesses a rich system of nominal classes forming
+% plural through different morphological processes. We train a diagnostic number
+% classifier on a subset of these classes, and test on the others. If a
+% model generalizes correctly, it means that the CNLM is sensitive to number
+% as an abstract feature, independently of its surface expression.
+
+% We extracted plural nouns from the Wiktionary and the German UD
+% treebank \cite{mcdonald2013universal,brants2002tiger}.  We selected % de2006generating,
+% nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the classifier (e.g., \emph{Geschichte-n} `stories'), and tested on plurals formed with
+% -\emph{r} or through vowel change (\emph{Umlaut}, e.g., \emph{T{\"o}chter} for singular \emph{Tochter} `daughter'). \textbf{MICHAEL: maybe better to put also examples with -r, or at least not an Umlaut example ending in -r?}
+
+% %\textbf{Add one
+% %  example from training, one from testing.}
+
+% For the training set, we randomly selected 15 singulars and plurals
+% from each training class.  As plural suffixes make words longer, we
+% sampled singulars and
+% plurals %used rejection sampling \textbf{(cite something?)}
+% from a single distribution over lengths, to ensure that their lengths
+% were approximately matched.  For the test set, we selected all plurals
+% in -\emph{r} (127) or Umlaut (38), with their respective
+% singulars. %\textbf{(how many?)}.
+% We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
+% %\textbf{Need information on the test set for the training classes.}
+% To control for the impact of training sample selection, we
+% report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
+% representations as above, and we compare the same models. \textbf{MICHAEL: proportions of OOVs here.} %
+% %, excluding OOVs when testing the latter.
+% Results are summarized in Table \ref{tab:number-results}.
+
+% \begin{table}[t]
+% 	\footnotesize
+%   \begin{center}
+%     \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}c@{\hspace{0.45em}}|@{\hspace{0.45em}}l@{\hspace{0.65em}}l@{\hspace{0.15em}}}
+%       &train classes&\multicolumn{2}{c}{test classes}\\
+%       &\emph{-n/-s/-e}&\multicolumn{1}{c}{\emph{-r}}&\multicolumn{1}{c}{\emph{Umlaut}}\\      \hline
+% 	    LSTM & 73.5 ($\pm$ 0.7)  & 89.4 ($\pm$ 0.3)  & 53.7 ($\pm$ 0.3)  \\
+% 	    RNN & 67.0 ($\pm$ 0.9)  & 83.5 ($\pm$ 0.5)  & 53.1 ($\pm$ 0.4)  \\
+% 	    Autoencoder & 63.6 ($\pm$ 0.9)  & 78.1 ($\pm$ 0.5)  & 52.8 ($\pm$ 0.2)  \\
+% 	    WordNLM$_{\textit{subs.}}$  & 97.4 ($\pm$ 0.3)  & 90.5 ($\pm$ 0.1)  & 97.3 ($\pm$ 0.1)  \\ 
+% 	    WordNLM  & 78.2 ($\pm$ 0.7)  & 77.8 ($\pm$ 0.4)  & 75.9 ($\pm$ 0.5)  \\ 
+%     \end{tabular}
+%   \end{center}
+%   \caption{\label{tab:number-results} German number classification
+%     accuracy, with standard errors computed from 200 random train-test
+%     splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not
+%     comparable to the other results.}
+% \end{table}
+
+% % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-autoencoder
+
+% % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words-wikisource.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846
+
+
+
+% The classifier based on word embeddings is the most successful,
+% outperforming in most cases the best CNLM even in the more cogent
+% OOV-inclusive evaluation. This confirms the common observation that
+% word embeddings reliably encode number \cite{Mikolov:etal:2013a}. The
+% CNLM results are mixed. Again the LSTM variant outperforms the
+% RNN, but neither has problems detecting number for new words from
+% the training paradigms. They are also able to detect number in a new
+% paradigm (\emph{-r} plurals), seemingly suggesting that they are, to some extent,
+% inducing an abstract notion of number that is not tied to specific
+% orthographic exponents. In these experiments, the CNLMs significantly
+% outperform the autoencoder. %, and the LSTM even does better than the
+% %word model in \emph{-r}-class generalization.
+
+% In contrast, the CNLMs fail to generalize to Umlaut plurals, where
+% they are virtually at chance level, similar to the autoencoder. %and \emph{worse} than the
+% %autoencoder.
+% % The most obvious difference between this type and
+% % \emph{-r} pluralization is that the latter is an affixation process,
+% % whereas Umlaut pluralization changes the stressed vowel of the
+% % stem.
+% By inspecting the results, we found that the CNLM classifiers mistook
+% most Umlaut singulars for plurals.  On one randomly chosen split,
+% 100\% of both singulars and plurals were classified as plurals.  We
+% observed that singulars forming their plural with Umlaut have the
+% commonality that their last vowel is an (unstressed) -\emph{e}-.  This
+% vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
+% add a vowel -\emph{e}- between the consonant-final stem and the ending
+% -\emph{r}.  Based on this observation, we hypothesized that the
+% CNLM-based classifier detects the presence of -\emph{e}- towards the
+% end of the word, which would explain why it does well on -\emph{r}
+% plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
+%   previous paragraph needs to be clarified in a few ways. First, it is
+%   NOT always the case that Umlaut-triggering singulard have an
+%   unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
+%   is the case in your data set? Then, this should be clarified (and
+%   explained). Second, I think the argument would be clearer by turning
+%   it around: Our training classes tend to have an unstressed final -e-
+%   in the plural only. Many singulars in Umlaut have an unstressed
+%   final -e-, hence the mishap. No problem with -r, as it follows the
+%   pattern of the training classes. Finally, give examples!}
+
+% To test this hypothesis, we created a na\"ive ``classifier'' that
+% labels a word as plural if one of the last two characters is \emph{e}.
+% On the full dataset, this classification method achieves 73.7 \%
+% accuracy on the train classes, 95.1\% on -\emph{r} plurals, and 51.0\%
+% on Umlaut plurals.  This accuracy is close to that of the LSTM CNLM on
+% in-domain and Umlaut, and even outperforms it on -\emph{r}.  Across
+% the 200 runs, average agreement between classification decisions made
+% with this simple heuristic and the CNLM-based ones was 75.0\%
+% ($\pm$0.8) on the in-domain classes, 89.5 ($\pm$ 0.3) on the
+% -\emph{r}, and 95.4 ($\pm$0.4) on Umlaut.  We conclude that, in the
+% experiment described above, the CNLM classifier was strongly
+% influenced by a very superficial cue (presence of -\emph{e}- near the
+% word end) that correlates with plural-hood reasonably well, but does
+% not generalize well across morphological classes of plural formation.
+
+% % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-redone-wikisource-investigateE.py --language german --batchSize 128 --char_embedding_size 100 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-910515909
+
+% Informed by this result, we repeated the experiment with controlled
+% training sets where incidence of -\emph{e}- was balanced across
+% singulars and plurals.  To balance for the plurals, we made sure that
+% 1/4 of those ending in -r or -s had an -\emph{e}- as their
+% second-to-last character, so that the total fraction of training
+% plurals with -\emph{e}- in the last two characters was 1/2.  For
+% singulars, we balanced the incidence of -\emph{e}- for each of the
+% classes.  Resulting accuracies are shown in
+% Table~\ref{tab:number-results-e}.
+
+% Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -\emph{r} plurals, and stronger than before for umlaut plurals.
+% That is, performance is weaker where the superficial cue used before (-\emph{e}-) was helpful (-\emph{r} plurals), and stronger where the cue is misleading (umlaut plurals).
+% %This is expected, as we had found that the performance in the first experiment could be explained mostly by presence of -\emph{e}-.
+% The autoencoder performs essentially at chance on held-out classes, showing that its previous modest success can be explained by the -\emph{e}- cue.
+% This shows that the CNLM encodes something more abstract than the autoencoder, but, overall, there is only modest evidence that the CNLM encodes any abstract notion of nominal plural in its hidden state.
+
+
+
+% \begin{table}[t]
+% 	\footnotesize
+%   \begin{center}
+%     \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}c@{\hspace{0.45em}}|@{\hspace{0.45em}}l@{\hspace{0.65em}}l@{\hspace{0.15em}}}
+%       &train classes&\multicolumn{2}{c}{test classes}\\
+%       &\emph{-n/-s/-e}&\multicolumn{1}{c}{\emph{-r}}&\multicolumn{1}{c}{\emph{Umlaut}}\\      \hline
+% 	    LSTM & 71.5 ($\pm$ 0.8)  & 78.8 ($\pm$ 0.6)  & 60.8 ($\pm$ 0.6)  \\
+% 	    RNN & 65.4 ($\pm$ 0.9)  & 59.8 ($\pm$ 1.0)  & 56.7 ($\pm$ 0.7)  \\
+% 	    Autoencoder & 61.4 ($\pm$ 0.9)  & 50.7 ($\pm$ 0.8)  & 51.9 ($\pm$ 0.4)  \\
+% 	    WordNLM$_{\textit{subs.}}$ & 97.1 ($\pm$ 0.3)  & 90.7 ($\pm$ 0.1)  & 97.5 ($\pm$ 0.1)  \\
+% 	    WordNLM  & 77.3 ($\pm$ 0.7)  & 77.1 ($\pm$ 0.5)  & 74.2 ($\pm$ 0.6)  \\
+%     \end{tabular}
+%   \end{center}
+%   \caption{\label{tab:number-results-e} German number classification
+% 	accuracy when controlling for -\emph{e}-, with standard errors computed from 200 random train-test
+%     splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.}
+% \end{table}
+
+% PREVIOUS VERSION TO HERE
 
 % python char-lm-ud-stationary-separate-bidir-with-spaces-probe-baseline-prediction-wiki-plurals-2-tests-words-wikisource-balanceE.py  --language german --batchSize 128 --char_embedding_size 200 --hidden_dim 1024 --layer_num 2 --weight_dropout_in 0.1 --weight_dropout_hidden 0.35 --char_dropout_prob 0.0 --char_noise_prob 0.01 --learning_rate 0.2 --load-from wiki-german-nospaces-bptt-words-966024846
 

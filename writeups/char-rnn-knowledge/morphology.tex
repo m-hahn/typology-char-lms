@@ -120,50 +120,64 @@ We extracted plural nouns from the Wiktionary and the German UD
 treebank \cite{mcdonald2013universal,brants2002tiger}.  We
 selected % de2006generating,
 nouns with plurals in -\emph{n}, -\emph{s}, or -\emph{e} to train the
-classifier (e.g., \emph{Geschichte-n} `stories' \textbf{MICHAEL:
-  please also add examples of the other classes}), and tested on
+classifier (e.g., \emph{Geschichte(n)} `storie(s)', \emph{Radio(s)}
+`radio(s)', \emph{Pferd(e)} `horse(s)', respectively). We tested on
 plurals formed with -\emph{r} (e.g., \emph{Lieder} for singular
 \emph{Lied} `song'), or through vowel change (\emph{Umlaut}, e.g.,
 \emph{{\"A}pfel} for singular \emph{Apfel} `apple'). Certain nouns
-form plurals through concurrent affixation and Umlaut (e.g.,
-\textbf{MICHAEL: exmaple}). We grouped these together with nouns using
-the same affix, reserving the Umlaut group for nouns \emph{only}
-undergoing vowel change. \textbf{MICHAEL: can you add examples for all
-  the classes, and for Umlaut pick an example not ending in -r (or
-  other potential plural suffixes?).}
+form plurals through concurrent affixation and Umlaut. We grouped
+these together with nouns using the same affix, reserving the Umlaut
+group for nouns \emph{only} undergoing vowel change (e.g.,
+\emph{Saft/S\"afte} `juice(s)' would be an instance of -\emph{e}
+affixation).
 
 For the training set, we randomly selected 15 singulars and plurals
 from each training class.  As plural suffixes make words longer, we
 sampled singulars and
 plurals %used rejection sampling \textbf{(cite something?)}
 from a single distribution over lengths, to ensure that their lengths
-were approximately matched. Moreover, since we observed that, in
-uncontrolled samples from our training classes, \emph{-e-} as final
-vowel would act as a strong surface cue to plurality, we controlled
-the sampling to balance the distribution of this property across
-singulars and plurals. For the test set, we selected all plurals
-in -\emph{r} (127) or Umlaut (38), with their respective
-singulars. %\textbf{(how many?)}.
-We also used all remaining plurals ending in -\emph{n} (1467), -\emph{s} (98) and -\emph{e} (832) as in-domain test data.
+were approximately matched. Moreover, since in uncontrolled samples
+from our training classes a final \emph{-e-} vowel would constitute a strong surface
+cue to plurality, we controlled the sampling to balance the
+distribution of this property across singulars and plurals. For the
+test set, we selected all plurals in -\emph{r} (127) or Umlaut (38),
+with their respective singulars. %\textbf{(how many?)}.
+We also used all remaining plurals ending in -\emph{n} (1467),
+-\emph{s} (98) and -\emph{e} (832) as in-domain test data.
 %\textbf{Need information on the test set for the training classes.}
-To control for the impact of training sample selection, we
-report accuracies averaged over 200 random train-test splits and report standard errors over these splits.  We extract word
-representations as above, and we compare the same models.
-The percentage of singular-plural pairs where at least one of the two words were out of vocabulary for the WNLM was 63.4\% for the training classes, 68.6\% for -\emph{r} plurals, and 73.2\% for the Umlaut plurals.
-Results are summarized in Table \ref{tab:number-results-e}.
+To control for the impact of training sample selection, we report
+accuracies averaged over 200 random train-test splits and report
+standard errors over these splits.  We extract word representations as
+above, and we compare the same models.  The percentage of
+singular-plural pairs where at least one of the two words was OOV for
+WordNLM was 63.4\% in the training classes, 68.6\% among -\emph{r}
+plurals, and 73.2\% for Umlaut plurals. \textbf{MICHAEL: I didn't
+  realize you selected matched singular/plural pairs. Is this the
+  case? Anyway, wouldn't the more informative statistics here be the one
+  about missing items independently of whether they are plural or
+  singular? I think that's what matters, or else the high performance
+  in the full data-set would be miraculous...} Results are summarized
+in Table \ref{tab:number-results-e}.
 
 The classifier based on word embeddings is the most successful,
 outperforming in most cases the best CNLM even in the more cogent
 OOV-inclusive evaluation. This confirms the common observation that
-word embeddings reliably encode number \cite{Mikolov:etal:2013a}. The
-CNLM results are mixed. Again the LSTM variant outperforms the
-RNN, but neither has problems detecting number for new words from
-the training paradigms. They are also able to detect number in a new
-paradigm (\emph{-r} plurals), seemingly suggesting that they are, to some extent,
-inducing an abstract notion of number that is not tied to specific
-orthographic exponents. In these experiments, the CNLMs significantly
-outperform the autoencoder. %, and the LSTM even does better than the
-%word model in \emph{-r}-class generalization.
+word embeddings reliably encode number
+\cite{Mikolov:etal:2013a}. Again, the LSTM-based CNLM is better than
+the RNN, but both significantly outperform the autoencoder. The latter
+is near-random on new class prediction, confirming that we properly
+controlled for orthographic confounds.
+
+Even for the better LSTM CNLM, we observe a considerable drop in
+performance between generalization to -\emph{r} and the Umlaut
+case. On the one hand, the fact that performance is still clearly
+above chance (and autoencoder) in the latter condition shows that the
+LSTM CNLM has an abstract notion of
+number not tied to specific orthographic exponents. On the other, the difference in -\emph{r} vs.~Umlaut performance suggests
+that the generalization is not completely abstract, as it works more
+reliably when the target is a new affixation pattern, albeit one that is distinct from
+those seen in training, than when it is a novel, purely non-concatenative
+process.
 
 % We found that training classes tend to have an unstressed final -e- in
 % the plural only, either as a plural ending (\emph{Abend} `evening' $\rightarrow$ \emph{Abend-e}) or as an epenthetic vowel
@@ -202,13 +216,6 @@ outperform the autoencoder. %, and the LSTM even does better than the
 %  in the plural only. Many singulars in Umlaut have an unstressed
 %  final -e-, hence the mishap. No problem with -r, as it follows the
 %  pattern of the training classes. Finally, give examples!}
-
-Performance of the diagnostic classifier for the LSTM CNLM is weaker than before for -\emph{r} plurals, and stronger than before for umlaut plurals.
-That is, performance is weaker where the superficial cue used before (-\emph{e}-) was helpful (-\emph{r} plurals), and stronger where the cue is misleading (umlaut plurals).
-%This is expected, as we had found that the performance in the first experiment could be explained mostly by presence of -\emph{e}-.
-The autoencoder performs essentially at chance on held-out classes, showing that its previous modest success can be explained by the -\emph{e}- cue.
-This shows that the CNLM encodes something more abstract than the autoencoder, but, overall, there is only modest evidence that the CNLM encodes any abstract notion of nominal plural in its hidden state.
-
 
 
 \begin{table}[t]

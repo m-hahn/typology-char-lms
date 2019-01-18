@@ -97,6 +97,30 @@ Across languages, the LSTM CNLM units are more predictive than the RNN ones, and
   \caption{\label{tab:segmentation-unit-results} Accuracy of threshold classifier based on `word' unit in distinguishing word boundaries from word-internal positions. Random baseline accuracy is 50 \%.}
 \end{table}
 
+To better understand the behaviour of the LSTM CNLM word unit, we
+conducted a qualitative analysis of cases where it under- or
+oversegments orthographic words. We discuss German here, as it is the
+language where the word-unit classifier reaches highest accuracy, and
+its tendency to have long, morphologically complex words makeis
+particularly interesting. However, similar patterns were also detected
+in Italian and, to a lesser extent, English (in the latter, there are
+fewer and less interpretable common oversegmentation, probably because
+words are on average shorter and morphology more limited). Considering
+first the 30 most common undersegmentations of the word-unit
+classifier, the large majority (24/30) are common sequences of
+grammatical terms or very frequent items that can sometimes be
+reasonably be re-analyzed as single function words or adverbs (e.g.,
+\emph{bis zu}, `up to (lit.~until to)', \emph{je nach} `depending on
+(lit.~per??? after)', \emph{bis heute} `to date (lit.~until
+today)'). 3 cases are multi-word city names (\emph{Los Angeles}). The
+final 3 cases interestingly involve \emph{Bau} `building' followed by
+\emph{von} `of' and genitive determiners \emph{der/des}. As in its
+eventive reading this noun requires a patient licensed by either `of'
+or (in German) genitive (\emph{Bau der Mauer} `building of the wall
+(lit.~ building the-GEN wall)'), apparently our model decided to
+absorb the case assigner into the form of the noun.
+
+
 
 
 

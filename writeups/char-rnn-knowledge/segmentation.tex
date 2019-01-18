@@ -120,6 +120,43 @@ or (in German) genitive (\emph{Bau der Mauer} `building of the wall
 (lit.~ building the-GEN wall)'), apparently our model decided to
 absorb the case assigner into the form of the noun.
 
+We looked next at the 30 most common oversegmentations of the
+word-unit classifier (defines as the character substrings that were
+wrongly segmented out of the largest number of distinct words),
+limiting the analysis to those containing at least 3 characters, as
+shorter strings were more ambiguous and harder to interpret. Of these,
+6 are prefixes that can also occur in isolation as prepositions or
+verb particles (\emph{auf} `on', \emph{nach} `after', etc.). 7 are
+content words that form many compounds (e.g., \emph{haupt} `main',
+occurring in \emph{Hauptstadt} `capital', \emph{Hauptbahnhof} `main
+station' etc.; \emph{Land} `land', occurring in \emph{Deutschland}
+`Germany', \emph{Landkreis} `district', etc.). Another 7 items can be
+classified as suffixes (e.g., \emph{-lich} as in \emph{s\"udlich}
+`southern', \emph{wissenschaftlich} `scientific'), although their
+segmentation is not always canonical (e.g., \emph{chaft} instead of
+the expected \emph{schaft} in \emph{Wissenschaft} `science'). 4 very
+common function words are often wrongly segmented out of longer words
+(e.g., \emph{sie} `she' from \emph{sieben} `seven'). The \emph{kom}
+and \emph{kon} cases are interesting, as the model seems to both
+correctly segment these as reasonable stem forms of the verbs
+\emph{kommen} `to come' and \emph{kennen} `to know', respectively
+(e.g., in \emph{kommt} and \emph{konnte}, respectively), and as
+pseudo-prefixes elsewhere (\emph{komponist} `composer', \emph{kontakt}
+`contact'). The remaining 3 oversegmentations, \emph{rie}, \emph{run}
+and \emph{ter} don't have any clear interpretation.
+
+Taken together, the error analysis highlights the fact that the
+``word'' unit, even when analyzed through the lens of a threshold that
+was optimized on word-level segmentation, is actually tracking
+``salient'' linguistic boundaries at different levels. While in many
+cases these boundaries naturally coincide with words (hence the high
+quantitative performance of the simple classifier), the CNLM is also
+sensitive to frequent morphemes and compound elements, as well as to
+different types of multi-word expressions. This is fully in line with
+a view of wordhood as a useful but ``soft'', emergent property, rather
+than with the traditional assumption of words as rigid primitives of
+linguistic processing.
+
 
 
 

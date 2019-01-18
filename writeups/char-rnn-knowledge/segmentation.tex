@@ -6,7 +6,7 @@
 We tested whether our CNLM developed an implicit notion of word, despite not being endowed with a hard-coded word dictionary, and being exposed to unsegmented input. %
 To answer this, we return to the method of diagnostic classifiers.
 We randomly selected positions from the development partition such that half of these were the last character of a token, and the other half were not.
-We collected 10000 such points as training data for the diagnostic classifiers, and the remainder for testing.
+We collected 1,000 such points as training data for the diagnostic classifiers, and the remainder for testing.
 Both sets were balanced between (1) and (2).
 We sampled the test data points subject to the constraint that the word or word prefix ending at the selected character does not overlap with the training set.
 This ensures that the diagnostic classifier cannot succeed by looking for encodings reflecting specific words.
@@ -22,12 +22,12 @@ With this, it represents the \emph{optimal} classifier for this task when the be
 Furthermore, it has access to a very large lexicon listing all unigram counts in the training corpus, encoding a vast amount of lexical knowledge and proper names.
 
 Results are shown in Table~\ref{tab:segmentation-results}.
-We find that the diagnostic classifier shows above-random performance with few training samples, though its performance lags behind that of the single-parameter classifiers derived from the units we found above, suggesting overfitting of the diagnostic logistic classifier.
-With 1000 training samples, the diagnostic classifier performs similarly to the strong lexicon-based classifier, and outperforms it with 10,000 training samples.
+The diagnostic classifier performs similarly to the strong lexicon-based classifier. %, and outperforms it with 10,000 training samples.
+%We find that the diagnostic classifier shows above-random performance with few training samples, though its performance lags behind that of the single-parameter classifiers derived from the units we found above, suggesting overfitting of the diagnostic logistic classifier.
+%With 1000 training samples, the diagnostic classifier performs similarly to the strong lexicon-based classifier. %, and outperforms it with 10,000 training samples.
 This shows that the CNLM's representations provide strong cues regarding word boundaries.
 Performance is strongest in English and weakest in German, both for the CNLM-based diagnostic classifier and for the lexicon-based baseline.
 The preponderance of compound words in German may be responsible for this.
-
 
 
 
@@ -37,13 +37,31 @@ The preponderance of compound words in German may be responsible for this.
     \begin{tabular}{l|l|l|l}
       \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{Lexicon}\\
       \hline
-      English & 72.7/89.9/91.8 &  66.6/76.8/84.5  &  88.7   \\ 
-      German & 61.8/79.8/87.6  &  61.5/75.8/84.3 &  79.3  \\ 
-      Italian &  60.7/83.0/90.2 &  69.1/75.9/86.6  &  84.2   \\ 
+      English & 89.9 &  76.8  &  88.7   \\ 
+      German & 79.8  &  75.8 &  79.3  \\ 
+      Italian &  83.0 &  75.9  &  84.2   \\ 
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on recognizing word boundaries, with 100/1000/10000 training samples. Random baseline accuracy is 50 \%.}
+  \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on distinguishing word boundaries from word-internal position. Random baseline accuracy is 50 \%.}
 \end{table}
+
+
+
+
+%
+%\begin{table}[t]
+%	\small
+%  \begin{center}
+%    \begin{tabular}{l|l|l|l}
+%      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{Lexicon}\\
+%      \hline
+%      English & 72.7/89.9/91.8 &  66.6/76.8/84.5  &  88.7   \\ 
+%      German & 61.8/79.8/87.6  &  61.5/75.8/84.3 &  79.3  \\ 
+%      Italian &  60.7/83.0/90.2 &  69.1/75.9/86.6  &  84.2   \\ 
+%    \end{tabular}
+%  \end{center}
+%  \caption{\label{tab:segmentation-results} Accuracy of diagnostic classifier on recognizing word boundaries, with 100/1000/10000 training samples. Random baseline accuracy is 50 \%.}
+%\end{table}
 
 
 
@@ -101,7 +119,7 @@ To better understand the behaviour of the LSTM CNLM word unit, we
 conducted a qualitative analysis of cases where it under- or
 oversegments orthographic words. We discuss German here, as it is the
 language where the word-unit classifier reaches highest accuracy, and
-its tendency to have long, morphologically complex words makeis
+its tendency to have long, morphologically complex words makes
 particularly interesting. However, similar patterns were also detected
 in Italian and, to a lesser extent, English (in the latter, there are
 fewer and less interpretable common oversegmentation, probably because
@@ -111,7 +129,7 @@ classifier, the large majority (24/30) are common sequences of
 grammatical terms or very frequent items that can sometimes be
 reasonably be re-analyzed as single function words or adverbs (e.g.,
 \emph{bis zu}, `up to (lit.~until to)', \emph{je nach} `depending on
-(lit.~per??? after)', \emph{bis heute} `to date (lit.~until
+(lit.~per after)', \emph{bis heute} `to date (lit.~until
 today)'). 3 cases are multi-word city names (\emph{Los Angeles}). The
 final 3 cases interestingly involve \emph{Bau} `building' followed by
 \emph{von} `of' and genitive determiners \emph{der/des}. As in its

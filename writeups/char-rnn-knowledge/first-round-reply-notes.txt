@@ -308,7 +308,7 @@ developers for their ongoing work.
    right but misses other types, compared to the Bayesian method
    constructed with a lexical bias in mind.
 
-=> this might go; introduce new qualitative analysis
+=> this might go; introduce new qualitative analysis (done)
 
 2. For the first analysis (phonological classes induced by the output
    embeddings) results for German only are provided in Figure 1. The
@@ -316,7 +316,7 @@ developers for their ongoing work.
    clear motivation why one was selected. There should be space to
    include all three plots.
 
-=> this might go
+=> this might go (done)
 
 3. What really surprised me is the bad performance of the vanilla RNN
    compared to the LSTM on the bigram acceptability judgment task
@@ -333,7 +333,7 @@ developers for their ongoing work.
    Table 8). Why is the vanilla RNN not improving? Would it help to
    fine-tune on the in-domain data?
 
-=> this might go
+=> this might go (done)
 
 4. The paper does a great job in discussing related work. I though
    kept wondering about the difference with Kementchedjhieva & Lopez
@@ -404,7 +404,7 @@ This experiment is not repeated (or results are not shown) for the RNN.  No
 details are given for how the clustering was run (distance metric?) and the
 cutoff for clusters appears to be chosen arbitrarily.
 
-=> remove
+=> remove (done)
 
 3. Identify some acceptable and unacceptable bigrams in each language.
 Train on data with both sets removed, and then test if the held out bigrams
@@ -418,14 +418,14 @@ phonological categories are not learned by the RNN, which would help to
 explain the lack of generalization we're seeing in this experiment (which
 requires learning phonological categories).
 
-=> remove
+=> remove (done)
 
 4a. Word segmentation
 This experiment is not fully explained.  In particular the context PMI is
 unclear to me here, and needs more explanation.  But somehow they are
 creating features which they use to predict which characters start words
 
-=> change to probing experiment
+=> change to probing experiment (done)
 
 4b. A small little experiment with a LDA word segmenting algorithm is
 included here, but so little detail is given that we can't draw much of a
@@ -433,13 +433,13 @@ conclusion.  It's also trained on a different corpus, so it sticks out a
 bit.  Suggest this be put into a supplementary material section with more
 details.
 
-=> remove
+=> remove (done)
 
 4c. Error analysis
 This is actually fairly interesting and I appreciate this qualitative
 account
 
-=> will have to replace
+=> will have to replace (done)
 
 4d. Compare PMI to hierarchical distance
 This experiment is really light on details and the accompanying figure 2 HAS
@@ -466,7 +466,7 @@ autoencoder LSTM trained on words in isolation.  This seems like a straw
 man, if only shown words in isolation this model is missing much of the
 context information that help the context-full LSTM tell verbs from nouns.
 
-=> explain
+=> explain (done)
 
 6. Can the model detect number
 Here I'm unclear what this has to do with the model trained on space-free
@@ -476,14 +476,14 @@ class."  The results show that the CNLM can't generalize to umlaut, but the
 explanation is lacking (suffix vs internal root vowel change).  Why? is the
 interesting question here.
 
-=> discuss
+=> discuss (should be okay now?)
 
 There are many more experiments after this point, and the main themes of my
 critiques are the same.  There is not enough information given to fully
 understand these experiments (and thus replicating would be impossible).
 The figures have NO labels.  There is no careful consideration of results.
 
-=> add
+=> add (is okay now?)
 
 line 242, the models were not trained until validation accuracy plateaued?
 That does not seem standard.  How can we know if these models are fit to
@@ -501,20 +501,20 @@ but it makes for an annoying first skim of the paper if you can't figure out
 any of the figures without.  E.g. the caption for Table 5: "word class
 accuracy with standard errors. ..."  For what task???
 
-=> add
+=> add (I think this is good now)
 
 Tables with 9 cells, and 3 numbers per cell are pretty hard to parse e.g.
 Table 3/4.  A bar graph with just F1 would be nice, unless the authors
 actually think P/R make any contribution (they don't seem to talk about P/R
 in any detail).
 
-=> fix
+=> fix (done)
 
 Table 3 just gives P/R/F1, I don't think the claim on line 428 (classify
 half the tokens correctly) can be inferred from P or R, rather, one needs
 accuracy.
 
-=> remove
+=> remove (done)
 
 Section 4.2 needs some subheaders, there's too much going on here and it's
 hard to keep track of what the point of the current experiment is.
@@ -525,16 +525,17 @@ A few tables/figures have STD or bootstrapped CI, but many do not. Would
 like to see them consistently throughout
 
 => do or explain where we do it
-=> We do it in those cases where there is a randomized train/test selection for a diagnostic classifier using small training data sets. For most of our numbers, standard errors/CIs would be very small, due to the large size of stimuli.
+=> We do it in those cases where there is a randomized train/test selection for a diagnostic classifier using small training data sets -- i.e., in the two morphological experiments.
+   For our other experiments, there is no randomized selection of a small training set. Thus standard errors/CIs would be very small (essentially imperceptible), due to the large number of stimuli we use through the experiments.
 
 Line 616: "as above" there's a lot of stuff above at this point, please
 refer to something more concrete
 
-=> OK
+=> OK (done)
 
 Is table 8 really comparing results across corpora?  The top 3 models are
 trained on wikipedia, and the bottom on Sherlock Holmes?  This is not a
 sound comparison, not sure what we're supposed to take away from this
 experiment
 
--> explain
+-> explain (done)

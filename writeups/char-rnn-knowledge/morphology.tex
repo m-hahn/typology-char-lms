@@ -95,7 +95,7 @@ words (as expected, as WordNLM must make random guesses here). % Figure~\ref{fig
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Word class accuracy, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.} % (20 training examples)
+	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.} % (20 training examples)
 \end{table}
 
 
@@ -131,7 +131,7 @@ group for nouns \emph{only} undergoing vowel change (e.g.,
 \emph{Saft/S\"afte} `juice(s)' would be an instance of -\emph{e}
 affixation).
 
-For the training set, we randomly selected 15 singulars and plurals
+For training the diagnostic classifier, we randomly selected 15 singulars and plurals
 from each training class.  As plural suffixes make words longer, we
 sampled singulars and
 plurals %used rejection sampling \textbf{(cite something?)}
@@ -149,14 +149,15 @@ To control for the impact of training sample selection, we report
 accuracies averaged over 200 random train-test splits and report
 standard errors over these splits.  We extract word representations as
 above, and we compare the same models.  The percentage of
-singular-plural pairs where at least one of the two words was OOV for
-WordNLM was 63.4\% in the training classes, 68.6\% among -\emph{r}
-plurals, and 73.2\% for Umlaut plurals. \textbf{MICHAEL: I didn't
-  realize you selected matched singular/plural pairs. Is this the
-  case? Anyway, wouldn't the more informative statistics here be the one
-  about missing items independently of whether they are plural or
-  singular? I think that's what matters, or else the high performance
-  in the full data-set would be miraculous...} Results are summarized
+words (singular or plural) that were OOV for the WordNLM was 45.0\% for the training classes,
+49.1\% among the -\emph{r} plurals, and 52.1 \% for the Umlaut plurals.
+%\textbf{MICHAEL: I didn't
+%  realize you selected matched singular/plural pairs. Is this the
+%  case? Anyway, wouldn't the more informative statistics here be the one
+%  about missing items independently of whether they are plural or
+%  singular? I think that's what matters, or else the high performance
+%  in the full data-set would be miraculous...}
+Results are summarized
 in Table \ref{tab:number-results-e}.
 
 The classifier based on word embeddings is the most successful,
@@ -232,7 +233,7 @@ process.
     \end{tabular}
   \end{center}
   \caption{\label{tab:number-results-e} German number classification
-	accuracy when controlling for -\emph{e}-, with standard errors computed from 200 random train-test
+	accuracy , with standard errors computed from 200 random train-test % when controlling for -\emph{e}-
     splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.}
 \end{table}
 

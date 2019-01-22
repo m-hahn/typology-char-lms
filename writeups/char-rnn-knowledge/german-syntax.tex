@@ -29,7 +29,7 @@ We select all nominative singular nouns from the German UD treebank. %, and all 
 We construct four conditions varying the number of adverbs and adjectives between  article and noun.
 We first consider stimuli where no material intervenes. % \footnote{Due to syncretism in the article paradigm, there is sometimes ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is a nominative singular from. As this equally affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective intervenes, as its form disambiguates case.}
 In the second condition, an adjective with the correct (nominative singular) case ending, randomly selected from the training corpus, is added. Crucially, the ending of the adjective does not reveal the gender of the noun.
-We restricted to adjectives that occurred at least 100 times, and which did not end in -\emph{r}, as the latter ones often represent lemmatization problems.\footnote{TreeTagger occasionally did not remove a final -\emph{r} ending when lemmatizing adjectives.}
+We restricted to adjectives that occurred at least 100 times, and which did not end in -\emph{r}, as the latter ones often represent lemmatization problems.\footnote{TreeTagger occasionally did not remove the inflectional suffix -\emph{r} when lemmatizing adjectives.}
 We obtained a pool of 9742 adjectives to sample from, also used in subsequent experiments.
 74.9 \% of these were OOV for the WNLM.
 In the third and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between the article and the adjective. These do not cue gender either. In each condition, we obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli.
@@ -160,7 +160,7 @@ drops considerably.
 German verbs and prepositions lexically specify their object's case.  We
 study the preposition \textit{mit} `with', which selects a dative
 object. We focused on \textit{mit}, as it unambigously requires a dative object,
-and is extremely frequent in the Wikipedia corpus.
+and is extremely frequent in German and in the Wikipedia corpus we are using.
 We use objects whose head noun is a nominalized adjective,
 with regular, overtly marked case inflection.
 We used the same adjective pool as in the preceding experiments.
@@ -169,7 +169,7 @@ We used the same adjective pool as in the preceding experiments.
 %that end in -\emph{r}, as these often reflected lemmatization
 %problems.
 We then select all sentences containing a \emph{mit}
-prepositional phrase in Universal Dependencies, subject to the
+prepositional phrase in the German Universal Dependencies treebank, subject to the
 constraints that (1) the object is not a pronoun (replacing such items with a
 nominal object often results in ungrammaticality), and (2) the object
 is a continuous phrase, i.e., it is not interrupted by words that do

@@ -3,37 +3,58 @@
 \subsection{Semantics}
 \label{sec:semantics}
 
-Finally, we probe CNLM knowledge of semantics. We turn to
-English, as for this language we can use the Microsoft Research
-Sentence Completion task \cite{Zweig:Burges:2011}. The challenge
-consists of sentences with a gap, and a 5-word multiple choice to fill
-the gap. Picking the right word requires a mixture of syntax, lexical
-semantics, world knowledge and pragmatics. For example, in \emph{``Was
-  she his [
+Finally, words are obviously the main carriers of lexical semantic
+information. We probe whether CNLMs are capable to track at least the
+shallow form of semantics that is required in a fill-the-missing-word
+test. In particular, we turn here to English, as for this language we
+can use the Microsoft Research Sentence Completion task
+\cite{Zweig:Burges:2011}. The challenge consists of sentences with a
+gap, and a 5-word multiple choice to fill the gap. We chose it because
+language models can be directly applied to it, by calculating the
+likelihood of sentence variants with all possible completions, and
+selecting the one with the highest likelihood.
+
+The creators of the benchmark took multiple provisions to insure that
+success on the task implies some command of semantics. The multiple
+choices were controlled for frequency, and the annotators were
+encouraged to choose confounders whose elimination required ``semantic
+knowledge and logical inference'' \cite{Zweig:Burges:2011}.  For
+example, to make the right choice in \emph{``Was she his [
   \underline{client}|musings|discomfiture|choice|opportunity], his
-  friend, or his mistress?}, the model should realize that the
-missing word is coordinated with \emph{friend} and \emph{mistress},
-and that the latter are human beings. We chose this challenge because
-language models can be easily applied by calculating the likelihood of
-all possible completions and selecting the one with the highest
-likelihood. The domain of the task (Sherlock Holmes novels) is very
-different from the Wikipedia data-set we are using; thus we
-additionally trained our models on the training set provided for the
-task, consisting of 19th century English novels.
-%We both consider a fresh model trained on
+  friend, or his mistress?}, one must realize that the missing word is
+coordinated with \emph{friend} and \emph{mistress}, and that the
+latter are animate entities.
+
+Note that the task domain (Sherlock Holmes novels) is very different
+from the Wikipedia data-set we originally trained our models on. For a
+fairer comparison with previous work, we also re-train our models on
+the training corpus provided with the benchmark, and consisting of
+\textbf{how many?} words from 19th century English novels (we remove
+whitespace from this corpus as well).
+% thus we additionally trained our models on the training set provided
+% for the task, consisting of 19th century English novels.
+% %We both consider a fresh model trained on
 %that data, and initializing it with the Wikipedia model.
 % \footnote{For the WordNLM, the vocabulary consisted
 % of the 50,000 most common words in the in-domain training set.}
 %For comparison, we report results (KN5 from , LSTM from ) from previous work that were trained on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
 
-Results are shown in Table~\ref{tab:msr-completion-results}.  The
-models trained on Wikipedia perform poorly but above chance (20\%).  When trained on in-domain data, the LSTM CNLM outperforms many earlier word-level neural
-models, and is only slightly below WordNLM. %, and approaches the best published results.
+Results are shown in Table~\ref{tab:msr-completion-results}.  We
+confirm the importance of in-domain training, as all our models
+trained on Wikipedia perform poorly (but still above chance level,
+which is at 20\%).  When trained in domain, the LSTM CNLM outperforms
+many earlier word-level neural models, and is only slightly below the
+WordNLM. %, and approaches the best published results.
 %, held by approaches developed for the completion task \cite{woods2016exploiting}.
 % The best results I could find, https://github.com/ctr4si/sentence-completion, are much better than the best peer-reviewed published ones
 The vanilla RNN is not successful even when trained in domain,
 contrasting with \emph{word}-based vanilla RNNs, whose performance,
-while below that of LSTMs, is much stronger. %  The WordNLM shows a
+while still below LSTMs, is much stronger. Once more, this suggests
+that word-level generalizations can be captured by a dictionary-less
+character model, but the long-span processing abilities of LSTMs are
+crucial for such models to succeed.
+
+%The WordNLM shows a
 % slight boost over the
 % CNLM.% \footnote{Results were significantly d
 %egraded (50.1 \%) when using the Wikipedia vocabulary instead.}
@@ -96,6 +117,7 @@ while below that of LSTMs, is much stronger. %  The WordNLM shows a
     \begin{center}
       \begin{tabular}{l|l}
         % \multicolumn{1}{c}{}& Model \\
+        \multicolumn{2}{c}{\emph{Our models (wiki/in-domain)}}\\
 \hline
         LSTM 	    &      34.1/59.0 \\ % /59.2
         RNN  &     24.3/24.0 \\ % /27.1
@@ -104,15 +126,17 @@ while below that of LSTMs, is much stronger. %  The WordNLM shows a
 \end{tabular}
 
 \begin{tabular}{l|l||l|l}
-\hline
-        KN5   & 40.0            & Skipgram         & 48.0    \\                                
+%\hline
+  \multicolumn{4}{c}{\emph{From the literature}}\\
+  \hline
+  KN5   & 40.0            & Skipgram         & 48.0    \\                                
         Word RNN & 45.0         & Skipgram + RNNs  & 58.9 \\                                  
-        Word LSTM & 56.0        & \citet{woods2016exploiting} &  61.4 \\                      
-        LdTreeLSTM  & 60.7     &  \citet{melamud2016context2vec} & 65.1 \\       \hline
+        Word LSTM & 56.0        & PMI &  61.4 \\                      
+        LdTreeLSTM  & 60.7     &  Context-Embed & 65.1 \\       \hline
              \end{tabular}
     \end{center}
   }
-	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models (top), we show accuracies for  Wikipedia (left) and in-domain (right) training. We compare with language models from prior work (left): Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics (right): Skipgram(+RNNs) from \newcite{DBLP:journals/corr/abs-1301-3781}, the PMI-based model of \citet{woods2016exploiting}, and the context-embedding based approach by \citet{melamud2016context2vec}.}
+	\caption{\label{tab:msr-completion-results} Results on MSR Sentence Completion. For our models (top), we show accuracies for  Wikipedia (left) and in-domain (right) training. We compare with language models from prior work (left): Kneser-Ney 5-gram model \cite{Mikolov:2012}, Word RNN \cite{zweig2012computational}, Word LSTM and LdTreeLSTM \cite{zhang2016top}. We further report models incorporating distributional encodings of semantics (right): Skipgram(+RNNs) from \newcite{DBLP:journals/corr/abs-1301-3781}, the PMI-based model of \citet{woods2016exploiting}, and the Context-Embedding-based approach of \citet{melamud2016context2vec}.}
 \end{table}
 
 

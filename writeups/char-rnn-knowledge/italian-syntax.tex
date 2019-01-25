@@ -3,18 +3,22 @@
 %\textbf{For the examples, you know the linguex packet, right?}
 %\textbf{Given that you itemize by gender, can you add a baseline based
 %  on picking the most frequent variant of the noun/adjective?}
-We focus on paradigms where gender and number are explicitly and
-systematically encoded and it is possible to compare same-length
-strings. We are able to extract enough stimuli that never occur in the
-training corpus, so that an n-gram control would be at chance
-level. Moreover, by experiment construction, baselines relying on
-unigram frequency are also at chance level.
+% We focus on paradigms where gender and number are explicitly and
+% systematically encoded and it is possible to compare same-length
+% strings. We are able to extract enough stimuli that never occur in the
+% training corpus, so that an n-gram control would be at chance
+% level. Moreover, by experiment construction, baselines relying on
+% unigram frequency are also at chance level.
 
 \paragraph{Article-noun gender agreement}
 %(1) eadj-aonoun:
 
-Similar to German, Italian articles agree with the noun in gender; however, Italian has a relatively extended paradigm of masculine and feminine nouns differing only in the final vowel (-\emph{o} and -\emph{a}, respectively). We construct pairs %of stimuli
-of the form:
+Similar to German, Italian articles agree with the noun in gender;
+however, Italian has a relatively extended paradigm of masculine and
+feminine nouns differing only in the final vowel (-\emph{o} and
+-\emph{a}, respectively), allowing us to test agreement in fully
+controlled paradigms such as the following:
+
 \ex.\ag. \{\underline{il},\ la\}  congeniale  candidato \\
 the congenial candidate\ (m.) \\
 \bg.  \{il,\ \underline{la}\}  congeniale  candidata \\
@@ -35,21 +39,26 @@ the congenial candidate\ (f.) \\
 %\end{tabular}
 %\end{enumerate}
 
-The intervening adjective, ending in -\emph{e}, does not reveal
-noun gender, increasing the distance across which gender information
-has to be transported. We constructed the stimuli with words appearing
-at least 100 times in the training corpus. We required moreover that
-the \emph{-a} and \emph{-o} forms of a noun are reasonably balanced in
-frequency (neither form is twice more frequent than the other), or
-both rather frequent (appear at least 500 times). As the prenominal
-adjectives are somewhat marked, we only considered -\emph{e}
-adjectives that occur prenominally with at least 10 distinct nouns in
-the training corpus. We obtained 15,005 pairs of stimuli.  Here and
-below, stimuli were checked for strong semantic anomalies. %  In
+The intervening adjective, ending in -\emph{e}, does not reveal noun
+gender. We constructed the stimuli with words appearing at least 100
+times in the training corpus. We required moreover that the \emph{-a}
+and \emph{-o} forms of a noun are reasonably balanced in frequency
+(neither form is twice more frequent than the other), or both rather
+frequent (appear at least 500 times). As the prenominal adjectives are
+somewhat marked, we only considered -\emph{e} adjectives that occur
+prenominally with at least 10 distinct nouns in the training corpus.
+Here and below, stimuli were manually checked removing nonsensical
+adjective-noun combinations. Finally, adjective-noun combinations that
+occurred in the training corpus were excluded, so that an n-gram
+baseline would perform at chance level. We obtained 15,005 stimulus
+pairs in total. % In
 % addition to CNLMs and WordNLM, we tested frequency baseline choosing
 % the option with the higher unigram probability (whole-stimulus corpus
 % frequencies are at chance by construction).
-35.8 \% of the stimulus pairs had an adjective or noun that was OOV for the WNLM.
+35.8\% of them contained an adjective or noun that was
+OOV for the WordNLM. Again, we report this model results on its
+full-coverage subset, where the CNLM performance is only slightly above
+that reported.
 
 Results are shown in the first line of
 Table~\ref{tab:ital-agr-results}.  WordNLM shows the strongest
@@ -77,11 +86,15 @@ where we used the adverbs \emph{pi{\`u}} `more', \emph{meno} `less',
 times in the training corpus (as \emph{-a}/\emph{-o} adjectives are
 very common). We excluded all cases in which the
 adverb-adjective combination occurred in the training corpus, obtaining 88 pairs of stimuli.
-Due to the restriction to common adjectives, there were no OOV items for the WNLM.
+Due to the restriction to common adjectives, there were no OOV items
+for the WordNLM. %
 %
 %Here and in the next experiment, the frequency baseline chose the version with the more common adjective.
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
-Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all three models perform almost perfectly.
+Results are shown in the second line of
+Table~\ref{tab:ital-agr-results}; all three models perform almost
+perfectly, suggesting that this is an easy task, possibly because the
+adverbs and adjectives used here are all extremely common.
 
 \begin{table}[t]
   \begin{small}
@@ -139,7 +152,7 @@ Results are shown in the second line of Table~\ref{tab:ital-agr-results}; all th
 
 
 \paragraph{Article-adjective number agreement}
-Finally, we constructed a version of the last test that probed number agreement. For feminine forms (illustrated below) it's possible to compare same-length phrases:
+Finally, we constructed a version of the last test that probed number agreement. For feminine forms, it is possible to compare same-length phrases such as:
 \ex.\ag. la meno \{\underline{aliena},\ aliene\} \\
 the\ (s.) less alien\ one(s) \\
 \bg. le meno \{aliena,\ \underline{aliene}\} \\
@@ -157,8 +170,10 @@ the\ (p.) less alien\ one(s) \\
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
 Selection of stimuli was as in the last experiment, but we used a 500-occurrences
 threshold, as feminine plurals are less common, obtaining 99 pairs of stimuli. %  Further, we manually
-Again, there were no OOV items for the WNLM.
+Again, there were no OOV items for the WordNLM. %
 % removed adjectives that did not combine well semantically with the
 % adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
-Results are shown in the third line of Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly, and the RNN still is strongly above chance.
+Results are shown in the third line of
+Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly,
+and the RNN still is strongly above chance.
 

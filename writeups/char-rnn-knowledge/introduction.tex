@@ -56,13 +56,12 @@ the learner figured out how to segment the continuous speech stream
 into phonological units, an ability children already possess few
 months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
 
-After training the networks on the unsupervised character-level
-language modeling task, we test them on a bank of linguistic tests in
-German, Italian and English. We focus on these languages due to
-resource availability and ease of benchmark construction. However, we
-also argue that well-studied synthetic languages with a clear,
-orthographically-driven notion of word constitute a natural starting
-point to test non-word-centric models, compared to agglutinative or
+We evaluate our character-level networks on a bank of linguistic tests
+in German, Italian and English. We focus on these languages due to
+resource availability and ease of benchmark construction. We also
+think that these well-studied synthetic languages with a clear,
+orthographically-driven notion of word are a better starting point to
+test non-word-centric models, compared to agglutinative or
 polysynthetic languages, where the very notion of what counts as a
 word is problematic. % While one of
 % our ultimate goals is precisely to study how word-less models process
@@ -70,7 +69,7 @@ word is problematic. % While one of
 % starting with languages in whose analysis the orthographic word has
 % traditionally played a central role is a reasonable ``sanity check''.
   
-Our tasks intuitively require a model to have developed a latent
+Our tasks require models to develop the latent
 ability to parse characters into word-like items associated to
 morphological, syntactic and broadly semantic features. The RNNs
 pass most of the tests, suggesting that they are in some way able to

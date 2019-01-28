@@ -14,13 +14,12 @@ translation, natural language inference and text categorization
 
 RNNs are very general devices for sequence processing, hardly assuming
 any prior linguistic knowledge. Moreover, the simple prediction task
-they are trained on in language modeling is well-aligned with the
-core role prediction plays in cognition
+they are trained on in language modeling is well-attuned to the core
+role prediction plays in cognition
 \cite[e.g.,][]{Bar:2007,Clark:2016}. RNNs have thus long attracted
 researchers interested in language acquisition and processing. Their
-recent successes in realistic large-scale tasks has strongly rekindled
-this interest \cite[see, e.g.,][and references
-there]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,Linzen:etal:2018,McCoy:etal:2018,Pater:2018}.
+recent successes in large-scale tasks has rekindled
+this interest \cite[e.g.,][]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,Linzen:etal:2018,McCoy:etal:2018,Pater:2018}.
 
 The standard pre-processing pipeline of modern RNNs assumes that the
 input has been tokenized into word units that are pre-stored in the
@@ -33,20 +32,20 @@ word dictionaries to be part of our genetic code). Second, assuming a
 unique tokenization into a finite number of discrete word units is in
 any case problematic. The very notion of what counts as a word in
 languages with a rich morphology is far from clear
-\cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally, mental lexicons
-are probably organized into a not-necessarily-consistent hierarchy of
+\cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally, lexical knowledge
+is probably organized into a not-necessarily-consistent hierarchy of
 units at different levels: morphemes, words, compounds, constructions,
 etc.~\cite[e.g.,][]{Goldberg:2005}. Indeed, it has been suggested that
-the notion of word cannot even be meaningfully defined at the
-cross-linguistic level \cite{Haspelmath:2011}.
+the notion of word cannot even be meaningfully defined
+cross-linguistically \cite{Haspelmath:2011}.
 
 Motivated by these considerations, we study here RNNs that are trained
 without any notion of word units in their input or in their
-architecture. We train our RNNs as \emph{character-level
-  neural language models}
-\cite[CNLMs,][]{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}. Moreover,
-we remove whitespace from their input, so that, like children learning
-a language, they don't have access to explicit cues to
+architecture. We train our RNNs as \emph{character-level neural
+  language models}
+\cite[CNLMs,][]{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}
+by removing whitespace from their input, so that, like children
+learning a language, they don't have access to explicit cues to
 wordhood.\footnote{We do not erase punctuation marks, reasoning that
   they have a similar function to prosodic cues in spoken language.}
 This setup is almost as \emph{tabula rasa} as it gets. By using
@@ -55,41 +54,39 @@ writing systems we work with, there is a reasonable correspondence
 between letters and phonetic segments), we are only postulating that
 the learner figured out how to segment the continuous speech stream
 into phonological units, an ability children already possess few
-months after birth
-\cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
+months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
 
 After training the networks on the unsupervised character-level
-language modeling task, we test them on a bank of morphological,
-syntactic and shallow semantics tests, in German, Italian and
-English. We focus on these languages somewhat
-opportunistically, due to resource availability and ease for us to
-construct the necessary benchmarks. We think however that these
-well-studied synthetic languages with a clear, orthographically-driven
-notion of what counts as a word constitute a natural starting point to
-test non-word-centric models, compared to agglutinative or
+language modeling task, we test them on a bank of linguistic tests in
+German, Italian and English. We focus on these languages due to
+resource availability and ease of benchmark construction. However, we
+also argue that well-studied synthetic languages with a clear,
+orthographically-driven notion of word constitute a natural starting
+point to test non-word-centric models, compared to agglutinative or
 polysynthetic languages, where the very notion of what counts as a
-word is problematic. While one of our ultimate goals is precisely to
-study how word-less models process languages whose grammatical system
-is less clearly word-centric, testing them first in languages in whose
-analysis the orthographic word has traditionally played a central role
-is a reasonable ``sanity check''.
+word is problematic. % While one of
+% our ultimate goals is precisely to study how word-less models process
+% languages whose grammatical system is less clearly word-based,
+% starting with languages in whose analysis the orthographic word has
+% traditionally played a central role is a reasonable ``sanity check''.
   
 Our tasks intuitively require a model to have developed a latent
 ability to parse characters into word-like items associated to
-morphological, grammatical and broadly semantic features. The RNNs
-pass most of the tests, suggesting that they are in some way tracking
-such items. In a final experiment, we look more directly into this
-question. We find, confirming an earlier observation by
-\newcite{Kementchedjhieva:Lopez:2018}, that the RNNs specialized few
-units to the task of detecting word boundaries (or, more
-generally, salient linguistic boundaries, in a sense to be further
-discussed below). Taken together, our results suggest that
-character-level RNNs capture various forms of linguistic knowledge
-that is intuitively word-based, without being exposed to an explicit
-segmentation of their learning input and, more importantly, without
-possessing an explicit lexicon. We will discuss the implications of
-these findings in the conclusion.\footnote{Upon publication, we will
-  make our input data, test sets and pre-trained model available.}
+morphological, syntactic and broadly semantic features. The RNNs
+pass most of the tests, suggesting that they are in some way able to
+construct and manipulate the right lexical items. In a final experiment,
+we look more directly into \emph{how} the models are handling
+word-like units. We find, confirming an earlier observation by
+\newcite{Kementchedjhieva:Lopez:2018}, that the RNNs specialized some
+units to the task of detecting word boundaries (or, more generally,
+salient linguistic boundaries, in a sense to be further discussed
+below). Taken together, our results suggest that character-level RNNs
+capture various forms of linguistic knowledge that is intuitively
+word-based, without being exposed to an explicit segmentation of their
+ input and, more importantly, without possessing an explicit
+lexicon. We will discuss the implications of these findings in the
+conclusion.\footnote{Upon publication, we will make our input data,
+  test sets and pre-trained model available.}
 
 % probe them with phonological, lexical,
 % morphological, syntactic and semantic tests in English, German and

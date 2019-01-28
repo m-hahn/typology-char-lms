@@ -3,37 +3,41 @@
 
 We probed the linguistic information induced by a character-level LSTM
 language model trained on unsegmented text. The model was found to
-possess implicit knowledge about a range of word-mediated phenomena,
-such as lexical category distinction, morphological features such as
-number, and syntactic agreement phenomena. A more standard model
-pre-initialized with a word vocabulary and reading tokenized input was
-in general superior, but the performance of our agnostic model did not
-generally lag much behind, suggesting that the word prior is helpful
-but not fundamental. The performance of a character-level RNN was less
-consistent than that of the LSTM, suggesting that the ability of the
-latter to track information across longer time stretches is important
-to extract the correct linguistic generalizations. N-gram baselines
-relying on adjacent-string statistics failed almost everywhere,
-showing that the neural models are tapping into somewhat more abstract
-patterns than local co-occurrence statistics. We then proceeded to
-directly test whether our character-based model has implicitly learned
-information about word boundaries, founding that indeed it
-has.
+possess implicit knowledge about a range of intuitively word-mediated
+phenomena, such as sensitivity to lexical categories and syntactic and
+shallow-semantics dependencies. A more standard model pre-initialized
+with a word vocabulary and reading tokenized input was in general
+superior, but the performance of our agnostic model did not generally
+lag much behind, suggesting that \emph{a priori} segmentation and a
+hard-coded word lexicon are helpful but not fundamental. The
+performance of a character-level RNN was less consistent than that of
+the LSTM, suggesting that the ability of the latter to track
+information across longer time stretches is important to extract the
+correct linguistic generalizations. The character-level models
+consistently outperformed n-gram controls, showing that they are
+tapping into somewhat more abstract patterns than local co-occurrence
+statistics. As a first step towards understanding \emph{how}
+character-level models handle supra-character phenomena, we searched
+and found boundary units, that the models specialize to the task of
+tracking boundaries in their input. These units are not only and not
+always sensitive to word boundaries, but also respond to other salient
+units, such as morphemes and multi-word expressions, in accordance
+with an ``emergent'' and flexible view of the basic units of language
+\cite{Schiering:etal:2010}.
 
 Our results are preliminary in many ways. The tests we used are
 generally quite simple. We did not attempt, for example, to model
 long-distance agreement in presence of distractors, a challenging task
 even for word-based models and humans
-\citep{Gulordava:etal:2018}. Also, as the failure of the model to
-correctly generalize number features across German nominal classes
-characterized by very different morpho-phonological ways to mark
-plural suggests, further work should probe to what extent our model is
-capturing genuine abstract linguistic features, as opposed to relying
-on more superficial heuristics. Still, taken together, the results
-suggest that a large corpus, combined with the weak priors encoded in
-an LSTM, might suffice to learning generalizations about word-mediated
-linguistic processes, without internal bias for or external cue to
-wordhood.
+\citep{Gulordava:etal:2018}. Also, the results on number
+classification across German nominal classes suggests that the models
+might not be capturing linguistic generalizations of the correct
+degree of abstractness, as they might settle for shallower
+heuristics. Still, taken together, our work suggests that a large
+corpus, combined with the weak priors encoded in an LSTM, might
+suffice to learning generalizations about word-mediated linguistic
+processes, without a hard-coded word lexicon or explicit external cues
+to wordhood.
 
 Nearly all contemporary linguistics recognizes a central role to the
 lexicon \cite[see, e.g.,][for very different
@@ -68,7 +72,7 @@ cross-linguistically (cf.~polysynthetic and agglutinative languages)
 and within a single linguistic system \cite[cf.~the common view that
 the lexicon hosts units at different levels of the linguistic
 hierarchy, from morphemes to large syntactic constructions,
-e.g.,]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. In this
+e.g.,][]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. In this
 perspective, the current paper provides a necessary preliminary check
 that the word-free model can account for intuitively word-based
 phenomena. However, the most exciting future work should focus on

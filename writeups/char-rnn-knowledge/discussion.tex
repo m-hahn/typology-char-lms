@@ -5,24 +5,24 @@ We probed the linguistic information induced by a character-level LSTM
 language model trained on unsegmented text. The model was found to
 possess implicit knowledge about a range of intuitively word-mediated
 phenomena, such as sensitivity to lexical categories and syntactic and
-shallow-semantics dependencies. A more standard model pre-initialized
-with a word vocabulary and reading tokenized input was in general
-superior, but the performance of our agnostic model did not generally
-lag much behind, suggesting that \emph{a priori} segmentation and a
-hard-coded word lexicon are helpful but not fundamental. The
-performance of a character-level RNN was less consistent than that of
-the LSTM, suggesting that the ability of the latter to track
-information across longer time stretches is important to extract the
-correct linguistic generalizations. The character-level models
-consistently outperformed n-gram controls, showing that they are
-tapping into somewhat more abstract patterns than local co-occurrence
-statistics. As a first step towards understanding \emph{how}
-character-level models handle supra-character phenomena, we searched
-and found boundary units, that the models specialize to the task of
-tracking boundaries in their input. These units are not only and not
-always sensitive to word boundaries, but also respond to other salient
-units, such as morphemes and multi-word expressions, in accordance
-with an ``emergent'' and flexible view of the basic units of language
+shallow-semantics dependencies. A more standard model initialized with
+a word vocabulary and fed tokenized input was in general superior, but
+the performance of the agnostic model did not lag much behind,
+suggesting that ground-truth segmentation and a hard-coded word
+lexicon are helpful but not strictly required. The performance of a
+character-level RNN was less consistent than that of the LSTM,
+suggesting that the ability of the latter to track information across
+longer time stretches is important to make the correct linguistic
+generalizations. The character-level models consistently outperformed
+n-gram controls, which shows that they tap into more
+abstract patterns than local co-occurrence statistics. As a first step
+towards understanding \emph{how} character-level models handle
+supra-character phenomena, we searched and found units that
+the models specialize to the task of tracking boundaries in their
+input. These units are not only and not always sensitive to word
+boundaries, but also respond to other salient items, such as morphemes
+and multi-word expressions, in accordance with an ``emergent'' and
+flexible view of the basic constituents of language
 \cite{Schiering:etal:2010}.
 
 Our results are preliminary in many ways. The tests we used are
@@ -33,53 +33,52 @@ even for word-based models and humans
 classification across German nominal classes suggests that the models
 might not be capturing linguistic generalizations of the correct
 degree of abstractness, as they might settle for shallower
-heuristics. Still, taken together, our work suggests that a large
+heuristics. Still, as a whole, our work suggests that a large
 corpus, combined with the weak priors encoded in an LSTM, might
-suffice to learning generalizations about word-mediated linguistic
+suffice to learn generalizations about word-mediated linguistic
 processes, without a hard-coded word lexicon or explicit external cues
 to wordhood.
 
 Nearly all contemporary linguistics recognizes a central role to the
 lexicon \cite[see, e.g.,][for very different
 perspectives]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016}. Linguistic
-formalisms always assume that such lexicon is essentially a dictionary
-of words and possibly other units, not completely unlike the list of
-words and associated embeddings in a standard word-based NLM. Very
-intriguingly, our CNLMs captured a range of phenomena that require
-lexical information \emph{without} anything resembling a
-dictionary. Any information the CNLM might acquire about units larger
-than characters must be stored in its recurrent weights. This suggests
-a radically different view of lexical knowledge as implicitly encoded
-in a distributed memory, that we will strive to characterize more
-precisely and test in future work.
+formalisms assume that the lexicon is essentially a dictionary
+of words, possibly complemented by other units, not unlike the list of
+words and associated embeddings in a standard word-based
+NLM. Intriguingly, our CNLMs captured a range of lexical phenomena
+\emph{without} anything resembling a word dictionary. Any information
+a CNLM might acquire about units larger than characters must be stored
+in its recurrent weights. This suggests a radically different view of
+lexical knowledge as implicitly encoded in a distributed memory, that
+we intend to characterize more precisely and test in future work.
 
-Another important direction to extend this work concerns the input. To
-what extent does the ability of the CNLM to extract the correct
-generalizations depend on the huge amount of data it is fed?  Will the
-word prior become more important when learning from much smaller
-corpora? In terms of a comparison with human learning, we must also
-remark that the Wikipedia text our CNLMs receive as input is very far
-from what children hear, and future work should explore
+Other important future directions concern the input. To what extent
+does the ability of the CNLM to extract the correct generalizations
+depend on the huge amount of data it sees?  Will the word prior
+become more important when learning from smaller corpora? In
+terms of  comparison with human learning, the Wikipedia text our
+CNLMs receive as input is far from what children acquiring a
+language would hear. Future work should explore
 character/phoneme-level learning from corpora of child-directed
-speech. Still, arguably, by feeding the RNNs directly long-winded
-grown-up prose, we are making the job of identifying basic
-constituents harder than it might be from the short utterances
-characterizing early child-directed speech \cite{Tomasello:2003}.
+speech. Still, arguably, by feeding our networks long-winded grown-up
+prose, we are making the job of identifying basic constituents harder
+than it might be when processing the short utterances characterizing
+early child-directed speech \cite{Tomasello:2003}.
 
-Even more importantly one of our original motivations for dispensing
-with word primitives is that a rigid word notion is problematic both
+Finally, one of the original motivations for dispensing with word
+primitives is that a rigid word notion is problematic both
 cross-linguistically (cf.~polysynthetic and agglutinative languages)
 and within a single linguistic system \cite[cf.~the common view that
 the lexicon hosts units at different levels of the linguistic
 hierarchy, from morphemes to large syntactic constructions,
 e.g.,][]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. In this
 perspective, the current paper provides a necessary preliminary check
-that the word-free model can account for intuitively word-based
-phenomena. However, the most exciting future work should focus on
-testing whether such models can also account for grammatical patterns
-that are harder to explain in word-based formalisms, extending the
-research both to a typologically wider range of language and to a
-broader range of grammatical tests.
+that a word-free model can account for phenomena traditionally
+regarded as word-based. However, future work should  test
+whether such model can also account for grammatical patterns that are
+harder to capture in word-based formalisms, looking
+both at a typologically wider range of language and at a broader range
+of grammatical tests.
 
 
 

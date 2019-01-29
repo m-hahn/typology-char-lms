@@ -1,18 +1,15 @@
-
-
-\subsection{Semantics}
+\subsection{Semantics-driven sentence completion}
 \label{sec:semantics}
 
 Finally, words are obviously the main carriers of lexical semantic
-information. We probe whether CNLMs are capable to track at least the
-shallow form of semantics that is required in a fill-the-missing-word
-test. In particular, we turn here to English, as for this language we
-can use the Microsoft Research Sentence Completion task
-\cite{Zweig:Burges:2011}. The challenge consists of sentences with a
-gap, and a 5-word multiple choice to fill the gap. We chose it because
-language models can be directly applied to it, by calculating the
-likelihood of sentence variants with all possible completions, and
-selecting the one with the highest likelihood.
+information. We probe whether CNLMs are capable to track the shallow
+form of semantics required in a fill-the-gap test. We turn now to English, as for this language we can use the Microsoft
+Research Sentence Completion task \cite{Zweig:Burges:2011}. The
+challenge consists of sentences with a gap, and a 5-word multiple
+choice to fill it. Language models can be
+directly applied to this task, by calculating the likelihood of sentence
+variants with all possible completions, and selecting the one with the
+highest likelihood.
 
 The creators of the benchmark took multiple provisions to insure that
 success on the task implies some command of semantics. The multiple
@@ -25,11 +22,11 @@ example, to make the right choice in \emph{``Was she his [
 coordinated with \emph{friend} and \emph{mistress}, and that the
 latter are animate entities.
 
-Note that the task domain (Sherlock Holmes novels) is very different
+The task domain (Sherlock Holmes novels) is very different
 from the Wikipedia data-set we originally trained our models on. For a
-fairer comparison with previous work, we also re-train our models on
-the training corpus provided with the benchmark, and consisting of
-\textbf{how many?} words from 19th century English novels (we remove
+fairer comparison with previous work, we re-trained our models on
+the corpus provided with the benchmark, consisting of
+\textbf{how many?} words from 19th century English novels (we removed
 whitespace from this corpus as well).
 % thus we additionally trained our models on the training set provided
 % for the task, consisting of 19th century English novels.
@@ -40,19 +37,19 @@ whitespace from this corpus as well).
 %For comparison, we report results (KN5 from , LSTM from ) from previous work that were trained on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
 
 Results are shown in Table~\ref{tab:msr-completion-results}.  We
-confirm the importance of in-domain training, as all our models
+confirm the importance of in-domain training, as the models
 trained on Wikipedia perform poorly (but still above chance level,
-which is at 20\%).  When trained in domain, the LSTM CNLM outperforms
-many earlier word-level neural models, and is only slightly below the
+which is at 20\%).  With in-domain training, the LSTM CNLM outperforms
+many earlier word-level neural models, and is only slightly below our
 WordNLM. %, and approaches the best published results.
 %, held by approaches developed for the completion task \cite{woods2016exploiting}.
 % The best results I could find, https://github.com/ctr4si/sentence-completion, are much better than the best peer-reviewed published ones
-The vanilla RNN is not successful even when trained in domain,
-contrasting with \emph{word}-based vanilla RNNs, whose performance,
-while still below LSTMs, is much stronger. Once more, this suggests
-that word-level generalizations can be captured by a dictionary-less
-character model, but the long-span processing abilities of LSTMs are
-crucial for such models to succeed.
+The vanilla RNN is not successful even when trained in-domain,
+contrasting with the \emph{word}-based vanilla RNN from the
+literature, whose performance, while still below LSTMs, is much
+stronger. Once more, this suggests that word-level generalizations can
+be captured by word-lexicon-less character models, but the long-span
+processing abilities of LSTMs are crucial for such models to succeed.
 
 %The WordNLM shows a
 % slight boost over the

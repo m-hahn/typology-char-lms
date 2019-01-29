@@ -9,8 +9,8 @@
 \paragraph{Article-noun  gender agreement}
 Each German noun belongs to one of three genders (masculine, feminine, neuter), morphologically marked on the article. As the article and the noun can be separated by adjectives and adverbs, we can probe knowledge of lexical gender together with long-distance agreement.
 We create stimuli of the form
-\exg. \label{ex:german-gender} \{\underline{der},\ die,\ das\} sehr rote Baum \\
-the very red tree \\
+\exg. \{\underline{der},\ die,\ das\} sehr rote Baum \\
+the very red tree \label{ex:german-gender}\\
 %    article adverb adjective noun\\
 %    `the very red tree'
 
@@ -31,40 +31,39 @@ present phrases surrounded by full stops (see the
 \emph{Baum}/\emph{Baumwolle} example above).
 
 %  \cite{de2006generating,mcdonald2013universal}
-To build the test set of this experiment, we select all nominative
-singular nouns from the German UD
-treebank. %, and all adjectives from the training set.
+To build the test set, we select all nominative singular nouns from
+the German UD treebank \textbf{(how many in total?)} (OOV noun ratios
+for WordNLM: 40.0\% for masculine, 36.2\% for feminine, 41.5\% for
+neuter). %, and all adjectives from the training set.
 We construct four conditions varying the number of adverbs and
 adjectives between article and noun.  We first consider stimuli where
 no material
 intervenes. % \footnote{Due to syncretism in the article paradigm, there is sometimes ambiguity in the choice of the correct article if the noun's morphology does not uniquely indicate that it is a nominative singular from. As this equally affects all feminine nouns, we did not remove such cases. Importantly, this issue is solved as soon as an adjective intervenes, as its form disambiguates case.}
-In the second condition, an adjective with the correct (nominative
-singular) case ending, randomly selected from the training corpus, is
-added. Crucially, the ending of the adjective does not reveal the
-gender of the noun.  We restricted to adjectives that occurred at
-least 100 times, and which did not end in -\emph{r}, as the latter
-ones often represent lemmatization problems.\footnote{TreeTagger
-  occasionally did not remove the inflectional suffix -\emph{r} when
-  lemmatizing adjectives.}  We obtained a pool of 9742 adjectives to
-sample from, also used in subsequent experiments.  74.9 \% of these
-were OOV for the WordNLM.  In the third and fourth conditions, one
-(\emph{sehr}) or two adverbs (\emph{sehr extrem}) intervene between
-the article and the adjective. These do not cue gender either. We
-obtained 2290 (m.), 2261 (f.), and 1111 (n.) stimuli, respectively.
+In the second condition, an adjective with the correct case ending,
+randomly selected from the training corpus, is added. Crucially, the
+ending of the adjective does not reveal the gender of the noun.  We
+only used adjectives occurring at least 100 times, and not ending in
+-\emph{r}, as the latter often reflect lemmatization
+problems.\footnote{TreeTagger occasionally failed to remove the
+  inflectional suffix -\emph{r} when lemmatizing.}  We obtained a pool
+of 9742 adjectives to sample from, also used in subsequent
+experiments.  74.9\% of these were OOV for the WordNLM.  In the third
+and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr
+  extrem}) intervene between the article and the adjective. These do
+not cue gender either. We obtained 2290 (m.), 2261 (f.), and 1111 (n.)
+stimuli, respectively.
 
-We constructed an n-gram baseline that picks the article occurring
-most frequently before the phrase in the training data, choosing
-randomly in case of ties. Here and below, when running the WordNLM, we
-excluded OOV nouns, resulting in an easier test for this rival model
-(OOV noun ratios: 40.0\% for masculine, 36.2\% for feminine, 41.5\%
-for neuter. However, testing the CNLMs on the reduced set (here and in
-the next two tests) only led to slight improvements, that we do not
-report here.
+We constructed an n-gram baseline picking the article most frequently
+occurring before the phrase in the training data, choosing randomly in
+ties. Here and below, when running the WordNLM, we excluded OOV nouns,
+resulting in an easier test for this rival model. However, testing the
+CNLMs on the reduced set (here and in the next two tasks) only led to
+slight improvements, that we do not report here.
 
-Results are presented in Figure~\ref{fig:german-syntax}
+Results are presented in Figure \ref{fig:german-syntax}
 (left). WordNLM performs best, followed by the LSTM CNLM.  The n-gram
 baseline performs similarly to the CNLM when there is no intervening
-material, which is expected as a noun will often be preceded by its
+material, which is expected, as a noun will often be preceded by its
 article in the corpus. However, its accuracy drops to chance level
 (0.33) in the presence of an adjective, whereas the CNLM is still able
 to track agreement. %
@@ -106,7 +105,7 @@ longer thus plays a crucial role here.
 		&\multicolumn{3}{c}{Number of Intervening Elements}
 	\end{tabular}
 \centering\includegraphics[width=0.5\textwidth]{figures/german-legend.pdf}
-\caption{Accuracy on the German syntax tasks, as a function of the number of intervening elements.}\label{fig:german-syntax}
+\caption{Accuracy in the German syntax tasks, in function of number of intervening elements.}\label{fig:german-syntax}
 \end{figure*}
 
 % \begin{figure*}
@@ -127,10 +126,9 @@ longer thus plays a crucial role here.
 
 
 \paragraph{Article-noun case agreement}
-To test the model's knowledge of case agreement between articles and
-nouns, we selected the two determiners \emph{dem} and \emph{des},
-which unambiguously indicate dative and genitive case, respectively,
-for masculine and neuter nouns: %\textbf{Give one example.}
+We selected the two determiners \emph{dem} and \emph{des}, which
+unambiguously indicate dative and genitive case, respectively, for
+masculine and neuter nouns: %\textbf{Give one example.}
 \ex.\ag. {\{\underline{dem}, des\}} sehr roten Baum \\
 the very red {tree \emph{(dative)}} \\
 \bg. {\{dem, \underline{des}\}} sehr roten Baums \\
@@ -155,17 +153,17 @@ the very red {tree \emph{(genitive)}} \\
 We selected all noun lemmas of the appropriate genders from the German
 UD treebank, and extracted morphological paradigms from Wiktionary to
 obtain case-marked forms, retaining only nouns unambiguously marking
-the two cases.  We created four conditions, varying the amount of
+the two cases (\textbf{how many in total?}).  We created four conditions, varying the amount of
 intervening material, as in the gender agreement experiment (4,509
 stimuli per condition).  For 81.3\% of the nouns, at least one of the
 two forms was OOV for the WordNLM, and we tested the latter on the
 full-coverage subset.
 
-Results are in Figure~\ref{fig:german-syntax} (center).  Again,
+Results are in Figure \ref{fig:german-syntax} (center).  Again,
 WordNLM has the best performance, but the LSTM CNLM is competitive as
-more elements intervene. Accuracy stays well above 80\% even as three
-words intervene.  The n-gram model performs well if there is no
-intervening material (again reflecting the obvious fact that
+more elements intervene. Accuracy stays well above 80\% even with
+three intervening words.  The n-gram model performs well if there is
+no intervening material (again reflecting the obvious fact that
 article-noun sequences are frequent in the corpus), and at chance
 otherwise.  The RNN CNLM accuracy is above chance with one and two
 intervening elements, but drops considerably with distance.
@@ -223,30 +221,32 @@ compatible with the case requirement of the preposition (and the
 intervening material does not disambiguate case). We construct three
 conditions by varying the presence and number of adverbs (\emph{sehr}
 `very', \emph{sehr extrem} `very extremely', \emph{sehr extrem
-  unglaublich} `very extremely incredibly').  Note that in this set
-the correct form is longer than the wrong one. This ensures that the
-probabilistic bias for shorter sequences discussed above works against
-the model~\cite{sountsov2016length}. Note also that here we embedded
-test phrases into full sentences. We do this as sentence-initial
-\emph{mit} is somewhat unnatural and, more importantly, because this
-will disambiguate the final element of the phrase as a noun (not an
-adjective), and exclude the reading in which \emph{mit} is a particle
-not governing the noun phrase of interest. \textbf{Add a full stimulus
-  example (with the wrapping sentence).} \textbf{OOV statistics.}
+  unglaublich} `very extremely incredibly').  Note that here the
+correct form is longer than the wrong one. As the overall likelihood
+is the product of character probabilities ranging between 0 and 1, if
+this introduces a length bias, it will work against the
+character models. % ~\cite{sountsov2016length}.
+Note also that we embed test phrases into full sentences. We
+do this as sentence-initial \emph{mit} is somewhat unnatural and, more
+importantly, because this will disambiguate the final element of the
+phrase as a noun (not an adjective), and exclude the reading in which
+\emph{mit} is a particle not governing the noun phrase of
+interest. \textbf{Add a full stimulus example (with the wrapping
+  sentence).} \textbf{OOV statistics.}
 % Note also that in this case we embedded the test phrase into full sentences.
 % We did this as sentences beginning with \emph{mit} are somewhat unnatural
 % and, more importantly since \emph{mit} is homophonous with a particle
 % that does not select for an object, and so that the following context disambiguates
 % the last word in the phrase as a nominalization (as opposed to an adjective).
 
-As a control for baseline probabilities of the two adjectival forms,
-we also created stimuli where all words up to and including the
-preposition were removed (thus, the example sentence above would
-become: \textbf{add same example with prefix removed}).  If accuracy is lower on these stimuli than
-on the full ones, we can conclude that the baseline probabilities of
-the two adjective forms cannot explain performance. For the
-n-gram count model, we only counted the occurrences of the
-prepositional phrase, omitting the sentence environment.
+We also created control stimuli where all words up to and including
+the preposition are removed (thus, the example sentence above would
+become: \textbf{add same example with prefix removed}).  If a model's
+accuracy is lower on these control stimuli than on the full ones, its
+performance cannot be simply explained by the different unigram
+probabilities of the two adjective forms. For the n-gram baseline, we
+only counted occurrences of the prepositional phrase, omitting
+sentences.
 
 %\begin{figure}
 %\includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
@@ -255,14 +255,14 @@ prepositional phrase, omitting the sentence environment.
 %\caption{\textbf{(Reduce to single figure, 3)} Accuracy on the subcategorization task as a function of the number of intervening elements. The dashed lines indicate accuracies on the control stimuli that do not contain the preposition.}\label{fig:prep}
 %\end{figure}
 %
-Results are shown in Figure~\ref{fig:german-syntax} (right). Only the
-n-gram model fails to outperform control accuracy. Surprisingly, the
-LSTM CNLM slightly outperforms the WordNLM, even though the latter is
-exposed to the easier full-lexical-coverage stimulus subset.  Neither
-model shows accuracy decay as the number of adverbs increases.  As
-before, the n-gram model drops to chance as adverbs intervene, while
-the RNN CNLM starts with low accuracy that progressively decays below
-chance.
+Results are shown in Figure \ref{fig:german-syntax} (right). Only the
+n-gram baseline fails to outperform control accuracy. Surprisingly,
+the LSTM CNLM slightly outperforms the WordNLM, even though the latter
+is evaluated on the easier full-lexical-coverage stimulus subset.
+Neither model shows accuracy decay as the number of adverbs increases.
+As before, the n-gram model drops to chance as adverbs intervene,
+while the RNN CNLM starts with low accuracy that progressively decays
+below chance.
 
 %Results are shown in Table~\ref{tab:ital-agr-results}.
 %The word LSTM shows the highest overall performance, closely followed by the LSTM CNLM.

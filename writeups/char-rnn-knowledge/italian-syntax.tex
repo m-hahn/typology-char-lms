@@ -23,10 +23,6 @@ controlled paradigms such as the following:
 the congenial candidate\ (m.) \\
 \bg.  \{il,\ \underline{la}\}  congeniale  candidata \\
 the congenial candidate\ (f.) \\
-
-
-
-
 %\begin{enumerate}[label={(\arabic*)}]
 %	\item 
 %		\begin{tabular}[t]{lllllll}
@@ -39,10 +35,10 @@ the congenial candidate\ (f.) \\
 %\end{tabular}
 %\end{enumerate}
 
-The intervening adjective, ending in -\emph{e}, does not reveal noun
+The intervening adjective, ending in -\emph{e}, does not cue
 gender. We constructed the stimuli with words appearing at least 100
-times in the training corpus. We required moreover that the \emph{-a}
-and \emph{-o} forms of a noun are reasonably balanced in frequency
+times in the training corpus. We required moreover the \emph{-a}
+and \emph{-o} forms of a noun to be reasonably balanced in frequency
 (neither form is twice more frequent than the other), or both rather
 frequent (appear at least 500 times). As the prenominal adjectives are
 somewhat marked, we only considered -\emph{e} adjectives that occur
@@ -58,10 +54,10 @@ pairs in total. % In
 35.8\% of them contained an adjective or noun that was
 OOV for the WordNLM. Again, we report this model results on its
 full-coverage subset, where the CNLM performance is only slightly above
-that reported.
+the one reported.
 
-Results are shown in the first line of
-Table~\ref{tab:ital-agr-results}.  WordNLM shows the strongest
+Results are shown on the first line of
+Table \ref{tab:ital-agr-results}.  WordNLM shows the strongest
 performance, closely followed by the LSTM CNLM.  The RNN CNLM
 performs strongly above chance (50\%), but again lags behind the LSTM.
 
@@ -91,10 +87,10 @@ for the WordNLM. %
 %
 %Here and in the next experiment, the frequency baseline chose the version with the more common adjective.
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aoadj_testset.txt
-Results are shown in the second line of
+Results are shown on the second line of
 Table~\ref{tab:ital-agr-results}; all three models perform almost
 perfectly, suggesting that this is an easy task, possibly because the
-adverbs and adjectives used here are all extremely common.
+used adverbs and adjectives are extremely common.
 
 \begin{table}[t]
   \begin{small}
@@ -168,12 +164,12 @@ the\ (p.) less alien\ one(s) \\
 %\end{tabular}
 %\end{enumerate}
 % /checkpoint/mbaroni/char-rnn-exchange/candidate_adv_aeadj_testset.txt
-Selection of stimuli was as in the last experiment, but we used a 500-occurrences
-threshold, as feminine plurals are less common, obtaining 99 pairs of stimuli. %  Further, we manually
-Again, there were no OOV items for the WordNLM. %
+Stimulus selection was as in the last experiment, but we used a 500-occurrences
+threshold, as feminine plurals are less common, obtaining 99 pairs. %  Further, we manually
+There were no OOV items for the WordNLM. %
 % removed adjectives that did not combine well semantically with the
 % adverbs under consideration (\emph{pi{\`u}, meno, tanto}).
-Results are shown in the third line of
+Results are shown on the third line of
 Table~\ref{tab:ital-agr-results}; the LSTMs perform almost perfectly,
 and the RNN still is strongly above chance.
 

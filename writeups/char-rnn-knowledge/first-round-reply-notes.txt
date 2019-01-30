@@ -58,60 +58,42 @@ We agree that this is a limited test, and we made sure that, in the new version,
 
 We did not understand your second point. In a phrase such as "mit der sehr roten", the form of the final (nominalized) adjective "roten" is determined by the fact that the latter is embedded in a noun phrase governed by the non-adjacent preposition "mit". Moreover, only the full sentential context licenses the syntactic structure in which "mit" is the head of the phrase governing the NP. Finally, as the n-gram and preposition-less controls show, surface statistics cannot account for model behaviour, and some degree of structure-sensitivity is called for. So, while we fully agree that this is a rather simple form of syntax, we are puzzled by the claim that this is not convincingly syntax.
 
-We took various steps to clarify and position the experiment. First, we added a discussion of the general methodology and important methodological issues at the beginning of the section on syntactic dependencies. Second, the part on the subcategorization experiment has been re-written and extended, to explain in more detail and with examples what we test here.
+We took various steps to clarify and position the experiment. First, we added a discussion of the general methodology and important methodological issues at the beginning of the section on syntactic dependencies. Second, the part on the subcategorization experiment has been re-written and extended, to explain in more detail and with examples what we test here. As above, in the paper as a whole we make sure we are in any case not making any overly general claim about "syntax".
 
-(6) The conclusion seems to over-claim compared to what the paper is
-actually showing. Most egregiously, I don't think that the sentence
-completion task establishes knowledge of "basic semantics". The
-syntactic agreement phenomena results are also somewhat equivocal (see
-detailed comments below) and the word units results rely on a
-supervised training step.
+"""(6) The conclusion seems to over-claim compared to what the paper is actually showing. Most egregiously, I don't think that the sentence completion task establishes knowledge of "basic semantics". The syntactic agreement phenomena results are also somewhat equivocal (see detailed comments below) and the word units results rely on a supervised training step."""
 
-=> clarify probing methodology
+We edited the conclusion (and introduction/abstract) to make our claims more precise and less over-reaching. See our reply above concerning the point on word segmentation, and replies above and below on the syntactic and semantic tests.
 
-=> hedges about semantics
+"""Sec 2: How does this related work inform the questions you are asking? (The literature review reads as 'defensive', i.e. trying to prove that the work in the paper is novel, rather than situating the work with respect to existing literature.)"""
 
-=> below on syntactic agreement
+We rewrote the related work section. Given the new focus we provide in the intro, we added a sub-section on the theoretical on the primacy of the word. We have moreover edited the other subsections, removing any 'defensive' claim, and emphasizing instead what previous work has already contributed to our goals.
 
-Sec 2: How does this related work inform the questions you are asking?
-(The literature review reads as 'defensive', i.e. trying to prove that
-the work in the paper is novel, rather than situating the work with
-respect to existing literature.)
+"""Sec 2: This paper may also be relevant: Ettinger et al 2018 `Assessing Composition in Sentence Vector Representations'
+https://urldefense.proofpoint.com/v2/url?u=https-3A__aclanthology.coli.uni-2Dsaarland.de_papers_C18-2D1152_c18-2D1152&d=DwIBaQ&c=5VD0RTtNlTh3ycd41b3MUw&r=eW1NdU8kpHF5nrq2Z__Rnw&m=8858iCmrOZOuNi3cLSQjugg77jFv3IG_TiJzC3Wh2ZU&s=C8soDo9_d3O47KTapHf4ZBX9C7Ryoz8J8nRZ8n7Mjqw&e="""
 
-=> rephrase
+Thanks, we added the reference.
 
-Sec 2: This paper may also be relevant: Ettinger et al 2018 `Assessing
-Composition in Sentence Vector Representations'
-https://urldefense.proofpoint.com/v2/url?u=https-3A__aclanthology.coli.uni-2Dsaarland.de_papers_C18-2D1152_c18-2D1152&d=DwIBaQ&c=5VD0RTtNlTh3ycd41b3MUw&r=eW1NdU8kpHF5nrq2Z__Rnw&m=8858iCmrOZOuNi3cLSQjugg77jFv3IG_TiJzC3Wh2ZU&s=C8soDo9_d3O47KTapHf4ZBX9C7Ryoz8J8nRZ8n7Mjqw&e=
+"""ln 209 It's not clear to me what "in a localist fashion" means."""
 
-=> checkout (done)
+We rephrased, removing this unclear expression.
 
-ln 209 It's not clear to me what "in a localist fashion" means.
+"""ln 240 Does "We used LSTM cells for WordNLMs" mean something different from "We only tested a word-level LSTM and not a word-level RNN"? If so, what?  Also, why not do the word-level RNN?"""
 
-=> OK
+We rephrased to confirm that this is indeed what we meant. We expect the WordNLM to act as an upper bound for our character-level models, in the word-mediated tasks we consider. For this reason, and because the paper does not focus on the analysis of word-level models per se, we thought it would make sense to directly adopt an LSTM model, as there is a vast literature indicating superiority of LSTMs to vanilla RNNs, both in terms of NLP task performance and in capturing linguistic phenomena. On the other hand, we included a character-level RNN because we are concentrating on character-level models, and thus we think it is interesting to ascertain how much, in this domain, LSTM cells are crucial to good model behaviour, if at all. Given that the paper is already reporting many analyses, and word-level models are only introduced for comparison purposes, we fear that adding results for a word-level RNN would affect the clarity of the paper, without bringing new insights on our specific problem.
 
-ln 240 Does "We used LSTM cells for WordNLMs" mean something different
-from "We only tested a word-level LSTM and not a word-level RNN"? If
-so, what?  Also, why not do the word-level RNN?
+"""ln 325 "The LSTM assigns higher probability to the acceptable bi-grams in all but two cases." Are the ratios of "~1" being counted as "higher"? Why?  Similarly the caption to Table 2 says "Values > 1 in bold", but "~1" is in bold (in two places)."""
 
-=> explain (still todo)
+We rounded these values, so that "~1" really means <1.01. This was an unfortunate choice. We have hover now entirely removed this section from the paper.
 
-ln 325 "The LSTM assigns higher probability to the acceptable bi-grams
-in all but two cases." Are the ratios of "~1" being counted as
-"higher"? Why?  Similarly the caption to Table 2 says "Values > 1 in
-bold", but "~1" is in bold (in two places).
+"""ln 385 What would be the linguistic basis for wider contexts helping with phoneme classes? (Long-distance phonological phenomena are relatively rare, and none---things like vowel harmony--immediately come to mind for the languages tested.)"""
 
-=> this might go
+We agree, and the phonological results would definitely deserve further study. However, as we have now removed this section from the paper, we will leave such study to future work.
 
-ln 385 What would be the linguistic basis for wider contexts helping with
-phoneme classes? (Long-distance phonological phenomena are relatively rare,
-and none---things like vowel harmony--immediately come to mind for the
-languages tested.)
+"""ln 417 Why 20 characters? Isn't that way longer than most words, even in German?"""
 
-=> this might go
+This was an arbitrary threshold, and we found out empirically that changing it did not have much impact on performance. However, this experiment has now been removed, replaced by a simpler one that does not require picking such abritrary hyperparameters.
 
-ln 417 Why 20 characters? Isn't that way longer than most words, even in
-German?
+I AM HERE
 
 => this might go
 

@@ -38,32 +38,27 @@ Note that, as we briefly discuss in the introduction to the section on the synta
 
 """(2) The very first evaluation ("Discovering phonological classes") is oddly imprecise and impressionistic. Why should the reader take the authors' word for it that "it definitely suggests that the CNLM has discovered a fair deal about the features organizing the phonological system of the language." This should be replaced with something quantitative or at least more objective, or dropped."""
 
-We dropped the seciton on phonology.
+We dropped the section on phonology.
 
 """(3) The authors claim to be testing whether the CNLM develops an implicit notion of words, but the testing methodology involves a supervised training step. The paper needs to be much clearer about how this is actually testing whether the unsupervised system has an implicit notion of "word". (Similar remarks hold for the morphology tests.)"""
 
-We believe that the reviewer is raising here two related but distinct points. The first is specific to the segmentation task.
+In the new segmentation experiment, we are focusing on the behaviour of single boundary units. We use training data simply to find a threshold on the value of these units that maximally separates boundary positions from other positions. If the boundary unit did not tend to pick up boundaries, there is no way in which setting a single scalar threshold on its values would lead to anything better than random classification accuracy.
 
-=> use probing task (explaining at the beginning), and only show
-syntax figure with PMI
+Concerning the morphological experiments, we have now tried to clarify the methdod of "diagnostic classifiers" that we adopted from the recent literature, where it is becoming a standard for analyzing neural mdoels of language (see, e.g., among the references cited in our article, Shi et al., 2016, Adi et al., 2017, Conneau et al., 2018, Hupkes et al., 2018). The main idea of the method is to use activations produced by a pre-trained, fixed model as input features to a classifier for the relevant distinction. As the classifier can only rely on the features provided by the model, if it is able to successfully distinguish the property of interest, it means that the latter is already encoded in the activations provided by the model. Since we use in particular a shallow classifier and extremely small training sets (20 examples in total for part of speech and 30 examples in total for number), we do not see how the classifier could induce the target distinctions if there were not already saliently encoded in the representations provided by the pre-trained model. This is how we explain the approach in the paper:
 
-=> explain probing methodology more clearly
+"We use here the popular method of "diagnostic classifiers" (Hupkes et al. 2017). That is, we treat the hidden activations produced by a CNLM whose weights were fixed after language model training as input features for a shallow (logistic) classifier of the property of interest (e.g., plural vs. singular). If the classifier is successful, this means that the representations provided by the model are encoding the relevant information.  The classifier is deliberately shallow and trained on a small set of examples, as we want to test whether the properties of interests are robustly encoded in the representations produced by the CNLMs, and amenable to a simple linear readout (Fusi et al., 2016). In our case, we want to probe word-level properties in models trained at the character level. To do this, we let the model read each target word character-by-character, and we treat the state of its hidden layer after processing the last character in the word as the model's implicit representation of the word, on which we train the diagnostic classifier."
 
-(4) The results of the pluralization study seem quite equivocal. In
-particular, the fact that the Umlaut plurals aren't properly modeled
-suggests that it's *not* picking up on an abstract notion of
-"plural". The paper doesn't seem to acknowledge this sufficiently,
-either here or especially in the conclusion.
+"""(4) The results of the pluralization study seem quite equivocal. In particular, the fact that the Umlaut plurals aren't properly modeled suggests that it's *not* picking up on an abstract notion of "plural". The paper doesn't seem to acknowledge this sufficiently, either here or especially in the conclusion."""
 
-=> discuss more
+Thanks for raising this issue. We ran a detailed error analysis of this experiment, and we found a confound in our data: nearly all training plurals contained -e- as a final vowel. When we removed these confounds, we obtained the overall more interpretable results we report in Table 3 of the revised version. Now, on the one hand, the LSTM-based character-level model is clearly above chance even in Umlaut generalization. On the other hand, its performance if far from great in this case. We thus present a more cautious conclusion--there is definitely *some* degree of generalization (new forms in -r, and abve-chance performance for the Umlaut class), but it is not a completely abstract one, as it applies more reliably when generalizing to new affixation patterns, than to a fully non-concatenative process. We discuss this in the section on plurals, but we also get back to it in the conclusion, to hedge our claims. We have also made a general pass through the abstract and the introduction, to tone down any claim that sounded too optimistic given these results.
 
-(5) That "case subcategorization" is represented by testing exactly
-one preposition in one language seems very narrow. Also, unlike German
-verbs which can be separated from their objects, P-NP sequences are
-not likely to be broken up, so this seems like something pretty
-surfacy/sequential and not really convincingly "syntax".
+"""(5) That "case subcategorization" is represented by testing exactly one preposition in one language seems very narrow. Also, unlike German verbs which can be separated from their objects, P-NP sequences are not likely to be broken up, so this seems like something pretty surfacy/sequential and not really convincingly "syntax"."""
 
-=> discuss our nature of long-distance more clearly, add hedges
+We agree that this is a limited test, and we made sure that, in the new version, the preliminary nature of our results is emphasized (we also renamed the section "Prepositional case subcategorization", to stress the limited scope). The need to control for length of stimuli in characters makes the construction of these benchmarks very difficult. Ad the same time, we sampled the nominalized adjextives from a pool of thousands, and used more than 1.5K different sentential contexts. Thus, while it is true that we are only studying one specific case assignment phenomenon here (case assignment by the preposition "mit"), we feel confident that our results for this specific phenomenon are fully general.
+
+We did not understand your second point. In a phrase such as "mit der sehr roten", the form of the final (nominalized) adjective "roten" is determined by the fact that the latter is embedded in a noun phrase governed by the non-adjacent preposition "mit". Moreover, only the full sentential context licenses the syntactic structure in which "mit" is the head of the phrase governing the NP. Finally, as the n-gram and preposition-less controls show, surface statistics cannot account for model behaviour, and some degree of structure-sensitivity is called for. So, while we fully agree that this is a rather simple form of syntax, we are puzzled by the claim that this is not convincingly syntax.
+
+We took various steps to clarify and position the experiment. First, we added a discussion of the general methodology and important methodological issues at the beginning of the section on syntactic dependencies. Second, the part on the subcategorization experiment has been re-written and extended, to explain in more detail and with examples what we test here.
 
 (6) The conclusion seems to over-claim compared to what the paper is
 actually showing. Most egregiously, I don't think that the sentence

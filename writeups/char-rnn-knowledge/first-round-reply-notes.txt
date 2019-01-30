@@ -1,88 +1,48 @@
-We thank the editor and the reviewers for their insightful comments, that helped us in re-focusing the paper, which we believe is now sending a stronger, more coherent message than in the first version.
+* Introduction
 
-The editor letter and the reviews pointed out that the paper contained too many experiments, that were not always clearly outlined, and did not make a clear case about their purpose. Several specific issues were also raised, in particular concerning the phonology and segmentation sections.
+We thank the editor and the reviewers for their insightful comments, that greatly helped us to strentghen the paper. We believe that we present now a stronger, more coherent story than in the first version.
 
-The revised version focuses on the question of whether out word-less models can learn to handle linguistic phenomena, such as the ones we analyze in the morphology, syntax and semantics sections, that are intuitively word-mediated. In this perspective, that we now thoroughly discuss in the introduction and in the conclusion, the phonological experiments do not fit the paper anymore, as they do not relate to the notion of word-hood. By removing them, we remove some of the claims the reviewers found most problematic, and we make room for a more thorough analysis of the other results. Moreover, under the new organization, the segmentation experiment has been moved to the last slot in the experimental section, as it now naturally addresses the question of whether the (relative) successes we observed in modeling word-mediated phenomena means that our models are implicitly keeping track of word boundaries.
+The editor letter and the reviews pointed out that the paper contained too many experiments presented too succintly, and that the general purpose of the study was not clear. Several specific issues were also raised, in particular concerning the phonology and segmentation sections.
 
-We changed the main experiment in the segmentation section to test more directly this latter hypothesis. Instead of training a word segmenter on features derived from model-produced likelihoods, we directly probe the hidden state of the trained models for information about word breaks using a "diagnostic classifier".
+The revised version focuses on the question of whether models that have no hard-coded word lexicon and are not explosed to explicit cues to wordhood can handle linguistic phenomena, such as the ones we analyze in the morphology, syntax and semantics sections, that are traditionally seen in linguistics as being word-mediated. We relate this analysis to the current discussion in theoretical linguistiics on the primacy of the notion of word. We have consequently rewritten large parts of the introduction and of the conclusion, to strengthen the theoretical message. We have removed the phonotactic experiments, since they do not address the issue of word-hood. The segmentation section has been completely re-designed and rewritten. It is now the last experimental section of the paper, where it now more naturally fits the general story, by starting to address the question of *how* a "word-less" model can suceed (at least to some degree) in word-mediated tasks.
 
-We have also rewritten the related-work section, to remove the "defensive" tone that had been noted by a reviewer, as well as to place the paper in the broader contexts of studies on the primacy of the word in linguistics.
+Following the lead of one reviewer, we searched more thoroughly for "boundary units" that the network might specialize to track word/morpheme boundaries, as found by Kementchedjhieva and Lopez. We were able to find such units, and the segmentation section is now a detailed analysis of their behaviour. We believe that this is both greatly simplifying the methodology, and estabilishing a stronger connections with the general purpose of the paper.
 
-We describe other changes we made below, where we explain in detail how we addressed the comments by the editor and the reviewers.
+By removing the phonotactic experiments and changing the methodology of the segmentation section, some of the claims and conclusions that the reviewers found most problematic are now gone. Moreover, thanks to the further space afforded by removing some experiments and by the extra pages granted by the editor, we now explain our experiments in more detail. In particular, each experimental section starts now with a thorough discussion of the goal of the experiments and of the methodology we adopt.
 
+We have rewritten the related-work section, being careful to avoid the "defensive" tone that had been noticed by a reviewer. We have further added a new sub-section on the theoretical debate on words in linguistics, as well as a few references that escaped us the first time around.
 
+Finally, we have checked the whole paper for unwarranted claims, and we discuss the mediocre performance of our model in number prediction more thoroughly.
 
-E:
+We describe other changes we made below, where we respond in detail to the comments by the editor and the reviewers.
 
-The main objections are that the many small insights in the individual
-experiments do not add up to a concrete claim about what these models
-learn, and they definitely are not strong enough on their own to hold
-up the broad claims that frame the paper, which encompass language
-acquisition, multilinguality, phonology, morphology, syntax, and
-semantics! See especially reviewer C's comments, which suggest that
-the paper may actually be clearer with less material, more precisely
-described; reviewer A's comments, which suggest that the paper should
-tone down its claims and make them more concrete; and the paper
-itself, which acknowledges that "our results are preliminary in many
-ways" (line 967).
+* Response to the Editor
 
-=> revise claims, focus more on what character-based models learn
-about word-centered phenomena
+"""The main objections are that the many small insights in the individual experiments do not add up to a concrete claim about what these models learn, and they definitely are not strong enough on their own to hold up the broad claims that frame the paper, which encompass language acquisition, multilinguality, phonology, morphology, syntax, and semantics! See especially reviewer C's comments, which suggest that the paper may actually be clearer with less material, more precisely described; reviewer A's comments, which suggest that the paper should tone down its claims and make them more concrete; and the paper itself, which acknowledges that "our results are preliminary in many ways" (line 967).
 
-In this case, my prescription is simply to present a concrete claim that is
-carefully supported by a coherent set of experiments. But this prescription
-is in fact vague: many different subsets of these results could be framed in
-different ways, possibly requiring different additional sets of supporting
-experiments. I don't feel it's my place to make that choice for you, so I've
-given you a (c). But for what it's worth, I suspect that making this paper
-TACL-worthy would require an amount of work on the short side of the 3-6
-month period suggested for a (c) review.
+In this case, my prescription is simply to present a concrete claim that is carefully supported by a coherent set of experiments. But this prescription is in fact vague: many different subsets of these results could be framed in different ways, possibly requiring different additional sets of supporting experiments. I don't feel it's my place to make that choice for you, so I've given you a (c). But for what it's worth, I suspect that making this paper TACL-worthy would require an amount of work on the short side of the 3-6 month period suggested for a (c) review."""
 
-=> reread and revise claim (more precise claims about how
-character-based model learns word-based phenomena, would naturally
-lead to drop part about phonology, which could be left to a different
-paper)
+The paper has now been re-purposed to focus on the study of how word-less models can handle phenomena that are traditioanlly seen as word-mediated. We removed the phonological experiments, that become irrelevant in this perspective, completely re-hauled the segmentation section with new experiments that are both simpler and more intuitive than the original ones, and rewrote the introduction, related work and conclusion to frame our claims more clearly. Thanks to the extra space, we could also discuss all the other experiments in more detail.
 
-I am allowing you one to two additional pages in the revised version for
-addressing the referees' concerns.
+* Response to Reviewer A
 
-=> good
+"""I think the study is worthwhile, but I think the authors need to be far more cautious in the claims they are making about what these models learn. It would be more beneficial to reflect on how these tasks *begin* to inform us about what kinds of linguistic structure language-model trained neural nets can "learn"."""
 
-**************
-**************
+We have re-focused the paper on the question of whether word-less models can handle some linguistic phenomena that are intuitively word-mediated, and checked the whole paper for unwarranted claims.
 
-A (b)/(c):
+"""(1) The choice of languages should be motivated up front. Why English, German and Italian, which are all closely related? Why only three?"""
 
-Detailed Comments for the Authors
+We now motivate this in the introduction: "We evaluate our character-level networks on a bank of linguistic tests in German, Italian and English. We focus on these languages due to resource availability and ease of benchmark construction. We also think that these well-studied synthetic languages with a clear, orthographically-driven notion of word are a better starting point to test non-word-centric models, compared to agglutinative or polysynthetic languages, where the very notion of what counts as a word is problematic."
 
-I think the study is worthwhile, but I think the authors need to be
-far more cautious in the claims they are making about what these
-models learn. It would be more beneficial to reflect on how these
-tasks *begin* to inform us about what kinds of linguistic structure
-language-model trained neural nets can "learn".
+Note that, as we briefly discuss in the introduction to the section on the syntactic tests, the nature of character-level models makes it problematic to use existing benchmarks. Thus, any further language to be added requires considerable extra manual effort.
 
-=> can be done by careful rephrasing
+"""(2) The very first evaluation ("Discovering phonological classes") is oddly imprecise and impressionistic. Why should the reader take the authors' word for it that "it definitely suggests that the CNLM has discovered a fair deal about the features organizing the phonological system of the language." This should be replaced with something quantitative or at least more objective, or dropped."""
 
-(1) The choice of languages should be motivated up front. Why English,
-German and Italian, which are all closely related? Why only three?
+We dropped the seciton on phonology.
 
-=> can be done
+"""(3) The authors claim to be testing whether the CNLM develops an implicit notion of words, but the testing methodology involves a supervised training step. The paper needs to be much clearer about how this is actually testing whether the unsupervised system has an implicit notion of "word". (Similar remarks hold for the morphology tests.)"""
 
-(2) The very first evaluation ("Discovering phonological classes") is
-oddly imprecise and impressionistic. Why should the reader take the
-authors' word for it that "it definitely suggests that the CNLM has
-discovered a fair deal about the features organizing the phonological
-system of the language." This should be replaced with something
-quantitative or at least more objective, or dropped.
-
-=> drop phonology part
-
-(3) The authors claim to be testing whether the CNLM develops an
-implicit notion of words, but the testing methodology involves a
-supervised training step. The paper needs to be much clearer about how
-this is actually testing whether the unsupervised system has an
-implicit notion of "word". (Similar remarks hold for the morphology
-tests.)
+We believe that the reviewer is raising here two related but distinct points. The first is specific to the segmentation task.
 
 => use probing task (explaining at the beginning), and only show
 syntax figure with PMI

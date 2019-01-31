@@ -93,83 +93,81 @@ We agree, and the phonological results would definitely deserve further study. H
 
 This was an arbitrary threshold, and we found out empirically that changing it did not have much impact on performance. However, this experiment has now been removed, replaced by a simpler one that does not require picking such abritrary hyperparameters.
 
-I AM HERE
+"""ln 475 If you're working from phonological properties, why would fixed expressions turn up? Is there any reason to believe that in their orthographic form the internal word boundaries of fixed expressions are less like other word boundaries?"""
 
-=> this might go
+While we have now removed this specific analysis, we believe that, for a system trained on the language modeling objective, it makes sense to chunk fixed expressions together. It is precious distributional information that the sequence "Hong" is almost certainly followed by "Kong" in an English corpus.
 
-ln 475 If you're working from phonological properties, why would fixed
-expressions turn up? Is there any reason to believe that in their
-orthographic form the internal word boundaries of fixed expressions are less
-like other word boundaries?
+"""ln 516 What was the training set used for the Berkeley Parser to be able to parse German?"""
 
-=> clarify (and this might go)
+We have now removed this experiment.
 
-ln 516 What was the training set used for the Berkeley Parser to be able to
-parse German?
+"""ln 546 "unambiguously tagged in the corpus":  I think it would be useful to remind the reader here that these aren't gold tags but come from TreeTagger (right?)"""
 
-=> clarify (done)
+We now explicitly state that these are TreeTagger annotations.
 
-ln 546 "unambiguously tagged in the corpus":  I think it would be useful to
-remind the reader here that these aren't gold tags but come from TreeTagger
-(right?)
+"""Table 5 I don't understand what the last two lines are. Is WordNLM_subs. without OOV and WordNLM the full test set? If so, then ln 578 "the word-based model fares better" doesn't seem to make any sense---WordNLM scores *lowest*."""
 
-=> clarify (done)
+You are indeed right here. However, we think that, as we are interested in comparing the performance of character-level models with what the WordNLM do could do in principle, when factoring out the OOV problem, we think that both scores are interesting. We have now tried to clarify what these scores are by adding the following sentences to the subsection on Word classes:
 
-Table 5 I don't understand what the last two lines are. Is WordNLM_subs.
-without OOV and WordNLM the full test set? If so, then ln 578 "the
-word-based model fares better" doesn't seem to make any sense---WordNLM
-scores *lowest*.
+"Unlike CNLMs, the WordNLM cannot make educated guesses about words that are not in its training vocabulary. These OOV words are by construction less frequent, and thus likely to be in general more difficult. To get a sense of both "best-case-scenario" and more realistic WordNLM performance, we report its accuracy both excluding and including OOV items (WordNLM_subs and WordNLM in Table 2, respectively)."
 
-=> report results with test sets redesigned to only include words in WordNLM vocabulary (and mention this in text)
-(I think we decided to instead keep the previous setting, and explain it better)
+We have moreover added a warning to all table captions that the subs results are not comparable to the other results.
 
-ln 582 "We study German as it possesses nominal classes that form plural
-through different morphological processes" This is also true in Italian!
+"""ln 582 "We study German as it possesses nominal classes that form plural through different morphological processes" This is also true in Italian!"""
 
-=> explain
+While it is true that Italian also posseses different means to form plural, its system is more limited, more regular and based on more systematic phonological and gender-based cues. Moreover, as masculines in "-o" and -"a" and all nouns in "-e" form plurals in "-i"  ("gatto/gatti", "poeta/poeti", "badante"/"badanti"), this leave pretty much only the feminine "-a/-e" class for testing. This might still be interesting to explore, but given the number of experiments already present in the paper, we believe it is reasonable to leave it to future work.
 
-ln 589 Both of the cites given for "German UD treebank" seem to be about the
-UD project in general. Surely there's a specific citation for the German UD
-treebank that should be included to give those researchers credit for their
-work.
+"""ln 589 Both of the cites given for "German UD treebank" seem to be about the UD project in general. Surely there's a specific citation for the German UD treebank that should be included to give those researchers credit for their work."""
 
-=> do (done)
+Good point, we fixed this.
 
-ln 661 "To avoid phrase segmentation ambiguities, we present phrases
-surrounded by full stops." I'm not sure what this means. What is the system
-presented with at test time? Just a phrase like in (1) (with only one
-article)? Why would not having full stops (before and after??) lead to
-ambiguity?
+"""ln 661 "To avoid phrase segmentation ambiguities, we present phrases surrounded by full stops." I'm not sure what this means. What is the system presented with at test time? Just a phrase like in (1) (with only one article)? Why would not having full stops (before and after??) lead to ambiguity?"""
 
-=> explain (TODO)
+Yes, the system was presented with phrases such as (1) surrounded by full stops. As the character model is not trained with whitespace, we use full stops to signal the beginning and ending of the phrase. Considering the "der/die/das sehr rote Baum" example. At the right edge, if we do not append the period, the last character parsed by the model would be the "m" of "Baum". At this stage, the model would have no reason to prefer the masculine ("der") to other articles, as what follows could be either a character (such as the full stop), indicating that the noun is indeed masculine "Baum", or another character that might still be part of the same word. For example, the string could continue with "wolle", and "Baumwolle" is a feminine noun, requiring the article "die". Although some nouns will be more likely than others, we cannot fairly evaluate the model until we have presented it with an unambiguous sequence. Similarly, on the left, we let the model start by reading a full stop as a cue that we want it to treat the "der/die/das" sequences as word initial. If we initialized the mode with states (e.g., random ones), we could not be sure that the model would not then treat these sequences as suffixes, as it would have no specific reason to assume they are word initial.
 
-ln 744 "as these often reflect lemmatiziation problems": Are these problems
-with TreeTagger, your system, or something else?
+We tried to clarify these points in the new writeup. In the introduction of the section about syntactic dependencies, we added the following discussion:
 
-=> explain (TODO Michael)
+"Consider the German phrase in (1) below. For a word model, two items separate the article from the noun. For a (space-less) character model, 8 characters intervene until the noun onset, but the span to consider will typically be even longer. For example, *Baum* could be the beginning of the feminine noun *Baumwolle* "cotton", which would change the agreement requirements on the article. So, until the model finds evidence that it fully parsed the head noun, it cannot reliably check agreement. This will typically require parsing at least the full noun and the first character following it."
 
-ln 750 When would German ever have discontinuous NPs?
+Then, when introducting the relevant task, we state:
 
-=> explain (TODO Michael)
+"To avoid phrase segmentation ambiguities, we present phrases surrounded by full stops (see the *Baum*/*Baumwolle* example above).
 
-ln 752 Is it well established that RNNs & LSTMs have the same probabilistic
-bias for shorter sequences that e.g. HMMs do?
+"""ln 744 "as these often reflect lemmatiziation problems": Are these problems with TreeTagger, your system, or something else?"""
 
-=> explain (done)
+These are problems with the TreeTagger. We now clarify in a footnote that the TreeTagger occasionally failed to remove the inflectional suffix "-r" when lemmatizing.
 
-ln 774-776 I found this too terse. What is the n-gram count model? Why omit
-the sentence environment?
+"""ln 750 When would German ever have discontinuous NPs?"""
 
-=> explain (TODO Michael)
+As we now explain in a note, this can happen because of extraposition, that leaves part of the noun phrase separated from the rest by the verb. [MICHAEL: CAN YOU ADD AN EXAMPLE]
 
-ln 778 What stimuli not including the preposition? Where are these
-described?
+"""ln 752 Is it well established that RNNs & LSTMs have the same probabilistic bias for shorter sequences that e.g. HMMs do?"""
 
-=> explain (rephrased a bit)
+We refer here to a problem with the methodology of measuring relative phrase likelihoods when phrases have different lengths. Given that the phrase likelihood is given by the product of the single character probabilities, that range between 0 and 1, *all else being equal* a longer sequence can only be as likely or less likely than a shorter one. We tried to clarify the issue by adding the following discussion in the introduction to the syntactic agreement section:
 
-4.4.2 If the words occur in the corpus, they presumably occur with their
-article, so it's not immediately clear to me that the stimuli don't occur in
-the corpus. Perhaps the unattested n-grams are the adj+N combination?
+"[S]ince a character-level language model assigns a probability to each character of a phrase, and the phrase likelihood is the product of these values (all between 0 and 1), minimal sets must be controlled for character length."
+
+Then, when discussing this experiment, we state:
+
+"Note that here the correct form is longer than the wrong one. As the overall likelihood is the product of character probabilities ranging between 0 and 1, if this introduces a length bias, it will work against the character models."
+
+"""ln 774-776 I found this too terse. What is the n-gram count model? Why omit the sentence environment?"""
+
+We have largely rewritten the subsection describing this experiment, trying to add a better motivation for the sentence environment method and including examples. The n-gram probabilities from the beginning of the sentences are always 0, and they would not in any case provide more information about case than the phrase context does. So, by omitting the sentence environment, we are obtaining a stronger n-gram baseline.
+
+"""ln 778 What stimuli not including the preposition? Where are these described?"""
+
+These are the control stimuli that we created by feeding the model with a version of each original stimulus with the prefix up to and including the preposition stripped off, so that the model could only rely on the independent probabilities of the tested adjective forms. We have now rewritten the previous paragraphs and added examples to clarify what we mean.
+
+"""4.4.2 If the words occur in the corpus, they presumably occur with their article, so it's not immediately clear to me that the stimuli don't occur in the corpus. Perhaps the unattested n-grams are the adj+N combination?"""
+
+Indeed, we removed the confusing paragraph you refer to, and we are now more explicit about which combinations do not occur in the corpus, making the n-gram baseline perform at chance level:
+
+Article-noun gender agreement: "adjective-noun combinations that occurred in the training corpus were excluded, so that an n-gram baseline would perform at chance level."
+
+Article-adjective gender agreement: "We excluded all cases in which the adverb-adjective combination occurred in the training corpus"
+
+Article-adjective number agreement: "Again, no adverb-adjective combination was attested."
 
 => explain
 

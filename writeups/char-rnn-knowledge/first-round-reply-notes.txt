@@ -179,72 +179,73 @@ We clarified: "Stimulus selection was as in the last experiment, but we used a 5
 
 """ln 919ff I'm extremely skeptical of the claims about the sentence completion task. In particular, no language model has information about "syntax, lexical semantics, world knowledge, and pragmatics" beyond what can be characterized in purely distributional terms --- i.e. what words share what kind of distributional similarity with what other words. That will be a partial reflection of part of speech (syntax-ish) and lexical semantics, but it is no way "world knowledge". Furthermore, models don't "realize" anything let alone "that [friend and mistress] are human beings"."""
 
-We are now much more careful about our claims, explicitly referring to "the shallow form of semantics required in a fill-the-gap test"
-I AM HERE
+We are now much more careful about our claims, explicitly referring to "the shallow form of semantics required in a fill-the-gap test" when we introduce this task, and with hedges elsewhere. We removed the broad claim you rightly criticize, and we explain the nature of the test more clearly now in the relevant section:
 
-=> rephrase and explain
+"The creators of the benchmark took multiple provisions to insure that success on the task implies some command of semantics. The multiple choices were controlled for frequency, and the annotators were encouraged to choose confounders whose elimination required "semantic knowledge and logical inference" (Zweig and Burges 2011).  For example, the right choice in "Was she his [client|musings|discomfiture|choice|opportunity], his friend, or his mistress?" depends on the cue that the missing word is coordinated with "friend" and "mistress", and that the latter are animate entities.
 
-ln 965 "somewhat deeper linguistic templates" seems like an overclaim.
+We also renamed the section "Semantics-driven sentence completion" (from the original "Semantics") to more clearly delimit its scope.
 
-=> explain
+"""ln 965 "somewhat deeper linguistic templates" seems like an overclaim."""
 
-ln 990 Why didn't you include polysynthetic and agglutinative languages in
-your testing? There are pretty good resources available for Inuktitut and
-Turkish, respectively, for example.
+We rewrote the conclusion to avoid overclaims. In particular, we reformulated this statement as follows: "The character-level models consistently outperformed n-gram controls, which shows that they tap into more abstract patterns than local co-occurrence statistics."
 
-=> discuss why
 
-ln 991 "the common view that": This should come with citations. Places to
-look are work on Construction Grammar (authors such as Chuck Fillmore and
-Paul Kay) and also work by Ray Jackendoff.
+"""ln 990 Why didn't you include polysynthetic and agglutinative languages in your testing? There are pretty good resources available for Inuktitut and Turkish, respectively, for example."""
 
-=> we also have citations, discuss
+We are currently working with a typologically varied sample of languages, however this is extremely laborious and requires a good command of the relevant languages, since we need to develop, in each language, benchmarks that are appropriate for character-level models. Moreover, we now made it clear that the central pursuit of the paper is to ascertain to what extent word-less models can handle word-mediated words. In this perspective, we think there are good reasons to start with languages with a clearly defined conventional notion of word, instead of with languages where the very idea of what is exactly a word is problematic.
 
-ln 13-14 recently reached -> has recently reached
-ln 096 as it goes -> as it gets
-ln 149 model -> models?
-ln 431 ad hoc doesn't need a hyphen
-ln 531 can discover about -> can discover -or- can discover information
-about
-=>(done)
-ln 622 I'm not sure what "the latter" is supposed to refer back to.
-ln 720 the Universal Dependencies -> the German UD treebank
-=>(done)
+We motivate our language choice in the introduction as follows:
+
+"We evaluate our character-level networks on a bank of linguistic tests in German, Italian and English. We focus on these languages due to resource availability and ease of benchmark construction. We also think that these well-studied synthetic languages with a clear, orthographically-driven notion of word are a better starting point to test non-word-centric models, compared to agglutinative or polysynthetic languages, where the very notion of what counts as a word is problematic."
+
+"""ln 991 "the common view that": This should come with citations. Places to look are work on Construction Grammar (authors such as Chuck Fillmore and Paul Kay) and also work by Ray Jackendoff."""
+
+Thanks, we added references.
+
+"""ln 13-14 recently reached -> has recently reached"""
+
+Thanks, this sentence has now been removed.
+
+"""ln 096 as it goes -> as it gets"""
+
+Fixed.
+
+"""ln 149 model -> models?"""
+
+Thanks, fixed.
+
+"""ln 431 ad hoc doesn't need a hyphen"""
+
+This part is now gone.
+
+"""ln 531 can discover about -> can discover -or- can discover information
+about"""
+
+This part is now gone.
+
+"""ln 622 I'm not sure what "the latter" is supposed to refer back to."""
+
+Thanks, we rephrased (it referred to word embeddings).
+
+"""ln 720 the Universal Dependencies -> the German UD treebank"""
+
+Thanks, fixed.
+
 ln 996 capable to flexibly store -> capable of flexibly storing
-=>(done)
 
-=> fix these
+Thanks, this has gone in the current version.
 
-**************
-**************
+* Response to reviewer B
 
-B (a):
+"""1. Section 4.2 presents results on word segmentation. The paragraph starting on line 464 qualitatively investigates the errors made by the CNLM trained on Wikipedia test (note: it would be beneficial to state Wikipedia right at the beginning of the paragraph, rather than at its end). It would though be more interesting if this were a comparison between the Bayesian and the CNLM model, rather than just analyzing the CNLM.  Because, albeit the fact that "CNLM performance is comparable" (ref. to Table 4), a close look reveals that there is quiet a gap of the two models in terms of precision on inducing lexical word types. A comparative analysis would shed some light here, it might be that the LSTM gets frequent types right but misses other types, compared to the Bayesian method constructed with a lexical bias in mind."""
 
-developers for their ongoing work.
+Thanks, this is a very good point. However, as we have completely rewritten this section, removing supervised classification based on model-produced probabilities altogether, we have also removed the comparison with the Bayesian model, that we felt was problematic in any case as we were comparing very different algorithms with very different purposes.
 
-1. Section 4.2 presents results on word segmentation. The paragraph
-   starting on line 464 qualitatively investigates the errors made by
-   the CNLM trained on Wikipedia test (note: it would be beneficial to
-   state Wikipedia right at the beginning of the paragraph, rather
-   than at its end). It would though be more interesting if this were
-   a comparison between the Bayesian and the CNLM model, rather than
-   just analyzing the CNLM.  Because, albeit the fact that "CNLM
-   performance is comparable" (ref. to Table 4), a close look reveals
-   that there is quiet a gap of the two models in terms of precision
-   on inducing lexical word types. A comparative analysis would shed
-   some light here, it might be that the LSTM gets frequent types
-   right but misses other types, compared to the Bayesian method
-   constructed with a lexical bias in mind.
+"""2. For the first analysis (phonological classes induced by the output embeddings) results for German only are provided in Figure 1. The paper should include plots for all three languages, as there is no clear motivation why one was selected. There should be space to include all three plots."""
 
-=> this might go; introduce new qualitative analysis (done)
+As we changed the story in the paper (see Introduction to this response above), the part about phonology has been removed.
 
-2. For the first analysis (phonological classes induced by the output
-   embeddings) results for German only are provided in Figure 1. The
-   paper should include plots for all three languages, as there is no
-   clear motivation why one was selected. There should be space to
-   include all three plots.
-
-=> this might go (done)
+I AM HERE
 
 3. What really surprised me is the bad performance of the vanilla RNN
    compared to the LSTM on the bigram acceptability judgment task

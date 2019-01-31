@@ -169,25 +169,18 @@ Article-adjective gender agreement: "We excluded all cases in which the adverb-a
 
 Article-adjective number agreement: "Again, no adverb-adjective combination was attested."
 
-=> explain
+"""ln 835 What does "strong semantic anomaly" mean and how is it checked for?"""
 
-ln 835 What does "strong semantic anomaly" mean and how is it checked for?
+We clarified this: "Here and below, stimuli were manually checked removing nonsensical adjective-noun (below, adverb-adjective) combinations."
 
-=> explain
+"""ln 890 Threshold for what? (I couldn't quickly figure out what the 500 occurrence were *of*, nor what to compare to "above")."""
 
-ln 890 Threshold for what? (I couldn't quickly figure out what the 500
-occurrence were *of*, nor what to compare to "above").
+We clarified: "Stimulus selection was as in the last experiment, but we used a 500-occurrences threshold for adjectives, as feminine plurals are less common"
 
-=> explain
+"""ln 919ff I'm extremely skeptical of the claims about the sentence completion task. In particular, no language model has information about "syntax, lexical semantics, world knowledge, and pragmatics" beyond what can be characterized in purely distributional terms --- i.e. what words share what kind of distributional similarity with what other words. That will be a partial reflection of part of speech (syntax-ish) and lexical semantics, but it is no way "world knowledge". Furthermore, models don't "realize" anything let alone "that [friend and mistress] are human beings"."""
 
-ln 919ff I'm extremely skeptical of the claims about the sentence completion
-task. In particular, no language model has information about "syntax,
-lexical semantics, world knowledge, and pragmatics" beyond what can be
-characterized in purely distributional terms --- i.e. what words share what
-kind of distributional similarity with what other words. That will be a
-partial reflection of part of speech (syntax-ish) and lexical semantics, but
-it is no way "world knowledge". Furthermore, models don't "realize" anything
-let alone "that [friend and mistress] are human beings".
+We are now much more careful about our claims, explicitly referring to "the shallow form of semantics required in a fill-the-gap test"
+I AM HERE
 
 => rephrase and explain
 

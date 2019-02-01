@@ -17,7 +17,7 @@ might be segmenting their input.
 their English CNLM that seems, qualitatively, to be tracking
 morpheme/word boundaries.  Since they trained the model with
 whitespace, the main function of this unit could simply be to predict
-the very frequent whitespace character. We conjecture instead that the
+the very frequent whitespace character. We conjecture instead (like they did, before us) that the
 ability to segment the input into meaningful items is so important
 when processing language that CNLMs will specialize units for boundary
 tracking even when trained without whitespace.
@@ -35,7 +35,7 @@ the LSTMs, 0.58 (English), 0.69 (German), and 0.57 (Italian).
 For the RNNs, the highest correlations are 0.40 (English), 0.46
 (German and Italian).
 
-We looked at the behaviour of the selected LSTM units qualitatively by
+\paragraph{Examples} We looked at the behaviour of the selected LSTM units qualitatively by
 extracting random sets of 40-character strings from the development
 partition of each language (left-aligned with word onsets) and
 plotting the corresponding boundary unit activations. Figure
@@ -77,7 +77,7 @@ are encountered.
       plots? You mentioned adding manual word boundaries?}}\label{fig:word-unit}
 \end{figure*}
 
-To gain a more quantitative understanding of how well the boundary
+\paragraph{Detecting word boundaries} To gain a more quantitative understanding of how well the boundary
 unit is tracking word boundaries, we trained a single-parameter
 diagnostic classifier on the activation of the unit (the classifier
 simply sets an optimal threshold on the unit activation to separate
@@ -179,7 +179,7 @@ due to their poorer ability to track word boundaries. %
 %   \caption{\label{tab:segmentation-unit-results} Accuracy of threshold classifier based on `word' unit in distinguishing word boundaries from word-internal positions. Random baseline accuracy is 50 \%.}
 % \end{table}
 
-As a final way to characterize the function and behaviour of the
+\paragraph{Error analysis} As a final way to characterize the function and behaviour of the
 boundary units, we inspected the most frequent under- and
 over-segmentation errors made by the classifier based on them. We
 discuss German here, as it is the language where the classifier
@@ -188,9 +188,7 @@ morphologically complex words makes it particularly
 interesting. However, similar patterns were also detected in Italian
 and, to a lesser extent, English (in the latter, there are fewer and
 less interpretable common oversegmentations, probably because words are
-on average shorter and morphology more limited).
-
-Considering first the 30 most common undersegmentations, the large
+on average shorter and morphology more limited). Considering first the 30 most common undersegmentations, the large
 majority (24/30) are common sequences of grammatical terms or very
 frequent items that can sometimes be reasonably be re-analyzed as
 single function words or adverbs (e.g., \emph{bis zu}, `up to'

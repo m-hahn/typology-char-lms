@@ -21,15 +21,20 @@ phonemes were included, resulting in vocabularies of sizes 60
 included the most frequent 50,000 words per corpus.
 
 We trained RNN and LSTM CNLMs; we will refer to them simply as
-\emph{RNN} and \emph{LSTM}, respectively. Our
-WordNLMs were always LSTMs.  For each model/language, we applied random
-hyperparameter search.  We terminated training after 72 hours; none of
+\emph{RNN} and \emph{LSTM}, respectively. Our WordNLMs were always
+LSTMs.  For each model/language, we applied random hyperparameter
+search.  We terminated training after 72 hours.\footnote{This was
+  due to resource availability. The reasonable
+  language-modeling results in Table \ref{tab:lm-results} suggest that
+  no model is seriously underfit, but the weaker overall RNN results
+  in particular should be interpreted in the light of the following qualification:  models are compared \emph{given equal amount of training, but
+    possibly at different convergence stages}.} None of
 the models had overfitted, as measured by performance on the
 validation set.\footnote{Hyperparameter details are in supplementary material to be made
   available upon publication. Chosen architectures (layers/embedding size/hidden size): LSTM: En.~3/200/1024, Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048, It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}
 
 Language modeling performance on the test partitions is shown in
-Table~\ref{tab:lm-results}. Recall that we removed whitespace, which
+Table \ref{tab:lm-results}. Recall that we removed whitespace, which
 is both easy to predict, and aids prediction of other
 characters. Consequently, the fact that our character-level models are
 below the state of the art is expected.\footnote{Training our models
@@ -41,7 +46,7 @@ On EuroParl data, \newcite{cotterell2018all} report 0.85 for English,
 0.90 for German, and 0.82 for Italian. Still, our English BPC is
 comparable to that reported by \newcite{DBLP:journals/corr/Graves13} for his static
 character-level LSTM trained on space-delimited Wikipedia data,
-suggesting that we are achieving reasonable performance.
+suggesting that we are achieving reasonable performance. %
 %\footnote{Training our models on text with whitespace, without further hyperparameter tuning to adjust to that setting, resulted in cross-entropies of 0.91, 1.32 BPC (English), 0.89, 1.28 BPC (German), and 0.86, 1.24 BPC (Italian).}
 The perplexity of the word-level model might not be comparable to
 that of highly-optimized state-of-the-art architectures, but it is at the

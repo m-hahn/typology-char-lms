@@ -275,7 +275,11 @@ Thanks, these tables have now been removed, and we checked that the current tabl
 
 - Colored figures are unreadable in b/w printing.
 
+
+
 MICHAEL: IS THERE SOMETHING WE CAN DO HERE? ARE THERE BETTER COLORS FOR B/W PRINTING? OR A STORY FOR THE ONES YOU PICKED (ROBUSTNESS TO COLOR BLINDNESS?)
+
+
 
 """- line 936: in Figure 8 > in Table 8"""
 

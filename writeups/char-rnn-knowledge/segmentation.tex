@@ -84,10 +84,10 @@ diagnostic classifier on the activation of the unit (the classifier
 simply sets an optimal threshold on the unit activation to separate
 word boundaries from word-internal positions). To train and
 test the classifier, we randomly selected positions from the
-development partition of the Wikipedia corpus, such that half of these were the last character
+test partition of the Wikipedia corpus, such that half of these were the last character
 of a token, and the other half were not.  We collected 1,000 such
 points as training data for the diagnostic classifiers, and used 1M
-aditional dataspoints for testing.  Both training and test sets were
+aditional dataspoints for testing.  Both training and test sets of the classifier were
 balanced between boundaries and word-internal positions.
 We sampled the test data points subject to the constraint that the
 word (in the case of a boundary position) or word prefix (in the case
@@ -132,9 +132,9 @@ due to their poorer ability to track word boundaries. %
       \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
             \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
       \hline
-      English & 77.5 & 65.6 & 89.9 & 76.8\\ 
-      German  & 80.8 & 66.8 & 79.8 & 75.8\\ 
-      Italian & 75.4 & 71.6 & 83.0 & 75.9\\ 
+      English & 77.5 & 65.9 & 90.0 & 76.8\\ 
+      German  & 80.8 & 67.0 & 79.7 & 75.8\\ 
+      Italian & 75.5 & 71.4 & 82.9 & 75.9\\ 
     \end{tabular}
   \end{center}
   \caption{\label{tab:segmentation-results} Accuracy of word boundary diagnostic classifiers trained on single boundary unit or full hidden state. Chance accuracy is at 50\%.}

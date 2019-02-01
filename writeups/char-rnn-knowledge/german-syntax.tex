@@ -31,8 +31,8 @@ present phrases surrounded by full stops (see the
 \emph{Baum}/\emph{Baumwolle} example above).
 
 %  \cite{de2006generating,mcdonald2013universal}
-To build the test set, we select all nominative singular nouns from
-the German UD treebank \textbf{(how many in total?)} (OOV noun ratios
+To build the test set, we select all 4,581 nominative singular nouns from
+the German UD treebank  (49.3 \% feminine, 26.4 \% masculine, 24.3 \% neuter. OOV noun ratios % \textbf{(how many in total?)}
 for WordNLM: 40.0\% for masculine, 36.2\% for feminine, 41.5\% for
 neuter). %, and all adjectives from the training set.
 We construct four conditions varying the number of adverbs and
@@ -153,7 +153,7 @@ the very red {tree \emph{(genitive)}} \\
 We selected all noun lemmas of the appropriate genders from the German
 UD treebank, and extracted morphological paradigms from Wiktionary to
 obtain case-marked forms, retaining only nouns unambiguously marking
-the two cases (\textbf{how many in total?}).  We created four conditions, varying the amount of
+the two cases (4,509 nouns).  We created four conditions, varying the amount of
 intervening material, as in the gender agreement experiment (4,509
 stimuli per condition).  For 81.3\% of the nouns, at least one of the
 two forms was OOV for the WordNLM, and we tested the latter on the
@@ -231,8 +231,19 @@ do this as sentence-initial \emph{mit} is somewhat unnatural and, more
 importantly, because this will disambiguate the final element of the
 phrase as a noun (not an adjective), and exclude the reading in which
 \emph{mit} is a particle not governing the noun phrase of
-interest. \textbf{Add a full stimulus example (with the wrapping
-  sentence).} \textbf{OOV statistics.}
+interest.
+A full stimulus example with the wrapping sentence is:
+\exg. Die Figure hat mit der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen . \\
+the figure has with the red\ one played and mostly won \\
+\textit{`The figure played with the red one and mostly won.'}
+
+When running the WordNLM, we excluded OOV adjectives as in the previous experiments, but did not apply
+further OOV filtering to the sentence frames.
+%\textbf{Add a full stimulus example (with the wrapping
+%  sentence).} \textbf{OOV statistics.}
+
+
+
 % Note also that in this case we embedded the test phrase into full sentences.
 % We did this as sentences beginning with \emph{mit} are somewhat unnatural
 % and, more importantly since \emph{mit} is homophonous with a particle
@@ -241,7 +252,9 @@ interest. \textbf{Add a full stimulus example (with the wrapping
 
 We also created control stimuli where all words up to and including
 the preposition are removed (thus, the example sentence above would
-become: \textbf{add same example with prefix removed}).  If a model's
+become: \textit{der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen}).
+%\textbf{add same example with prefix removed}).
+If a model's
 accuracy is lower on these control stimuli than on the full ones, its
 performance cannot be simply explained by the different unigram
 probabilities of the two adjective forms. For the n-gram baseline, we

@@ -73,29 +73,36 @@ are encountered.
   \includegraphics[width=0.9\textwidth]{figures/{sent_italian_wiki-italian-nospaces-bptt-855947412_301.txt}.png}
   \end{center}
   \caption{Examples of the LSTM CNLM boundary unit activation profile, with ground-truth word boundaries marked in
-    green. English: \emph{It was co-produced with Martin Buttrich over at\ldots}. German: \emph{Systeme, deren Hauptaufgabe die transformati(-on)} `systems, whose main task is the transformation\ldots'. Italian: \emph{in seguito alle dimissioni del Sommo Pontefice} `following the resignation of the Supreme Pontiff\ldots'. \textbf{Is there a need to clean up the English and Italian
-      plots? You mentioned adding manual word boundaries?}}\label{fig:word-unit}
+    green. English: \emph{It was co-produced with Martin Buttrich over at\ldots}. German: \emph{Systeme, deren Hauptaufgabe die transformati(-on)} `systems, whose main task is the transformation\ldots'. Italian: \emph{in seguito alle dimissioni del Sommo Pontefice} `following the resignation of the Supreme Pontiff\ldots'. %\textbf{Is there a need to clean up the English and Italian
+%      plots? You mentioned adding manual word boundaries?}
+	}\label{fig:word-unit}
 \end{figure*}
 
 \paragraph{Detecting word boundaries} To gain a more quantitative understanding of how well the boundary
 unit is tracking word boundaries, we trained a single-parameter
 diagnostic classifier on the activation of the unit (the classifier
 simply sets an optimal threshold on the unit activation to separate
-word boundaries from word-initial/internal positions). To train and
+word boundaries from word-internal positions). To train and
 test the classifier, we randomly selected positions from the
-development partition such that half of these were the last character
+development partition of the Wikipedia corpus, such that half of these were the last character
 of a token, and the other half were not.  We collected 1,000 such
-points as training data for the diagnostic classifiers, and used the
-remainder for testing.  Both sets were balanced between (1) and (2).
+points as training data for the diagnostic classifiers, and used 1M
+aditional dataspoints for testing.  Both training and test sets were
+balanced between boundaries and word-internal positions.
 We sampled the test data points subject to the constraint that the
-word or word prefix ending at the selected character does not overlap
-with the training set.  This ensures that a classifier cannot succeed
-by looking for encodings reflecting specific words. \textbf{Please
-  clarify this paragraph: What is the classifier fed, exactly? What is
-  the development partition? Why the development one and not the test
-  one?  What is the size of the reminder? What are (1) and (2)? What
-  is the size of the substring fed to the classifier?  Finally,
-  provide example for the last point.} As a reference point, we
+word (in the case of a boundary position) or word prefix (in the case
+of a word-internal position) ending at the selected character does not overlap
+with the training set. This ensures that a classifier cannot succeed
+by looking for encodings reflecting specific words.
+For each datapoint, we fed a substring of the 40 preceding characters to the CNLM.
+\textbf{%Please  clarify this paragraph: What is the classifier fed, exactly? % I think you have already clarified this in the text
+%  What is   the development partition?
+  Why the development one and not the test one?
+%  What is the size of the reminder?
+%  What are (1) and (2)?
+%  What  is the size of the substring fed to the classifier?
+  Finally,  provide example for the last point.}
+As a reference point, we
 moreover train a diagnostic classifier on the \emph{full} hidden layer
 of the LSTMs.
 

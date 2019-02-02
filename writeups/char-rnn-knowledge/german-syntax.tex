@@ -74,12 +74,12 @@ to track agreement. %
 % between articles and nouns can be learnt from simple corpus
 % statistics, the CNLM has some capability to preserve the relevant
 % information across more than a dozen timesteps.
-The RNN variant is much worse, being outperformed by the n-gram model
-in the adjacent condition, and dropping to random accuracy as more
+The RNN variant is much worse. It is outperformed by the n-gram model
+in the adjacent condition, and it drops to random accuracy as more
 material intervenes. We emphasized at the outset of this section that
-CNLMs have to track agreement features across much longer spans than
-word-based models. The LSTM cell ability to preserve information for
-longer thus plays a crucial role here.
+CNLMs must track agreement across much wider spans than
+word-based models. The LSTM ability to preserve information for
+longer might play a crucial role here.
 
 % Note that, at the character level, even ``adjacent''
 % agreement requires carrying information through multiple time steps
@@ -226,19 +226,19 @@ correct form is longer than the wrong one. As the overall likelihood
 is the product of character probabilities ranging between 0 and 1, if
 this introduces a length bias, it will work against the
 character models. % ~\cite{sountsov2016length}.
-Note also that we embed test phrases into full sentences. We
+Note also that we embed test phrases into full sentences (e.g., \emph{Die Figure hat \textbf{mit der roten} gespielt und meistens gewonnen.} `The figure played with the red one and mostly won'). We
 do this as sentence-initial \emph{mit} is somewhat unnatural and, more
 importantly, because this will disambiguate the final element of the
 phrase as a noun (not an adjective), and exclude the reading in which
 \emph{mit} is a particle not governing the noun phrase of
-interest.
-A full stimulus example with the wrapping sentence is:
-\exg. Die Figure hat mit der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen . \\
-the figure has with the red\ one played and mostly won \\
-\textit{`The figure played with the red one and mostly won.'}
+interest. When running the WordNLM, we excluded OOV adjectives as in
+the previous experiments, but did not apply further OOV filtering to
+the sentence frames.
+% A full stimulus example with the wrapping sentence is:
+% \exg. Die Figure hat mit der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen . \\
+% the figure has with the red\ one played and mostly won \\
+% \textit{`The figure played with the red one and mostly won.'}
 
-When running the WordNLM, we excluded OOV adjectives as in the previous experiments, but did not apply
-further OOV filtering to the sentence frames.
 %\textbf{Add a full stimulus example (with the wrapping
 %  sentence).} \textbf{OOV statistics.}
 
@@ -251,10 +251,8 @@ further OOV filtering to the sentence frames.
 % the last word in the phrase as a nominalization (as opposed to an adjective).
 
 We also created control stimuli where all words up to and including
-the preposition are removed (thus, the example sentence above would
-become: \textit{der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen}).
-%\textbf{add same example with prefix removed}).
-If a model's
+the preposition are removed (the example sentence above becomes:
+\textit{der roten gespielt und meistens gewonnen}). If a model's
 accuracy is lower on these control stimuli than on the full ones, its
 performance cannot be simply explained by the different unigram
 probabilities of the two adjective forms. For the n-gram baseline, we

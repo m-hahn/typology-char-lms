@@ -17,7 +17,7 @@ might be segmenting their input.
 their English CNLM that seems, qualitatively, to be tracking
 morpheme/word boundaries.  Since they trained the model with
 whitespace, the main function of this unit could simply be to predict
-the very frequent whitespace character. We conjecture instead (like they did, before us) that the
+the very frequent whitespace character. We conjecture instead (like them) that the
 ability to segment the input into meaningful items is so important
 when processing language that CNLMs will specialize units for boundary
 tracking even when trained without whitespace.
@@ -94,25 +94,23 @@ word (in the case of a boundary position) or word prefix (in the case
 of a word-internal position) ending at the selected character does not overlap
 with the training set. This ensures that a classifier cannot succeed
 by looking for encodings reflecting specific words.
-For each datapoint, we fed a substring of the 40 preceding characters to the CNLM.
-\textbf{%Please  clarify this paragraph: What is the classifier fed, exactly? % I think you have already clarified this in the text
+For each datapoint, we fed a substring of the 40 preceding characters to the CNLM. %
+%\textbf{Please  clarify this paragraph: What is the classifier fed, exactly? % I think you have already clarified this in the text
 %  What is   the development partition?
-  Why the development one and not the test one?
+%  Why the development one and not the test one?
 %  What is the size of the reminder?
 %  What are (1) and (2)?
 %  What  is the size of the substring fed to the classifier?
-  Finally,  provide example for the last point.}
-As a reference point, we
-moreover train a diagnostic classifier on the \emph{full} hidden layer
-of the LSTMs.
+%  Finally,  provide example for the last point.}
+For reference, we also train a diagnostic classifier on the
+\emph{full} hidden layer of the LSTMs.
 
 Results are shown in Table~\ref{tab:segmentation-results}. The
-LSTM-based full-hidden-layer classifier shows strong performance in
-all 3 languages, confirming that the model encodes information about
-boundaries. Moreover, in all languages, a large proportion of the full
+LSTM-based full-hidden-layer classifier has strong performance in
+all 3 languages, confirming that the model encodes boundary information. Moreover, in all languages, a large proportion of this
 performance is already accounted for by the single-parameter
 classifier using boundary unit activations (the latter even
-out-performs the full classifier in German). This confirms that
+outperforms the full classifier in German). This confirms that
 tracking boundaries is important enough for the network to devote a
 specialized unit to this task. %
 %(first, second and last
@@ -120,8 +118,7 @@ specialized unit to this task. %
 % strong lexicon-based control, suggesting that the model is largely
 % able to keep track of word boundaries.
 Indeed, the single-unit LSTM classifier outperforms the full-layer RNN
-classifier in all languages. RNN performance, while still much higher
-than chance, is lagging behind. The overall weaker performance of RNNs
+classifier in all languages. RNN performance, while above chance, is lagging behind. The weaker performance of RNNs
 in the word-centric tasks of the previous sections might in part be
 due to their poorer ability to track word boundaries. %
 
@@ -234,7 +231,7 @@ and \emph{konnte}), but it also treats them as pseudo-prefixes elsewhere
 3 oversegmentations, \emph{rie}, \emph{run} and \emph{ter} don't have
 any clear interpretation.
 
-Our analyses highlight the fact that the boundary unit, even when
+To conclude, the boundary unit, even when
 analyzed through the lens of a classifier that was optimized on
 word-level segmentation, is actually tracking salient linguistic
 boundaries at different levels. While in many cases these boundaries

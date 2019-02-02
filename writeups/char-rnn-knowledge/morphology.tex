@@ -64,7 +64,7 @@ model make a random guess for OOV items.  The percentage of OOV items
 over the entire dataset, balanced for nouns and verbs, was 92.3\% for
 German and 69.4\% for Italian.
 
-Results are shown in Table~\ref{tab:pos-results}.  All language models
+Results are in Table~\ref{tab:pos-results}.  All language models
 outperform the autoencoders, showing that they learned categories
 based on broader distributional evidence, not just typical strings
 cuing nouns and verbs. Moreover, the LSTM CNLM outperforms the RNN,
@@ -72,7 +72,7 @@ probably because it can track broader contexts. Not surprisingly, the
 word-based model fares better on in-vocabulary words, but the gap,
 especially in Italian, is rather narrow, and there is a strong
 negative impact of OOV
-words (as expected, as WordNLM must make random guesses here). % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
+words (as expected, as WordNLM is at random on them). % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
 
 \begin{table}[t]
 %  \begin{small}
@@ -123,9 +123,7 @@ form plurals through concurrent suffixing and Umlaut. We grouped
 these together with nouns using the same suffix, reserving the Umlaut
 group for nouns \emph{only} undergoing vowel change (e.g.,
 \emph{Saft/S\"afte} `juice(s)' would be an instance of -\emph{e}
-suffixation).
-
-The diagnostic classifier was trained on 15 singulars and plurals
+suffixation). The diagnostic classifier was trained on 15 singulars and plurals
 randomly selected from each training class.  As plural suffixes make
 words longer, we sampled singulars and
 plurals %used rejection sampling \textbf{(cite something?)}
@@ -143,7 +141,7 @@ To control for the impact of training sample selection, we report
 accuracies averaged over 200 random train-test splits and
 standard errors over these splits. %   We extract word representations as
 % above, and we compare the same models.
-The percentage of WordNLM OOV items was 45.0\% in the training classes,
+For WordNLM OOV, there were 45.0\% OOVs in the training classes,
 49.1\% among the -\emph{r} forms, and 52.1\% for Umlaut.
 %\textbf{MICHAEL: I didn't
 %  realize you selected matched singular/plural pairs. Is this the
@@ -152,26 +150,24 @@ The percentage of WordNLM OOV items was 45.0\% in the training classes,
 %  singular? I think that's what matters, or else the high performance
 %  in the full data-set would be miraculous...}
 
-Results are summarized in Table \ref{tab:number-results-e}. The
-classifier based on word embeddings is the most successful,
-outperforming in most cases the best CNLM even in the more cogent
-OOV-inclusive evaluation. This confirms the common observation that
-word embeddings reliably encode number
-\cite{Mikolov:etal:2013a}. Again, the LSTM-based CNLM is better than
-the RNN, but both significantly outperform the autoencoder. The latter
-is near-random on new class prediction, confirming that we properly
-controlled for orthographic confounds.
-
-Even for the better LSTM CNLM, we observe a considerable drop in
-performance between generalization to -\emph{r} and Umlaut. On the one
-hand, the fact that performance is still clearly above chance (and
-autoencoder) in the latter condition shows that the LSTM CNLM has a
-somewhat abstract notion of number not tied to specific orthographic
-exponents. On the other, the -\emph{r} vs.~Umlaut difference suggests
-that the generalization is not completely abstract, as it works more
-reliably when the target is a new suffixation pattern, albeit one that
-is distinct from those seen in (diagnostic-classifer) training, than
-when it is a purely non-concatenative process.
+Results are in Table \ref{tab:number-results-e}. The classifier based
+on word embeddings is the most successful, outperforming in most cases
+the best CNLM even in the more cogent OOV-inclusive evaluation. This
+confirms the common observation that word embeddings reliably encode
+number \cite{Mikolov:etal:2013a}. Again, the LSTM-based CNLM is better
+than the RNN, but both significantly outperform the autoencoder. The
+latter is near-random on new class prediction, confirming that we
+properly controlled for orthographic confounds. Even for the better
+LSTM CNLM, we observe a considerable drop in performance between
+generalization to -\emph{r} and Umlaut. On the one hand, the fact that
+performance is still clearly above chance (and autoencoder) in the
+latter condition shows that the LSTM CNLM has a somewhat abstract
+notion of number not tied to specific orthographic exponents. On the
+other, the -\emph{r} vs.~Umlaut difference suggests that the
+generalization is not completely abstract, as it works more reliably
+when the target is a new suffixation pattern, albeit one that is
+distinct from those seen in (diagnostic-classifer) training, than when
+it is a purely non-concatenative process.
 
 % We found that training classes tend to have an unstressed final -e- in
 % the plural only, either as a plural ending (\emph{Abend} `evening' $\rightarrow$ \emph{Abend-e}) or as an epenthetic vowel

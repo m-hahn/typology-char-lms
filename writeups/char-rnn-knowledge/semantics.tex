@@ -36,7 +36,7 @@ whitespace from this corpus as well).
 % of the 50,000 most common words in the in-domain training set.}
 %For comparison, we report results (KN5 from , LSTM from ) from previous work that were trained on the 19th century novels dataset (but the LSTM from that work had Glove embeddings). % \cite{zhang2016top} has a nice table if we want to report more
 
-Results are shown in Table~\ref{tab:msr-completion-results}.  We
+Results are in Table~\ref{tab:msr-completion-results}.  We
 confirm the importance of in-domain training, as the models
 trained on Wikipedia perform poorly (but still above chance level,
 which is at 20\%).  With in-domain training, the LSTM CNLM outperforms
@@ -44,12 +44,10 @@ many earlier word-level neural models, and is only slightly below our
 WordNLM. %, and approaches the best published results.
 %, held by approaches developed for the completion task \cite{woods2016exploiting}.
 % The best results I could find, https://github.com/ctr4si/sentence-completion, are much better than the best peer-reviewed published ones
-The vanilla RNN is not successful even when trained in-domain,
+The RNN is not successful even when trained in-domain,
 contrasting with the \emph{word}-based vanilla RNN from the
 literature, whose performance, while still below LSTMs, is much
-stronger. Once more, this suggests that word-level generalizations can
-be captured by word-lexicon-less character models, but the long-span
-processing abilities of LSTMs are crucial for such models to succeed.
+stronger. Once more, this suggests that capturing word-level generalizations with a word-lexicon-less character model requires the long-span processing abilities of an LSTM.
 
 %The WordNLM shows a
 % slight boost over the

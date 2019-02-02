@@ -46,30 +46,29 @@ in its recurrent weights. This suggests a radically different view of
 lexical knowledge as implicitly encoded in a distributed memory, that
 we intend to characterize more precisely and test in future work.
 
-Concerning the model input, we would like to study to what extent the
-linguistic abilities of the CNLM depend on the huge amount of
-data it sees.  Will the word prior become more important when learning
-from smaller corpora? In terms of comparison with human learning, the
-Wikipedia text our CNLMs receive as input is far from what children
-acquiring a language would hear. Future work should explore
-character/phoneme-level learning from corpora of child-directed
-speech. Still, arguably, by feeding our networks long-winded grown-up
-prose, we are making the job of identifying basic constituents harder
-than it might be when processing the short utterances characterizing
-early child-directed speech \cite{Tomasello:2003}.
+Concerning the model input, we would like to study whether the
+CNLM successes crucially depend on the huge amount
+of training data it receives.  Are word priors more important when
+learning from smaller corpora? In terms of comparison with human
+learning, the Wikipedia text we fed our CNLMs is far from
+what children acquiring a language would hear. Future work should
+explore character/phoneme-level learning from child-directed speech
+corpora. Still, by feeding our networks ``grown-up'' prose, we are
+arguably making the job of identifying basic constituents harder than
+it might be when processing the simpler utterances of early
+child-directed speech \cite{Tomasello:2003}.
 
-Finally, as we discussed, a rigid notion of word is problematic both
+As discussed, a rigid word notion is problematic both
 cross-linguistically (cf.~polysynthetic and agglutinative languages)
-and within a single linguistic system \cite[cf.~the common view that
+and within single linguistic systems \cite[cf.~the view that
 the lexicon hosts units at different levels of the linguistic
 hierarchy, from morphemes to large syntactic constructions,
-e.g.,][]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. In this
-perspective, the current paper provides a necessary preliminary check
-that a word-free model can account for phenomena traditionally
-regarded as word-based. However, future work should test whether such
+e.g.,][]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. This study provided a necessary initial check
+that word-free models can account for phenomena traditionally
+seen as word-based. Future work should test whether this
 model can also account for grammatical patterns that are harder to
-capture in word-based formalisms, looking both at a typologically
-wider range of language and at a broader range of grammatical tests.
+capture in word-based formalisms, exploring both at a typologically
+wider range of languages and a broader set of grammatical tests.
 
 
 

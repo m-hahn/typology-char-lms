@@ -14,9 +14,7 @@ and ungrammatical phrases illustrating the phenomenon of interest, and
 let the language model assign a likelihood to all items in the
 set. The language model is said to ``prefer'' the grammatical variant
 if it assigns a higher likelihood to it than to its ungrammatical
-counterparts.
-
-We must stress two methodological points. First, since a
+counterparts. We must stress two methodological points. First, since a
 character-level language model assigns a probability to each character
 of a phrase, and the phrase likelihood is the product of these values
 (all between 0 and 1), minimal sets must be controlled for character
@@ -32,9 +30,7 @@ example, \emph{Baum} could be the beginning of the feminine noun
 requirements on the article. So, until the model finds evidence that
 it fully parsed the head noun, it cannot reliably check
 agreement. This will typically require parsing at least the full noun
-and the first character following it.
-
-We again focus on German and Italian, as their richer inflectional
+and the first character following it. We again focus on German and Italian, as their richer inflectional
 morphology simplifies the task of constructing balanced minimal sets.
 
 

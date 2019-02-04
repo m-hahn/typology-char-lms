@@ -1,10 +1,10 @@
-\documentclass{article}
+\documentclass{article}[11pt,a4paper,oneside]
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
 
 \usepackage{linguex}
 
-\title{Response to Editor and Reviewers}
+\title{Response to Editor and Reviewers \\ {\large Submission \#1561; Original Action Editor: Adam Lopez}}
 \date{February 2019}
 
 \usepackage{natbib}
@@ -442,7 +442,7 @@ We have revised all the sections, with headers explaining the general methodolog
 
 \textbf{line 242, the models were not trained until validation accuracy plateaued? That does not seem standard.  How can we know if these models are fit to compare against each other if we're not sure they're done training?}
 
-This is an important point. We simply did not have enough resources available to train for longer than we did . We now added footnote 6 stressing this: ``This was due to resource availability. The reasonable language-modeling results in Table1 suggest that no model is seriously underfit, but the weaker overall RNN results in particular should be interpreted in the light of the following qualification:  models are compared \emph{given equal amount of training, but possibly at different convergence stages}.''
+This is an important point. We simply did not have enough resources available to train for longer than we did. We now added footnote 6 stressing this: ``\textit{This was due to resource availability. The reasonable language-modeling results in Table1 suggest that no model is seriously underfit, but the weaker overall RNN results in particular should be interpreted in the light of the following qualification:  models are compared} \emph{given equal amount of training, but possibly at different convergence stages}.''
 \newline
 
 \textbf{The citations for the figures/tables are missing a lot of information.  It's nice to not have to scan through the text to figure out what each figure is showing, and many of the important details are left out of the figures+captions (e.g. the acceptable/unacceptable order in Table 2, what model is used to do the clustering in figure 1).  This is a little of personal preference (which is why I include it here in the minor comments), but it makes for an annoying first skim of the paper if you can't figure out any of the figures without.  E.g. the caption for Table 5: ``word class accuracy with standard errors. ...''  For what task???}

@@ -26,8 +26,10 @@ To look for ``boundary units'', we created a random set of 10,000
 positions from the training set, balanced between those corresponding
 to a word-final character and those occurring word-initially or
 word-medially.  We then computed, for each hidden unit, the Pearson
-correlation between its activations and a dummy variable coding
-word-final position. For each language and model (LSTM or RNN), we
+correlation between its activations and a binary variable that was 1 at
+word-final positions and 0 at all other positions. %dummy variable coding
+%word-final position.
+For each language and model (LSTM or RNN), we
 found very few units with a high correlation score, suggesting that
 the models have indeed specialized units for boundary tracking. We
 further study the units with the highest correlations, that are, for

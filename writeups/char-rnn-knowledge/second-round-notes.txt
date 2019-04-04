@@ -21,23 +21,6 @@ link 962: "aditional dataspoints"
 
 > done
 
-This paper asks whether neural nets, trained on a simple language modeling
-objective with character-based, non-word delimited text as input nonetheless
-pick up a sensitivity to words as recognized by speakers (and marked with
-white space in the orthography). With experiments on German, Italian and
-English, concerning morhpological categories, agreement, and sentence
-completion, the authors show that the models are picking up on words as a
-significant unit. They furthermore follow the methodology of
-Kementchedjhieva and Lopez (2018) to investigate whether the NNs devote
-'units' to boundary detection and find that they do.
-
-This is a resubmission for which I was previously reviewer A. I find that
-the revised paper is much stronger -- clearer, more focused, and without the
-problematic overclaims of the original. I have a very contentful remarks +
-some stylistic points below. I believe this paper should be accepted with
-minor revisions.
-
-Contentful comments:
 
 ln 070-073: I'd like a citation or two substantiating the claim that this is
 standard.
@@ -66,7 +49,7 @@ prepositional phrase, omitting sentences.": This use of "omitting" makes it
 sound like were tested on both PPs and sentences. But surely that's not
 right?
 
->
+> done
 
 ln 737 "We required moreover the -a and -o forms of a noun to be reasonably
 balanced in frequency (neither form is twice more frequent than the other),"
@@ -91,24 +74,33 @@ neurons for each word in the human brain.
 
 ln 013 reached -> has reached
 > done
+
 ln 135 is -> are
 > done
+
 ln 178 "that CLNMs hierarchical structure": Missing 'model'?
 > done
+
 ln 212 work -> word
 > done
+
 ln 559 The sentence final . in the middle of a parenthetical that is itself
 embedded in a sentence is awkward.
-> 
+> TODO change to a semicolon?
+
 ln 724 "Italian has a relatively extended paradigm": This led me to expect
 lots of suffixes, not lots of stems. I'd suggest revising this.
 > done
+
 ln 822 capable to track -> capable of tracking
 > done
+
 ln 1042, 1048: ' -> ` x2
 > done
+
 ln 1121 input, -> input
 > ?
+
 ln 1126 latter ability -> latter's ability
 > done
 
@@ -159,7 +151,9 @@ possibilities for autoencoders (sparse, overcomplete...) and the current
 version entirely misses to describe the autoencoder exp. setup. it could be
 added as a paragraph at the end of Section 4.
 
->
+> Added footnote for architectural details of autoencoder.
+
+> TODO let's make sure the reader understands what random baseline is. Is there a citation for LSTM autoencoders?
 
 - "the very notion of what counts as a word" - this is in fact an important
 general question, there must be a less recent reference, before 2017?
@@ -194,12 +188,13 @@ experiments..). ;)
 sentences. "... It outperforms.."
 >
 - line 473: "near-random" -> add random baseline to table
->
+> done
 - line 514: "controlled for character length" - I might have missed how this
 has been done
 >
 - line 570: comma in number (in a few other places as well)
-> 
+> done (maybe still missing a few)
+
 - line 936: nice example with Hauptaufgabe!
 - line 1042: ' -> `
 > done
@@ -219,8 +214,7 @@ http://aclweb.org/anthology/E/E17/E17-1074.pdf
 unclear to me. How exactly twas this per-neuron correlation done, how was
 this dummy-variable derived?
 
->
-
+> I made the definition of the dummy variable more explicit. Feel free to change.
 
 However, I did not feel that the overall setting of removing word boundaries
 is sufficiently argumented or justified. The motivation seems to be that
@@ -306,7 +300,7 @@ Spelling errors:
 L178: I think a word is missing
 > done
 L180: Unnecessary comma
->
+> ?
 L963: dataspoints
 > done
 

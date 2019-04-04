@@ -49,7 +49,8 @@ While we controlled for suffixes as described above, it could still be
 the case that other substrings reliably cue verbs or nouns. We thus
 considered a baseline trained on word-internal information only,
 namely a character-level LSTM autoencoder trained to reconstruct words
-in isolation.  The hidden state of the autoencoder should capture
+in isolation.\footnote{Hyperparameters were chosen using random search, as for the language models, details are in supplementary material to be made available upon publication. Chosen architecture: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
+The hidden state of the autoencoder should capture
 discriminating orthographic features, but, by design, the latter has
 no access to broader contexts.  We further considered word embeddings
 from the output layer of the WordNLM. Unlike CNLMs, the WordNLM cannot
@@ -89,7 +90,7 @@ words (as expected, as WordNLM is at random on them). % Figure~\ref{fig:pos-indu
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.} % (20 training examples)
+	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results. Random baseline accuracy is 50\%.} % (20 training examples)
 \end{table}
 
 
@@ -223,7 +224,7 @@ it is a purely non-concatenative process.
   \end{center}
   \caption{\label{tab:number-results-e} German number classification
 	accuracy , with standard errors computed from 200 random train-test % when controlling for -\emph{e}-
-    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results.}
+    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results. Random baseline accuracy is 50\%.}
 \end{table}
 
 

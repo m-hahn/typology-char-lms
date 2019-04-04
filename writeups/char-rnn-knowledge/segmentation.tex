@@ -87,7 +87,7 @@ test the classifier, we randomly selected positions from the
 test partition of the Wikipedia corpus, such that half of these were the last character
 of a token, and the other half were not.  We collected 1,000 such
 points as training data for the diagnostic classifiers, and used 1M
-aditional dataspoints for testing.  Both training and test sets of the classifier were
+aditional datapoints for testing.  Both training and test sets of the classifier were
 balanced between boundaries and word-internal positions.
 We sampled the test data points subject to the constraint that the
 word (in the case of a boundary position) or word prefix (in the case
@@ -214,7 +214,7 @@ In Table~\ref{tab:segmentation-results-real}, we report corresponding results on
 
 \paragraph{Error analysis} As a final way to characterize the function and behaviour of the
 boundary units, we inspected the most frequent under- and
-over-segmentation errors made by the classifier based on them. We
+over-segmentation errors made by the classifier based on the single boundary units. We
 discuss German here, as it is the language where the classifier
 reaches highest accuracy, and its tendency to have long,
 morphologically complex words makes it particularly
@@ -226,13 +226,13 @@ majority (24/30) are common sequences of grammatical terms or very
 frequent items that can sometimes be reasonably be re-analyzed as
 single function words or adverbs (e.g., \emph{bis zu}, `up to'
 (lit.~`until to'), \emph{je nach} `depending on' (lit.~`per after'),
-\emph{bis heute} `to date' (lit.~'until today'). 3 cases are
+\emph{bis heute} `to date' (lit.~`until today'). 3 cases are
 multi-word city names (\emph{Los Angeles}). The final 3 cases
 interestingly involve \emph{Bau} `building' followed by \emph{von}
 `of' and genitive determiners \emph{der/des}. In its eventive reading,
 this noun requires a patient licensed by either a preposition or the
 genitive determiner, e.g., \emph{Bau der Mauer} `building of the wall'
-(lit.~'building the-GEN wall'). Apparently the model decided to absorb
+(lit.~`building the-GEN wall'). Apparently the model decided to absorb
 the case assigner into the form of the noun.
 
 We looked next at the 30 most common oversegmentations, that is, at the

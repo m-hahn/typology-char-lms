@@ -43,7 +43,7 @@ space than predicting at the word
 level). \newcite{Sutskever:etal:2011} and
 \newcite{DBLP:journals/corr/Graves13} ran qualitative analyses showing
 that CNLMs capture basic linguistic properties in their input. The
-latter, who used LSTM cells, also showed, qualitatively, that CNLMs
+latter, who used LSTM cells, also showed, qualitatively, that CNLMs model
 hierarchical structure. In particular, they balance parentheses
 correctly when generating text. %
 % Our aim here is to understand to what extent CNLMs trained on
@@ -76,7 +76,7 @@ segmentation. \newcite{Christiansen:etal:1998} trained a RNN on
 phoneme-level language modeling of transcribed child-directed speech
 with tokens marking utterance boundaries, and found that the network
 learned to segment the input by predicting the utterance boundary
-symbol also at work edges. More recently, \newcite{Sennrich:2017}
+symbol also at word edges. More recently, \newcite{Sennrich:2017}
 explored the grammatical properties of character- and
 subword-unit-level models that are used as components of a machine
 translation system. He concluded that current character-based decoders

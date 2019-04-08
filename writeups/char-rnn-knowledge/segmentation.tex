@@ -80,23 +80,33 @@ are encountered.
 	}\label{fig:word-unit}
 \end{figure*}
 
-\paragraph{Detecting word boundaries} To gain a more quantitative understanding of how well the boundary
-unit is tracking word boundaries, we trained a single-parameter
-diagnostic classifier on the activation of the unit (the classifier
-simply sets an optimal threshold on the unit activation to separate
-word boundaries from word-internal positions). To train and
-test the classifier, we randomly selected positions from the
-test partition of the Wikipedia corpus, such that half of these were the last character
-of a token, and the other half were not.  We collected 1,000 such
-points as training data for the diagnostic classifiers, and used 1M
-aditional datapoints for testing.  Both training and test sets of the classifier were
-balanced between boundaries and word-internal positions.
-We sampled the test data points subject to the constraint that the
-word (in the case of a boundary position) or word prefix (in the case
-of a word-internal position) ending at the selected character does not overlap
-with the training set. This ensures that a classifier cannot succeed
-by looking for encodings reflecting specific words.
-For each datapoint, we fed a substring of the 40 preceding characters to the CNLM. %
+\paragraph{Detecting word boundaries} To gain a more quantitative
+understanding of how well the boundary unit is tracking word
+boundaries, we trained a single-parameter diagnostic classifier on the
+activation of the unit (the classifier simply sets an optimal
+threshold on the unit activation to separate word boundaries from
+word-internal positions). We ran two experiments. In the first,
+following standard practice in word segmentation, we trained the
+classifier on a sequence of 1,000 characters and tested it on 1M
+additional characters of running text, both taken from the left-out
+Wikipedia test partitions. We report F1
+performance on this task. We also considered a more cogent evaluation
+regime, in which we split training and test data so that the number of
+boundary and non-boundary conditions are balanced, and there is no
+overlap between test and training words\ldots \textbf{TBC} To train
+and test the classifier, we randomly selected positions from the test
+partition of the Wikipedia corpus, such that half of these were the
+last character of a token, and the other half were not.  We collected
+1,000 such points as training data for the diagnostic classifiers, and
+used 1M aditional datapoints for testing.  Both training and test sets
+of the classifier were balanced between boundaries and word-internal
+positions.  We sampled the test data points subject to the constraint
+that the word (in the case of a boundary position) or word prefix (in
+the case of a word-internal position) ending at the selected character
+does not overlap with the training set. This ensures that a classifier
+cannot succeed by looking for encodings reflecting specific words.
+For each datapoint, we fed a substring of the 40 preceding characters
+to the CNLM. %
 %\textbf{Please  clarify this paragraph: What is the classifier fed, exactly? % I think you have already clarified this in the text
 %  What is   the development partition?
 %  Why the development one and not the test one?

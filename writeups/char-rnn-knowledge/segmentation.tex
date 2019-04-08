@@ -86,27 +86,27 @@ boundaries, we trained a single-parameter diagnostic classifier on the
 activation of the unit (the classifier simply sets an optimal
 threshold on the unit activation to separate word boundaries from
 word-internal positions). We ran two experiments. In the first,
-following standard practice in word segmentation, we trained the
-classifier on a sequence of 1,000 characters and tested it on 1M
-additional characters of running text, both taken from the left-out
-Wikipedia test partitions. We report F1
-performance on this task. We also considered a more cogent evaluation
-regime, in which we split training and test data so that the number of
-boundary and non-boundary conditions are balanced, and there is no
-overlap between test and training words\ldots \textbf{TBC} To train
-and test the classifier, we randomly selected positions from the test
-partition of the Wikipedia corpus, such that half of these were the
-last character of a token, and the other half were not.  We collected
-1,000 such points as training data for the diagnostic classifiers, and
-used 1M aditional datapoints for testing.  Both training and test sets
-of the classifier were balanced between boundaries and word-internal
-positions.  We sampled the test data points subject to the constraint
-that the word (in the case of a boundary position) or word prefix (in
-the case of a word-internal position) ending at the selected character
-does not overlap with the training set. This ensures that a classifier
-cannot succeed by looking for encodings reflecting specific words.
-For each datapoint, we fed a substring of the 40 preceding characters
-to the CNLM. %
+following standard practice, we trained and tested the classifier on
+uncontrolled running text. We used 1k characters for training, 1M for
+testing, both taken from the left-out Wikipedia test partitions. We
+will report F1 performance on this task. We also considered a more cogent
+evaluation regime, in which we split training and test data so that
+the number of boundary and non-boundary conditions are balanced, and
+there is no overlap between training and test words. Specifically, we
+randomly selected positions from the test partitions of the Wikipedia
+corpus, such that half of these were the last character of a token,
+and the other half were not.  % Both
+% training and test sets of the classifier were balanced between
+% boundaries and word-internal positions.
+We sampled the test data points subject to the constraint that the
+word (in the case of a boundary position) or word prefix (in the case
+of a word-internal position) ending at the selected character does not
+overlap with the training set. This ensures that a classifier cannot
+succeed by looking for encodings reflecting specific words.  For each
+datapoint, we fed a substring of the 40 preceding characters to the
+CNLM. %
+We collected 1,000 such points for training, and tested on 1M additional datapoints. In this
+case, we will report classification accuracy as figure of merit.
 %\textbf{Please  clarify this paragraph: What is the classifier fed, exactly? % I think you have already clarified this in the text
 %  What is   the development partition?
 %  Why the development one and not the test one?
@@ -114,43 +114,39 @@ to the CNLM. %
 %  What are (1) and (2)?
 %  What  is the size of the substring fed to the classifier?
 %  Finally,  provide example for the last point.}
-For reference, we also train a diagnostic classifier on the
-\emph{full} hidden layer of the LSTMs.
+For reference, in both experiments we also trained diagnostic
+classifiers on the \emph{full} hidden layer of the LSTMs.
 
-Results are shown in Table~\ref{tab:segmentation-results}. The
-LSTM-based full-hidden-layer classifier has strong performance in
-all 3 languages, confirming that the model encodes boundary information. Moreover, in all languages, a large proportion of this
+Looking at the F1 results on uncontrolled running text (Table
+\ref{tab:segmentation-results-real}), we observe first that the
+LSTM-based full-hidden-layer classifier has strong performance in all
+3 languages, confirming that the LSTM model encodes boundary
+information.  Moreover, in all languages, a large proportion of this
 performance is already accounted for by the single-parameter
-classifier using boundary unit activations (the latter even
-outperforms the full classifier in German). This confirms that
+classifier using boundary unit activations. This confirms that
 tracking boundaries is important enough for the network to devote a
-specialized unit to this task. %
+specialized unit to this task. Full-layer RNN results are below
+LSTM-level but still strong. There is however a
+stronger drop from full-layer to single-unit classification. This is in
+line with the fact that, as reported above, the candidate RNN boundary units have lower
+boundary correlations than the LSTM ones.
+
+Results for the balanced classifiers tested on new-word
+generalization are shown in Table~\ref{tab:segmentation-results}
+(because of the different nature of the experiments, these
+are not directly comparable to the F1 results above). Again, we
+observe a strong performance of the LSTM-based full-hidden-layer
+classifier across the board. The LSTM
+single-parameter classifier using boundary unit activations is also strong,  even outperforming the full classifier in German. %
 %(first, second and last
 % columns). Performance of the LSTM CNLM closely matches that of the
 % strong lexicon-based control, suggesting that the model is largely
 % able to keep track of word boundaries.
-Indeed, the single-unit LSTM classifier outperforms the full-layer RNN
-classifier in all languages. RNN performance, while above chance, is lagging behind. The weaker performance of RNNs
-in the word-centric tasks of the previous sections might in part be
-due to their poorer ability to track word boundaries. %
-
-\begin{table}[t]
-	\small
-  \begin{center}
-    \begin{tabular}{l|l|l|l|l|}
-      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
-            \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
-      \hline
-      English & 77.5 & 65.9 & 90.0 & 76.8\\ 
-      German  & 80.8 & 67.0 & 79.7 & 75.8\\ 
-      Italian & 75.5 & 71.4 & 82.9 & 75.9\\ 
-    \end{tabular}
-  \end{center}
-  \caption{\label{tab:segmentation-results} Accuracy of word boundary diagnostic classifiers trained on single boundary unit or full hidden state. Chance accuracy is at 50\%.}
-\end{table}
-
-
-In Table~\ref{tab:segmentation-results-real}, we report corresponding results on real text. That is, we sampled training and testing data for the diagnostic classifiers as before, but witout the constraint that boundaries and non-boundaries be balanced.
+Moreover, in this more cogent setup, the single-unit LSTM classifier
+outperforms the full-layer RNN classifier in all languages. The weaker
+results of RNNs in the word-centric tasks of the previous sections
+might in part be due to their poorer overall ability to track word boundaries,
+as specifically suggested by this stricter evaluation setup. %
 
 \begin{table}[t]
 	\small
@@ -164,8 +160,40 @@ In Table~\ref{tab:segmentation-results-real}, we report corresponding results on
 	    Italian & 85.6  &  71.3 & 92.2 & 91.5 \\ 
     \end{tabular}
   \end{center}
-  \caption{\label{tab:segmentation-results-real} F1 of word boundary diagnostic classifiers trained on single boundary unit or full hidden state, on real continuous text.}
+  \caption{\label{tab:segmentation-results-real} F1 of single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on uncontrolled running text.}
 \end{table}
+
+\begin{table}[t]
+	\small
+  \begin{center}
+    \begin{tabular}{l|l|l|l|l|}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
+            \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
+      \hline
+      English & 77.5 & 65.9 & 90.0 & 76.8\\ 
+      German  & 80.8 & 67.0 & 79.7 & 75.8\\ 
+      Italian & 75.5 & 71.4 & 82.9 & 75.9\\ 
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results} Accuracy of  single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on balanced data requiring new-word generalization. Chance accuracy is at 50\%.}
+\end{table}
+
+% In Table~\ref{tab:segmentation-results-real}, we report corresponding results on real text. That is, we sampled training and testing data for the diagnostic classifiers as before, but witout the constraint that boundaries and non-boundaries be balanced.
+
+% \begin{table}[t]
+% 	\small
+%   \begin{center}
+%     \begin{tabular}{l|l|l|l|l|}
+%       \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
+%             \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
+%       \hline
+% 	    English & 87.7  &  65.6 & 93.0 & 90.5 \\ 
+% 	    German  & 86.6  &  70.4 & 91.9 & 85.0 \\ 
+% 	    Italian & 85.6  &  71.3 & 92.2 & 91.5 \\ 
+%     \end{tabular}
+%   \end{center}
+%   \caption{\label{tab:segmentation-results-real} F1 of word boundary diagnostic classifiers trained on single boundary unit or full hidden state, on real continuous text.}
+% \end{table}
 
 % # python detectBoundariesUnit_Hidden_ExtractPattern_NoWhitespace_Classifier_RealText.py --language english  --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 200 --char_noise_prob 0.0 --hidden_dim 1024 --language english --layer_num 3 --learning_rate 3.6  --myID 282506230 --load-from wiki-english-nospaces-bptt-282506230 --weight_dropout_hidden 0.01 --weight_dropout_in 0.0
 
@@ -224,28 +252,30 @@ In Table~\ref{tab:segmentation-results-real}, we report corresponding results on
 %   \caption{\label{tab:segmentation-unit-results} Accuracy of threshold classifier based on `word' unit in distinguishing word boundaries from word-internal positions. Random baseline accuracy is 50 \%.}
 % \end{table}
 
-\paragraph{Error analysis} As a final way to characterize the function and behaviour of the
-boundary units, we inspected the most frequent under- and
-over-segmentation errors made by the classifier based on the single boundary units. We
+\paragraph{Error analysis} As a final way to characterize the function
+and behaviour of the boundary units, we inspected the most frequent
+under- and over-segmentation errors made by the classifier based on
+the single boundary units, in the more difficult balanced task. We
 discuss German here, as it is the language where the classifier
 reaches highest accuracy, and its tendency to have long,
 morphologically complex words makes it particularly
 interesting. However, similar patterns were also detected in Italian
 and, to a lesser extent, English (in the latter, there are fewer and
-less interpretable common oversegmentations, probably because words are
-on average shorter and morphology more limited). Considering first the 30 most common undersegmentations, the large
-majority (24/30) are common sequences of grammatical terms or very
-frequent items that can sometimes be reasonably be re-analyzed as
-single function words or adverbs (e.g., \emph{bis zu}, `up to'
-(lit.~`until to'), \emph{je nach} `depending on' (lit.~`per after'),
-\emph{bis heute} `to date' (lit.~`until today'). 3 cases are
-multi-word city names (\emph{Los Angeles}). The final 3 cases
-interestingly involve \emph{Bau} `building' followed by \emph{von}
-`of' and genitive determiners \emph{der/des}. In its eventive reading,
-this noun requires a patient licensed by either a preposition or the
-genitive determiner, e.g., \emph{Bau der Mauer} `building of the wall'
-(lit.~`building the-GEN wall'). Apparently the model decided to absorb
-the case assigner into the form of the noun.
+less interpretable common oversegmentations, probably because words
+are on average shorter and morphology more limited). Considering first
+the 30 most common undersegmentations, the large majority (24/30) are
+common sequences of grammatical terms or very frequent items that can
+sometimes be reasonably be re-analyzed as single function words or
+adverbs (e.g., \emph{bis zu}, `up to' (lit.~`until to'), \emph{je
+  nach} `depending on' (lit.~`per after'), \emph{bis heute} `to date'
+(lit.~`until today'). 3 cases are multi-word city names (\emph{Los
+  Angeles}). The final 3 cases interestingly involve \emph{Bau}
+`building' followed by \emph{von} `of' and genitive determiners
+\emph{der/des}. In its eventive reading, this noun requires a patient
+licensed by either a preposition or the genitive determiner, e.g.,
+\emph{Bau der Mauer} `building of the wall' (lit.~`building the-GEN
+wall'). Apparently the model decided to absorb the case assigner into
+the form of the noun.
 
 We looked next at the 30 most common oversegmentations, that is, at the
  substrings that were wrongly segmented out of the largest

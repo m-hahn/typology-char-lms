@@ -23,7 +23,7 @@ this interest \cite[e.g.,][]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,
 
 The standard pre-processing pipeline of modern RNNs assumes that the
 input has been tokenized into word units that are pre-stored in the
-RNN vocabulary. This is a reasonable practical approach, but it makes
+RNN vocabulary \cite{Goldberg:2017}. This is a reasonable practical approach, but it makes
 simulations less interesting from a linguistic point of view. First,
 discovering words (or other primitive constituents of linguistic structure) is one of the major challenges a learner faces, and
 by pre-encoding them in the RNN we are facilitating its task in an
@@ -52,9 +52,14 @@ This setup is almost as \emph{tabula rasa} as it gets. By using
 unsegmented orthographic input (and assuming that, in the alphabetic
 writing systems we work with, there is a reasonable correspondence
 between letters and phonetic segments), we are only postulating that
-the learner figured out how to segment the continuous speech stream
-into phonological units, an ability children already possess few
-months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}.
+the learner figured out how to map the continuous speech stream to a
+sequence of phonological units, an ability children already possess
+few months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}. We
+believe that focusing on language modeling of an unsegmented phoneme
+sequence, abstracting away from other complexities of a fully realistic
+child language acquisition setup, is particularly instructive, in
+terms of the kind of linguistic constituents that will implicitly
+emerge.
 
 We evaluate our character-level networks on a bank of linguistic tests
 in German, Italian and English. We focus on these languages due to

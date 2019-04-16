@@ -50,14 +50,15 @@ problems.\footnote{TreeTagger occasionally failed to remove the
 of 9,742 adjectives to sample from, also used in subsequent
 experiments.  74.9\% of these were OOV for the WordNLM.  In the third
 and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr
-  extrem}) intervene between article and adjective. These do
-not cue gender either. We obtained 2,290 (m.), 2,261 (f.), and 1,111 (n.)
-stimuli, respectively. We constructed an n-gram baseline picking the
-article most frequently occurring before the phrase in the training
-data, breaking ties randomly. OOVs were excluded from WordNLM
-evaluation, resulting in an easier test for this rival model. However,
-here and in the next two tasks, CNLM performance on this reduced set
-was only slightly better, and we do not report it here.
+  extrem}) intervene between article and adjective. These do not cue
+gender either. We obtained 2,290 (m.), 2,261 (f.), and 1,111 (n.)
+stimuli, respectively. To control for surface co-occurrence statistics
+in the input, we constructed an n-gram baseline picking the article
+most frequently occurring before the phrase in the training data,
+breaking ties randomly. OOVs were excluded from WordNLM evaluation,
+resulting in an easier test for this rival model. However, here and in
+the next two tasks, CNLM performance on this reduced set was only
+slightly better, and we do not report it here.
 
 Results are presented in Figure \ref{fig:german-syntax}
 (left). WordNLM performs best, followed by the LSTM CNLM.  The n-gram

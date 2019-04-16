@@ -1,3 +1,5 @@
+* EDITOR
+
 MANDATORY CHANGE: The reviewers agree that the word boundary
 finding is the most interesting part of the paper. But you
 don't show what word recognition rates are on actual
@@ -8,7 +10,6 @@ measure. (90% for English on the artificial data set doesn't
 tell me how well your model segments real text.)
 
 > done
-
 
 line 995: perhaps add that the error analysis is for the
 "single unit" classifier (can be inferred only from the
@@ -21,48 +22,50 @@ link 962: "aditional dataspoints"
 
 > done
 
+* Reviewer A
 
 ln 070-073: I'd like a citation or two substantiating the claim that this is
 standard.
 
-> 
+> We added a reference to Yoav Goldberg's book, as it described various standard architectures.
+
 
 ln 192: What is the connection between the prior work in this paragraph and
 your work?
 
-> 
+>  We cite this work for completeness. We added an explicit statement that it is only distantly related to ours, in the sense of being work focusing on the character level.
 
 ln 222: "Radford et al. (2017) focused on CNLMs deployed in the domain of
 sentiment analysis." The fact that they were working on sentiment analysis
 doesn't seem relevant to the current discussion. What did they learn about
 CLNMs? Why is this paper relevant?
 
-> 
+> There is some relation, in that they also find a specialized "grandma cell", in their case specialized to sentiment tracking. We now make this connection explicit.
 
 ln 242: Here, too, I miss a brief statement of why your questions are the
 logiacl next step to take.
 
-> 
+> We added an explicit discussion of why this matter for us, and how it relates to our own work.
 
 ln 689 "For the n-gram baseline, we only counted occurrences of the
 prepositional phrase, omitting sentences.": This use of "omitting" makes it
 sound like were tested on both PPs and sentences. But surely that's not
 right?
 
-> done
+> Thanks, we rephrased.
 
 ln 737 "We required moreover the -a and -o forms of a noun to be reasonably
 balanced in frequency (neither form is twice more frequent than the other),"
 Why? How does this decision contribute/relate to the overall research goal?
 
->
+> We wanted to minimize confounds due to a frequency imbalance: For example, the model might be more likely to default to one gender for rare words, or the like.
 
 ln 947 "Again, in left-to-right processing, the unit has a tendency to
 immediately posit boundaries when frequent function words are encountered."
 This suggests a way in which NN processing is quite unlike human processing,
 which can recover from incorrect decisions in light of further information.
 
->
+> Thanks for this interesting point. That is certainly a fundamental difference between unidirectional recurrent networks and humans. We would expect human subjects to however do similar temporary segmentation mistakes during incremental input processing.
 
 ln 1162 "Intriguingly, our CNLMs captured a range of lexical phenomena
 without anything resembling a word dictionary": Your results seem to
@@ -104,8 +107,7 @@ ln 1121 input, -> input
 ln 1126 latter ability -> latter's ability
 > done
 
-
-
+* Reviewer B
 
 The authors acknowledge and explain the low results of the RNN, and add a
 footnote that this might be due to resource availability. However, I am
@@ -216,6 +218,8 @@ this dummy-variable derived?
 
 > I made the definition of the dummy variable more explicit. Feel free to change.
 
+* Reviewer C
+
 However, I did not feel that the overall setting of removing word boundaries
 is sufficiently argumented or justified. The motivation seems to be that
 this is how humans experience language. However, written text is already
@@ -232,7 +236,9 @@ transcriptions as the targets. If the goal was to investigate LSTM
 performance on text, then I would suggest including the results from a
 word-delimited character LM as well.
 
->
+> We agree that the setup is not fully realistic (although our perusal of the segmentation literature suggests that there is not prosodic equivalent of word boundaries in the input children hear). However, we think that the simplifying assumptions we make allow us to focus on a particularly interesting sub-problem, namely how linguistic structures are induced when the input is an unsegmented sequence of phonemes (or letter surrogates). We try to make this more explicit in the paper now, adding the following statement to the introduction:
+
+"" We believe that focusing on language modeling of an unsegmented phoneme sequence, abstracting away from other complexities of a fully realistic child language acquisition setup, is particularly instructive, in terms of the kind of linguistic constituents that will implicitly emerge."""
 
 I would have expected the probing tasks to either:
 a) compare different language model architectures and conclude which ones
@@ -245,18 +251,22 @@ conclusions seem to be that LSTMs still perform reasonably well after
 introducing the artificial constraint of removing word boundaries, and I'm
 not sure what this shows or how this will be useful.
 
->
+> While both suggested directions are interesting, we are not asking the question of how to improve or choose among current character-based models. We are focusing, instead, on whether one standard model of this sort, the character-level LSTM, can solve some intuitively word-mediated tasks when it is trained by language modeling on input without explicit word-hood cues. We report a (qualified) success, and investigate to some extent how the LSTM accomplish the tasks (by specifying a cell to the task of linguistic-unit-tracking). We hope that our results can be of interest to those developing new models, but our main interest is in understanding the nature of linguistic features and constituents, and whether these can be inferred from relatively realistic unsegmented input with a relativiely agnostic system such as an LSTM.
 
 It is fairly expected that language models would learn to encode information
 such as word class, number or gender. They are specifically trained to
 predict the surrounding words/characters, which requires this information
-for agreement. However, it is less clear to which extent the supervised
+for agreement.
+
+> We agree. However, when the task is much more challenging if performed at the character level with no boundary information, so we believe it was important to show that such information is salient and systematic enough in corpus statistics that our LSTMs could largely pick it up.
+
+However, it is less clear to which extent the supervised
 experiments actually show this property - given that a separate supervised
 component is trained on top of the LM representations, it could
 theoretically be picking up on useful feature correlations instead of the
 desired property directly.
 
->
+> We have 3 supervised experiments in the paper. The two in the morphology section involve shallow classifiers trained on 30 examples or less, in one case having to generalize to new classes. The bounday unit classifier only needs to set a single threshold feature (and in one of the experiments it has to generalize to entirely new words). So, for different reasons, we think it is extremely unlikely that our classifiers are able to learn something on top of what is already encoded in the LM representations. Concerning the issue of whether what we are detecting are spurious feature correlations, that is of course always a possibility. We did, though, our best to control for all the confounds we could think of, as detailed in the paper.
 
 Several of the chosen baselines seem to be particularly poor in this paper.
 Plain RNNs are not used in practice any more, as their lower performance is
@@ -270,7 +280,7 @@ with Kneser-Ney smoothing). A truly useful investigation would be to include
 some of the more recent state-of-the-art language model architectures into
 the comparison.
 
->
+> Our baselines were not chosen to establish that our main model is at the state of the art, but as controls for specific aspects of the data or the models. Specificlly, the n-gram baseline you describe is used as a control to make sure that a model could not guess the correct gender directly from surface corpus statistics. We now explicitly state this in the relevant passage.
 
 The finding of the word boundary neurons is probably the strongest part of
 the paper.
@@ -279,13 +289,25 @@ shown in previous work (Kementchedjhieva and Lopez, 2018).
 It is unclear what the differences are and what is the novel contribution in
 this section.
 
->
+> We agree that we are replicating their finding, but we are also extending it in important ways:
+
+- We devise a quantitative method to identify boundary units (as opposed to their method based on visual inspection);
+
+- We quantify the ability of the units to actually segment words in running text and in a controlled setup;
+
+- We replicate the result in 3 languages, and, importantly, without word boundaries in the input;
+
+- We also greatly extend qualitative and error analysis, with respect to their study.
+
+More fundamentally, independently of its novelty, the finding of single-boundary tracking units fits the story we are telling in the paper about constituent discovery in unsegmented text, which is different from the one of the Kementchedjhieva and Lopez' article.
+
+We hope the explanation we just presented is useful for the reviewers in assessing the originality of the paper, but we would prefer not add it to the paper, as we would like to avoid the "defensive" tone that one original reviewer detected in the previous version. We did however expanded our discussion of Kementchedjhieva and Lopez' paper in the related-work section.
 
 The argument that word boundaries are not necessary in language is somewhat
 weakened by the finding that even without boundary information LSTMs still
 adapt by explicitly learning to detect word boundaries internally.
 
->
+> As we discuss at the end of 4.4 of the current version, while we can only properly quantify the performance of the boundary cell on word boundaries, but our qualitative and error analyses suggest that the cell is actually tracking different kinds of units, including words but also sub- and supra-lexical constituents... CONTINUE AFTER RESPONDING TO ABOVE ON IMPLICATIONS OF THE WORK
 
 Many of the experiments seem to be very heuristically constructed with not
 much motivation provided. This includes the limited choice of languages for
@@ -294,14 +316,18 @@ various experiments, various filters based on frequency and suffixes, etc.
 Making the experiments more general and providing better explanations for
 the remaining choices would make the paper stronger.
 
->
+> As discussed in the article (in particular 4.2), testing the word-less model requires more controls than needed for word-based models. We thus had to put much effort into the development of appropriate data sets, that we hope others will also find useful. We strove to explain our choices in constructing the data-set, but we welcome advice on particular points we should clarify.
 
-Spelling errors:
 L178: I think a word is missing
-> done
+
+> Fixed, thanks.
+
 L180: Unnecessary comma
-> ?
+
+> Removed, thanks.
+
 L963: dataspoints
-> done
+
+> Fixed, thanks.
 
 

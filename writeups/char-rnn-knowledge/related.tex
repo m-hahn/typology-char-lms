@@ -49,18 +49,20 @@ correctly when generating text. %
 % Our aim here is to understand to what extent CNLMs trained on
 % unsegmented input learn various linguistic constructs. % This differs
 % from
-Most recent work in the area, has focused on \emph{character-aware}
+
+Most recent work in the area has focused on \emph{character-aware}
 architectures combining character- and word-level information to
 develop state-of-the-art language models that are also effective in
 morphologically rich languages
 \citep[e.g.,][]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}. For
-example, Kim and colleagues perform
-prediction at the word level, but use a character-based convolutional
-network to generate word representations. Other work focuses on
-splitting words into morphemes, using character-level RNNs and an
-explicit segmentation objective \cite[e.g.,][]{Kann:etal:2016}.
-% , as
-% opposed to our interest in probing what the network implicitly learned
+example, Kim and colleagues perform prediction at the word level, but
+use a character-based convolutional network to generate word
+representations. Other work focuses on splitting words into morphemes,
+using character-level RNNs and an explicit segmentation objective
+\cite[e.g.,][]{Kann:etal:2016}. These latter lines of work are only
+distantly related to our interest in probing what network trained on
+running text entirely at the character level has implicitly learned about
+linguistic constituents and features.
 % about morphemes and other units through generic language
 % modeling.% Moreover, these networks are not exposed to constituents
 % larger than words.
@@ -85,8 +87,10 @@ knowledge than subword units. Still, his character-based systems
 lagged only marginally behind the subword architectures on grammatical
 tasks such as handling agreement and
 negation. \newcite{DBLP:journals/corr/RadfordJS17} focused on CNLMs
-deployed in the domain of sentiment
-analysis. \newcite{Godin:etal:2018} investigated the rules implicitly
+deployed in the domain of sentiment analysis, where they found the
+network to specialize a unit for sentiment tracking. We will discuss
+below how our CNLMs also show single-unit specialization, but for boundary
+tracking. \newcite{Godin:etal:2018} investigated the rules implicitly
 used by supervised character-aware neural morphological segmentation
 methods, finding linguistically sensible
 patterns. \newcite{Alishahi:etal:2017} probed the linguistic knowledge
@@ -103,8 +107,14 @@ input. Their results are aligned with ours. The model is sensitive to
 lexical and morphological structure, and it captures morphosyntactic
 categories as well as constraints on possible morpheme
 combinations. Intriguingly, the model tracks word/morpheme boundaries
-through a single specialized unit. We replicated this finding for our
-networks, as discussed in Section \ref{sec:segmentation} below.
+through a single specialized unit, suggesting that such boundaries are
+salient (at least when marked by whitespace, as in their experiments)
+and informative enough that it is worth for the network to devote a
+special mechanism to track them. We replicated this finding for our
+networks trained on whitespace-free text, as discussed in Section
+\ref{sec:segmentation} below, where we discuss it in the context of our
+other results.
+
 %We were not able to find a similar sparse
 %encoding of morpheme- or word-boundaries in our network (the results
 %we will report in Section \ref{sec:segmentation} suggest that our

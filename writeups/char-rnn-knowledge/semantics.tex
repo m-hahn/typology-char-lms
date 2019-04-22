@@ -1,13 +1,13 @@
 \subsection{Semantics-driven sentence completion}
 \label{sec:semantics}
 
-Finally, words are obviously the main carriers of lexical semantic
+Words are the main carriers of lexical semantic
 information. We probe whether CNLMs are capable of tracking the shallow
 form of semantics required in a fill-the-gap test. We turn now to English, as for this language we can use the Microsoft
 Research Sentence Completion task \cite{Zweig:Burges:2011}. The
-challenge consists of sentences with a gap, and a 5-word multiple
-choice to fill it. Language models can be
-directly applied to this task, by calculating the likelihood of sentence
+challenge consists of sentences with a gap, with 5 possible
+choices to fill it. Language models can be
+directly applied to the task, by calculating the likelihood of sentence
 variants with all possible completions, and selecting the one with the
 highest likelihood.
 
@@ -19,7 +19,7 @@ knowledge and logical inference'' \cite{Zweig:Burges:2011}.  For
 example, the right choice in \emph{``Was she his [
   \underline{client}|musings|discomfiture|choice|opportunity], his
   friend, or his mistress?} depends on the cue that the missing word is
-coordinated with \emph{friend} and \emph{mistress}, and that the
+coordinated with \emph{friend} and \emph{mistress}, and the
 latter are animate entities.
 
 The task domain (Sherlock Holmes novels) is very different

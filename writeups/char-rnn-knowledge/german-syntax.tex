@@ -26,9 +26,9 @@ case) matches the gender of the noun.  We then run the CNLM on the
 three versions of this phrase (removing whitespace) and record the
 probabilities it assigns to them. If the model assigns the highest
 probability to the version with the right article, we count it as a
-hit for the model. To avoid phrase segmentation ambiguities, we
-present phrases surrounded by full stops (see the
-\emph{Baum}/\emph{Baumwolle} example above).
+hit for the model. To avoid phrase segmentation ambiguities (as in the
+\emph{Baum}/\emph{Baumwolle} example above), we present phrases
+surrounded by full stops.
 
 %  \cite{de2006generating,mcdonald2013universal}
 To build the test set, we select all 4,581 nominative singular nouns
@@ -75,7 +75,7 @@ The RNN variant is much worse. It is outperformed by the n-gram model
 in the adjacent condition, and it drops to random accuracy as more
 material intervenes. We emphasized at the outset of this section that
 CNLMs must track agreement across much wider spans than
-word-based models. The LSTM ability to preserve information for
+word-based models. The LSTM variant ability to preserve information for
 longer might play a crucial role here.
 
 % Note that, at the character level, even ``adjacent''
@@ -221,7 +221,7 @@ conditions by varying the presence and number of adverbs (\emph{sehr}
   unglaublich} `very extremely incredibly').  Note that here the
 correct form is longer than the wrong one. As the overall likelihood
 is the product of character probabilities ranging between 0 and 1, if
-this introduces a length bias, it will work against the
+this introduces a length bias, the latter will work against the
 character models. % ~\cite{sountsov2016length}.
 Note also that we embed test phrases into full sentences (e.g., \emph{Die Figur hat \textbf{mit der roten} gespielt und meistens gewonnen.} `The figure played with the red one and mostly won'). We
 do this as sentence-initial \emph{mit} is somewhat unnatural and, more
@@ -230,7 +230,9 @@ phrase as a noun (not an adjective), and exclude the reading in which
 \emph{mit} is a particle not governing the noun phrase of
 interest. When running the WordNLM, we excluded OOV adjectives as in
 the previous experiments, but did not apply further OOV filtering to
-the sentence frames.
+the sentence frames.  For the n-gram baseline, we
+only counted occurrences of the prepositional phrase, omitting the
+sentential contexts.
 % A full stimulus example with the wrapping sentence is:
 % \exg. Die Figure hat mit der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen . \\
 % the figure has with the red\ one played and mostly won \\
@@ -238,8 +240,6 @@ the sentence frames.
 
 %\textbf{Add a full stimulus example (with the wrapping
 %  sentence).} \textbf{OOV statistics.}
-
-
 
 % Note also that in this case we embedded the test phrase into full sentences.
 % We did this as sentences beginning with \emph{mit} are somewhat unnatural
@@ -252,10 +252,7 @@ the preposition are removed (the example sentence above becomes:
 \textit{der roten gespielt und meistens gewonnen}). If a model's
 accuracy is lower on these control stimuli than on the full ones, its
 performance cannot be simply explained by the different unigram
-probabilities of the two adjective forms. For the n-gram baseline, we
-only counted occurrences of the prepositional phrase, omitting the
-sentential contexts.
-
+probabilities of the two adjective forms.
 %\begin{figure}
 %\includegraphics[width=0.48\textwidth]{figures/german-prep-with-control.pdf}
 %
@@ -263,6 +260,7 @@ sentential contexts.
 %\caption{\textbf{(Reduce to single figure, 3)} Accuracy on the subcategorization task as a function of the number of intervening elements. The dashed lines indicate accuracies on the control stimuli that do not contain the preposition.}\label{fig:prep}
 %\end{figure}
 %
+
 Results are shown in Figure \ref{fig:german-syntax} (right). Only the
 n-gram baseline fails to outperform control accuracy. Surprisingly,
 the LSTM CNLM slightly outperforms the WordNLM, even though the latter

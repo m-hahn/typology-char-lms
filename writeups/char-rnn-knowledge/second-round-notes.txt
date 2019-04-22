@@ -160,11 +160,11 @@ possibilities for autoencoders (sparse, overcomplete...) and the current
 version entirely misses to describe the autoencoder exp. setup. it could be
 added as a paragraph at the end of Section 4.
 
-> Added footnote for architectural details of autoencoder. MB: I find this still a bit confusing. What was the criterion for picking the chosen hyperparameters? Was the same architecture picked for Italian and German? 
+> Added footnote for architectural details of autoencoder. MB: I find this still a bit confusing. What was the criterion for picking the chosen hyperparameters? Was the same architecture picked for Italian and German? For word class and gender?
 
 > TODO let's make sure the reader understands what random baseline is. Is there a citation for LSTM autoencoders?
 
-> MB: Can you make a pass through the whole paper making sure that, for each experiment, the random baseline is stated somewhere, and then add a response here clarifying that you did that?
+> MB: Can you make a pass through the whole paper making sure that, for each experiment, the random baseline is stated somewhere, and then add a response here clarifying that you did that? (It looks to me like the values are there, but I haven't checked systematically.)
 
 - "the very notion of what counts as a word" - this is in fact an important
 general question, there must be a less recent reference, before 2017?
@@ -212,7 +212,7 @@ sentences. "... It outperforms.."
 - line 514: "controlled for character length" - I might have missed how this
 has been done
 
-> The minimal pairs in all our syntactic experiments have exactly the same sentence length in characters, and they are made of words of the same length, with the disambiguating character (or same-length character sequence) always occurring in exactly the same position. These rules are only violated in the prepositional case subcategorization experiment, where, as we discuss in the paper, the potential confound should actually make things more difficult, not easier, for a model that is missing the right grammatical generalization. 
+> The minimal set items of all our syntactic experiments have exactly the same overall length in characters, and they are made of words of the same length, with the disambiguating character (or same-length character sequence) always occurring in exactly the same position. These rules are only violated in the prepositional case subcategorization experiment, where, as we discuss in the paper, the potential confound should actually make things more difficult, not easier, for a model that is missing the right grammatical generalization. 
 
 - line 570: comma in number (in a few other places as well)
 

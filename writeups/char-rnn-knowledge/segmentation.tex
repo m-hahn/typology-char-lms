@@ -27,7 +27,7 @@ positions from the training set, balanced between those corresponding
 to a word-final character and those occurring word-initially or
 word-medially.  We then computed, for each hidden unit, the Pearson
 correlation between its activations and a binary variable that takes value 1 in
-word-final positions and 0 elsewhere. %dummy variable coding
+word-final position and 0 elsewhere. %dummy variable coding
 %word-final position.
 For each language and model (LSTM or RNN), we found very few units
 with a high correlation score, suggesting that the models have indeed
@@ -38,7 +38,7 @@ highest correlations are 0.40 (English), 0.46 (German and
 Italian).\footnote{In an early version of this analysis, we
   arbitrarily imposed a minimum 0.70 correlation threshold, missing
   the presence of these units. We thank the reviewer who encouraged to
-  look further into it.}
+  look further into the matter.}
 
 \paragraph{Examples} We looked at the behaviour of the selected LSTM units qualitatively by
 extracting random sets of 40-character strings from the development
@@ -92,13 +92,14 @@ word-internal positions). We ran two experiments. In the first,
 following standard practice, we trained and tested the classifier on
 uncontrolled running text. We used 1k characters for training, 1M for
 testing, both taken from the left-out Wikipedia test partitions. We
-will report F1 performance on this task. We also considered a more cogent
-evaluation regime, in which we split training and test data so that
-the number of boundary and non-boundary conditions are balanced, and
-there is no overlap between training and test words. Specifically, we
-randomly selected positions from the test partitions of the Wikipedia
-corpus, such that half of these were the last character of a token,
-and the other half were not.  % Both
+will report F1 performance on this task.
+
+We also considered a more cogent evaluation regime, in which we split
+training and test data so that the number of boundary and non-boundary
+conditions are balanced, and there is no overlap between training and
+test words. Specifically, we randomly selected positions from the test
+partitions of the Wikipedia corpus, such that half of these were the
+last character of a token, and the other half were not.  % Both
 % training and test sets of the classifier were balanced between
 % boundaries and word-internal positions.
 We sampled the test data points subject to the constraint that the
@@ -265,20 +266,21 @@ morphologically complex words makes it particularly
 interesting. However, similar patterns were also detected in Italian
 and, to a lesser extent, English (in the latter, there are fewer and
 less interpretable common oversegmentations, probably because words
-are on average shorter and morphology more limited). Considering first
-the 30 most common undersegmentations, the large majority (24/30) are
-common sequences of grammatical terms or very frequent items that can
-sometimes be reasonably be re-analyzed as single function words or
-adverbs (e.g., \emph{bis zu}, `up to' (lit.~`until to'), \emph{je
-  nach} `depending on' (lit.~`per after'), \emph{bis heute} `to date'
-(lit.~`until today'). 3 cases are multi-word city names (\emph{Los
-  Angeles}). The final 3 cases interestingly involve \emph{Bau}
-`building' followed by \emph{von} `of' and genitive determiners
-\emph{der/des}. In its eventive reading, this noun requires a patient
-licensed by either a preposition or the genitive determiner, e.g.,
-\emph{Bau der Mauer} `building of the wall' (lit.~`building the-GEN
-wall'). Apparently the model decided to absorb the case assigner into
-the form of the noun.
+are on average shorter and morphology more limited).
+
+Considering first the 30 most common undersegmentations, the large
+majority (24/30) are common sequences of grammatical terms or very
+frequent items that can sometimes be reasonably be re-analyzed as
+single function words or adverbs (e.g., \emph{bis zu}, `up to'
+(lit.~`until to'), \emph{je nach} `depending on' (lit.~`per after'),
+\emph{bis heute} `to date' (lit.~`until today'). 3 cases are
+multi-word city names (\emph{Los Angeles}). The final 3 cases
+interestingly involve \emph{Bau} `building' followed by \emph{von}
+`of' and genitive determiners \emph{der/des}. In its eventive reading,
+this noun requires a patient licensed by either a preposition or the
+genitive determiner, e.g., \emph{Bau der Mauer} `building of the wall'
+(lit.~`building the-GEN wall'). Apparently the model decided to absorb
+the case assigner into the form of the noun.
 
 We looked next at the 30 most common oversegmentations, that is, at the
  substrings that were wrongly segmented out of the largest

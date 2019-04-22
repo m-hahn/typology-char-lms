@@ -24,7 +24,7 @@ We trained RNN and LSTM CNLMs; we will refer to them simply as
 \emph{RNN} and \emph{LSTM}, respectively. The ``vanilla'' RNN will
 serve as a baseline to ascertain if/when the longer-range
 information-tracking abilities afforded to the LSTM by its gating
-mechanisms are necessary. Our WordNLMs were always LSTMs.  For each
+mechanisms are necessary. Our WordNLMs are always LSTMs.  For each
 model/language, we applied random hyperparameter search.  We
 terminated training after 72 hours.\footnote{This was due to resource
   availability. The reasonable language-modeling results in Table
@@ -72,7 +72,7 @@ size as ours.
 \begin{table}[t]
   \begin{small}
   \begin{center}
-    \begin{tabular}{l|l|l|l}
+    \begin{tabular}{l|c|c|c}
       \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{WordNLM}\\
       \hline
 	    English & 1.62 & 2.08 & 48.99  \\

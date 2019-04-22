@@ -24,7 +24,7 @@ word, on which we train the diagnostic classifier. %
 % the CNLM also store linguistic properties of words, such as their part
 % of speech and number?
 The experiments focus on German and Italian, as it's harder to design
-reliable test sets with the impoverished English morphological system.
+reliable test sets for the impoverished English morphological system.
 
 \paragraph{Word classes (nouns vs.~verbs)}
 
@@ -38,7 +38,7 @@ the same ending across the two categories (\emph{-en} in German:
 \emph{stehen} `to stand'; and \emph{-re} in Italian: \emph{autore}
 `author', \emph{dire} `to say'). We randomly selected 20 training examples
 (10 nouns and 10 verbs), and tested on the remaining items.  We
-repeated the experiment 100 times to control for random train-test
+repeated the experiment 100 times to account for random train-test
 split variation.
 %  We recorded the final
 % hidden state of a pre-trained CNLM after reading a word, without
@@ -73,7 +73,7 @@ probably because it can track broader contexts. Not surprisingly, the
 word-based model fares better on in-vocabulary words, but the gap,
 especially in Italian, is rather narrow, and there is a strong
 negative impact of OOV
-words (as expected, as WordNLM is at random on them). % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
+words (as expected, given that WordNLM is at random on them). % Figure~\ref{fig:pos-induction} shows how German performance evolves as the training set grows from 2 to 100 examples (Italian results are qualitatively identical). The CNLMs already distinguish the categories well with small training sets, while the autoencoder does not catch up even with 100 training examples per category.
 
 \begin{table}[t]
 %  \begin{small}
@@ -90,7 +90,7 @@ words (as expected, as WordNLM is at random on them). % Figure~\ref{fig:pos-indu
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits. `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results. Random baseline accuracy is 50\%.} % (20 training examples)
+	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results. Random accuracy is 50\%.} % (20 training examples)
 \end{table}
 
 
@@ -158,8 +158,9 @@ confirms the common observation that word embeddings reliably encode
 number \cite{Mikolov:etal:2013a}. Again, the LSTM-based CNLM is better
 than the RNN, but both significantly outperform the autoencoder. The
 latter is near-random on new class prediction, confirming that we
-properly controlled for orthographic confounds. Even for the better
-LSTM CNLM, we observe a considerable drop in performance between
+properly controlled for orthographic confounds.
+
+We observe a considerable drop in the LSTM CNLM performance between
 generalization to -\emph{r} and Umlaut. On the one hand, the fact that
 performance is still clearly above chance (and autoencoder) in the
 latter condition shows that the LSTM CNLM has a somewhat abstract
@@ -167,7 +168,7 @@ notion of number not tied to specific orthographic exponents. On the
 other, the -\emph{r} vs.~Umlaut difference suggests that the
 generalization is not completely abstract, as it works more reliably
 when the target is a new suffixation pattern, albeit one that is
-distinct from those seen in (diagnostic-classifier) training, than when
+distinct from those seen in training, than when
 it is a purely non-concatenative process.
 
 % We found that training classes tend to have an unstressed final -e- in
@@ -224,7 +225,7 @@ it is a purely non-concatenative process.
   \end{center}
   \caption{\label{tab:number-results-e} German number classification
 	accuracy , with standard errors computed from 200 random train-test % when controlling for -\emph{e}-
-    splits.  `\emph{subs.}' marks in-vocabulary subset evaluation, not comparable to the other results. Random baseline accuracy is 50\%.}
+    splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results. Random accuracy is 50\%.}
 \end{table}
 
 

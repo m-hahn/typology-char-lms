@@ -23,18 +23,20 @@ this interest \cite[e.g.,][]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,
 
 The standard pre-processing pipeline of modern RNNs assumes that the
 input has been tokenized into word units that are pre-stored in the
-RNN vocabulary \cite{Goldberg:2017}. This is a reasonable practical approach, but it makes
-simulations less interesting from a linguistic point of view. First,
-discovering words (or other primitive constituents of linguistic structure) is one of the major challenges a learner faces, and
-by pre-encoding them in the RNN we are facilitating its task in an
-unnatural way (not even the staunchest nativists would take specific
-word dictionaries to be part of our genetic code). Second, assuming a
-unique tokenization into a finite number of discrete word units is in
-any case problematic. The very notion of what counts as a word in
-languages with a rich morphology is far from clear
-\cite[e.g.,][]{Bickel:Zuniga:2017}, and, universally, lexical knowledge
-is probably organized into a not-necessarily-consistent hierarchy of
-units at different levels: morphemes, words, compounds, constructions,
+RNN vocabulary \cite{Goldberg:2017}. This is a reasonable practical
+approach, but it makes simulations less interesting from a linguistic
+point of view. First, discovering words (or other primitive
+constituents of linguistic structure) is one of the major challenges a
+learner faces, and by pre-encoding them in the RNN we are facilitating
+its task in an unnatural way (not even the staunchest nativists would
+take specific word dictionaries to be part of our genetic
+code). Second, assuming a unique tokenization into a finite number of
+discrete word units is in any case problematic. The very notion of
+what counts as a word in languages with a rich morphology is far from
+clear \cite[e.g.,][]{Dixon:Aikhenvald:2002,Bickel:Zuniga:2017}, and,
+universally, lexical knowledge is probably organized into a
+not-necessarily-consistent hierarchy of units at different levels:
+morphemes, words, compounds, constructions,
 etc.~\cite[e.g.,][]{Goldberg:2005}. Indeed, it has been suggested that
 the notion of word cannot even be meaningfully defined
 cross-linguistically \cite{Haspelmath:2011}.
@@ -54,12 +56,7 @@ writing systems we work with, there is a reasonable correspondence
 between letters and phonetic segments), we are only postulating that
 the learner figured out how to map the continuous speech stream to a
 sequence of phonological units, an ability children already possess
-few months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}. We
-believe that focusing on language modeling of an unsegmented phoneme
-sequence, abstracting away from other complexities of a fully realistic
-child language acquisition setup, is particularly instructive, in
-terms of the kind of linguistic constituents that will implicitly
-emerge.
+few months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}. We believe that focusing on language modeling of an unsegmented phoneme sequence, abstracting away from other complexities of a fully realistic child language acquisition setup, is particularly instructive, in order to study which linguistic structures naturally emerge.
 
 We evaluate our character-level networks on a bank of linguistic tests
 in German, Italian and English. We focus on these languages due to

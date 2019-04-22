@@ -21,17 +21,24 @@ phonemes were included, resulting in vocabularies of sizes 60
 included the most frequent 50,000 words per corpus.
 
 We trained RNN and LSTM CNLMs; we will refer to them simply as
-\emph{RNN} and \emph{LSTM}, respectively. Our WordNLMs were always
-LSTMs.  For each model/language, we applied random hyperparameter
-search.  We terminated training after 72 hours.\footnote{This was
-  due to resource availability. The reasonable
-  language-modeling results in Table \ref{tab:lm-results} suggest that
-  no model is seriously underfit, but the weaker overall RNN results
-  in particular should be interpreted in the light of the following qualification:  models are compared \emph{given equal amount of training, but
-    possibly at different convergence stages}.} None of
-the models had overfitted, as measured by performance on the
-validation set.\footnote{Hyperparameter details are in supplementary material to be made
-  available upon publication. Chosen architectures (layers/embedding size/hidden size): LSTM: En.~3/200/1024, Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048, It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}
+\emph{RNN} and \emph{LSTM}, respectively. The ``vanilla'' RNN will
+serve as a baseline to ascertain if/when the longer-range
+information-tracking abilities afforded to the LSTM by its gating
+mechanisms are necessary. Our WordNLMs were always LSTMs.  For each
+model/language, we applied random hyperparameter search.  We
+terminated training after 72 hours.\footnote{This was due to resource
+  availability. The reasonable language-modeling results in Table
+  \ref{tab:lm-results} suggest that no model is seriously underfit,
+  but the weaker overall RNN results in particular should be
+  interpreted in the light of the following qualification: models are
+  compared \emph{given equal amount of training, but possibly at
+    different convergence stages}.} None of the models had overfitted,
+as measured by performance on the validation
+set.\footnote{Hyperparameter details are in supplementary material to
+  be made available upon publication. Chosen architectures
+  (layers/embedding size/hidden size): LSTM: En.~3/200/1024,
+  Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048,
+  It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}
 
 Language modeling performance on the test partitions is shown in
 Table \ref{tab:lm-results}. Recall that we removed whitespace, which

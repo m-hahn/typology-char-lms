@@ -18,7 +18,11 @@ in isolation during learning
   \cite{Christiansen:etal:2005}.} and it is likely that the units that
 adult speakers end up storing in their lexicon are of variable size,
 both smaller and larger than conventional words
-\cite[e.g.,][]{Jackendoff:2002,Goldberg:2005}. % Our
+\cite[e.g.,][]{Jackendoff:2002,Goldberg:2005}. In a more applied
+perspective, \newcite{Schuetze:2017} motivates tokenization-free
+approaches in NLP, proposing a general non-symbolic text
+representation apprach. %
+%Our
 % study shows that a powerful sequence learning device, such as an RNN
 % with LSTM cells, can learn, from naturally occurring language data, to
 % capture several linguistic phenomena that appear to be word-mediated
@@ -39,11 +43,11 @@ Early studies
 established that CNLMs might not be as good at language modeling as
 their word-based counterparts, but lag only slightly behind (and
 character-level sentence prediction involves a much larger search
-space than predicting at the word
+space than prediction at the word
 level). \newcite{Sutskever:etal:2011} and
 \newcite{DBLP:journals/corr/Graves13} ran qualitative analyses showing
 that CNLMs capture basic linguistic properties in their input. The
-latter, who used LSTM cells, also showed, qualitatively, that CNLMs model
+latter, who used LSTM cells, also showed, qualitatively, that CNLMs model are sensitive to
 hierarchical structure. In particular, they balance parentheses
 correctly when generating text. %
 % Our aim here is to understand to what extent CNLMs trained on

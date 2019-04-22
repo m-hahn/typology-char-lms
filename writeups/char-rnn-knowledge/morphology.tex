@@ -49,7 +49,7 @@ While we controlled for suffixes as described above, it could still be
 the case that other substrings reliably cue verbs or nouns. We thus
 considered a baseline trained on word-internal information only,
 namely a character-level LSTM autoencoder trained to reconstruct words
-in isolation.\footnote{Hyperparameters were chosen using random search, as for the language models, details are in supplementary material to be made available upon publication. Chosen architecture: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
+in isolation.\footnote{Hyperparameters were chosen using random search, as for the language models; details are in supplementary material to be made available upon publication. Chosen architecture: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
 The hidden state of the autoencoder should capture
 discriminating orthographic features, but, by design, the latter has
 no access to broader contexts.  We further considered word embeddings
@@ -107,7 +107,7 @@ words (as expected, as WordNLM is at random on them). % Figure~\ref{fig:pos-indu
 We turn next to number, a more granular morphological feature. We
 study German, as it possesses a rich system of nominal classes forming
 plural through different morphological processes. We train a diagnostic number
-classifier on a subset of these classes, and test on the others. If a
+classifier on a subset of these classes, and test on the others, in order to probe the abstract number generalization capabilities of the tested models. If a
 model generalizes correctly, it means that the CNLM is sensitive to number
 as an abstract feature, independently of its surface expression.
 
@@ -152,7 +152,7 @@ For WordNLM OOV, there were 45.0\% OOVs in the training classes,
 %  in the full data-set would be miraculous...}
 
 Results are in Table \ref{tab:number-results-e}. The classifier based
-on word embeddings is the most successful, outperforming in most cases
+on word embeddings is the most successful. It outperforms in most cases
 the best CNLM even in the more cogent OOV-inclusive evaluation. This
 confirms the common observation that word embeddings reliably encode
 number \cite{Mikolov:etal:2013a}. Again, the LSTM-based CNLM is better

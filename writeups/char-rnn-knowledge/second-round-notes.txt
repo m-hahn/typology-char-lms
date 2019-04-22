@@ -337,7 +337,7 @@ various experiments, various filters based on frequency and suffixes, etc.
 Making the experiments more general and providing better explanations for
 the remaining choices would make the paper stronger.
 
-> As discussed in the article (in particular 4.2), testing the word-less model requires more controls than needed for word-based models. We thus had to put much effort into the development of appropriate data sets, that we hope others will also find useful. We strove to explain our choices in constructing the data-set, but we welcome advice on particular points we should clarify.
+> As discussed in the article (in particular 4.2), testing the word-less model requires more controls than needed for word-based models. We thus had to put much effort into the development of appropriate data sets, that we hope others will also find useful. We strove to explain our choices concerning languages and in constructing the data-sets, but we welcome advice on particular points we should clarify.
 
 L178: I think a word is missing
 

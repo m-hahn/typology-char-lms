@@ -42,7 +42,7 @@ the notion of word cannot even be meaningfully defined
 cross-linguistically \cite{Haspelmath:2011}.
 
 Motivated by these considerations, we study here RNNs that are trained
-without any notion of word units in their input or in their
+without any notion of word in their input or in their
 architecture. We train our RNNs as \emph{character-level neural
   language models}
 \cite[CNLMs,][]{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}
@@ -60,9 +60,8 @@ few months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}. We believe that
 
 We evaluate our character-level networks on a bank of linguistic tests
 in German, Italian and English. We focus on these languages due to
-resource availability and ease of benchmark construction. We also
-think that these well-studied synthetic languages with a clear,
-orthographically-driven notion of word are a better starting point to
+resource availability and ease of benchmark construction. Also, well-studied synthetic languages with a clear,
+orthographically-driven notion of word might be a better starting point to
 test non-word-centric models, compared to agglutinative or
 polysynthetic languages, where the very notion of what counts as a
 word is problematic. % While one of
@@ -75,16 +74,16 @@ Our tasks require models to develop the latent
 ability to parse characters into word-like items associated to
 morphological, syntactic and broadly semantic features. The RNNs
 pass most of the tests, suggesting that they are in some way able to
-construct and manipulate the right lexical items. In a final experiment,
+construct and manipulate the right lexical objects. In a final experiment,
 we look more directly into \emph{how} the models are handling
 word-like units. We find, confirming an earlier observation by
 \newcite{Kementchedjhieva:Lopez:2018}, that the RNNs specialized some
-units to the task of detecting word boundaries (or, more generally,
+cells to the task of detecting word boundaries (or, more generally,
 salient linguistic boundaries, in a sense to be further discussed
 below). Taken together, our results suggest that character-level RNNs
-capture various forms of linguistic knowledge that are intuitively
+capture forms of linguistic knowledge that are traditionally thought to be
 word-based, without being exposed to an explicit segmentation of their
- input and, more importantly, without possessing an explicit
+ input and, more importantly, without possessing an explicit word
 lexicon. We will discuss the implications of these findings in the
 conclusion.\footnote{Upon publication, we will make our input data,
   test sets and pre-trained models available.}

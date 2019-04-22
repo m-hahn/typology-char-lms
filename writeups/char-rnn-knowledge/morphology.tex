@@ -48,10 +48,10 @@ split variation.
 While we controlled for suffixes as described above, it could still be
 the case that other substrings reliably cue verbs or nouns. We thus
 considered a baseline trained on word-internal information only,
-namely a character-level LSTM autoencoder trained to reconstruct words
-in isolation.\footnote{Hyperparameters were chosen using random search, as for the language models; details are in supplementary material to be made available upon publication. Chosen architecture: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
-The hidden state of the autoencoder should capture
-discriminating orthographic features, but, by design, the latter has
+namely a character-level LSTM autoencoder trained on the Wikipedia datasets to reconstruct words 
+in isolation.\footnote{For each language, autoencoder hyperparameters were chosen using random search, as for the language models; details are in supplementary material to be made available upon publication. For both German and Italian, the following parameters were chosen: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
+The hidden state of the LSTM autoencoder should capture
+discriminating orthographic features, but, by design, will have
 no access to broader contexts.  We further considered word embeddings
 from the output layer of the WordNLM. Unlike CNLMs, the WordNLM cannot
 make educated guesses about words that are not in its training
@@ -82,15 +82,17 @@ words (as expected, given that WordNLM is at random on them). % Figure~\ref{fig:
       \begin{tabular}{l|l|l}
         &\emph{German}&\emph{Italian}\\
         \hline
+	      Random & 50.0 & 50.0 \\
+        Autoencoder & 65.1 ($\pm$ 0.22) & 82.8 ($\pm$ 0.26) \\
+	      \hline
         LSTM & 89.0 ($\pm$ 0.14) & 95.0 ($\pm$ 0.10) \\
         RNN & 82.0 ($\pm$ 0.64) & 91.9 ($\pm$ 0.24) \\
-        Autoencoder & 65.1 ($\pm$ 0.22) & 82.8 ($\pm$ 0.26) \\
+	      WordNLM & 53.5 ($\pm$ 0.18)  & 62.5 ($\pm$ 0.26) \\ \hline
 	      WordNLM$_{\textit{subs.}}$ & 97.4 ($\pm$ 0.05) & 96.0 ($\pm$ 0.06) \\
-	      WordNLM & 53.5 ($\pm$ 0.18)  & 62.5 ($\pm$ 0.26) \\
       \end{tabular}
     \end{center}
  % \end{small}
-	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results. Random accuracy is 50\%.} % (20 training examples)
+	\caption{\label{tab:pos-results} Accuracy of diagnostic classifier on predicting word class, with standard errors across 100 random train-test splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results.} % Random accuracy is 50\%.} % (20 training examples)
 \end{table}
 
 
@@ -213,19 +215,20 @@ it is a purely non-concatenative process.
 \begin{table}[t]
 	\footnotesize
   \begin{center}
-    \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}c@{\hspace{0.45em}}|@{\hspace{0.45em}}l@{\hspace{0.65em}}l@{\hspace{0.15em}}}
+    \begin{tabular}{@{\hspace{0.3em}}l@{\hspace{0.42em}}|@{\hspace{0.42em}}l@{\hspace{0.45em}}|@{\hspace{0.45em}}l@{\hspace{0.65em}}l@{\hspace{0.15em}}}
       &train classes&\multicolumn{2}{c}{test classes}\\
       &\emph{-n/-s/-e}&\multicolumn{1}{c}{\emph{-r}}&\multicolumn{1}{c}{\emph{Umlaut}}\\      \hline
+	    Random & 50.0 & 50.0 & 50.0 \\
+	    Autoencoder & 61.4 ($\pm$ 0.9)  & 50.7 ($\pm$ 0.8)  & 51.9 ($\pm$ 0.4)  \\            \hline
 	    LSTM & 71.5 ($\pm$ 0.8)  & 78.8 ($\pm$ 0.6)  & 60.8 ($\pm$ 0.6)  \\
 	    RNN & 65.4 ($\pm$ 0.9)  & 59.8 ($\pm$ 1.0)  & 56.7 ($\pm$ 0.7)  \\
-	    Autoencoder & 61.4 ($\pm$ 0.9)  & 50.7 ($\pm$ 0.8)  & 51.9 ($\pm$ 0.4)  \\
+	    WordNLM  & 77.3 ($\pm$ 0.7)  & 77.1 ($\pm$ 0.5)  & 74.2 ($\pm$ 0.6)  \\ \hline
 	    WordNLM$_{\textit{subs.}}$ & 97.1 ($\pm$ 0.3)  & 90.7 ($\pm$ 0.1)  & 97.5 ($\pm$ 0.1)  \\
-	    WordNLM  & 77.3 ($\pm$ 0.7)  & 77.1 ($\pm$ 0.5)  & 74.2 ($\pm$ 0.6)  \\
     \end{tabular}
   \end{center}
   \caption{\label{tab:number-results-e} German number classification
 	accuracy , with standard errors computed from 200 random train-test % when controlling for -\emph{e}-
-    splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results. Random accuracy is 50\%.}
+	splits.~`\emph{subs.}'~marks in-vocabulary subset evaluation, not comparable to the other results.} % Random accuracy is 50\%.}
 \end{table}
 
 

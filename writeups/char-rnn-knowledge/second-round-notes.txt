@@ -1,6 +1,6 @@
 > We thank the editor and the reviewers for further insightful feedback, which we tried to incorporate in the new version.
 
-> With respect to the earlier revision, we added the new segmentation experiment using unfiltered running text suggested by the editor. We moreover clarified various points and changed the formatting of some tables (MB: to be confirmed!), following the reviewers' feedback. We detail our changes and respond to various comments below.
+> With respect to the earlier revision, we added the new segmentation experiment using unfiltered running text suggested by the editor. We moreover clarified various points and changed the formatting of some tables, following the reviewers' feedback. We detail our changes and respond to various comments below.
 
 * EDITOR
 
@@ -160,11 +160,7 @@ possibilities for autoencoders (sparse, overcomplete...) and the current
 version entirely misses to describe the autoencoder exp. setup. it could be
 added as a paragraph at the end of Section 4.
 
-> Added footnote for architectural details of autoencoder. MB: I find this still a bit confusing. What was the criterion for picking the chosen hyperparameters? Was the same architecture picked for Italian and German? For word class and gender?
-
-> TODO let's make sure the reader understands what random baseline is. Is there a citation for LSTM autoencoders?
-
-> MB: Can you make a pass through the whole paper making sure that, for each experiment, the random baseline is stated somewhere, and then add a response here clarifying that you did that? (It looks to me like the values are there, but I haven't checked systematically.)
+> We added a footnote for architectural details of autoencoder, and tried to make more explicit that this is an LSTM autoencoder. Furthermore, we explicitly mentioned random baseline accuracy for each experiment in the paper (50\% in most experiments).
 
 - "the very notion of what counts as a word" - this is in fact an important
 general question, there must be a less recent reference, before 2017?
@@ -177,7 +173,7 @@ baseline is at the start of the table, then models, then other (like the
 bottom of the table separated by a hline). This "teasing apart" would make
 the tables more readable, I believe.
 
-> MB: I think the reviewer has a point: can you maybe look into this, and then update this response accordingly (also in the introductory part, where I imply that table formatting was revised)?
+> We revised the tables as suggested.
 
 - The plural noun number classification experiment (page 5) has a
 well-motivated setup, the test sets (-r, and umlaut change) seem to have

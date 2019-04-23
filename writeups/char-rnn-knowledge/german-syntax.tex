@@ -56,7 +56,8 @@ breaking ties randomly. OOVs were excluded from WordNLM evaluation,
 resulting in an easier test for this rival model. However, here and in
 the next two tasks, CNLM performance on this reduced set was only
 slightly better, and we do not report it here.
-We reweighted stimuli from the three genders to balance the three genders, so that the random baseline accuracy is 33\%. % Marco: I added this, can you check it's clear?
+We report accuracy averaged over nouns belonging to each of the three genders.
+By design, the random baseline accuracy is 33\%. % Marco: I added this, can you check it's clear?
 
 Results are presented in Figure \ref{fig:german-syntax}
 (left). WordNLM performs best, followed by the LSTM CNLM.  The n-gram
@@ -156,7 +157,7 @@ intervening material, as in the gender agreement experiment (4,509
 stimuli per condition).  For 81.3\% of the nouns, at least one of the
 two forms was OOV for the WordNLM, and we tested the latter on the
 full-coverage subset.
-By design, random baseline accuracy is 50\%.
+Random baseline accuracy is 50\%.
 
 Results are in Figure \ref{fig:german-syntax} (center).  Again,
 WordNLM has the best performance, but the LSTM CNLM is competitive as
@@ -235,7 +236,7 @@ the previous experiments, but did not apply further OOV filtering to
 the sentence frames.  For the n-gram baseline, we
 only counted occurrences of the prepositional phrase, omitting the
 sentential contexts.
-By design, random baseline accuracy is 50\%.
+Random baseline accuracy is 50\%.
 % A full stimulus example with the wrapping sentence is:
 % \exg. Die Figure hat mit der \{rote,\ \underline{roten}\} gespielt und meistens gewonnen . \\
 % the figure has with the red\ one played and mostly won \\

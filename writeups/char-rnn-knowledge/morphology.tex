@@ -49,7 +49,7 @@ While we controlled for suffixes as described above, it could still be
 the case that other substrings reliably cue verbs or nouns. We thus
 considered a baseline trained on word-internal information only,
 namely a character-level LSTM autoencoder trained on the Wikipedia datasets to reconstruct words 
-in isolation.\footnote{For each language, autoencoder hyperparameters were chosen using random search, as for the language models; details are in supplementary material to be made available upon publication. For both German and Italian models, the following parameters were chosen: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
+in isolation.\footnote{The autoencoder is implemented as a standard LSTM sequence-to-sequence model~\citep{sutskever2014sequence}. For each language, autoencoder hyperparameters were chosen using random search, as for the language models; details are in supplementary material to be made available upon publication. For both German and Italian models, the following parameters were chosen: 2 layers, 100 embedding dimensions, 1024 hidden dimensions.}
 The hidden state of the LSTM autoencoder should capture
 discriminating orthographic features, but, by design, will have
 no access to broader contexts.  We further considered word embeddings

@@ -58,12 +58,14 @@ def printTSV(table, path):
 
 class AcqdivReader():
    def __init__(self, split, language):
-      basePath = ACQDIV_HOME+"/tsv/acqdiv_final_data/"+language.lower()+"/"
+      basePath = ACQDIV_HOME + language.lower()+"/"
       self.morphemes = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("morphemes") and x.endswith(".tsv")])
 
       self.speakers = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("speakers") and x.endswith(".tsv")])
+      if split == "traindev":
+              self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_traindev") and x.endswith(".tsv")])
       if split == "train":
-	      self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_train") and x.endswith(".tsv")])
+	      self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_train.") and x.endswith("tsv")])
       if split == "dev":
               self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_dev") and x.endswith(".tsv")])
       if split == "test":
@@ -83,7 +85,7 @@ class AcqdivReader():
    def iterator(self, markUtteranceBoundaries=True, blankBeforeEOS=True):
      utterances_raw_index = self.utterances[0].index(self.UTTERANCE_COLNAME)
      for sentence in self.utterances[1]:
-        yield (sentence[utterances_raw_index]+((" " if blankBeforeEOS else "")+"\n" if markUtteranceBoundaries else "")).lower().split(" ")
+        yield (sentence[utterances_raw_index]+((";" if blankBeforeEOS else "")+"\n" if markUtteranceBoundaries else "")).lower().split(" ")
 
 
    def iteratorMorph(self, markUtteranceBoundaries=True, blankBeforeEOS=True):

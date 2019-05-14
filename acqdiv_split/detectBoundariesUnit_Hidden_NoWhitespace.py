@@ -80,8 +80,8 @@ print(rnn_parameter_names)
 rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
 # the layer transforming the LSTM output into the logits
-output = torch.nn.Linear(args.hidden_dim, len(itos)-1+3).cuda() 
-char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)-1+3, embedding_dim=args.char_embedding_size).cuda()
+output = torch.nn.Linear(args.hidden_dim, len(itos)+3).cuda() 
+char_embeddings = torch.nn.Embedding(num_embeddings=len(itos)+3, embedding_dim=args.char_embedding_size).cuda()
 
 logsoftmax = torch.nn.LogSoftmax(dim=2)
 
@@ -158,9 +158,8 @@ def forward(numeric, train=True, printHere=False):
 
       selected = []
       for i in range(len(boundaries)): # for each batch sample
-         target = (labels_sum + 10 < len(labels)*0.7) or (random.random() < 0.5) # decide whether to get positive or negative sample
+         target = (labels_sum + 10 < len(labels)*0.55) or (random.random() < 0.5) # decide whether to get positive or negative sample
          true = sum([((x == None) if target == False else (x is not None and y not in wordsSoFar)) for x, y in list(zip(boundaries[i], boundariesAll[i]))[int(args.sequence_length/2):-10]]) # condidates
- #        print(target, true)
          if true == 0:
             continue
          soFar = 0
@@ -190,10 +189,14 @@ def forward(numeric, train=True, printHere=False):
 #      print(embedded.size())
       out, hidden = rnn_drop(embedded, None)
 
+#      print(hidden[1].sum())
+
+
       for i,i2,j,target in selected:
                   assert i < len(numeric_selected)
-      #            print(hidden[0].size())
+      #            print(i, hidden[1].size())
 #                  quit()
+       #           print(hidden[1][:,i,:].size())
                   hidden_states.append(hidden[1][:,i,:].flatten().detach().data.cpu().numpy())
                   labels.append(1 if target else 0)
                   relevantWords.append(boundariesAll[i2][j])
@@ -226,7 +229,7 @@ if True:
       except StopIteration:
          break
       printHere = (counter % 50 == 0)
-      forward(numeric, printHere=printHere, train=True)
+      forward(numeric, printHere=printHere, train=False)
       #backward(loss, printHere)
       if printHere:
           print((counter))
@@ -239,6 +242,9 @@ if True:
 
 predictors = torch.Tensor(hidden_states)
 dependent = torch.Tensor(labels).unsqueeze(1)
+print(dependent.mean())
+print(len(dependent))
+#quit()
 
 print(predictors.size())
 print(dependent.size())

@@ -52,15 +52,25 @@ def plus(it1, it2):
    for x in it2:
       yield x
 
-# read the character vocabulary
-try:
-   with open(VOCAB_HOME + args.language + '-char.txt', "r") as inFile:
-     itos = inFile.read().strip().split("\n")
-except FileNotFoundError:
-    assert False
-#itos = sorted(itos)
+itos=[]
+with open(VOCAB_HOME + args.language + '-char.txt', "r") as inFile:
+     for line in inFile:
+      line=line.strip()
+      itos.append(line)
 itos.append("\n")
-itos.append(";")
+
+
+
+
+## read the character vocabulary
+#try:
+#   with open(VOCAB_HOME + args.language + '-char.txt', "r") as inFile:
+#     itos = inFile.read().strip().split("\n")
+#except FileNotFoundError:
+#    assert False
+##itos = sorted(itos)
+#itos.append("\n")
+#itos.append(";")
 print(itos)
 stoi = dict([(itos[i],i) for i in range(len(itos))])
 

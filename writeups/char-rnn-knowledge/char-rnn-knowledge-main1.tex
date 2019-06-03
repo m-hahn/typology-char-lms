@@ -38,7 +38,7 @@
 
 
 \documentclass[11pt,a4paper]{article}
-\usepackage[hyperref]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
+\usepackage[hyperref,acceptedWithA]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
 \usepackage{times,latexsym}
 \usepackage{url}
 \usepackage[T1]{fontenc}
@@ -47,7 +47,7 @@
 \usepackage[english]{babel}
 \hyphenation{white-space}
 
-%\taclfinalfalse % For camera-ready, replace "\taclfinalfalse" with
+%\taclfinalcopy % For camera-ready, replace "\taclfinalfalse" with
 % "\taclfinalcopy"
 
 %%%%
@@ -75,19 +75,23 @@
 % Replacing that command with "\taclfinalcopy" reveals the author info in the
 % generated pdf.
 % See tacl2018.sty for other ways to set author info.
-\author{
- Template Author\Thanks{The {\em actual} contributors to this instruction
- document and corresponding template file are given in Section
- \ref{sec:contributors}.} \\
- Template Affiliation/Address Line 1 \\
- Template Affiliation/Address Line 2 \\
- Template Affiliation/Address Line 2 \\
-  {\sf template.email@sampledomain.com} \\
-}
+%\author{
+% name \\
+% Template Affiliation/Address Line 1 \\
+% Template Affiliation/Address Line 2 \\
+% Template Affiliation/Address Line 2 \\
+%  {\sf template.email@sampledomain.com} \\
+%}
+%
+
+
+\author{Michael Hahn \\ Stanford University \\ \url{mhahn2@stanford.edu} \And Marco Baroni \\ TODO}
+
 
 \date{}
 
 \hypersetup{draft}
+
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -121,9 +125,12 @@
 
 \input{discussion}
 
+
+\section*{Acknowledgments} TODO
 % remember to add to acks:
 
 % sebastian r, hinrich s, alex c, german k, kristina g, piotr b
+% from Michael's side, also add Urvashi Khandelwal
 
 % add Karpathy's paper to ref
 

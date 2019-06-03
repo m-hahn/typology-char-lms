@@ -37,7 +37,7 @@ with the highest correlations, that are, for the LSTMs, 0.58
 highest correlations are 0.40 (English), 0.46 (German and
 Italian).\footnote{In an early version of this analysis, we
   arbitrarily imposed a minimum 0.70 correlation threshold, missing
-  the presence of these units. We thank the reviewer who encouraged us to
+  the presence of these units. We thank the reviewer who encouraged to
   look further into the matter.}
 
 \paragraph{Examples} We looked at the behaviour of the selected LSTM units qualitatively by
@@ -52,7 +52,7 @@ as separate elements, and it also posits a weaker boundary after the
 prefix \emph{pro-}. As it proceeds
 left-to-right, with no information on what follows, the network posits a boundary after \emph{but} in \emph{Buttrich}. In
 the German example, we observe how the complex word
-\emph{Hauptaufgabe} (`main task') is segmented into the morphemes \emph{haupt},
+\emph{Hauptaufgabe} is segmented into the morphemes \emph{haupt},
 \emph{auf} and \emph{gabe}. Similarly, in the final
 \emph{transformati-} fragment, we observe a weak boundary after the prefix
 \emph{trans}. In Italian, \emph{in seguito a} is a lexicalized
@@ -138,7 +138,7 @@ boundary correlations than the LSTM ones.
 Results for the balanced classifiers tested on new-word
 generalization are shown in Table~\ref{tab:segmentation-results}
 (because of the different nature of the experiments, these
-are not directly comparable to the F1 results in Table~\ref{tab:segmentation-results-real}). Again, we
+are not directly comparable to the F1 results above). Again, we
 observe a strong performance of the LSTM-based full-hidden-layer
 classifier across the board. The LSTM
 single-parameter classifier using boundary unit activations is also strong,  even outperforming the full classifier in German. %
@@ -147,7 +147,7 @@ single-parameter classifier using boundary unit activations is also strong,  eve
 % strong lexicon-based control, suggesting that the model is largely
 % able to keep track of word boundaries.
 Moreover, in this more cogent setup, the single-unit LSTM classifier
-is at least competitive with the full-layer RNN classifier in all languages. The weaker
+outperforms the full-layer RNN classifier in all languages. The weaker
 results of RNNs in the word-centric tasks of the previous sections
 might in part be due to their poorer overall ability to track word boundaries,
 as specifically suggested by this stricter evaluation setup. %
@@ -156,12 +156,12 @@ as specifically suggested by this stricter evaluation setup. %
 	\small
   \begin{center}
     \begin{tabular}{l|l|l|l|l|}
-      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{LSTM}&\emph{RNN}&\emph{RNN}\\
-            \multicolumn{1}{c|}{}&\emph{single}&\emph{full}&\emph{single}&\emph{full}\\
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
+            \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
       \hline
-	    English & 87.7 & 93.0 &  65.6  & 90.5 \\ 
-	    German  & 86.6 & 91.9 &  70.4  & 85.0 \\ 
-	    Italian & 85.6 & 92.2 &  71.3  & 91.5 \\ 
+	    English & 87.7  &  65.6 & 93.0 & 90.5 \\ 
+	    German  & 86.6  &  70.4 & 91.9 & 85.0 \\ 
+	    Italian & 85.6  &  71.3 & 92.2 & 91.5 \\ 
     \end{tabular}
   \end{center}
   \caption{\label{tab:segmentation-results-real} F1 of single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on uncontrolled running text.}
@@ -171,12 +171,12 @@ as specifically suggested by this stricter evaluation setup. %
 	\small
   \begin{center}
     \begin{tabular}{l|l|l|l|l|}
-      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{LSTM}&\emph{RNN}&\emph{RNN}\\
-            \multicolumn{1}{c|}{}&\emph{single}&\emph{full}&\emph{single}&\emph{full}\\
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{RNN}&\emph{LSTM}&\emph{RNN}\\
+            \multicolumn{1}{c|}{}&\emph{single}&\emph{single}&\emph{full}&\emph{full}\\
       \hline
-      English & 77.5& 90.0 & 65.9  & 76.8\\ 
-      German  & 80.8& 79.7 & 67.0  & 75.8\\ 
-      Italian & 75.5& 82.9 & 71.4  & 75.9\\ 
+      English & 77.5 & 65.9 & 90.0 & 76.8\\ 
+      German  & 80.8 & 67.0 & 79.7 & 75.8\\ 
+      Italian & 75.5 & 71.4 & 82.9 & 75.9\\ 
     \end{tabular}
   \end{center}
   \caption{\label{tab:segmentation-results} Accuracy of  single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on balanced data requiring new-word generalization. Chance accuracy is at 50\%.}
@@ -270,13 +270,13 @@ are on average shorter and morphology more limited).
 
 Considering first the 30 most common undersegmentations, the large
 majority (24/30) are common sequences of grammatical terms or very
-frequent items that can sometimes be reasonably re-analyzed as
+frequent items that can sometimes be reasonably be re-analyzed as
 single function words or adverbs (e.g., \emph{bis zu}, `up to'
 (lit.~`until to'), \emph{je nach} `depending on' (lit.~`per after'),
 \emph{bis heute} `to date' (lit.~`until today'). 3 cases are
 multi-word city names (\emph{Los Angeles}). The final 3 cases
 interestingly involve \emph{Bau} `building' followed by \emph{von}
-`of' or genitive determiners \emph{der/des}. In its eventive reading,
+`of' and genitive determiners \emph{der/des}. In its eventive reading,
 this noun requires a patient licensed by either a preposition or the
 genitive determiner, e.g., \emph{Bau der Mauer} `building of the wall'
 (lit.~`building the-GEN wall'). Apparently the model decided to absorb
@@ -300,7 +300,7 @@ not always canonical (e.g., \emph{-chaft} instead of the expected
 function words are often wrongly segmented out of longer words (e.g.,
 \emph{sie} `she' from \emph{sieben} `seven'). The \emph{kom} and
 \emph{kon} cases are interesting, as the model
-reasonably segments them as stems in forms of the verbs \emph{kommen} `to
+reasonably segment them as stems in forms of the verbs \emph{kommen} `to
 come' and \emph{kennen} `to know', respectively (e.g., \emph{kommt}
 and \emph{konnte}), but it also treats them as pseudo-prefixes elsewhere
 (\emph{komponist} `composer', \emph{kontakt} `contact'). The remaining

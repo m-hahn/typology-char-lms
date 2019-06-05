@@ -38,16 +38,12 @@
 
 
 \documentclass[11pt,a4paper]{article}
-\usepackage[hyperref,acceptedWithA]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
+\usepackage[hyperref]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
 \usepackage{times,latexsym}
 \usepackage{url}
 \usepackage[T1]{fontenc}
 
-
-\usepackage[english]{babel}
-\hyphenation{white-space}
-
-%\taclfinalcopy % For camera-ready, replace "\taclfinalfalse" with
+%\taclfinalfalse % For camera-ready, replace "\taclfinalfalse" with
 % "\taclfinalcopy"
 
 %%%%
@@ -75,23 +71,19 @@
 % Replacing that command with "\taclfinalcopy" reveals the author info in the
 % generated pdf.
 % See tacl2018.sty for other ways to set author info.
-%\author{
-% name \\
-% Template Affiliation/Address Line 1 \\
-% Template Affiliation/Address Line 2 \\
-% Template Affiliation/Address Line 2 \\
-%  {\sf template.email@sampledomain.com} \\
-%}
-%
-
-
-\author{Michael Hahn \\ Stanford University \\ \url{mhahn2@stanford.edu} \And Marco Baroni \\ TODO}
-
+\author{
+ Template Author\Thanks{The {\em actual} contributors to this instruction
+ document and corresponding template file are given in Section
+ \ref{sec:contributors}.} \\
+ Template Affiliation/Address Line 1 \\
+ Template Affiliation/Address Line 2 \\
+ Template Affiliation/Address Line 2 \\
+  {\sf template.email@sampledomain.com} \\
+}
 
 \date{}
 
 \hypersetup{draft}
-
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -125,12 +117,9 @@
 
 \input{discussion}
 
-
-\section*{Acknowledgments} TODO
 % remember to add to acks:
 
 % sebastian r, hinrich s, alex c, german k, kristina g, piotr b
-% from Michael's side, also add Urvashi Khandelwal
 
 % add Karpathy's paper to ref
 
@@ -139,26 +128,26 @@
 
 
 
- \appendix
+% \appendix
 
- \begin{table*}[t]
- 	\begin{tabular}{l|lll|lll|lllllll}
- 		&  \multicolumn{3}{c}{LSTM} & \multicolumn{3}{|c|}{RNN} & \multicolumn{3}{c}{WordNLM} \\
- 		       &  En.     &  Ge.    & It.    & En.    &    Ge.   &  It.     &  En.     &   Ge.   &    It. \\  \hline
- 	Batch Size     &  128   &  512  & 128  & 256  & 256    &  256   &  128   &   128 &  128   \\              
- 	Embedding Size &  200   &  100  & 200  & 200  & 50     &  50    &  1024  &   200 &  200   \\             
- 	Dimension      &  1024  &  1024 & 1024 & 2048 & 2048   &  2048  &  1024  &  1024 &  1024  \\  
- 	Layers         &  3     &  2    & 2    & 2    & 2      &  2     &  2     &  2    &  2     \\   
- 	Learning Rate  &  3.6   &  2.0  & 3.2  & 0.01 & 0.1    &  0.1   &  1.1   &  0.9  &  1.2   \\ 
- 	Decay          &  0.95  &  1.0  & 0.98 & 0.9  & 0.95   &  0.95  &  1.0   &  1.0  &  0.98  \\
- 	BPTT Length    &  80    &  50   & 80   & 50   & 30     &  30    &  50    &  50   &  50    \\
- 	Hidden Dropout &  0.01  &  0.0  & 0.0  & 0.05 & 0.0    &  0.0   &  0.15  &  0.15 &  0.05  \\   
- 	Embedding Dropout  & 0.0& 0.01  & 0.0  & 0.01 & 0.0    &  0.0   &  0.0   &  0.1  &  0.0   \\   
- 	Input Dropout  & 0.001 &  0.0   & 0.0  & 0.001& 0.01   &  0.01  &  0.01  &  0.001&  0.01  \\ 
-         Nonlinearity   &   --  & --     & --   & ReLu & tanh   &  tanh  &   --   &  --   &  --    \\                   
- \end{tabular}
- 	\caption{Hyperparameters identified}
- \end{table*}
+% \begin{table*}[t]
+% 	\begin{tabular}{l|lll|lll|lllllll}
+% 		&  \multicolumn{3}{c}{LSTM} & \multicolumn{3}{|c|}{RNN} & \multicolumn{3}{c}{WordNLM} \\
+% 		       &  En.     &  Ge.    & It.    & En.    &    Ge.   &  It.     &  En.     &   Ge.   &    It. \\  \hline
+% 	Batch Size     &  128   &  512  & 128  & 256  & 256    &  256   &  128   &   128 &  128   \\              
+% 	Embedding Size &  200   &  100  & 200  & 200  & 50     &  50    &  1024  &   200 &  200   \\             
+% 	Dimension      &  1024  &  1024 & 1024 & 2048 & 2048   &  2048  &  1024  &  1024 &  1024  \\  
+% 	Layers         &  3     &  2    & 2    & 2    & 2      &  2     &  2     &  2    &  2     \\   
+% 	Learning Rate  &  3.6   &  2.0  & 3.2  & 0.01 & 0.1    &  0.1   &  1.1   &  0.9  &  1.2   \\ 
+% 	Decay          &  0.95  &  1.0  & 0.98 & 0.9  & 0.95   &  0.95  &  1.0   &  1.0  &  0.98  \\
+% 	BPTT Length    &  80    &  50   & 80   & 50   & 30     &  30    &  50    &  50   &  50    \\
+% 	Hidden Dropout &  0.01  &  0.0  & 0.0  & 0.05 & 0.0    &  0.0   &  0.15  &  0.15 &  0.05  \\   
+% 	Embedding Dropout  & 0.0& 0.01  & 0.0  & 0.01 & 0.0    &  0.0   &  0.0   &  0.1  &  0.0   \\   
+% 	Input Dropout  & 0.001 &  0.0   & 0.0  & 0.001& 0.01   &  0.01  &  0.01  &  0.001&  0.01  \\ 
+%         Nonlinearity   &   --  & --     & --   & ReLu & tanh   &  tanh  &   --   &  --   &  --    \\                   
+% \end{tabular}
+% 	\caption{Hyperparameters identified \textbf{probably we cannot put this into the submission within the 10 page limit?}}
+% \end{table*}
 
 
 

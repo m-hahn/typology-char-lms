@@ -1,11 +1,11 @@
 \section{Related work}
 \label{sec:related}
 
-\paragraph{On the primacy of words} Several linguistic studies suggest
+\paragraph{On the primacy words} Several linguistic studies suggest
 that words, at least as delimited by whitespace in some writing
 systems, are neither necessary nor sufficient units of linguistic
 analysis. \newcite{Haspelmath:2011} claims that there is no
-cross-linguistically valid definition of the notion of word \cite[see also][who
+cross-linguistically valid definition of words \cite[see also][who
 address specifically the notion of prosodic
 word]{Schiering:etal:2010}. Others have stressed the difficulty of
 characterizing words in polysynthetic languages
@@ -35,7 +35,7 @@ debate on word primacy, suggesting, through computational simulations, that
 word priors are not crucial to language learning and processing.
 
 \paragraph{Character-based neural language models} received attention in the last
-decade because of their greater generality  compared to word-level models. % , and because, intuitively, they should be able to
+decade because of their greater generality. % , and because, intuitively, they should be able to
 % use cues, such as morphological information, that word-based models
 % miss by design.
 Early studies
@@ -75,8 +75,8 @@ linguistic structure.
 \paragraph{Probing linguistic knowledge of neural language models} is
 currently a popular research topic
 \cite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Kadar:etal:2017,Hupkes:etal:2017,Conneau:etal:2018,Ettinger:etal:2018,Linzen:etal:2018}. Among
-studies focusing on character-level models, 
-\newcite{Elman:1990} already reported a proof-of-concept experiment on
+studies focusing on character-level models, already
+\newcite{Elman:1990} reported a proof-of-concept experiment on
 implicit learning of word
 segmentation. \newcite{Christiansen:etal:1998} trained a RNN on
 phoneme-level language modeling of transcribed child-directed speech
@@ -112,7 +112,7 @@ categories as well as constraints on possible morpheme
 combinations. Intriguingly, the model tracks word/morpheme boundaries
 through a single specialized unit, suggesting that such boundaries are
 salient (at least when marked by whitespace, as in their experiments)
-and informative enough that it is worthwhile for the network to devote a
+and informative enough that it is worth for the network to devote a
 special mechanism to process them. We replicated this finding for our
 networks trained on whitespace-free text, as discussed in Section
 \ref{sec:segmentation} below, where we discuss it in the context of our

@@ -12,7 +12,7 @@ respectively. Paragraph order was shuffled for training, without
 attempting to split by sentences. All characters were lower-cased.
 For benchmark construction and word-based model training, we tokenized
 and tagged the corpora with
-TreeTagger~\citep{schmid1999improvements}.\footnote{\url{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}}
+TreeTagger.\footnote{\url{http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/}}
 We used as vocabularies the most frequent characters from each corpus,
 setting thresholds so as to ensure that all characters representing
 phonemes were included, resulting in vocabularies of sizes 60
@@ -34,7 +34,8 @@ terminated training after 72 hours.\footnote{This was due to resource
   compared \emph{given equal amount of training, but possibly at
     different convergence stages}.} None of the models had overfitted,
 as measured by performance on the validation
-set.\footnote{Hyperparameter details are in the appendix. Chosen architectures
+set.\footnote{Hyperparameter details are in supplementary material to
+  be made available upon publication. Chosen architectures
   (layers/embedding size/hidden size): LSTM: En.~3/200/1024,
   Ge.~2/100/1024, It.~2/200/1024; RNN: En.~2/200/2048, Ge.~2/50/2048,
   It.~same; WordNLM; En.~2/1024/1024, Ge.~2/200/1024, It.~same.}

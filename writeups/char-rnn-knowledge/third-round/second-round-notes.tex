@@ -1,0 +1,417 @@
+\documentclass{article}[11pt,a4paper,oneside]
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+
+\usepackage{linguex}
+
+\title{Response to Editor and Reviewers \\ {\large Submission \#1709; Original Action Editor: Hinrich Sch{\"u}tze}}
+\date{April 2019}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{url}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction (general response)}
+
+We thank the editor and the reviewers for further insightful feedback, which we tried to incorporate in the new version.
+
+With respect to the earlier revision, we added the new segmentation experiment using unfiltered running text suggested by the editor. We moreover clarified various points and changed the formatting of some tables, following the reviewers' feedback. We detail our changes and respond to various comments below.
+
+\section{Response to the Editor}
+
+\textbf{
+MANDATORY CHANGE: The reviewers agree that the word boundary
+finding is the most interesting part of the paper. But you
+don't show what word recognition rates are on actual
+text.  Please do the following additional experiment:
+"duplicate" Table 6 and also report word recognition rates
+on real text. I guess F1 would be a standard and clear
+measure. (90\% for English on the artificial data set doesn't
+tell me how well your model segments real text.)}
+
+We have now added this experiment, that confirms the good quality of the single-unit classifier, to the article.\newline
+
+\textbf{
+line 995: perhaps add that the error analysis is for the
+``single unit'' classifier (can be inferred only from the
+result Table 6, where German is the language w/ the
+single-unit classifier reaching highest accuracy).}
+
+We have clarified this.\newline
+
+\textbf{
+link 962: "aditional dataspoints"}
+
+Fixed, thanks.
+
+\section{Reponse to Reviewer A}
+
+\textbf{
+ln 070-073: I'd like a citation or two substantiating the claim that this is
+standard.}
+
+We added a reference to Yoav Goldberg's book, that describes various standard architectures.\newline
+
+\textbf{
+ln 192: What is the connection between the prior work in this paragraph and
+your work?}
+
+ We cite this work for completeness. We now added an explicit statement that it is only distantly related to ours, in the sense that it focuses on the character level.\newline
+
+\textbf{
+ln 222: "Radford et al. (2017) focused on CNLMs deployed in the domain of
+sentiment analysis." The fact that they were working on sentiment analysis
+doesn't seem relevant to the current discussion. What did they learn about
+CLNMs? Why is this paper relevant?}
+
+There is some relation, in that they also find a specialized "grandma cell", in their case specialized to sentiment tracking. We now make this connection explicit.\newline
+
+\textbf{
+ln 242: Here, too, I miss a brief statement of why your questions are the
+logiacl next step to take.}
+
+We added an explicit discussion of why this matters for us, and how it relates to our own work.\newline
+
+\textbf{
+ln 689 "For the n-gram baseline, we only counted occurrences of the
+prepositional phrase, omitting sentences.": This use of "omitting" makes it
+sound like were tested on both PPs and sentences. But surely that's not
+right?}
+
+Thanks, we rephrased.\newline
+
+\textbf{
+ln 737 "We required moreover the -a and -o forms of a noun to be reasonably
+balanced in frequency (neither form is twice more frequent than the other),"
+Why? How does this decision contribute/relate to the overall research goal?}
+
+We wanted to minimize confounds due to a frequency imbalance: for example, the model might be more likely to default to one gender for rare words.\newline
+
+\textbf{
+ln 947 "Again, in left-to-right processing, the unit has a tendency to
+immediately posit boundaries when frequent function words are encountered."
+This suggests a way in which NN processing is quite unlike human processing,
+which can recover from incorrect decisions in light of further information.}
+
+Thanks for this interesting point. That is certainly a fundamental difference between unidirectional recurrent networks and humans. We would however expect human subjects to do similar temporary segmentation mistakes during incremental input processing.\newline
+
+\textbf{
+ln 1162 "Intriguingly, our CNLMs captured a range of lexical phenomena
+without anything resembling a word dictionary": Your results seem to
+suggest they build one internally, though! I think you’re confusing
+levels of abstraction here. No one argues that there are specific
+neurons for each word in the human brain.}
+
+We agree. We tried to rephrase the relevant paragraph to make it clearer that we are not questioning the role of the lexicon in linguistics, but suggesting that future investigations might build on our results to paint a clearer picture of how the lexicon is encoded in the connections of a distributed network.\newline
+
+\textbf{
+ln 013 reached -has reached}
+
+Fixed.\newline
+
+\textbf{
+ln 135 is -are}
+
+Fixed.\newline
+
+\textbf{
+ln 178 "that CLNMs hierarchical structure": Missing 'model'?}
+
+Fixed.\newline
+
+\textbf{
+ln 212 work -word}
+
+Fixed.\newline
+
+\textbf{
+ln 559 The sentence final . in the middle of a parenthetical that is itself
+embedded in a sentence is awkward.}
+
+Fixed, thank you.\newline
+
+\textbf{
+ln 724 "Italian has a relatively extended paradigm": This led me to expect
+lots of suffixes, not lots of stems. I'd suggest revising this.}
+
+Fixed, thanks.\newline
+
+\textbf{
+ln 822 capable to track -capable of tracking}
+
+Fixed.\newline
+
+\textbf{
+ln 1042, 1048: ' -` x2}
+
+Fixed.\newline
+
+\textbf{
+ln 1121 input, -input}
+
+Fixed, thanks.\newline
+
+\textbf{
+ln 1126 latter ability -latter's ability}
+
+Fixed, thanks.
+
+\section{Response to Reviewer B}
+
+\textbf{
+The authors acknowledge and explain the low results of the RNN, and add a
+footnote that this might be due to resource availability. However, I am
+still puzzled, as the authors. While I agree that leaving a further
+investigation on the low RNN performance to future work, this makes me think
+that the paper might be better off dropping the RNN model completely. What's
+the real benefit of keeping it, other than showing it does not work so well
+as the LSTM? In fact, it is still pretty bad, particularly in Table 5 in-domain vs
+cross-domain giving the same performance? Also, by keeping the RNN, one
+could argue why not instead investigate GRUs as well, which is a bit besides
+the point of the paper. On the word class prediction task, the RNN has a
+huge standard deviation, it is very unstable. I'd say drop the RNN, and
+instead, add a random baseline throughout the paper, and explain the
+autoencoder baseline (regarding random: even though for most tasks the
+chance-level is just 50\%) -- see comment on missing autoencoder setup below.}
+
+We believe that the relatively low performance of the RNN is an instructive negative result, and in particular that it is useful to show that the more complex LSTM architecture is needed in several tasks. We now try to clarify the purpose of reporting the RNN results when we first introduce it:
+
+\textit{The "vanilla" RNN will serve as a baseline  to ascertain if/when the longer-range information-tracking abilities afforded to the LSTM by its gating mechanisms are necessary.}\newline
+
+\textbf{
+As looking 'beyond' the threshold meant getting confirmation and additional
+very interesting results, I would appreciate if the paper could openly say
+so (e.g., in a footnote? appendix?)  I think this *is* an educative aspect,
+which is now only visible to reviewers. Without lowering the threshold this
+interesting analysis (including the quantitative analysis in Figure 2) would
+not be part of the paper. Is there a way to 'keep' this?}
+
+We have added a footnote to emphasize this.\newline
+
+\textbf{
+- "soft" in abstract: why "soft" word boundaries? Evaluation (Table 6)
+assumes a hard word boundary prediction tasks, hence consider to drop
+"soft", which is not explained.}
+
+We revised this to: \textit{they learned, to some extent, to track word boundaries}\newline
+
+\textbf{
+- experimental setup: the paper now introduces an autoencoder as baseline.
+As mentioned above, I would propose to explicitly add an even simpler
+baselines (random or majority). Moreover, there is a large space of
+possibilities for autoencoders (sparse, overcomplete...) and the current
+version entirely misses to describe the autoencoder exp. setup. it could be
+added as a paragraph at the end of Section 4.}
+
+We added a footnote for architectural details of autoencoder, and made more explicit how the autoencoder is trained. Furthermore, we now explicitly mention random baseline accuracy for each experiment in the paper (50\% in most experiments).\newline
+
+\textbf{
+- "the very notion of what counts as a word" - this is in fact an important
+general question, there must be a less recent reference, before 2017?}
+
+We added a reference to an earlier book.\newline
+
+\textbf{
+- Table 2 + 3 presentation of results: I typically find it easier if the
+baseline is at the start of the table, then models, then other (like the
+"subs" model, which is not strictly comparable, could be be moved to the
+bottom of the table separated by a hline). This "teasing apart" would make
+the tables more readable, I believe.}
+
+We revised the tables as suggested.\newline
+
+\textbf{
+- The plural noun number classification experiment (page 5) has a
+well-motivated setup, the test sets (-r, and umlaut change) seem to have
+been set up in a way to consist of the more difficult tasks (while training
+on the more regular forms -n/-s/-e), which the last part seems to hint at
+"generalization is not completely abstract". If this is in line of what the
+authors had in mind when designing the experiments, this motivation could be
+made overt in favor of strengthening the motivation of the setup (because
+otherwise once could be inclined to ask for more permutations of these
+experiments..). ;)}
+
+Thanks, we extended the introduction to this section to emphasize this.\newline
+
+\textbf{
+- line 167: than predicting -than prediction}
+
+Fixed, thanks.\newline
+
+\textbf{
+- line 178: missing verb in CNLMs sentence}
+
+Added.\newline
+
+\textbf{
+- line 467: "successful outperforming in most cases" - split in multiple
+sentences. "... It outperforms.."}
+
+Done.\newline
+
+\textbf{
+- line 473: "near-random" -add random baseline to table}
+
+Done.\newline
+
+\textbf{
+- line 514: "controlled for character length" - I might have missed how this
+has been done}
+
+The minimal set items of all our syntactic experiments have exactly the same overall length in characters, and they are made of words of the same length, with the disambiguating character (or same-length character sequence) always occurring in exactly the same position. These rules are only violated in the prepositional case subcategorization experiment, where, as we discuss in the paper, the potential confound should actually make things more difficult, not easier, for a model that is missing the right grammatical generalization. \newline
+
+\textbf{
+- line 570: comma in number (in a few other places as well)}
+
+Fixed, hopefully everywhere.\newline
+
+\textbf{
+- line 1042: ' -`}
+
+Fixed.\newline
+
+\textbf{
+- discussion section: consider adding a few new lines (first paragraph) to
+make it more readable, e.g., in line 1124 and 1131}
+
+We did, thanks.\newline
+
+\textbf{
+- consider adding a reference; an earlier study that proposes the use of
+segmentation-free NLP (Schütze, 2017):
+http://aclweb.org/anthology/E/E17/E17-1074.pdf}
+
+Thanks, we were not aware of this, and we now briefly discuss it in related word.\newline
+
+\textbf{- "and a dummy variable coding word-final position" - this part remains
+unclear to me. How exactly twas this per-neuron correlation done, how was
+this dummy-variable derived?}
+
+We tried to define this dummy-variable more explicitly.
+
+\section{Response to Reviewer C}
+
+\textbf{
+However, I did not feel that the overall setting of removing word boundaries
+is sufficiently argumented or justified. The motivation seems to be that
+this is how humans experience language. However, written text is already
+quite different from human speech and I wouldn't say it becomes
+substantially more similar by removing the word boundaries. If punctuation
+is kept (even dashes in words), under the argument of encoding prosody
+information, then surely word boundaries also indicate certain prosodic
+features. Instead, the whole setting in the paper, in which neural
+character-based language models are investigated, does not match any of the
+normal settings in which a neural character model would be applied. If the
+goal was to investigate LSTM performance on human speech, then the
+experiments could have been performed on actual audio input, using aligned
+transcriptions as the targets. If the goal was to investigate LSTM
+performance on text, then I would suggest including the results from a
+word-delimited character LM as well.}
+
+We agree that the setup is not fully realistic (although our perusal of the segmentation literature suggests that there is no prosodic equivalent of word boundaries in the input children hear). We think that the simplifying assumptions we make allow us to focus on a particularly interesting sub-problem, namely how linguistic structures are induced when the input is an unsegmented sequence of phonemes. We try to make this more explicit in the paper now, adding the following statement to the introduction:
+
+\textit{We believe that focusing on language modeling of an unsegmented phoneme sequence, abstracting away from other complexities of a fully realistic child language acquisition setup, is particularly instructive, in order to study which linguistic structures naturally emerge.}\newline
+
+\textbf{
+I would have expected the probing tasks to either:
+a) compare different language model architectures and conclude which ones
+are better at which tasks, or
+b) analyse the performance of one language model architecture across
+different phenomena and conclude what is it good at, where are its
+weaknesses and what does it mean for future work.
+Unfortunately, I did not see either of these in the current paper. The main
+conclusions seem to be that LSTMs still perform reasonably well after
+introducing the artificial constraint of removing word boundaries, and I'm
+not sure what this shows or how this will be useful.}
+
+While both suggested directions are interesting, we are not asking the question of how to improve or choose among current character-based models. We are focusing, instead, on whether one standard model of this sort, the character-level LSTM, can solve some intuitively word-mediated tasks when it is trained on input lacking explicit wordhood cues. We report a (qualified) success, and investigate how the LSTM accomplishes the tasks (that is, by specializing a cell to the task of linguistic-unit-tracking). We hope our results to be of interest to those new model developers, but our main interest lies in understanding the nature of linguistic structures, and whether these can be inferred from relatively realistic unsegmented input by a relatively agnostic system.\newline
+
+\textbf{
+It is fairly expected that language models would learn to encode information
+such as word class, number or gender. They are specifically trained to
+predict the surrounding words/characters, which requires this information
+for agreement.}
+
+We agree. However, the task is much more challenging if performed at the character level with no boundary information. We thus believe it is important to show that such information is salient and systematic enough in corpus statistics that our LSTMs can largely pick it up.\newline
+
+\textbf{
+However, it is less clear to which extent the supervised
+experiments actually show this property - given that a separate supervised
+component is trained on top of the LM representations, it could
+theoretically be picking up on useful feature correlations instead of the
+desired property directly.}
+
+We have 3 supervised experiments in the paper. The two in the morphology section involve shallow classifiers trained on 30 examples or less, in one case having to generalize to new classes. The boundary unit classifier of the segmentation section only needs to set a single threshold feature (and in one of the experiments it has to generalize to entirely new words). So, for different reasons, we think it is extremely unlikely that our classifiers are able to learn something on top of what is already encoded in the LM representations. Concerning the issue of whether what we are detecting are spurious feature correlations, that is of course always a possibility. We did, though, our best to control for all the confounds we could think of, as detailed in the paper.\newline
+
+\textbf{
+Several of the chosen baselines seem to be particularly poor in this paper.
+Plain RNNs are not used in practice any more, as their lower performance is
+very well established. And the ngram model is not really a proper ngram
+language model - L577 says it's basically just picking the most frequent
+case in the data, based on one word of context. Giving the model only one
+word of context when several of the tasks are specifically constructed to
+require 2 or more words of context seems very unfair. I do not see why a
+proper ngram language model could not have been used (e.g. a 5-gram model
+with Kneser-Ney smoothing). A truly useful investigation would be to include
+some of the more recent state-of-the-art language model architectures into
+the comparison.}
+
+Our baselines were not chosen to establish that our main model is at the state of the art, but as controls for specific aspects of the data or the models. Specifically, the n-gram baseline you describe is used as a control to make sure that a model could not guess the correct gender directly from surface corpus statistics. We now explicitly state this in the relevant passage. We also added some motivation for using the plain RNN in the setup section.\newline
+
+\textbf{
+The finding of the word boundary neurons is probably the strongest part of
+the paper.
+However, as pointed out in the paper as well, this finding has already been
+shown in previous work (Kementchedjhieva and Lopez, 2018).
+It is unclear what the differences are and what is the novel contribution in
+this section.}
+
+We agree that we are replicating their finding, but we are also extending it in important ways:
+\begin{itemize}
+\item We devise a quantitative method to identify boundary units (as opposed to their method based on visual inspection);
+\item We quantify the ability of the units to actually segment words in running text and in a controlled setup;
+\item We replicate the result in 3 languages, and, importantly, without word boundaries in the training input;
+\item We also greatly extend qualitative and error analysis, with respect to their study.
+\end{itemize}
+More fundamentally, independently of its novelty, the finding of single-boundary tracking units fits the story we are telling in the paper about constituent discovery in unsegmented text.
+
+We hope the explanation we just presented is useful for the reviewers in assessing the originality of the paper, but we would prefer not add it to the writeup, as we would like to avoid the "defensive" tone that one original reviewer detected in the previous version. We did however expanded our discussion of Kementchedjhieva and Lopez' paper in the related-work section.\newline
+
+\textbf{
+The argument that word boundaries are not necessary in language is somewhat
+weakened by the finding that even without boundary information LSTMs still
+adapt by explicitly learning to detect word boundaries internally.}
+
+As we discuss at the end of 4.4 of the current version, we can only properly quantify the performance of the boundary cell on word boundaries. Our qualitative and error analyses, however, suggest that the cell is actually tracking different kinds of units, including words but also sub- and supra-lexical constituents. We have also revised the conclusion to clarify the point that we are not trying to dispense with words, but rather studying the issue of whether and how a model that does not have a hard-coded data structure to store them will be able to package lexical information.\newline
+
+\textbf{
+Many of the experiments seem to be very heuristically constructed with not
+much motivation provided. This includes the limited choice of languages for
+investigation, the words that are selected for training or testing in
+various experiments, various filters based on frequency and suffixes, etc.
+Making the experiments more general and providing better explanations for
+the remaining choices would make the paper stronger.}
+
+As discussed in the article (in particular 4.2), testing the word-less model requires more controls than needed for word-based models. We thus had to put much effort into the development of appropriate data sets, that we hope others will also find useful. We strove to explain our choices concerning languages and in constructing the data-sets, but we welcome advice on particular points we should clarify.\newline
+
+\textbf{
+L178: I think a word is missing}
+
+Fixed, thanks.\newline
+
+\textbf{
+L180: Unnecessary comma}
+
+Removed, thanks.\newline
+
+\textbf{
+L963: dataspoints}
+
+Fixed, thanks.
+
+\end{document}

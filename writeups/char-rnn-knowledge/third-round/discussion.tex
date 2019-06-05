@@ -1,0 +1,78 @@
+\section{Discussion}
+\label{sec:discussion}
+
+We probed the linguistic information induced by a character-level LSTM
+language model trained on unsegmented text. The model was found to
+possess implicit knowledge about a range of intuitively word-mediated
+phenomena, such as sensitivity to lexical categories and syntactic and
+shallow-semantics dependencies. A model initialized with a word
+vocabulary and fed tokenized input was in general superior, but the
+performance of the word-less model did not lag much behind, suggesting
+that word priors are helpful but not strictly required. A
+character-level RNN was less consistent than the LSTM, suggesting that
+the latter's ability to track information across longer time spans is
+important to make the correct generalizations. The character-level
+models consistently outperformed n-gram controls, confirming they are
+tapping into more abstract patterns than local co-occurrence
+statistics.
+
+As a first step towards understanding \emph{how} character-level
+models handle supra-character phenomena, we searched and found
+specialized boundary-tracking units in them. These units are not only
+and not always sensitive to word boundaries, but also respond to other
+salient items, such as morphemes and multi-word expressions, in
+accordance with an ``emergent'' and flexible view of the basic
+constituents of language \cite{Schiering:etal:2010}.
+
+Our results are preliminary in many ways. Our tests are relatively
+simple. We did not attempt, for example, to model long-distance
+agreement in presence of distractors, a challenging task even for
+humans \citep{Gulordava:etal:2018}. The results on number
+classification in German suggest that the models might not be
+capturing linguistic generalizations of the correct degree of
+abstractness, settling for shallower heuristics. Still, as a whole,
+our work suggests that a large corpus, combined with the weak priors
+encoded in an LSTM, might suffice to learn generalizations about
+word-mediated linguistic processes without a hard-coded word lexicon
+or explicit wordhood cues.
+
+Nearly all contemporary linguistics recognizes a central role to the
+lexicon \cite[see, e.g.,][for very different
+perspectives]{Sag:etal:2003,Goldberg:2005,Radford:2006,Bresnan:etal:2016,Jezek:2016}. Linguistic
+formalisms assume that the lexicon is essentially a dictionary of
+words, possibly complemented by other units, not unlike the list of
+words and associated embeddings in a standard word-based
+NLM. Intriguingly, our CNLMs captured a range of lexical phenomena
+\emph{without} anything resembling a word dictionary. Any information
+a CNLM might acquire about units larger than characters must be stored
+in its recurrent weights. This suggests a radically different and
+possibly more neurally plausible view of the lexicon as
+implicitly encoded in a distributed memory, that we intend to
+characterize more precisely and test in future work.
+
+Concerning the model input, we would like to study whether the
+CNLM successes crucially depend on the huge amount
+of training data it receives.  Are word priors more important when
+learning from smaller corpora? In terms of comparison with human
+learning, the Wikipedia text we fed our CNLMs is far from
+what children acquiring a language would hear. Future work should
+explore character/phoneme-level learning from child-directed speech
+corpora. Still, by feeding our networks ``grown-up'' prose, we are
+arguably making the job of identifying basic constituents harder than
+it might be when processing the simpler utterances of early
+child-directed speech \cite{Tomasello:2003}.
+
+As discussed, a rigid word notion is problematic both
+cross-linguistically (cf.~polysynthetic and agglutinative languages)
+and within single linguistic systems \cite[cf.~the view that
+the lexicon hosts units at different levels of the linguistic
+hierarchy, from morphemes to large syntactic constructions,
+e.g.,][]{Jackendoff:1997,Croft:Cruse:2004,Goldberg:2005}. This study provided a necessary initial check
+that word-free models can account for phenomena traditionally
+seen as word-based. Future work should test whether such models
+ can also account for grammatical patterns that are harder to
+capture in word-based formalisms, exploring both a typologically
+wider range of languages and a broader set of grammatical tests.
+
+
+

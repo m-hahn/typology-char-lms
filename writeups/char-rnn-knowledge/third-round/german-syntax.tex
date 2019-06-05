@@ -41,8 +41,9 @@ In the second condition, an adjective with the correct case ending,
 randomly selected from the training corpus, is added. Crucially, the
 ending of the adjective does not reveal the gender of the noun.  We
 only used adjectives occurring at least 100 times, and not ending in
--\emph{r}.\footnote{Adjectives ending in -\emph{r} often reflect lemmatization provblems, as TreeTagger occasionally failed to remove the
-  inflectional suffix -\emph{r} when lemmatizing. We needed to extract lemmas, as we constructed the appropriate inflected forms on their basis.}  We obtained a pool
+-\emph{r}, as the latter often reflect lemmatization
+problems.\footnote{TreeTagger occasionally failed to remove the
+  inflectional suffix -\emph{r} when lemmatizing.}  We obtained a pool
 of 9,742 adjectives to sample from, also used in subsequent
 experiments.  74.9\% of these were OOV for the WordNLM.  In the third
 and fourth conditions, one (\emph{sehr}) or two adverbs (\emph{sehr
@@ -225,14 +226,12 @@ correct form is longer than the wrong one. As the overall likelihood
 is the product of character probabilities ranging between 0 and 1, if
 this introduces a length bias, the latter will work against the
 character models. % ~\cite{sountsov2016length}.
-Note also that we embed test phrases into full sentences (e.g., \emph{Die Figur hat \textbf{mit der roten} gespielt und meistens gewonnen.} `The figure played with the red one and mostly won').
-We
-do this %as sentence-initial \emph{mit} is somewhat unnatural and, more importantly,
-because this will disambiguate the final element of the
+Note also that we embed test phrases into full sentences (e.g., \emph{Die Figur hat \textbf{mit der roten} gespielt und meistens gewonnen.} `The figure played with the red one and mostly won'). We
+do this as sentence-initial \emph{mit} is somewhat unnatural and, more
+importantly, because this will disambiguate the final element of the
 phrase as a noun (not an adjective), and exclude the reading in which
 \emph{mit} is a particle not governing the noun phrase of
-interest~\citep{duden2019mit}.\footnote{An example of this unintended reading of \emph{mit} is: \textit{Ich war \textbf{mit} der erste, der hier war.} `I was one of the first who arrived here.' In this context, dative \emph{ersten} would be ungrammatical.}
-When running the WordNLM, we excluded OOV adjectives as in
+interest. When running the WordNLM, we excluded OOV adjectives as in
 the previous experiments, but did not apply further OOV filtering to
 the sentence frames.  For the n-gram baseline, we
 only counted occurrences of the prepositional phrase, omitting the
@@ -267,7 +266,7 @@ probabilities of the two adjective forms.
 %
 
 Results are shown in Figure \ref{fig:german-syntax} (right). Only the
-n-gram baseline fails to outperform control accuracy (dotted). Surprisingly,
+n-gram baseline fails to outperform control accuracy. Surprisingly,
 the LSTM CNLM slightly outperforms the WordNLM, even though the latter
 is evaluated on the easier full-lexical-coverage stimulus subset.
 Neither model shows accuracy decay as the number of adverbs increases.

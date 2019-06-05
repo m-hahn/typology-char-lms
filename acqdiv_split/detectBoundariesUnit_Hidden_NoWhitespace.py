@@ -13,8 +13,8 @@ parser.add_argument("--gpu", dest="gpu", type=bool)
 import random
 
 parser.add_argument("--batchSize", type=int, default=16)
-parser.add_argument("--char_embedding_size", type=int, default=100)
-parser.add_argument("--hidden_dim", type=int, default=1024)
+parser.add_argument("--char_embedding_size", type=int, default=50)
+parser.add_argument("--hidden_dim", type=int, default=512)
 parser.add_argument("--layer_num", type=int, default=1)
 parser.add_argument("--weight_dropout_in", type=float, default=0.01)
 parser.add_argument("--weight_dropout_hidden", type=float, default=0.1)
@@ -22,7 +22,7 @@ parser.add_argument("--char_dropout_prob", type=float, default=0.33)
 parser.add_argument("--char_noise_prob", type = float, default= 0.01)
 parser.add_argument("--learning_rate", type = float, default= 0.1)
 parser.add_argument("--myID", type=int, default=random.randint(0,1000000000))
-parser.add_argument("--sequence_length", type=int, default=80)
+parser.add_argument("--sequence_length", type=int, default=40)
 
 
 args=parser.parse_args()
@@ -187,7 +187,7 @@ def forward(numeric, train=True, printHere=False):
 
       numeric_selected = []
       for _,i,j,_ in selected:
-        numeric_selected.append(numeric[i][j-40:j+1]) # do not include the actual boundary
+        numeric_selected.append(numeric[i][j-int(args.sequence_length/2):j+1]) # do not include the actual boundary
       input_tensor = Variable(torch.LongTensor(numeric_selected).transpose(0,1)[:-1].cuda(), requires_grad=False)
       target_tensor = Variable(torch.LongTensor(numeric_selected).transpose(0,1)[1:].cuda(), requires_grad=False)
 

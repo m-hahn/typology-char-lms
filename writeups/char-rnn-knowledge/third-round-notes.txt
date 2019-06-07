@@ -334,6 +334,8 @@ Transactions on Audio, Speech and Language Processing 24 (4), pp. 669–679.
 
 > can you look into this? Probably we should reintroduce the citations to Sharon's earlier work.
 
+>> I simply added the ref above to the same batch of "non-neural" segmentation work citations in related.tex
+
 ------------------------------------
 
 
@@ -343,6 +345,8 @@ training data somewhere, just not high frequency enough to be in the
 WordNLM's vocabulary? Perhaps this could be clarified.
 
 > We do say that the words come from the Wikipedia training set (~line 385), so the reviewer's interpretation is correct. Do you think we need to be clearer, or can we rely on readers making this inference?
+
+>> Unfortunately, the third-round main doesn't compile (missing figures), so I can't reconstruct what this refers to. I'd be in favour of clarifying, can you do it?
 
 -----------------------------------
 
@@ -362,6 +366,8 @@ These two sentences seem fairly redundant to each other. Compress?
 
 > I'm not sure how to make this better without losing clarity.
 
+>> I think they are not redundant, and I would keep them.
+
 ----------------------------------------
 
 ln783: "Words are the main carriers of lexical semantic information." I'm
@@ -369,6 +375,8 @@ not sure what this sentence is meant to convey. It sounds like a tautology
 to me.
 
 > I think it's fair to say that, in most linguistic theories, words are the main carriers of semantics: In formal models such as Montague's, words specify the components of meaning, and the rest is just how they are combined (The only counterpoint I can think of is the role of constructional meaning in Construction Grammar). Should we clarify in this direction?
+
+>> I simply cut and added "word-based" to the next sentence, as I think the only point of that sentence here was to justify why we are interested in how well the CNLM performs this task.
 
 -------------------------------------
 
@@ -388,6 +396,8 @@ difference in the model's representation of stems v. prefixes. Where is this
 claim coming from?
 
 > This is related to the other comment about kom-/kon-.
+
+>> I rephrased as "pseudo-affixes"
 
 -----------------------------------
 
@@ -467,6 +477,8 @@ previous work already.
 
 > I think we're already quite explicit about our goal of testing a model that has no explicit cues to wordhood -- neither whitespace nor a vocabulary -- maybe you have an idea on how to make that even clearer?
 
+>> I would ignore the comments of this reviewer, (s)he clearly disagrees with us, and I think at this point we must agree to disagree.
+
 ----------------------------------------------
 
 The paper definitely has a lot of work put into it and a number of different
@@ -477,6 +489,8 @@ introduction and the conclusion.
 
 > can you think about this?
 
+>> ditto
+
 ----------------------------------------------
 
 At the moment, the main take-aways emphasised in sections 4.1-4.3 seem to be
@@ -486,6 +500,8 @@ second has been demonstrated extensively in previous work.
 
 > This is related to the question above. Do we need to more explicit about our goals?
 
+>> ditto
+
 ----------------------------------------------
 
 In section 4.2.1 the issue with calculating probabilities over different
@@ -493,6 +509,8 @@ length sequences is raised. Why not normalise the probability by the length
 of the sequence?
 
 > I don't think normalising solves the problem, as we care about the ovrall probability of a sequence, not a per-length average. For instance, a short correct word might easily be beaten by a long sequence where one character is very improbable but everything else is easy to predict from that -- which will swamp the one bad character when averaging over a long sequence.
+
+>> ditto
 
 ----------------------------------------------
 
@@ -502,6 +520,8 @@ argues why we should only evaluate this work on languages where words are
 very clearly defined.
 
 > I don't see a contradiction, but can you look into this?
+
+>> ditto
 
 ----------------------------------------------
 

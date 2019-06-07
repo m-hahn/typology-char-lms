@@ -41,15 +41,17 @@ decade because of their greater generality  compared to word-level models. % , a
 Early studies
 \cite{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}
 established that CNLMs might not be as good at language modeling as
-their word-based counterparts, but lag only slightly behind (and
-character-level sentence prediction involves a much larger search
-space than prediction at the word
-level). \newcite{Sutskever:etal:2011} and
+their word-based counterparts, but lag only slightly behind. This is
+particularly encouraging in light of the fact that character-level
+sentence prediction involves a much larger search space than
+prediction at the word level, as a character-level model must make a
+prediction after each character, rather than after each
+word. \newcite{Sutskever:etal:2011} and
 \newcite{DBLP:journals/corr/Graves13} ran qualitative analyses showing
-that CNLMs capture some basic linguistic properties of their input. The
-latter, who used LSTM cells, also showed, qualitatively, that CNLMs are sensitive to
-hierarchical structure. In particular, they balance parentheses
-correctly when generating text. %
+that CNLMs capture some basic linguistic properties of their
+input. The latter, who used LSTM cells, also showed, qualitatively,
+that CNLMs are sensitive to hierarchical structure. In particular,
+they balance parentheses correctly when generating text. %
 % Our aim here is to understand to what extent CNLMs trained on
 % unsegmented input learn various linguistic constructs. % This differs
 % from
@@ -64,9 +66,11 @@ use a character-based convolutional network to generate word
 representations. Other work focuses on splitting words into morphemes,
 using character-level RNNs and an explicit segmentation objective
 \cite[e.g.,][]{Kann:etal:2016}. These latter lines of work are only
-distantly related to our interest in probing what a purely character-level
-network trained on running text has implicitly learned about
-linguistic structure.
+distantly related to our interest in probing what a purely
+character-level network trained on running text has implicitly learned
+about linguistic structure. There is also extensive work on
+segmentation of the linguistic signal that does not rely on neural
+methods, and is not directly relevant here, \cite[e.g.,][and references there]{Brent:Cartwright:1996,goldwater-bayesian-2009}.
 % about morphemes and other units through generic language
 % modeling.% Moreover, these networks are not exposed to constituents
 % larger than words.

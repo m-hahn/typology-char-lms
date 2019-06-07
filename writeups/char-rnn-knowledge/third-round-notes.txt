@@ -10,6 +10,9 @@ deleting all whitespace?
 
 > I'm not convinced, what do you think?
 
+>> OK, I don't have strong feelings either way, I'm fine with ignoring
+   the suggestion.
+
 ****************************************
 
 "larger search space"
@@ -20,6 +23,13 @@ So that special token is then the reason for the reduced
 search space?
 
 > I still think this is true, for the reasons we discussed in Paris.
+
+>> I tried to clarify as follows:  "This is
+particularly encouraging in light of the fact that character-level
+sentence prediction involves a much larger search space than
+prediction at the word level, as a character-level model must make a
+prediction after each character, rather than after each
+word." Do you think this is clear?
 
 ****************************************
 
@@ -62,11 +72,10 @@ neurally plausible view ..."
 
 then this prior work should be cited.
 
-
-
 > Can you figure out where to put them? The bibtex keys are
 > gillick2016multilingual, lee2017fully, cherry2018revisiting
 
+>> I just added them exactly where Hinrich suggested we put them.
 
 
 ****************************************
@@ -79,6 +88,13 @@ especially Sharon Goldwater's work.
 
 > can you look into this?
 
+>> I added the following in related right after the comment about
+   Kann's work, to futher extend the list of irrelevant work :):
+   "There is also extensive work on segmentation of the linguistic
+   signal that does not rely on neural methods, and is not directly
+   relevant here, (e.g., Brent and Cartwright, 1996; Goldwater et al.,
+   2009, and references there)."
+
 ****************************************
 
 comparison with wordnlm
@@ -89,6 +105,10 @@ state what the purpose of this baseline is? Why don't you
 run wordnlm on the same dataset as the other models?
 
 > What do you think about this?
+
+>> Honestly, I don't understand what it means that it not run on the
+   same dataset as the other models. Do you know what he means? If
+   not, I would just ignore.
 
 ****************************************
 
@@ -103,6 +123,8 @@ sentence-initially.
 
 > I removed this, se also next point.
 
+>> OK
+
 ---------------------------------------
 
 "exclude the reading in which mit is a particle"
@@ -112,6 +134,8 @@ particle/preposition ambiguity? I didn't try very hard, but
 it seems difficult to construct natural examples of this.
 
 > I have added a citation and an example in a footnote, as I myself have found it nontrivial to construct such examples. (Such examples are mentioned in various dictionaries, of which I have cited one, so I'm confident this is not just my idiolect).
+
+>> :)
 
 ****************************************
 
@@ -126,6 +150,8 @@ In any case, please clarify!
 
 > done
 
+>> Thanks
+
 ****************************************
 
 "tracking boundaries"
@@ -138,6 +164,8 @@ in predictinng the next character?
 
 > can you look into this?
 
+>> I don't think I understood. Should we ignore?
+
 ****************************************
 
 MINOR COMMENTS / TYPOS
@@ -148,6 +176,10 @@ No longer true?  Transformers are as much a workhorse as
 LSTMS now?
 
 > should we rephrase?
+
+>> Done. If they made us go through another pointless round of
+   reviewing, probably even transformers would no longer be state of
+   the art ;-)
 
 ----------------------------------------------
 
@@ -209,6 +241,8 @@ reading the figure incorrectly?)
 
 > For Systeme, we would need to know what came before. For deren, it's conceivable that dere-n seems like a reasonable segmentation (as derer, derem are also existing forms)
 
+>> Can you add.
+
 ----------------------------------------------
 
 - Is the predicted segment "inseguitoa" or "nseguitoa"? it
@@ -216,12 +250,16 @@ looks like the latter.
 
 > Plausibly yes. To tell whether that's reasonable, we would need to check what came before.
 
+>> I'd ignore.
+
 ----------------------------------------------
 
 - Did the absorption of the "case assigner" only happen for
 Bau or also for other words?
 
 > Should we look into this?
+
+>> I feel like we're getting into a rabbit hole of things we could do, I'd ignore.
 
 ----------------------------------------------
 
@@ -238,6 +276,8 @@ stems. "konn"/"komm" are (short vowels), but not "kon"/"kom"
 (long vowels).
 
 > I wonder whether the more reasonable interpretation is to think of kon- and kom- as the Latinate prefixes (kon-takt, kom-ponist), not as stems of verbs.
+
+>> I added hedges to the current explanation (not that the model does get these strings also out of kommen and kennen.
 
 ----------------------------------------------
 
@@ -276,6 +316,10 @@ neural nets are actually reasonable models of human brains strikes me as an
 enormous overclaim.
 
 > can you look into these?
+
+>> I think these are all deep philosophical points on which we have to
+   agree to disagree, unless we want to turn our article into a
+   50-page position paper.
 
 --------------------------------------
 

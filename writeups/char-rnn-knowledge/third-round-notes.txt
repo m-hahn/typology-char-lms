@@ -31,6 +31,8 @@ prediction at the word level, as a character-level model must make a
 prediction after each character, rather than after each
 word." Do you think this is clear?
 
+>>> looks good to me!
+
 ****************************************
 
 related work
@@ -110,6 +112,8 @@ run wordnlm on the same dataset as the other models?
    same dataset as the other models. Do you know what he means? If
    not, I would just ignore.
 
+>>> OK.
+
 ****************************************
 
 compilation of dataset for "mit"
@@ -165,6 +169,8 @@ in predictinng the next character?
 > can you look into this?
 
 >> I don't think I understood. Should we ignore?
+
+>>> OK
 
 ****************************************
 
@@ -243,6 +249,8 @@ reading the figure incorrectly?)
 
 >> Can you add.
 
+>>> done
+
 ----------------------------------------------
 
 - Is the predicted segment "inseguitoa" or "nseguitoa"? it
@@ -251,6 +259,8 @@ looks like the latter.
 > Plausibly yes. To tell whether that's reasonable, we would need to check what came before.
 
 >> I'd ignore.
+
+>>> OK
 
 ----------------------------------------------
 
@@ -347,6 +357,8 @@ WordNLM's vocabulary? Perhaps this could be clarified.
 > We do say that the words come from the Wikipedia training set (~line 385), so the reviewer's interpretation is correct. Do you think we need to be clearer, or can we rely on readers making this inference?
 
 >> Unfortunately, the third-round main doesn't compile (missing figures), so I can't reconstruct what this refers to. I'd be in favour of clarifying, can you do it?
+
+>>> TODO
 
 -----------------------------------
 

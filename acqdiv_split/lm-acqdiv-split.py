@@ -114,7 +114,7 @@ def prepareDatasetChunks(data, train=True):
    for chunk in data:
       #       print(len(chunk))
       for char in chunk:
-         if char == " ":
+         if char == ";":
             continue
          count += 1
          #         if count % 100000 == 0:
@@ -131,7 +131,7 @@ def prepareDataset(data, train=True):
    numeric = [0]
    count = 0
    for char in data:
-      if char == " ":
+      if char == ";":
          continue
       count += 1
       #         if count % 100000 == 0:

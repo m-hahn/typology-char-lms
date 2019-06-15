@@ -147,12 +147,6 @@ standard errors over these splits. %   We extract word representations as
 % above, and we compare the same models.
 For WordNLM OOV, there were 45.0\% OOVs in the training classes,
 49.1\% among the -\emph{r} forms, and 52.1\% for Umlaut.
-%\textbf{MICHAEL: I didn't
-%  realize you selected matched singular/plural pairs. Is this the
-%  case? Anyway, wouldn't the more informative statistics here be the one
-%  about missing items independently of whether they are plural or
-%  singular? I think that's what matters, or else the high performance
-%  in the full data-set would be miraculous...}
 
 Results are in Table \ref{tab:number-results-e}. The classifier based
 on word embeddings is the most successful. It outperforms in most cases
@@ -174,43 +168,6 @@ when the target is a new suffixation pattern, albeit one that is
 distinct from those seen in training, than when
 it is a purely non-concatenative process.
 
-% We found that training classes tend to have an unstressed final -e- in
-% the plural only, either as a plural ending (\emph{Abend} `evening' $\rightarrow$ \emph{Abend-e}) or as an epenthetic vowel
-% intervening before a consonantal plural suffix (\emph{Autor} `author' $\rightarrow$ \emph{Autor-e-n}).
-% However, all singulars
-% that use only Umlaut to form their plurals have an unstressed final -e-
-% in both singular and plural (e.g., \emph{Apfel} `apple' $\rightarrow$ \emph{{\"A}pfel}). 
-% If the diagnostic classifier is sensitive to final unstressed -e- as a cue for plurals,
-% it is expected that
-% it should classify singulars and plurals as plurals.
-% Indeed, we found that the CNLM classifiers mistook
-% most Umlaut singulars for plurals.  On one randomly chosen split,
-% 100\% of both singulars and plurals were classified as plurals.  
-% No such problem occurs for -\emph{r} plurals, in contrast, as they
-% follow the pattern of the training classes (e.g., \emph{Lied} `song' $\rightarrow$ \emph{Lied-e-r}).
-
-% \textbf{Marco: Regarding your counterexamples (Kuss, Wurm), they fall under -e/-r plurals in the experiment. I clarified this at the beginning of this section.}
-
-%By inspecting the results, we found that the CNLM classifiers mistook
-%most Umlaut singulars for plurals.  On one randomly chosen split,
-%100\% of both singulars and plurals were classified as plurals.  We
-%observed that singulars using only Umlaut to mark plural have the
-%commonality that their last vowel is an (unstressed) -\emph{e}-.  This
-%vowel -\emph{e}- is also common in -\emph{r} plurals, many of which
-%add a vowel -\emph{e}- between the consonant-final stem and the ending
-%-\emph{r}.  Based on this observation, we hypothesized that the
-%CNLM-based classifier detects the presence of -\emph{e}- towards the
-%end of the word, which would explain why it does well on -\emph{r}
-%plurals and at chance of Umlaut plurals. \textbf{MICHAEL: I think the
-%  previous paragraph needs to be clarified in a few ways. First, it is
-%  NOT always the case that Umlaut-triggering singulard have an
-%  unstressed e as last vowel, Kuss, Wurm, etc. Do you mean that this
-%  is the case in your data set? Then, this should be clarified (and
-%  explained). Second, I think the argument would be clearer by turning
-%  it around: Our training classes tend to have an unstressed final -e-
-%  in the plural only. Many singulars in Umlaut have an unstressed
-%  final -e-, hence the mishap. No problem with -r, as it follows the
-%  pattern of the training classes. Finally, give examples!}
 
 
 \begin{table}[t]

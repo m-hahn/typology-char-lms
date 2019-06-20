@@ -1,0 +1,55 @@
+\subsection{Capturing syntactic dependencies}
+\label{sec:dependencies}
+
+Words encapsulate linguistic information into units that are then put
+into relation by syntactic rules. A long tradition in linguistics has
+even claimed that syntax is blind to sub-word-level processes
+\cite[e.g.,][]{Chomsky:1970,DiSciullo:Williams:1987,Bresnan:Mchombo:1995,Williams:2007}. Can
+our CNLMs, despite the lack of an explicit word lexicon, capture
+relational syntactic phenomena, such as agreement and case assignment?
+We investigate this by testing them on syntactic dependencies between
+non-adjacent words. We adopt the ``grammaticality judgment'' paradigm
+of \newcite{Linzen:etal:2016}. We create minimal sets of grammatical
+and ungrammatical phrases illustrating the phenomenon of interest, and
+let the language model assign a likelihood to all items in the
+set. The language model is said to ``prefer'' the grammatical variant
+if it assigns a higher likelihood to it than to its ungrammatical
+counterparts. We must stress two methodological points. First, since a
+character-level language model assigns a probability to each character
+of a phrase, and the phrase likelihood is the product of these values
+(all between 0 and 1), minimal sets must be controlled for character
+length. This makes existing benchmarks unusable. Second, the
+``distance'' of a relation is defined differently for a
+character-level model, and it is not straightforward to
+quantify. Consider the German phrase in \ref{ex:german-gender}
+below. For a word model, two items separate the article from the
+noun. For a (space-less) character model, 8 characters intervene until
+the noun onset, but the span to consider will typically be longer. For
+example, \emph{Baum} could be the beginning of the feminine noun
+\emph{Baumwolle} `cotton', which would change the agreement
+requirements on the article. So, until the model finds evidence that
+it fully parsed the head noun, it cannot reliably check
+agreement. This will typically require parsing at least the full noun
+and the first character following it. We again focus on German and Italian, as their richer inflectional
+morphology simplifies the task of constructing balanced minimal sets.
+
+
+%\textbf{Please provide size for all evaluation sets.}
+
+%\textbf{In the interest of space, please reduce figures ~\ref{fig:gender}, ~\ref{fig:case} and \ref{fig:prep} to a single figure with 3 panels: the averaged gender and case results, and the subcategorization case. Also, either put titles on the figures, or at least label them as a), b) c). Legends should be LSTM, RNN and WordNLM (or WNLM) for coherence.}XS
+
+%We take a further step up the linguistic hierarchy, probing CNLMs for their ability to capture syntactic dependencies between non-adjacent words. %
+% --a rather challenging task for models that work entirely at the character level, and do not even have information about what words are.
+% % Despite not having predefined information about words and
+% % morphemes, is the model able to capture non-adjacent syntactic
+% % dependencies?
+% In particular, is it able to do so when dependencies cross one or more words, and thus cannot be reduced to surface n-gram counts?
+% Note that, for a CNLM, dependencies across even a single word are often already long-distance. % even \emph{``\textbf{la} bell\textbf{a}''} is long distance.
+% We again focus on German and Italian due to the richness of inflectional morphology in these languages.
+% Constructions will be language-specific, so we discuss the languages separately. %German and Italian separately (not much in English).
+
+%As usual, specifics of training etc that depart from general setup.
+
+\input{german-syntax}
+
+\input{italian-syntax}

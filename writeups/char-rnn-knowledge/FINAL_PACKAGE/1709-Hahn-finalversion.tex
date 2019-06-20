@@ -1,0 +1,168 @@
+% File tacl2018.tex
+% Aug 3, 2018
+
+% The English content of this file was modified from various *ACL instructions
+% by Lillian Lee and Kristina Toutanova
+%
+% LaTeXery is all adapted from acl2018.sty.
+
+
+% To check:
+% - Submission must be in A4 format
+% - min length 7 pages, max length 10 of CONTENT
+
+% Example table:
+
+% \begin{table}[t]
+% \begin{center}
+% \begin{tabular}{|l|rl|}
+% \hline \bf Type of Text & \bf Size & \bf Style \\ \hline
+% paper title & 15 pt & bold \\
+% \iftaclfinal
+% author names & 12 pt & bold \\
+% author affiliation & 12 pt & \\
+% \else
+% \fi
+% the word ``Abstract'' as header & 12 pt & bold \\
+% abstract text & 10 pt & \\
+% section titles & 12 pt & bold \\
+% document text & 11 pt  &\\
+% captions & 10 pt & \\
+% %bibliography & 10 pt & \\
+% footnotes & 9 pt & \\
+% \hline
+% \end{tabular}
+% \end{center}
+% \caption{\label{tab:font-table} Font requirements}
+% \end{table}
+
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref,acceptedWithA]{tacl2018v2} % use ``nohyperref'' to disable  hyperref
+\usepackage{times,latexsym}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+
+
+\usepackage[english]{babel}
+\hyphenation{white-space}
+
+%\taclfinalcopy % For camera-ready, replace "\taclfinalfalse" with
+% "\taclfinalcopy"
+
+%%%%
+%%%% Material in this block can be removed by TACL authors.
+% It consists of things specific to generating TACL instructions
+\usepackage{xspace,mfirstuc,tabulary}
+
+
+% packages added by Marco and Michael
+\usepackage{paralist} 
+\usepackage{graphicx} 
+\usepackage{multirow} 
+\usepackage{enumitem}
+\usepackage{linguex}
+%\raggedbottom
+
+%\newcommand{\ex}[1]{{\sf #1}}
+
+
+\title{\emph{Tabula} nearly \emph{rasa:} Probing the linguistic knowledge of character-level neural language models trained on unsegmented text}
+
+
+% The command \taclfinalfalse suppresses display of the contents of the
+% \author{...} command in the generated pdf.
+% Replacing that command with "\taclfinalcopy" reveals the author info in the
+% generated pdf.
+% See tacl2018.sty for other ways to set author info.
+%\author{
+% name \\
+% Template Affiliation/Address Line 1 \\
+% Template Affiliation/Address Line 2 \\
+% Template Affiliation/Address Line 2 \\
+%  {\sf template.email@sampledomain.com} \\
+%}
+%
+
+
+\author{Michael Hahn\thanks{Work partially done while interning at Facebook AI Research.} \\ Stanford University \\ \url{mhahn2@stanford.edu} \And Marco Baroni \\ Facebook AI Research \\ UPF Linguistics Department \\ Catalan Institution for Research\\and Advanced Studies \\ \url{mbaroni@gmail.com}}
+
+
+\date{}
+
+\hypersetup{draft}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  Recurrent neural networks (RNNs) have reached striking performance in
+  many natural language processing tasks. This has renewed interest in
+  whether these generic sequence processing devices are inducing
+  genuine linguistic knowledge. Nearly all current analytical studies,
+  however, initialize the RNNs with a vocabulary of known words, and
+  feed them tokenized input during training. We present a
+  multi-lingual study of the linguistic knowledge encoded in RNNs
+  trained as character-level language models, on input data with word
+  boundaries removed. These networks face a tougher and more
+  cognitively realistic task, having to discover any useful
+  linguistic unit from scratch based on input statistics. The results
+  show that our ``near \emph{tabula rasa}'' RNNs are mostly able to
+  solve morphological, syntactic and semantic tasks that intuitively
+  presuppose word-level knowledge, and indeed they learned, to some extent, to track
+   word boundaries. Our study opens the door to speculations
+  about the necessity of an explicit, rigid word lexicon in language learning and
+  usage.
+\end{abstract}
+
+
+\input{introduction}
+
+\input{related}
+
+\input{setup}
+
+\input{experiments}
+
+\input{discussion}
+
+
+\section*{Acknowledgments}
+
+We would like to thank Piotr Bojanowski, Alex Cristia, Kristina
+Gulordava, Urvashi Khandelwal, Germ\'{a}n Kruszewski, Sebastian
+Riedel, Hinrich Sch\"{u}tze and the anonymous reviewers for feedback
+and advice.
+
+
+
+\bibliography{marco,michael}
+\bibliographystyle{acl_natbib}
+
+
+
+ \appendix
+
+ \begin{table*}[t]
+ 	\begin{tabular}{l|lll|lll|lllllll}
+ 		&  \multicolumn{3}{c}{LSTM} & \multicolumn{3}{|c|}{RNN} & \multicolumn{3}{c}{WordNLM} \\
+ 		       &  En.     &  Ge.    & It.    & En.    &    Ge.   &  It.     &  En.     &   Ge.   &    It. \\  \hline
+ 	Batch Size     &  128   &  512  & 128  & 256  & 256    &  256   &  128   &   128 &  128   \\              
+ 	Embedding Size &  200   &  100  & 200  & 200  & 50     &  50    &  1024  &   200 &  200   \\             
+ 	Dimension      &  1024  &  1024 & 1024 & 2048 & 2048   &  2048  &  1024  &  1024 &  1024  \\  
+ 	Layers         &  3     &  2    & 2    & 2    & 2      &  2     &  2     &  2    &  2     \\   
+ 	Learning Rate  &  3.6   &  2.0  & 3.2  & 0.01 & 0.1    &  0.1   &  1.1   &  0.9  &  1.2   \\ 
+ 	Decay          &  0.95  &  1.0  & 0.98 & 0.9  & 0.95   &  0.95  &  1.0   &  1.0  &  0.98  \\
+ 	BPTT Length    &  80    &  50   & 80   & 50   & 30     &  30    &  50    &  50   &  50    \\
+ 	Hidden Dropout &  0.01  &  0.0  & 0.0  & 0.05 & 0.0    &  0.0   &  0.15  &  0.15 &  0.05  \\   
+ 	Embedding Dropout  & 0.0& 0.01  & 0.0  & 0.01 & 0.0    &  0.0   &  0.0   &  0.1  &  0.0   \\   
+ 	Input Dropout  & 0.001 &  0.0   & 0.0  & 0.001& 0.01   &  0.01  &  0.01  &  0.001&  0.01  \\ 
+         Nonlinearity   &   --  & --     & --   & ReLu & tanh   &  tanh  &   --   &  --   &  --    \\                   
+ \end{tabular}
+ 	\caption{Chosen hyperparameters}
+ \end{table*}
+
+
+
+\end{document}
+
+

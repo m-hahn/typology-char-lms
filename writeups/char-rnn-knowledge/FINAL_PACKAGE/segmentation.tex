@@ -1,0 +1,244 @@
+\subsection{Boundary tracking in CNLMs}
+\label{sec:segmentation}
+
+
+The good performance of CNLMs on most tasks above suggests that,
+although they lack a hard-coded word vocabulary and they were trained
+on unsegmented input, there is enough pressure from the language
+modeling task for them to learn to track word-like items, and
+associate them with various morphological, syntactic and semantic
+properties. In this section, we take a direct look at \emph{how} CNLMs
+might be segmenting their input.
+\newcite{Kementchedjhieva:Lopez:2018} found a \emph{single} unit in
+their English CNLM that seems, qualitatively, to be tracking
+morpheme/word boundaries.  Since they trained the model with
+whitespace, the main function of this unit could simply be to predict
+the very frequent whitespace character. We conjecture instead (like them) that the
+ability to segment the input into meaningful items is so important
+when processing language that CNLMs will specialize units for boundary
+tracking even when trained without whitespace.
+
+To look for ``boundary units'', we created a random set of 10,000
+positions from the training set, balanced between those corresponding
+to a word-final character and those occurring word-initially or
+word-medially.  We then computed, for each hidden unit, the Pearson
+correlation between its activations and a binary variable that takes value 1 in
+word-final position and 0 elsewhere. %dummy variable coding
+%word-final position.
+For each language and model (LSTM or RNN), we found very few units
+with a high correlation score, suggesting that the models have indeed
+specialized units for boundary tracking. We further study the units
+with the highest correlations, that are, for the LSTMs, 0.58
+(English), 0.69 (German), and 0.57 (Italian).  For the RNNs, the
+highest correlations are 0.40 (English), 0.46 (German and
+Italian).\footnote{In an early version of this analysis, we
+  arbitrarily imposed a minimum 0.70 correlation threshold, missing
+  the presence of these units. We thank the reviewer who encouraged us to
+  look further into the matter.}
+
+\paragraph{Examples} We looked at the behaviour of the selected LSTM units qualitatively by
+extracting random sets of 40-character strings from the development
+partition of each language (left-aligned with word onsets) and
+plotting the corresponding boundary unit activations. Figure
+\ref{fig:word-unit} reports illustrative examples.  In all languages,
+most peaks in activation mark word boundaries. However, other
+interesting patterns emerge. In English, we see how the unit
+reasonably treats \emph{co-} and \emph{produced} in \emph{co-produced}
+as separate elements, and it also posits a weaker boundary after the
+prefix \emph{pro-}. As it proceeds
+left-to-right, with no information on what follows, the network posits a boundary after \emph{but} in \emph{Buttrich}. In
+the German example, we observe how the complex word
+\emph{Hauptaufgabe} (`main task') is segmented into the morphemes \emph{haupt},
+\emph{auf} and \emph{gabe}. Similarly, in the final
+\emph{transformati-} fragment, we observe a weak boundary after the prefix
+\emph{trans}. In the pronoun \emph{deren} `whose', the case suffix -\emph{n} is separated.
+In Italian, \emph{in seguito a} is a lexicalized
+multi-word sequence meaning `following' (literally: `in
+continuation to'). The boundary unit does not spike inside
+it. Similarly, the fixed expression \emph{Sommo Pontefice} (referring
+to the Pope) does not trigger inner boundary unit activation spikes.  On the
+other hand, we notice peaks after \emph{di} and \emph{mi} in
+\emph{dimissioni}. Again, in left-to-right processing, the unit has a
+tendency to immediately posit boundaries when frequent function words
+are encountered.
+
+% English /home/user/CS_SCR/FAIR18/CHECKPOINTS/boundary-neuron//
+% Italian /home/user/CS_SCR/FAIR18/CHECKPOINTS/boundary-neuron//
+% German /home/user/CS_SCR/FAIR18/CHECKPOINTS/boundary-neuron//
+
+\begin{figure*}
+  \begin{center}
+  % \includegraphics[width=0.9\textwidth]{figures/{english_wiki-english-nospaces-bptt-282506230_15.txt}.png}
+  \includegraphics[width=0.9\textwidth]{figures/{sent_english_wiki-english-nospaces-bptt-282506230_145.txt}.png}
+  \includegraphics[width=0.9\textwidth]{figures/{german_wiki-german-nospaces-bptt-910515909_12.txt}.png}
+  % \includegraphics[width=0.9\textwidth]{figures/{italian_wiki-italian-nospaces-bptt-855947412_7.txt}.png
+  \includegraphics[width=0.9\textwidth]{figures/{sent_italian_wiki-italian-nospaces-bptt-855947412_301.txt}.png}
+  \end{center}
+  \caption{Examples of the LSTM CNLM boundary unit activation profile, with ground-truth word boundaries marked in
+    green. English: \emph{It was co-produced with Martin Buttrich over at\ldots}. German: \emph{Systeme, deren Hauptaufgabe die transformati(-on)} `systems, whose main task is the transformation\ldots'. Italian: \emph{in seguito alle dimissioni del Sommo Pontefice} `following the resignation of the Supreme Pontiff\ldots'. %\textbf{Is there a need to clean up the English and Italian
+%      plots? You mentioned adding manual word boundaries?}
+	}\label{fig:word-unit}
+\end{figure*}
+
+\paragraph{Detecting word boundaries} To gain a more quantitative
+understanding of how well the boundary unit is tracking word
+boundaries, we trained a single-parameter diagnostic classifier on the
+activation of the unit (the classifier simply sets an optimal
+threshold on the unit activation to separate word boundaries from
+word-internal positions). We ran two experiments. In the first,
+following standard practice, we trained and tested the classifier on
+uncontrolled running text. We used 1k characters for training, 1M for
+testing, both taken from the left-out Wikipedia test partitions. We
+will report F1 performance on this task.
+
+We also considered a more cogent evaluation regime, in which we split
+training and test data so that the number of boundary and non-boundary
+conditions are balanced, and there is no overlap between training and
+test words. Specifically, we randomly selected positions from the test
+partitions of the Wikipedia corpus, such that half of these were the
+last character of a token, and the other half were not.  % Both
+We sampled the test data points subject to the constraint that the
+word (in the case of a boundary position) or word prefix (in the case
+of a word-internal position) ending at the selected character does not
+overlap with the training set. This ensures that a classifier cannot
+succeed by looking for encodings reflecting specific words.  For each
+datapoint, we fed a substring of the 40 preceding characters to the
+CNLM. %
+We collected 1,000 such points for training, and tested on 1M additional datapoints. In this
+case, we will report classification accuracy as figure of merit.
+For reference, in both experiments we also trained diagnostic
+classifiers on the \emph{full} hidden layer of the LSTMs.
+
+Looking at the F1 results on uncontrolled running text (Table
+\ref{tab:segmentation-results-real}), we observe first that the
+LSTM-based full-hidden-layer classifier has strong performance in all
+3 languages, confirming that the LSTM model encodes boundary
+information.  Moreover, in all languages, a large proportion of this
+performance is already accounted for by the single-parameter
+classifier using boundary unit activations. This confirms that
+tracking boundaries is important enough for the network to devote a
+specialized unit to this task. Full-layer RNN results are below
+LSTM-level but still strong. There is however a
+stronger drop from full-layer to single-unit classification. This is in
+line with the fact that, as reported above, the candidate RNN boundary units have lower
+boundary correlations than the LSTM ones.
+
+Results for the balanced classifiers tested on new-word
+generalization are shown in Table~\ref{tab:segmentation-results}
+(because of the different nature of the experiments, these
+are not directly comparable to the F1 results in Table~\ref{tab:segmentation-results-real}). Again, we
+observe a strong performance of the LSTM-based full-hidden-layer
+classifier across the board. The LSTM
+single-parameter classifier using boundary unit activations is also strong,  even outperforming the full classifier in German. %
+Moreover, in this more cogent setup, the single-unit LSTM classifier
+is at least competitive with the full-layer RNN classifier in all languages. The weaker
+results of RNNs in the word-centric tasks of the previous sections
+might in part be due to their poorer overall ability to track word boundaries,
+as specifically suggested by this stricter evaluation setup. %
+
+\begin{table}[t]
+	\small
+  \begin{center}
+    \begin{tabular}{l|l|l|l|l|}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{LSTM}&\emph{RNN}&\emph{RNN}\\
+            \multicolumn{1}{c|}{}&\emph{single}&\emph{full}&\emph{single}&\emph{full}\\
+      \hline
+	    English & 87.7 & 93.0 &  65.6  & 90.5 \\ 
+	    German  & 86.6 & 91.9 &  70.4  & 85.0 \\ 
+	    Italian & 85.6 & 92.2 &  71.3  & 91.5 \\ 
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results-real} F1 of single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on uncontrolled running text.}
+\end{table}
+
+\begin{table}[t]
+	\small
+  \begin{center}
+    \begin{tabular}{l|l|l|l|l|}
+      \multicolumn{1}{c|}{}&\emph{LSTM}&\emph{LSTM}&\emph{RNN}&\emph{RNN}\\
+            \multicolumn{1}{c|}{}&\emph{single}&\emph{full}&\emph{single}&\emph{full}\\
+      \hline
+      English & 77.5& 90.0 & 65.9  & 76.8\\ 
+      German  & 80.8& 79.7 & 67.0  & 75.8\\ 
+      Italian & 75.5& 82.9 & 71.4  & 75.9\\ 
+    \end{tabular}
+  \end{center}
+  \caption{\label{tab:segmentation-results} Accuracy of  single-unit and full-hidden-state word-boundary diagnostic classifiers, trained and tested on balanced data requiring new-word generalization. Chance accuracy is at 50\%.}
+\end{table}
+
+
+
+% # python detectBoundariesUnit_Hidden_ExtractPattern_NoWhitespace_Classifier_RealText.py --language english  --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 200 --char_noise_prob 0.0 --hidden_dim 1024 --language english --layer_num 3 --learning_rate 3.6  --myID 282506230 --load-from wiki-english-nospaces-bptt-282506230 --weight_dropout_hidden 0.01 --weight_dropout_in 0.0
+
+% python detectBoundariesUnit_Hidden_ExtractPattern_NoWhitespace_Classifier_RealText_FullClassifier.py --batchSize 128 --char_dropout_prob 0.0 --char_embedding_size 200 --char_noise_prob 0.0 --hidden_dim 1024 --language italian --layer_num 2 --learning_rate 3.5  --weight_dropout_hidden 0.05 --weight_dropout_in 0.0 --load-from wiki-italian-nospaces-bptt-855947412
+
+
+
+
+\paragraph{Error analysis} As a final way to characterize the function
+and behaviour of the boundary units, we inspected the most frequent
+under- and over-segmentation errors made by the classifier based on
+the single boundary units, in the more difficult balanced task. We
+discuss German here, as it is the language where the classifier
+reaches highest accuracy, and its tendency to have long,
+morphologically complex words makes it particularly
+interesting. However, similar patterns were also detected in Italian
+and, to a lesser extent, English (in the latter, there are fewer and
+less interpretable common oversegmentations, probably because words
+are on average shorter and morphology more limited).
+
+Considering first the 30 most common undersegmentations, the large
+majority (24/30) are common sequences of grammatical terms or very
+frequent items that can sometimes be reasonably re-analyzed as
+single function words or adverbs (e.g., \emph{bis zu}, `up to'
+(lit.~`until to'), \emph{je nach} `depending on' (lit.~`per after'),
+\emph{bis heute} `to date' (lit.~`until today'). 3 cases are
+multi-word city names (\emph{Los Angeles}). The final 3 cases
+interestingly involve \emph{Bau} `building' followed by \emph{von}
+`of' or genitive determiners \emph{der/des}. In its eventive reading,
+this noun requires a patient licensed by either a preposition or the
+genitive determiner, e.g., \emph{Bau der Mauer} `building of the wall'
+(lit.~`building the-GEN wall'). Apparently the model decided to absorb
+the case assigner into the form of the noun.
+
+We looked next at the 30 most common oversegmentations, that is, at the
+ substrings that were wrongly segmented out of the largest
+number of distinct words. We limited the analysis to those containing
+at least 3 characters, because shorter strings were ambiguous and
+hard to interpret. Among then top oversegmentations, 6 are prefixes that can also occur in
+isolation as prepositions or verb particles (\emph{auf} `on',
+\emph{nach} `after', etc.). 7 are content words that form many
+compounds (e.g., \emph{haupt} `main', occurring in \emph{Hauptstadt}
+`capital', \emph{Hauptbahnhof} `main station' etc.; \emph{Land}
+`land', occurring in \emph{Deutschland} `Germany', \emph{Landkreis}
+`district', etc.). Another 7 items can be classified as suffixes
+(e.g., \emph{-lich} as in \emph{s\"udlich} `southern',
+\emph{wissenschaftlich} `scientific'), although their segmentation is
+not always canonical (e.g., \emph{-chaft} instead of the expected
+\emph{-schaft} in \emph{Wissenschaft} `science'). 4 very common
+function words are often wrongly segmented out of longer words (e.g.,
+\emph{sie} `she' from \emph{sieben} `seven'). The \emph{kom} and
+\emph{kon} cases are interesting, as the model
+ segments them as stems (or stem fragments) in forms of the verbs \emph{kommen} `to
+come' and \emph{k{\"o}nnen} `to be able to', respectively (e.g., \emph{kommt}
+and \emph{konnte}), but it also treats them as pseudo-affixes elsewhere
+(\emph{komponist} `composer', \emph{kontakt} `contact'). The remaining
+3 oversegmentations, \emph{rie}, \emph{run} and \emph{ter} don't have
+any clear interpretation.
+
+To conclude, the boundary unit, even when
+analyzed through the lens of a classifier that was optimized on
+word-level segmentation, is actually tracking salient linguistic
+boundaries at different levels. While in many cases these boundaries
+naturally coincide with words (hence the high classifier performance),
+the CNLM is also sensitive to frequent morphemes and compound
+elements, as well as to different types of multi-word
+expressions. This is in line with a view of wordhood as a useful but
+``soft'', emergent property, rather than a rigid primitive of
+linguistic processing.
+
+% python detectBoundariesUnit_Hidden_ExtractPattern_NoWhitespace_Classifier.py --language english  --batchSize 128 --char_dropout_prob 0.001 --char_embedding_size 200 --char_noise_prob 0.0 --hidden_dim 1024 --language english --layer_num 3 --learning_rate 3.6  --myID 282506230 --load-from wiki-english-nospaces-bptt-282506230 --weight_dropout_hidden 0.01 --weight_dropout_in 0.0
+% output in 
+% results/segmentation-english-frequent-errors-unit-disjoint.txt
+
+

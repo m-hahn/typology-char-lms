@@ -1,0 +1,98 @@
+\section{Introduction}
+\label{sec:introduction}
+
+
+Recurrent neural networks \cite[RNNs,][]{Elman:1990}, in particular
+in their Long-Short-Term-Memory variant
+\cite[LSTMs,][]{Hochreiter:Schmidhuber:1997}, are widely used in natural language processing. RNNs, often
+pre-trained on the simple \emph{language modeling} objective of
+predicting the next symbol in natural text, are often a crucial
+component of state-of-the-art architectures for machine
+translation, natural language inference and text categorization
+\cite{Goldberg:2017}.
+
+RNNs are very general devices for sequence processing, hardly assuming
+any prior linguistic knowledge. Moreover, the simple prediction task
+they are trained on in language modeling is well-attuned to the core
+role prediction plays in cognition
+\cite[e.g.,][]{Bar:2007,Clark:2016}. RNNs have thus long attracted
+researchers interested in language acquisition and processing. Their
+recent successes in large-scale tasks has rekindled
+this interest \cite[e.g.,][]{Frank:etal:2013,Lau:etal:2017,Kirov:Cotterell:2018,Linzen:etal:2018,McCoy:etal:2018,Pater:2018}.
+
+The standard pre-processing pipeline of modern RNNs assumes that the
+input has been tokenized into word units that are pre-stored in the
+RNN vocabulary \cite{Goldberg:2017}. This is a reasonable practical
+approach, but it makes simulations less interesting from a linguistic
+point of view. First, discovering words (or other primitive
+constituents of linguistic structure) is one of the major challenges a
+learner faces, and by pre-encoding them in the RNN we are facilitating
+its task in an unnatural way (not even the staunchest nativists would
+take specific word dictionaries to be part of our genetic
+code). Second, assuming a unique tokenization into a finite number of
+discrete word units is in any case problematic. The very notion of
+what counts as a word in languages with a rich morphology is far from
+clear \cite[e.g.,][]{Dixon:Aikhenvald:2002,Bickel:Zuniga:2017}, and,
+universally, lexical knowledge is probably organized into a
+not-necessarily-consistent hierarchy of units at different levels:
+morphemes, words, compounds, constructions,
+etc.~\cite[e.g.,][]{Goldberg:2005}. Indeed, it has been suggested that
+the notion of word cannot even be meaningfully defined
+cross-linguistically \cite{Haspelmath:2011}.
+
+Motivated by these considerations, we study here RNNs that are trained
+without any notion of word in their input or in their
+architecture. We train our RNNs as \emph{character-level neural
+  language models}
+\cite[CNLMs,][]{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}
+by removing whitespace from their input, so that, like children
+learning a language, they don't have access to explicit cues to
+wordhood.\footnote{We do not erase punctuation marks, reasoning that
+  they have a similar function to prosodic cues in spoken language.}
+This setup is almost as \emph{tabula rasa} as it gets. By using
+unsegmented orthographic input (and assuming that, in the alphabetic
+writing systems we work with, there is a reasonable correspondence
+between letters and phonetic segments), we are only postulating that
+the learner figured out how to map the continuous speech stream to a
+sequence of phonological units, an ability children already possess
+few months after birth \cite[e.g.,][]{Maye:etal:2002,Kuhl:2004}. We believe that focusing on language modeling of an unsegmented phoneme sequence, abstracting away from other complexities of a fully realistic child language acquisition setup, is particularly instructive, in order to study which linguistic structures naturally emerge.
+
+We evaluate our character-level networks on a bank of linguistic tests
+in German, Italian and English. We focus on these languages due to
+resource availability and ease of benchmark construction. Also, well-studied synthetic languages with a clear,
+orthographically-driven notion of word might be a better starting point to
+test non-word-centric models, compared to agglutinative or
+polysynthetic languages, where the very notion of what counts as a
+word is problematic. % While one of
+% our ultimate goals is precisely to study how word-less models process
+% languages whose grammatical system is less clearly word-based,
+% starting with languages in whose analysis the orthographic word has
+% traditionally played a central role is a reasonable ``sanity check''.
+  
+Our tasks require models to develop the latent
+ability to parse characters into word-like items associated to
+morphological, syntactic and broadly semantic features. The RNNs
+pass most of the tests, suggesting that they are in some way able to
+construct and manipulate the right lexical objects. In a final experiment,
+we look more directly into \emph{how} the models are handling
+word-like units. We find, confirming an earlier observation by
+\newcite{Kementchedjhieva:Lopez:2018}, that the RNNs specialized some
+cells to the task of detecting word boundaries (or, more generally,
+salient linguistic boundaries, in a sense to be further discussed
+below). Taken together, our results suggest that character-level RNNs
+capture forms of linguistic knowledge that are traditionally thought to be
+word-based, without being exposed to an explicit segmentation of their
+ input and, more importantly, without possessing an explicit word
+lexicon. We will discuss the implications of these findings in the
+conclusion.\footnote{Our input data,
+  test sets and pre-trained models are available at \url{https://github.com/m-hahn/tabula-rasa-rnns}.}
+
+% probe them with phonological, lexical,
+% morphological, syntactic and semantic tests in English, German and
+% Italian. Our results show that near-\emph{tabula-rasa} CNLMs acquire
+% an impressive spectrum of linguistic knowledge at various levels.
+% This in turn suggests that, given abundant input (large Wikipedia
+% dumps), a learning device whose only prior architectural bias consists
+% in the LSTM memory cell implicitly acquires a variety of linguistic
+% rules that one would intuitively expect to require much more prior
+% knowledge.

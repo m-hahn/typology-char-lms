@@ -1,0 +1,143 @@
+\section{Related work}
+\label{sec:related}
+
+\paragraph{On the primacy of words} Several linguistic studies suggest
+that words, at least as delimited by whitespace in some writing
+systems, are neither necessary nor sufficient units of linguistic
+analysis. \newcite{Haspelmath:2011} claims that there is no
+cross-linguistically valid definition of the notion of word \cite[see also][who
+address specifically the notion of prosodic
+word]{Schiering:etal:2010}. Others have stressed the difficulty of
+characterizing words in polysynthetic languages
+\cite{Bickel:Zuniga:2017}. Children are only rarely exposed to words
+in isolation during learning
+\cite{Tomasello:2003},\footnote{Single-word utterances are not
+  uncommon in child-directed language, but they are still rather the
+  exception than the rule, and many important words, such as
+  determiners, never occur in isolation
+  \cite{Christiansen:etal:2005}.} and it is likely that the units that
+adult speakers end up storing in their lexicon are of variable size,
+both smaller and larger than conventional words
+\cite[e.g.,][]{Jackendoff:2002,Goldberg:2005}. From a more applied
+perspective, \newcite{Schuetze:2017} recently defended tokenization-free
+approaches to NLP, proposing a general non-symbolic approach to text
+representation. %
+%Our
+% study shows that a powerful sequence learning device, such as an RNN
+% with LSTM cells, can learn, from naturally occurring language data, to
+% capture several linguistic phenomena that appear to be word-mediated
+% without overt word-boundary information and lacking an internal data
+% structure for a word vocabulary. The model, moreover, develops during
+% learning units that track word-like boundaries, despite its lack of an
+% explicit lexicon.
+We hope our results will contribute to the theoretical
+debate on word primacy, suggesting, through computational simulations, that
+word priors are not crucial to language learning and processing.
+
+\paragraph{Character-based neural language models} received attention in the last
+decade because of their greater generality  compared to word-level models. % , and because, intuitively, they should be able to
+% use cues, such as morphological information, that word-based models
+% miss by design.
+Early studies
+\cite{Mikolov:etal:2011,Sutskever:etal:2011,DBLP:journals/corr/Graves13}
+established that CNLMs might not be as good at language modeling as
+their word-based counterparts, but lag only slightly behind. This is
+particularly encouraging in light of the fact that character-level
+sentence prediction involves a much larger search space than
+prediction at the word level, as a character-level model must make a
+prediction after each character, rather than after each
+word. \newcite{Sutskever:etal:2011} and
+\newcite{DBLP:journals/corr/Graves13} ran qualitative analyses showing
+that CNLMs capture some basic linguistic properties of their
+input. The latter, who used LSTM cells, also showed, qualitatively,
+that CNLMs are sensitive to hierarchical structure. In particular,
+they balance parentheses correctly when generating text. %
+% Our aim here is to understand to what extent CNLMs trained on
+% unsegmented input learn various linguistic constructs. % This differs
+% from
+
+Most recent work in the area has focused on \emph{character-aware}
+architectures combining character- and word-level information to
+develop state-of-the-art language models that are also effective in
+morphologically rich languages
+\citep[e.g.,][]{Bojanowski:etal:2016,Kim:etal:2016,Gerz:etal:2018}. For
+example, Kim and colleagues perform prediction at the word level, but
+use a character-based convolutional network to generate word
+representations. Other work focuses on splitting words into morphemes,
+using character-level RNNs and an explicit segmentation objective
+\cite[e.g.,][]{Kann:etal:2016}. These latter lines of work are only
+distantly related to our interest in probing what a purely
+character-level network trained on running text has implicitly learned
+about linguistic structure. There is also extensive work on
+segmentation of the linguistic signal that does not rely on neural
+methods, and is not directly relevant here, \cite[e.g.,][and references there]{Brent:Cartwright:1996,goldwater-bayesian-2009,Kamper:etal:2016}.
+% about morphemes and other units through generic language
+% modeling.% Moreover, these networks are not exposed to constituents
+% larger than words.
+
+
+\paragraph{Probing linguistic knowledge of neural language models} is
+currently a popular research topic
+\cite{Li:etal:2016,Linzen:etal:2016,Shi:etal:2016,Adi:etal:2017,Belinkov:etal:2017,Kadar:etal:2017,Hupkes:etal:2017,Conneau:etal:2018,Ettinger:etal:2018,Linzen:etal:2018}. Among
+studies focusing on character-level models, 
+\newcite{Elman:1990} already reported a proof-of-concept experiment on
+implicit learning of word
+segmentation. \newcite{Christiansen:etal:1998} trained a RNN on
+phoneme-level language modeling of transcribed child-directed speech
+with tokens marking utterance boundaries, and found that the network
+learned to segment the input by predicting the utterance boundary
+symbol also at word edges. More recently, \newcite{Sennrich:2017}
+explored the grammatical properties of character- and
+subword-unit-level models that are used as components of a machine
+translation system. He concluded that current character-based decoders
+generalize better to unseen words, but capture less grammatical
+knowledge than subword units. Still, his character-based systems
+lagged only marginally behind the subword architectures on grammatical
+tasks such as handling agreement and
+negation. \newcite{DBLP:journals/corr/RadfordJS17} focused on CNLMs
+deployed in the domain of sentiment analysis, where they found the
+network to specialize a unit for sentiment tracking. We will discuss
+below how our CNLMs also show single-unit specialization, but for boundary
+tracking. \newcite{Godin:etal:2018} investigated the rules implicitly
+used by supervised character-aware neural morphological segmentation
+methods, finding linguistically sensible
+patterns. \newcite{Alishahi:etal:2017} probed the linguistic knowledge
+induced by a neural network that receives unsegmented acoustic
+input. Focusing on phonology, they found that the lower layers of the model process finer-grained information,
+whereas higher layers are sensitive to more abstract
+patterns. %Their model is not directly comparable to ours, since it
+% uses a considerably more complex architecture and it is trained on
+% multimodal data.
+\newcite{Kementchedjhieva:Lopez:2018} recently probed the linguistic
+knowledge of an English CNLM trained with whitespace in the
+input. Their results are aligned with ours. The model is sensitive to
+lexical and morphological structure, and it captures morphosyntactic
+categories as well as constraints on possible morpheme
+combinations. Intriguingly, the model tracks word/morpheme boundaries
+through a single specialized unit, suggesting that such boundaries are
+salient (at least when marked by whitespace, as in their experiments)
+and informative enough that it is worthwhile for the network to devote a
+special mechanism to process them. We replicated this finding for our
+networks trained on whitespace-free text, as discussed in Section
+\ref{sec:segmentation} below, where we discuss it in the context of our
+other results.
+
+%We were not able to find a similar sparse
+%encoding of morpheme- or word-boundaries in our network (the results
+%we will report in Section \ref{sec:segmentation} suggest that our
+%model is also tracking boundaries in its hidden state, but through a
+%distributed code). The most obvious difference between our experiment
+%and that of Kementchedjhieva and Lopez is that they keep whitespace in
+%the input training.  However, they observe that their
+%morpheme-tracking unit is not simply predicting white space,
+%suggesting that the encoding difference between our model and theirs
+%cannot be (entirely) explained away by the difference in training
+%input. As we do not attempt here to characterize the inner dynamics of
+%our network, we leave a systematic comparison to future work.
+
+
+% They do not explore syntactic or semantic
+% knowledge, and they limit their study to English. Moreover, they
+% trained their models on input with whitespace, thus providing the
+% model with a major (and cognitively artificial) cue to word
+% boundaries.

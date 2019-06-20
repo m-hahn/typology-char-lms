@@ -13,6 +13,8 @@ deleting all whitespace?
 >> OK, I don't have strong feelings either way, I'm fine with ignoring
    the suggestion.
 
+>>>> TODO
+
 ****************************************
 
 "larger search space"
@@ -32,6 +34,14 @@ prediction after each character, rather than after each
 word." Do you think this is clear?
 
 >>> looks good to me!
+
+>>>> We tried to clarify this as follows:  "This is
+particularly encouraging in light of the fact that character-level
+sentence prediction involves a much larger search space than
+prediction at the word level, as a character-level model must make a
+prediction after each character, rather than after each
+word."
+
 
 ****************************************
 
@@ -79,6 +89,7 @@ then this prior work should be cited.
 
 >> I just added them exactly where Hinrich suggested we put them.
 
+>>>> We added these citations at the suggested place.
 
 ****************************************
 
@@ -93,6 +104,11 @@ especially Sharon Goldwater's work.
 >> I added the following in related right after the comment about
    Kann's work, to futher extend the list of irrelevant work :):
    "There is also extensive work on segmentation of the linguistic
+   signal that does not rely on neural methods, and is not directly
+   relevant here, (e.g., Brent and Cartwright, 1996; Goldwater et al.,
+   2009, and references there)."
+
+>>>> We added the following: "There is also extensive work on segmentation of the linguistic
    signal that does not rely on neural methods, and is not directly
    relevant here, (e.g., Brent and Cartwright, 1996; Goldwater et al.,
    2009, and references there)."
@@ -114,6 +130,8 @@ run wordnlm on the same dataset as the other models?
 
 >>> OK.
 
+>>>> TODO
+
 ****************************************
 
 compilation of dataset for "mit"
@@ -129,6 +147,8 @@ sentence-initially.
 
 >> OK
 
+>>>> We removed this.
+
 ---------------------------------------
 
 "exclude the reading in which mit is a particle"
@@ -140,6 +160,8 @@ it seems difficult to construct natural examples of this.
 > I have added a citation and an example in a footnote, as I myself have found it nontrivial to construct such examples. (Such examples are mentioned in various dictionaries, of which I have cited one, so I'm confident this is not just my idiolect).
 
 >> :)
+
+>>>> We have added a citation and a footnote with a natural example representing the particle "mit": "An example of this unintended reading of mit is: Ich war mit der erste, der hier war. ‘I was one of the first who arrived here.’ In this context, dative ersten would be ungrammatical."
 
 ****************************************
 
@@ -155,6 +177,8 @@ In any case, please clarify!
 > done
 
 >> Thanks
+
+>>>> We have clarified this in the text, in the paragraph discussing the Prepositional Case Subcategorization results.
 
 ****************************************
 
@@ -172,6 +196,8 @@ in predictinng the next character?
 
 >>> OK
 
+>>>> TODO
+
 ****************************************
 
 MINOR COMMENTS / TYPOS
@@ -187,24 +213,27 @@ LSTMS now?
    reviewing, probably even transformers would no longer be state of
    the art ;-)
 
+>>>> We have rephrased this.
+
 ----------------------------------------------
 
 - primacy *of* words
 
 > done
 
+>>>> Thanks, done.
 ----------------------------------------------
 
 - treetagger: add citation for the original paper
 
-> done
+>>>> Done.
 
 ----------------------------------------------
 
 "as -al -o adjectives"
 what are "-al -o adjectives"?
 
-> fixed
+>>>> Fixed.
 
 ----------------------------------------------
 
@@ -214,7 +243,7 @@ mit `with'
 vs
 mit ``with''
 
-> done
+>>>> Fixed.
 
 ----------------------------------------------
 
@@ -225,19 +254,19 @@ incorrectly hyphenated words I noticed:
 
 whitespace, settling
 
-> I didn't see a problem with `settling', and fixed `whitespace' in the preamble. Not sure why Latex doesn't do that correctly.
+>>>> Fixed.
 
 ----------------------------------------------
 
 - encouraged -> encouraged us
 
-> done
+>>>> Done.
 
 ----------------------------------------------
 
 - hauptaufgabe haupt auf gabe : give english glosses
 
-> done
+>>>> Done.
 
 ----------------------------------------------
 
@@ -249,7 +278,8 @@ reading the figure incorrectly?)
 
 >> Can you add.
 
->>> done
+>>>> TODO regarding Systeme.
+     Regarding deren, dere-n is a reasonable segmentation, as `derer' and `derem' are other existing forms of the same paradigm. we clarified by adding a sentence: "In the pronoun deren ‘whose’, the case suffix -n is separated."
 
 ----------------------------------------------
 
@@ -262,6 +292,8 @@ looks like the latter.
 
 >>> OK
 
+>>>> TODO
+
 ----------------------------------------------
 
 - Did the absorption of the "case assigner" only happen for
@@ -271,13 +303,15 @@ Bau or also for other words?
 
 >> I feel like we're getting into a rabbit hole of things we could do, I'd ignore.
 
+>>>> TODO
+
 ----------------------------------------------
 
 - as the model reasonably segment
 ->
 segments
 
-> done
+>>>> Fixed.
 
 ----------------------------------------------
 
@@ -288,6 +322,8 @@ stems. "konn"/"komm" are (short vowels), but not "kon"/"kom"
 > I wonder whether the more reasonable interpretation is to think of kon- and kom- as the Latinate prefixes (kon-takt, kom-ponist), not as stems of verbs.
 
 >> I added hedges to the current explanation (not that the model does get these strings also out of kommen and kennen.
+
+>>>> TODO
 
 ----------------------------------------------
 
@@ -331,6 +367,8 @@ enormous overclaim.
    agree to disagree, unless we want to turn our article into a
    50-page position paper.
 
+>>>> TODO
+
 --------------------------------------
 
 2. I think the background/related work section should also review the non-NN
@@ -346,6 +384,8 @@ Transactions on Audio, Speech and Language Processing 24 (4), pp. 669–679.
 
 >> I simply added the ref above to the same batch of "non-neural" segmentation work citations in related.tex
 
+>>>> We have added this reference in the `Related Work' section, at the end of the `Character-based neural language models' section.
+
 ------------------------------------
 
 
@@ -358,7 +398,7 @@ WordNLM's vocabulary? Perhaps this could be clarified.
 
 >> Unfortunately, the third-round main doesn't compile (missing figures), so I can't reconstruct what this refers to. I'd be in favour of clarifying, can you do it?
 
->>> TODO
+>>>> We have clarified this by adding the sentence: "Note that none of the words were OOV for the CNLM, as they all were taken from the Wikipedia training set."
 
 -----------------------------------
 
@@ -368,7 +408,7 @@ seem that relevant to the main text. Also "reflect lemmatization problems"
 is still opaque to me, even with the footnote. Surely the test items involve
 inflected forms and not lemmas?
 
-> done
+>>>> Fixed.
 
 -------------------------------------
 
@@ -380,6 +420,8 @@ These two sentences seem fairly redundant to each other. Compress?
 
 >> I think they are not redundant, and I would keep them.
 
+>>>> TODO
+
 ----------------------------------------
 
 ln783: "Words are the main carriers of lexical semantic information." I'm
@@ -390,12 +432,14 @@ to me.
 
 >> I simply cut and added "word-based" to the next sentence, as I think the only point of that sentence here was to justify why we are interested in how well the CNLM performs this task.
 
+>>>> TODO
+
 -------------------------------------
 
 ln1079: "are not directly comparable to the F1 results above" There are lots
 of results above. Give a specific table number. Table 6?
 
-> done
+>>>> Fixed.
 
 -------------------------------------
 
@@ -411,47 +455,26 @@ claim coming from?
 
 >> I rephrased as "pseudo-affixes"
 
+>>>> TODO
+
 -----------------------------------
 
 Style/typos:
 
 * ln152 "primacy words" -> "primacy of words"
-> done
-----------------------------------------------
-
 * ln158 "of words" -> "of the notion of word"
-> done
-----------------------------------------------
-
 * ln179 "their greater generality": greater than what?
-> done
-----------------------------------------------
-
 * ln222 "already Elman (1990) reported": this is an awkward/unusual use of
 "already"
-> done
-----------------------------------------------
-
 * ln265 "worth" -> "worthwhile"
-> done
-----------------------------------------------
-
 * ln803 "twice more frequent" isn't idiomatic in English. Maybe you mean
 "twice as frequent"?
-> done
-----------------------------------------------
-
 * ln884 "took multiple provisions" -> "took multiple precautions"
-> done
-----------------------------------------------
-
 * ln1138 "followed by von ‘of’ and genitive": I think 'and' should be
 'or' here.
-> done
-----------------------------------------------
-
 * ln1186 "reasonably segment" -> "reasonably segments"
-> done
+
+>>>> Thanks, we fixed these.
 
 ------------------------------------------------------
 
@@ -462,7 +485,7 @@ There seems to be a mistake here which needs to be fixed. This is not the
 case for all languages. For Italian the single-unit LSTM does not outperform
 the vanilla full RNN (i.e., single-unit LSTM 75.5 vs full RNN: 75.9).
 
-> done
+>>>> Thanks, fixed.
 
 ----------------------------------------------
 
@@ -470,7 +493,7 @@ the vanilla full RNN (i.e., single-unit LSTM 75.5 vs full RNN: 75.9).
 single/full for each model next to each other to ease reading, i.e.,
 consider swapping the two middle columns (RNN single <> LSTM full).
 
-> done
+> We have implemented this suggestion.
 
 ------------------------------------------------------
 
@@ -491,6 +514,8 @@ previous work already.
 
 >> I would ignore the comments of this reviewer, (s)he clearly disagrees with us, and I think at this point we must agree to disagree.
 
+>>>> TODO
+
 ----------------------------------------------
 
 The paper definitely has a lot of work put into it and a number of different
@@ -503,6 +528,8 @@ introduction and the conclusion.
 
 >> ditto
 
+>>>> TODO
+
 ----------------------------------------------
 
 At the moment, the main take-aways emphasised in sections 4.1-4.3 seem to be
@@ -514,6 +541,8 @@ second has been demonstrated extensively in previous work.
 
 >> ditto
 
+>>>> TODO
+
 ----------------------------------------------
 
 In section 4.2.1 the issue with calculating probabilities over different
@@ -523,6 +552,10 @@ of the sequence?
 > I don't think normalising solves the problem, as we care about the ovrall probability of a sequence, not a per-length average. For instance, a short correct word might easily be beaten by a long sequence where one character is very improbable but everything else is easy to predict from that -- which will swamp the one bad character when averaging over a long sequence.
 
 >> ditto
+
+>>>> We believe that normalizing probability by length would not solve the issue, as we care about the overall probability of a sequence, not a per-length average. If we compare sequences of different lengths by their normalized probabilities, then a short correct word might be assigned lower average probability than a long sequence where one character is very improbable but everything else is easy to predict from that. Restricting experimentation to sequences of equal length avoids this issue.
+
+
 
 ----------------------------------------------
 
@@ -535,17 +568,19 @@ very clearly defined.
 
 >> ditto
 
+>>>> TODO
+
 ----------------------------------------------
 
 L370: properties of interests -> properties of interest
 
-> done
+>>>> Done.
 
 ----------------------------------------------
 
 L1132: "be reasonably be"
 
-> done
+>>>> Done.
 
 ----------------------------------------------
 

@@ -1,3 +1,8 @@
+>>>> Dear Editor,
+Thanks again for all the constructive feedback, and for accepting our paper "as is". We detail below the changes we made in response to your and the reviewers' comments, as well as motivating why we preferred not to incorporate all suggested points, mainly in the spirit of not making the article stray into a position paper, and to avoid major changes this late into the game.
+Regards,
+Michael and Marco
+
 
 "we do not erase punctuation marks"
 
@@ -13,7 +18,7 @@ deleting all whitespace?
 >> OK, I don't have strong feelings either way, I'm fine with ignoring
    the suggestion.
 
->>>> TODO
+>>>> Thanks for the suggestion. We agree that punctuation marks correlate with prosodic, phonetic and phonological features. However, it seems clear to us that whitespace is enormously more informative about word boundaries (in the languages we study). We are not making claims about wanting to remove prosodic or phonological cues from the corpus, we simply want to reduce artificial cues to word segmentation. In this respect, we think there is a big difference between punctuation marks (that delimit phrases and larger constituents, but rarely single words), and whitespace. We feel, moreover, that the footnote provides important information to the reader, who might agree or disagree with our choice, but should be informed of it.
 
 ****************************************
 
@@ -108,10 +113,7 @@ especially Sharon Goldwater's work.
    relevant here, (e.g., Brent and Cartwright, 1996; Goldwater et al.,
    2009, and references there)."
 
->>>> We added the following: "There is also extensive work on segmentation of the linguistic
-   signal that does not rely on neural methods, and is not directly
-   relevant here, (e.g., Brent and Cartwright, 1996; Goldwater et al.,
-   2009, and references there)."
+>>>> We added references to Goldwater (and earlier work by Brent and Cartwright) in the related-work section.
 
 ****************************************
 
@@ -130,7 +132,7 @@ run wordnlm on the same dataset as the other models?
 
 >>> OK.
 
->>>> TODO
+>>>> Given that we are mostly testing the character-based models on tasks that intuitively rely on words, we think a baseline (or rather upper bound) model that is explicitly word-based is crucial. We do not understand the claim that WordNLM is not run on the same dataset as the other models. Can you kindly elaborate?
 
 ****************************************
 
@@ -196,7 +198,7 @@ in predictinng the next character?
 
 >>> OK
 
->>>> TODO
+>>>> We failed to understand this question: Can you kindly rephrase it?
 
 ****************************************
 
@@ -278,8 +280,7 @@ reading the figure incorrectly?)
 
 >> Can you add.
 
->>>> TODO regarding Systeme.
-     Regarding deren, dere-n is a reasonable segmentation, as `derer' and `derem' are other existing forms of the same paradigm. we clarified by adding a sentence: "In the pronoun deren ‘whose’, the case suffix -n is separated."
+>>>> Regarding deren, dere-n is a reasonable segmentation, as `derer' and `derem' are other existing forms of the same paradigm. we clarified by adding a sentence: "In the pronoun deren ‘whose’, the case suffix -n is separated." For Systeme, it is difficult to judge, when information on what comes before is missing. Note that however adding more context would lead to the same proble  wherever the bounday will occur.
 
 ----------------------------------------------
 
@@ -292,7 +293,7 @@ looks like the latter.
 
 >>> OK
 
->>>> TODO
+>>>> It is hard to tell without previous context.
 
 ----------------------------------------------
 
@@ -303,7 +304,7 @@ Bau or also for other words?
 
 >> I feel like we're getting into a rabbit hole of things we could do, I'd ignore.
 
->>>> TODO
+>>>> We think this is an interesting question that would however deserve a separate study focused on case assignment in German, so we did not address it in our revision.
 
 ----------------------------------------------
 
@@ -323,7 +324,7 @@ stems. "konn"/"komm" are (short vowels), but not "kon"/"kom"
 
 >> I added hedges to the current explanation (not that the model does get these strings also out of kommen and kennen.
 
->>>> TODO
+>>>> We added hedges to the current explanation.
 
 ----------------------------------------------
 
@@ -367,7 +368,9 @@ enormous overclaim.
    agree to disagree, unless we want to turn our article into a
    50-page position paper.
 
->>>> TODO
+>>>> These points reflect deep theoretical differences between us and the reviewer. While we think it would be exciting to discuss them, we feel that an empirical paper such as ours is not the appropriate site for such a discussion, that would risk to transform it into a (much longer) position paper.
+
+[And I would deliberately report the points above in shortened format with dots in the middle ;)]
 
 --------------------------------------
 
@@ -420,7 +423,7 @@ These two sentences seem fairly redundant to each other. Compress?
 
 >> I think they are not redundant, and I would keep them.
 
->>>> TODO
+>>>> We do not think the sentences are redundant, as the second adds the information that "mit" is unambiguous in dative selection, and we chose if for this reason.
 
 ----------------------------------------
 
@@ -432,7 +435,7 @@ to me.
 
 >> I simply cut and added "word-based" to the next sentence, as I think the only point of that sentence here was to justify why we are interested in how well the CNLM performs this task.
 
->>>> TODO
+>>>> We rephrased.
 
 -------------------------------------
 
@@ -455,7 +458,7 @@ claim coming from?
 
 >> I rephrased as "pseudo-affixes"
 
->>>> TODO
+>>>> We rewrote this part, and in particular we use the more cautious term "pseudo-affixes" for kom-/kon- in forms such as komponist and kontakt.
 
 -----------------------------------
 
@@ -495,6 +498,7 @@ consider swapping the two middle columns (RNN single <> LSTM full).
 
 > We have implemented this suggestion.
 
+>>>> Thanks, we implemented this suggestions.
 ------------------------------------------------------
 
 
@@ -514,7 +518,7 @@ previous work already.
 
 >> I would ignore the comments of this reviewer, (s)he clearly disagrees with us, and I think at this point we must agree to disagree.
 
->>>> TODO
+>>>> We respectfully disagree. We think that, if the goal is to test a model with no explicit cues to wordhood, then it is important for the model to be character-based, and to be trained without whitespaces. While all the comparisons suggested by the reviewer are interesting, we stand by the view that, for our stated purposes, the setup we explore is the crucial one.
 
 ----------------------------------------------
 
@@ -528,7 +532,8 @@ introduction and the conclusion.
 
 >> ditto
 
->>>> TODO
+>>>> We have progressively extended the paper to state our take-aways more clearly. Again, we feel we are reaching a limit beyond which, given that this is not meant as an extended theoretical piece, we should agree to disagree on the perceived interest of our results. (This also applies to the other general points by the reviewer.)
+[I would merge the next point with this, and use this single response for both]
 
 ----------------------------------------------
 
@@ -541,7 +546,7 @@ second has been demonstrated extensively in previous work.
 
 >> ditto
 
->>>> TODO
+>>>> TODO [See suggestion above]
 
 ----------------------------------------------
 
@@ -568,7 +573,7 @@ very clearly defined.
 
 >> ditto
 
->>>> TODO
+>>>> We do not see a contradiction here. Exactly because we are sympathetic towards a "word-less" view of linguistics, we want to study our empirical study with phenomena that are traditionally well-accounted for by word-based approaches. We try to argue for this view in the introduction.
 
 ----------------------------------------------
 

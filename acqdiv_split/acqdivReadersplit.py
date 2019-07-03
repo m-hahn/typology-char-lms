@@ -7,7 +7,7 @@ import random
 #import accessTOROTData
 import sys
 
-import edlib
+#import edlib
 
 import csv
 
@@ -281,13 +281,13 @@ class AcqdivReaderPartition():
     def __init__(self, reader):
         self.corpus = reader
     def reshuffledIterator(self, markUtteranceBoundaries=True,
-                           blankBeforeEOS=True, originalIterator=AcqdivReader.iterator):
+                           blankBeforeEOS=True, originalIterator=AcqdivReader.iterator, seed=random.randint(0, 1000000)):
         print("Obtaining all the data from the iterator")
         results = list(self.iterator(
            markUtteranceBoundaries=markUtteranceBoundaries,
            blankBeforeEOS=blankBeforeEOS,
            originalIterator=originalIterator))
-        random.shuffle(results)
+        random.Random(seed).shuffle(results)
         for utterance in results:
             yield utterance
 

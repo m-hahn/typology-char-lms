@@ -1,0 +1,421 @@
+****************************************
+
+"we do not erase punctuation marks"
+
+Whitespace is certainly correlated with prosodic, phonetic and
+phonological features. It seems difficult to me to argue
+that it is less correlated than punctutation marks.
+
+Could you just omit this footnote and simply say you're
+deleting all whitespace?
+
+
+****************************************
+
+"larger search space"
+
+Why is the search space of character-level models larger?
+Is this the case if you replace OOVs with a special token?
+So that special token is then the reason for the reduced
+search space?
+
+
+****************************************
+
+related work
+
+You should acknowledge other work that also has no explicit
+lexicon. I'm specifically thinking of character-level
+tagging, e.g.,
+
+author  = {Dan Gillick and
+ Cliff Brunk and
+  Oriol Vinyals and
+   Amarnag Subramanya},
+     title = {Multilingual Language Processing From Bytes},
+
+and of character-level work in machine learning, e.g.,
+
+author  = {Jason Lee and
+ Kyunghyun Cho and
+  Thomas Hofmann},
+    title = {Fully Character-Level Neural Machine
+ Translation without Explicit
+  Segmentation},
+
+Colin Cherry, George Foster, Ankur Bapna, Orhan Firat,
+Wolfgang Macherey:
+Revisiting Character-Based Neural Machine Translation with
+Capacity and Compression. EMNLP 2018: 4295-4305
+
+
+
+True, these papers do not delete whitespace.
+
+But your larger argument (no explicit representation of
+words, no conventional notion of word) is applicable to this
+work as well as it is to yours.
+
+So if you write
+
+"this suggests a radically different and possibly more
+neurally plausible view ..."
+
+then this prior work should be cited.
+
+****************************************
+
+related work: other work on segmentation
+
+As one of the reviewers pointed out, there is a literature
+on word segmentation that should be cited and discussed,
+especially Sharon Goldwater's work.
+
+****************************************
+
+comparison with wordnlm
+
+I find this comparison weird -- as you say yourself, you're
+comparing apples and oranges here. Could you perhaps clearly
+state what the purpose of this baseline is? Why don't you
+run wordnlm on the same dataset as the other models?
+
+****************************************
+
+compilation of dataset for "mit"
+
+'sentence-initial "mit" is somewhat unnatural'
+
+I don't see under what interpretation this could be a
+correct statement. You could say with the same justification
+(or lack thereof) that "dem sehr roten Baum" is unnatural
+sentence-initially.
+
+"exclude the reading in which mit is a particle"
+
+Can the particle "mit" precede an NP in a way that you get a
+particle/preposition ambiguity? I didn't try very hard, but
+it seems difficult to construct natural examples of this.
+
+****************************************
+
+dotted lines in Figure 1
+
+You never explain these? Are they referring to this:
+
+"We also created control stimuli where all words  up to
+and including the preposition are removed"
+
+In any case, please clarify!
+
+****************************************
+
+"tracking boundaries"
+
+What do you mean when you say that tracking boundaries is
+important? Is the main effect that certain character strings
+are much more likely to occur after a boundary than after a
+non-boundary (or vice versa)? So this then helps the model
+in predictinng the next character?
+
+****************************************
+
+MINOR COMMENTS / TYPOS
+
+- "current workhorse"
+
+No longer true?  Transformers are as much a workhorse as
+LSTMS now?
+
+- primacy *of* words
+
+- treetagger: add citation for the original paper
+
+- "as -al -o adjectives"
+what are "-al -o adjectives"?
+
+- glosses are inconsistently typeset
+
+mit `with'
+vs
+mit ``with''
+
+- hyphenation errors
+
+You don't seem to use the correct hyphenation setup. Two
+incorrectly hyphenated words I noticed:
+
+whitespace, settling
+
+- encouraged -> encouraged us
+
+- hauptaufgabe haupt auf gabe : give english glosses
+
+- Why does the German model posit a boundary between
+"s" and "ysteme" and between "dere" and "n"? (Or am I
+reading the figure incorrectly?)
+
+- Is the predicted segment "inseguitoa" or "nseguitoa"? it
+looks like the latter.
+
+- Did the absorption of the "case assigner" only happen for
+Bau or also for other words?
+
+- as the model reasonably segment
+->
+segments
+
+- I don't think "kon" and "kom" are reasonable
+stems. "konn"/"komm" are (short vowels), but not "kon"/"kom"
+(long vowels).
+
+
+
+
+
+
+Dear  Michael Hahn,
+
+As TACL action editor for submission 1709, "Tabula nearly rasa: Probing the
+linguistic knowledge of character-level neural language models trained on
+unsegmented text", I am happy to tell you that I am accepting your paper
+essentially "as is"  for publication at TACL, subject to another round of
+technical review of your final version by me.
+
+REQUIRED REVISIONS, IF ANY:
+
+Your final version is due in six (6) weeks, Monday July 15, 2019 (the exact
+hour doesn't matter), although eligibility for presentations at specific
+conferences may require meeting earlier deadlines listed at the TACL
+announcement page, https://urldefense.proofpoint.com/v2/url?u=https-3A__transacl.org_ojs_index.php_tacl_announcement&d=DwIBaQ&c=5VD0RTtNlTh3ycd41b3MUw&r=eW1NdU8kpHF5nrq2Z__Rnw&m=aoknfhGbowxL900Mzjtv2AIDZmSnyjAeFMAs7sANl54&s=WdzJd6JY6wjbL_E72sN3yaZz-7snVdpx9po6uB5GW4c&e=  .
+Please note that failure to meet this deadline may result in the revocation
+of conference-presentation rights, or even acceptance status.
+
+You can find the reviewers' detailed comments, if any, below, and I
+encourage you to take any such comments into account when preparing your
+final version.
+
+The complete instructions for final-version preparation, and a description
+and timeline of what happens after you submit your final version (both
+technical review by TACL and copyediting, proofreading, and so on by MIT
+Press),  are here:
+https://urldefense.proofpoint.com/v2/url?u=https-3A__www.transacl.org_ojs_index.php_tacl_author_instructions_proof&d=DwIBaQ&c=5VD0RTtNlTh3ycd41b3MUw&r=eW1NdU8kpHF5nrq2Z__Rnw&m=aoknfhGbowxL900Mzjtv2AIDZmSnyjAeFMAs7sANl54&s=XN-q5dlIu7-qhHSkMd2-ehuEToYH3eb23q1PgeqMLqA&e=
+
+
+Congratulations on your excellent work, and thank you for submitting to
+TACL!
+
+Hinrich Schütze
+Ludwig Maximilian University of Munich
+inquiries@cislmu.org
+------------------------------------------------------
+------------------------------------------------------
+....THE REVIEWS....
+------------------------------------------------------
+------------------------------------------------------
+Reviewer A:
+
+This paper is in very good shape, and I'll be happy to see it published. I
+have a few further comments that I think could make it even stronger.
+
+Contentful:
+
+1. In several places, the paper makes what come across to me as overclaims
+about cognitive plausibility. I think it would be stronger without these:
+
+* ln025 "more cognitively reasonable task"
+
+* ln102 "like children learning a language, they don’t have access to
+explicit cues to wordhood.": Children learning their first language are
+doing so in an extremely socially rich environment. Furthermore, they learn
+words over time, such that known words can help with the acquisition and
+even segmentation of later words. Furthermore, this claim about child
+language acquisition is not backed up with citations to the relevant
+literature, nor made precise: are you talking about word tokenization alone,
+without any of the rest of learning of words (meanings)? At what stage, if
+any, is that the task that children are approaching?
+
+* ln112 "We believe that focusing on language modeling of an unsegmented
+phoneme sequence, abstracting away from other complexities of a fully
+realistic child language acquisition setup, is particularly instructive, in
+order to study which linguistic structures naturally emerge." It may well be
+instructive for studying CLNMs, but this makes it sound like you think it's
+instructive for learning about actual child language acquisition. But why
+would abstracting away from the details of the actual child's experience
+make the model *more* instructive?
+
+* ln1261 "This suggests a radically different and possibly more neurally
+plausible view of the lexicon as implicitly encoded in a distributed memory,
+that we intend to characterize more precisely and test in future work." This
+suggests that the linguistic theories you cite higher in the paragraph are
+making claims about the neural representation of the lexicon. HPSG, at
+least, is emphatically not. I urge you to rephrase this --- or at the very
+least make it clear what you claim to be different to. Also, the notion that
+neural nets are actually reasonable models of human brains strikes me as an
+enormous overclaim.
+
+
+
+2. I think the background/related work section should also review the non-NN
+literature on unsupervised segmentation. I know at least Sharon Goldwater
+has worked in this area:
+
+Unsupervised Word Segmentation and Lexicon Discovery using Acoustic Word
+Embeddings. Herman Kamper, Aren Jansen and Sharon Goldwater. IEEE
+Transactions on Audio, Speech and Language Processing 24 (4), pp. 669–679.
+2016.
+
+
+Presentation:
+
+ln418: Around here I found myself wondering whether the test words were OOV
+for the CLNM --- I assume not, in the sense that the test words are in the
+training data somewhere, just not high frequency enough to be in the
+WordNLM's vocabulary? Perhaps this could be clarified.
+
+ln613: "and not ending in -r, as the latter often reflect lemmatization
+problems." Maybe this whole bit can be put in the footnote, since it doesn't
+seem that relevant to the main text. Also "reflect lemmatization problems"
+is still opaque to me, even with the footnote. Surely the test items involve
+inflected forms and not lemmas?
+
+ln686: "We study the preposition mit ‘with’, which selects a dative
+object. We focus on mit, as it unambiguously requires a dative object,"
+These two sentences seem fairly redundant to each other. Compress?
+
+ln783: "Words are the main carriers of lexical semantic information." I'm
+not sure what this sentence is meant to convey. It sounds like a tautology
+to me.
+
+ln1079: "are not directly comparable to the F1 results above" There are lots
+of results above. Give a specific table number. Table 6?
+
+ln1185: "The kom and kon cases are interesting, as the model reasonably
+segment them as stems in forms of the verbs kommen ‘to come’ and kennen
+‘to know’, respectively (e.g., kommt and konnte), but it also treats
+them as pseudo-prefixes elsewhere (komponist ‘composer’, kontakt
+‘contact’)." Nothing in the experiments shows that there is any
+difference in the model's representation of stems v. prefixes. Where is this
+claim coming from?
+
+
+Style/typos:
+
+* ln152 "primacy words" -> "primacy of words"
+* ln158 "of words" -> "of the notion of word"
+* ln179 "their greater generality": greater than what?
+* ln222 "already Elman (1990) reported": this is an awkward/unusual use of
+"already"
+* ln265 "worth" -> "worthwhile"
+* ln803 "twice more frequent" isn't idiomatic in English. Maybe you mean
+"twice as frequent"?
+* ln884 "took multiple provisions" -> "took multiple precautions"
+* ln1138 "followed by von ‘of’ and genitive": I think 'and' should be
+'or' here.
+* ln1186 "reasonably segment" -> "reasonably segments"
+
+
+------------------------------------------------------
+
+------------------------------------------------------
+Reviewer B:
+
+The revised manuscript (3rd version) meets the required revisions as
+outlined in the original editor letter. In particular, Section 4.4 on
+boundary tracking in CNLMs shows that a single unit tracks morpheme/word
+boundaries to a large degree by showing it both quantitatively (Pearson
+correlations and the required segmentation experiments) and qualitatively
+(Figure 2, error analysis). The experimental results on the single-unit vs
+full are interesting. The single-unit classifier outperforms the baseline
+and reaches ~77 F1 across the three languages.
+
+I have two minor suggestions, where the first is required:
+
+1. The discussion of the segmentation results on the balanced setup (Table
+7) states: "Moreover, in this more cogent setup, the single-unit LSTM
+classifier outperforms the full-layer RNN classifier in all languages".
+There seems to be a mistake here which needs to be fixed. This is not the
+case for all languages. For Italian the single-unit LSTM does not outperform
+the vanilla full RNN (i.e., single-unit LSTM 75.5 vs full RNN: 75.9).
+
+2. Style (Table 6+7) - presentation of results: I'd prefer to see
+single/full for each model next to each other to ease reading, i.e.,
+consider swapping the two middle columns (RNN single <> LSTM full).
+
+
+
+
+------------------------------------------------------
+
+------------------------------------------------------
+Reviewer C:
+
+The paper presents an investigation into what information character-level
+LSTM language models learn, through different probing tasks.
+In particular, the language models are applied in a setting where word
+boundaries are removed, in order to make the task more challenging and more
+resembling language acquisition through speech.
+A number of different properties are investigated, including word class and
+number detection, gender and case agreement, and sentence completion.
+The final section investigates how these models, though trained on
+unsegemnted character streams, still specialise individual neurons for the
+detection of word boundaries.
+
+The paper contains an in-depth detailed investigation and analysis of the
+experimental setting.
+Compared to the previous version, the reasoning behind investigating
+whitespace-free models has been somewhat improved.
+The addition of boundary detection experiments on running text have
+definitely strengthened the paper as the results are better than expected.
+My main concern is still that I find the underlying premise of many of the
+experiments on whitespace-removed text to be arbitrary and uninformative.
+For the boundary detection experiments this setting is completely justified
+and shows that the models internally learn to detect word boundaries even
+when these are not given as input.
+But the paper also contains 6 pages of other experiments where the
+whitespace removal is not so clearly motivated.
+
+However, as the experiments are methodologically correct and my co-reviewers
+find that the contributions are both useful and informative, then I am
+willing to concede that this might just be my subjective opinion and the
+paper should be accepted.
+
+
+
+For each experiment, I would have expected to have a specific hypothesis
+that is tested. If the goal is to investigate how whitespace-removal affects
+the ability to learn different phenomena, then I would want to see a
+character-level model with whitespace compared to a character-level model
+without whitespace. If the goal is to investigate whether character-level
+models can learn everything that word-level models can, I would have wanted
+to see a character-level model with whitespace compared to a word-level
+model. At the moment, the two phenomena are confounding each other and it is
+difficult to draw conclusions. The only factor that is systematically
+investigated is the choice of RNN vs LSTM, which is very well established in
+previous work already.
+
+The paper definitely has a lot of work put into it and a number of different
+experiments. But after reading the whole paper several times, I am still
+unsure of what the main take-away and novel contributions are. Readers like
+me would probably benefit from more concretely spelling this out in the
+introduction and the conclusion.
+
+At the moment, the main take-aways emphasised in sections 4.1-4.3 seem to be
+that 1) language models still work as language models without whitespace,
+and 2) LSTMs are better than RNNs. The first is fairly obvious and the
+second has been demonstrated extensively in previous work.
+
+In section 4.2.1 the issue with calculating probabilities over different
+length sequences is raised. Why not normalise the probability by the length
+of the sequence?
+
+In the introduction, the third paragraph argues how this work is important
+because words are a very loose and ill-defined concept, whereas paragraph 5
+argues why we should only evaluate this work on languages where words are
+very clearly defined.
+
+L370: properties of interests -> properties of interest
+L1132: "be reasonably be"
+
+
+------------------------------------------------------

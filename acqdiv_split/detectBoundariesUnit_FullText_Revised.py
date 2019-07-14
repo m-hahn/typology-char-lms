@@ -1,3 +1,6 @@
+# ~/python-py37-mhahn detectBoundariesUnit_FullText_Revised.py --language Japanese --load-from Japanese
+
+
 from config import VOCAB_HOME, CHECKPOINT_HOME
 #CHAR_VOCAB_HOME
 
@@ -75,6 +78,10 @@ import random
 import torch
 print(torch.__version__)
 
+
+####################################################################################
+# Create the neural network model
+
 # dropout for recurrent weights (from Merity et al 2018)
 from weight_drop import WeightDrop
 
@@ -118,6 +125,7 @@ if args.load_from is not None:
 
 from torch.autograd import Variable
 
+####################################################################################
 
 
 def prepareDatasetChunksTest(data, train=True, offset=0):
@@ -196,84 +204,88 @@ def forward(numeric, train=True, printHere=False):
 
                  relevantWords.append(boundariesAll[j][i+1])
                  
-                 relevantNextWords.append(nextRelevantWord)
+                 #relevantNextWords.append(nextRelevantWord)
                  positionIDs.append(int(uniquePositionID[j][i]))
                  charactersAll.append(codeToChar(int(numeric[j][i])))
                  assert boundariesAll[j][i+1] is not None
-   #              if j == 0:
-    #               print(hidden_states[-1], labels[-1], relevantWords[-1], relevantNextWords[-1])  
+
+
+####################################################################################3
 
 import time
 
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+
+
+
+wordsSoFar = set()
+hidden_states = []
+labels = []
+relevantWords = []
+#relevantNextWords = []
+labels_sum = 0
+
+boundary_positions = []
+positionIDs = []
+
+charactersAll = []
+
+
+
+training_data = AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False, seed=0)
+
+
+
+#############################################
+
+print("Got data")
+fullDataset_perRound = [list(prepareDatasetChunksTest(training_data, train=True, offset=ROUND*(int(args.sequence_length/3)))) for ROUND in range(5)]
+
+assert args.batchSize == 16
+training_chars = (x for x in fullDataset_perRound[0][:64])
+
+test_chars_perRound = [x[66:] for x in fullDataset_perRound]
+
+rnn_drop.train(False)
+startTime = time.time()
+trainChars = 0
+counter = 0
+while True:
+   counter += 1
+   try:
+      numeric = [next(training_chars) for _ in range(args.batchSize)]
+   except StopIteration:
+      break
+   printHere = (counter % 500 == 0)
+   forward(numeric, printHere=printHere, train=True)
+   if printHere:
+       print((counter))
+       print("Dev losses")
+       print(devLosses)
+       print("Chars per sec "+str(trainChars/(time.time()-startTime)))
+assert (len(labels)) > 1000
+assert (len(labels)) < 2000
+
+print("Creating regression model")
+
+x_train = hidden_states
+y_train = labels
+#words_train = relevantWords
+#next_words_train = relevantNextWords
+#positionIDs_train = positionIDs
+logisticRegr = LogisticRegression()
+logisticRegr.fit(x_train, y_train)
+ 
+
 devLosses = []
-#for epoch in range(10000):
 with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFileTable:
- for ROUND in range(2):
+ print("\t".join(["Round", "PositionID", "Character", "Prediction", "Boundary"]), file=outFileTable)
 
-   wordsSoFar = set()
-   hidden_states = []
-   labels = []
-   relevantWords = []
-   relevantNextWords = []
-   labels_sum = 0
-   
-   boundary_positions = []
-   positionIDs = []
-   
-   charactersAll = []
-
-
-
-   training_data = AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False, seed=0)
-   
-   print("Got data")
-   fullDataset = list(prepareDatasetChunksTest(training_data, train=True, offset=ROUND*(int(args.sequence_length/2)-1)))
-   training_chars = (x for x in fullDataset)
-
-
-   rnn_drop.train(False)
-   startTime = time.time()
-   trainChars = 0
-   counter = 0
-   while True:
-      counter += 1
-      try:
-         numeric = [next(training_chars) for _ in range(args.batchSize)]
-      except StopIteration:
-         break
-      printHere = (counter % 500 == 0)
-      forward(numeric, printHere=printHere, train=True)
-      #backward(loss, printHere)
-      if printHere:
-          print((counter))
-          print("Dev losses")
-          print(devLosses)
-          print("Chars per sec "+str(trainChars/(time.time()-startTime)))
-
-      if len(labels) > 1000:
-         break
+ for ROUND in range(4):
+   test_set = (x for x in test_chars_perRound[ROUND])
   
-
-   predictors = hidden_states #torch.Tensor(hidden_states)
-   dependent = labels #torch.Tensor(labels).unsqueeze(1)
-   
-   
-   TEST_FRACTION = 0.0
-   
-   print("Creating regression model")
-   
-   from sklearn.model_selection import train_test_split
-   x_train, x_test, y_train, y_test, words_train, words_test, next_words_train, next_words_test, positionIDs_train, positionIDs_test = train_test_split(predictors, dependent, relevantWords, relevantNextWords, positionIDs, test_size=TEST_FRACTION, random_state=random.randint(1,100), shuffle=True)
-   
-   
-   from sklearn.linear_model import LogisticRegression
-   
-   print("regression")
-   
-   logisticRegr = LogisticRegression()
-   
-   logisticRegr.fit(x_train, y_train)
-   
    
    errors = []
    scores = []
@@ -284,104 +296,83 @@ with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFil
    falsePositives = 0
    falseNegatives = 0
    
-   with open("segmentation-predictions/"+args.language+"-real.txt", "w") as outFileReal:
-     with open("segmentation-predictions/"+args.language+"-predicted.txt", "w") as outFilePredicted:
-      
-        devLosses = []
-        #for epoch in range(10000):
-        if True:
-        
+   devLosses = []
+   if True:
+      startTime = time.time()
+      trainChars = 0
+      counter = 0
+      for _ in range(50):
+         hidden_states = []
+         labels = []
+         relevantWords = []
+         relevantNextWords = []
+         labels_sum = 0
+         boundary_positions = []
+         positionIDs = []
+         charactersAll = []
+         counter += 1
+         try:
+            numeric = [next(test_set) for _ in range(args.batchSize)]
+         except StopIteration:
+            break
+         printHere = (counter % 500 == 0)
+         forward(numeric, printHere=printHere, train=False)
+         if printHere:
+             print((counter))
+             print("Dev losses")
+             print(devLosses)
+             print("Chars per sec "+str(trainChars/(time.time()-startTime)))
    
-           rnn_drop.train(False)
-           startTime = time.time()
-           trainChars = 0
-           counter = 0
-           for _ in range(50):
-              hidden_states = []
-              labels = []
-              relevantWords = []
-              relevantNextWords = []
-              labels_sum = 0
-              boundary_positions = []
-              positionIDs = []
-              charactersAll = []
-              counter += 1
-              try:
-                 numeric = [next(training_chars) for _ in range(args.batchSize)]
-              except StopIteration:
-                 break
-              printHere = (counter % 500 == 0)
-              forward(numeric, printHere=printHere, train=False)
-              #backward(loss, printHere)
-              if printHere:
-                  print((counter))
-                  print("Dev losses")
-                  print(devLosses)
-                  print("Chars per sec "+str(trainChars/(time.time()-startTime)))
-        
-              #if len(labels) > 10000:
-             #    break
-              if len(hidden_states) == 0:
-                   continue
-              predictors = hidden_states
-              dependent = labels
-              
-              x_test = predictors
-              y_test = dependent
-              words_test = relevantWords
-              next_words_test = relevantNextWords
-              
-              
-              
-              
-              predictions = logisticRegr.predict(x_test)
-              for ind in range(len(positionIDs)):
-                 print("\t".join([str(ROUND)] + [str(x[ind]) for x in [positionIDs, charactersAll, predictions, y_test]]), file=outFileTable)
-              
-              score = logisticRegr.score(x_test, y_test)
-              scores.append(score)
+         if len(hidden_states) == 0:
+              continue
+         assert len(hidden_states) > args.batchSize * args.sequence_length * 0.4
+         predictors = hidden_states
+         dependent = labels
          
-              parts = [[] for x in range(args.batchSize)]
-              
-         
-              for i in range(len(x_test)):
-                  parts[boundary_positions[i][0]].append((boundary_positions[i][1], y_test[i], predictions[i], words_test[i], next_words_test[i]))
-              for p in parts:
-                 p = sorted(p, key=lambda x:x[0])
-              #   print(p)
-                 pred_string = "".join([c[3][-1]+(" " if c[2] == 1 else "") for c in p])
-                 real_string = "".join([c[3][-1]+(" " if c[1] == 1 else "") for c in p])
-   
-                 print(real_string, file=outFileReal)
-                 print(pred_string, file=outFilePredicted)
-         #         print(i, y_test[i], predictions[i], words_test[i], next_words_test[i], boundary_positions[i])
+         x_test = predictors
+         y_test = dependent
+         words_test = relevantWords
+         #next_words_test = relevantNextWords
          
          
-              for i in range(len(predictions)):
-                  if predictions[i] != y_test[i]:
-                        errors.append((y_test[i], (words_test[i], next_words_test[i], predictions[i], y_test[i])))
-                        if predictions[i] == 1:
-                          falsePositives += 1
-                        elif predictions[i] == 0:
-                          falseNegatives += 1
-                  else:
-                     correct += 1
-              print("Balance ",sum(y_test)/len(y_test))
-              examples_count += len(y_test)
-    #       if len(hidden_states) == 0:
-   #                break
-   
+         
+         
+         predictions = logisticRegr.predict(x_test)
+         for ind in range(len(positionIDs)):
+            print("\t".join([str(ROUND)] + [str(x[ind]) for x in [positionIDs, charactersAll, predictions, y_test]]), file=outFileTable)
+         
+         score = logisticRegr.score(x_test, y_test)
+         scores.append(score)
+    
+  #       parts = [[] for x in range(args.batchSize)]
+ #        for i in range(len(x_test)):
+#             parts[boundary_positions[i][0]].append((boundary_positions[i][1], y_test[i], predictions[i], words_test[i], next_words_test[i]))
+#         for p in parts:
+#            p = sorted(p, key=lambda x:x[0])
+#         #   print(p)
+#            pred_string = "".join([c[3][-1]+(" " if c[2] == 1 else "") for c in p])
+#            real_string = "".join([c[3][-1]+(" " if c[1] == 1 else "") for c in p])
+#   
+#            print(real_string, file=outFileReal)
+#            print(pred_string, file=outFilePredicted)
+#    #         print(i, y_test[i], predictions[i], words_test[i], next_words_test[i], boundary_positions[i])
+#    
+    
+         for i in range(len(predictions)):
+             if predictions[i] != y_test[i]:
+#                   errors.append((y_test[i], (words_test[i], next_words_test[i], predictions[i], y_test[i])))
+                   if predictions[i] == 1:
+                     falsePositives += 1
+                   elif predictions[i] == 0:
+                     falseNegatives += 1
+             else:
+                correct += 1
+         print("Balance ",sum(y_test)/len(y_test))
+         examples_count += len(y_test)
+         print(correct, falsePositives)   
 
-#correct = 0
-#falsePositives = 0
-#falseNegatives = 0
-precision = correct / (correct + falsePositives)
-recall = correct / (correct + falseNegatives)
-
-print("Boundary measures", "Precision", precision, "Recall", recall, "F1", 2*(precision*recall)/(precision+recall))
+         print("precision", correct / (correct + falsePositives))
+         print("recall", correct / (correct + falseNegatives))
 
 
-print(examples_count)
-score = sum(scores)/len(scores)
-print(score)
 

@@ -138,6 +138,10 @@ def prepareDatasetChunksTest(data, train=True, offset=0):
       currentWord = ""
       positionID = 0
       print("Prepare chunks")
+      if offset < 0:
+         numeric += [0 for _ in range(-offset)]
+         uniquePositionID += [0 for _ in range(-offset)]
+         boundariesAll[:-offset+5] = ["START" for _ in range(-offset+5)]
       for chunk in data:
        print(len(chunk))
        for char in chunk:
@@ -220,159 +224,153 @@ from sklearn.model_selection import train_test_split
 
 
 
-wordsSoFar = set()
-hidden_states = []
-labels = []
-relevantWords = []
-#relevantNextWords = []
-labels_sum = 0
-
-boundary_positions = []
-positionIDs = []
-
-charactersAll = []
 
 
-
-training_data = AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False, seed=0)
+training_data = list(AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False, seed=0))
 
 
 
 #############################################
 
-print("Got data")
-fullDataset_perRound = [list(prepareDatasetChunksTest(training_data, train=True, offset=ROUND*(int(args.sequence_length/3)))) for ROUND in range(5)]
 
-assert args.batchSize == 16
-training_chars = (x for x in fullDataset_perRound[0][:64])
+fullDataset_perRound_general = [list(prepareDatasetChunksTest(training_data, train=True, offset=ROUND*(int(args.sequence_length/3)))) for ROUND in range(-2,2)]
 
-test_chars_perRound = [x[66:] for x in fullDataset_perRound]
-
-rnn_drop.train(False)
-startTime = time.time()
-trainChars = 0
-counter = 0
-while True:
-   counter += 1
-   try:
-      numeric = [next(training_chars) for _ in range(args.batchSize)]
-   except StopIteration:
-      break
-   printHere = (counter % 500 == 0)
-   forward(numeric, printHere=printHere, train=True)
-   if printHere:
-       print((counter))
-       print("Dev losses")
-       print(devLosses)
-       print("Chars per sec "+str(trainChars/(time.time()-startTime)))
-assert (len(labels)) > 1000
-assert (len(labels)) < 2000
-
-print("Creating regression model")
-
-x_train = hidden_states
-y_train = labels
-#words_train = relevantWords
-#next_words_train = relevantNextWords
-#positionIDs_train = positionIDs
-logisticRegr = LogisticRegression()
-logisticRegr.fit(x_train, y_train)
- 
-
-devLosses = []
 with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFileTable:
- print("\t".join(["Round", "PositionID", "Character", "Prediction", "Boundary"]), file=outFileTable)
-
- for ROUND in range(4):
-   test_set = (x for x in test_chars_perRound[ROUND])
-  
-   
-   errors = []
-   scores = []
-   
-   examples_count = 0
-   
-   correct = 0
-   falsePositives = 0
-   falseNegatives = 0
-   
-   devLosses = []
-   if True:
-      startTime = time.time()
-      trainChars = 0
-      counter = 0
-      for _ in range(50):
-         hidden_states = []
-         labels = []
-         relevantWords = []
-         relevantNextWords = []
-         labels_sum = 0
-         boundary_positions = []
-         positionIDs = []
-         charactersAll = []
-         counter += 1
-         try:
-            numeric = [next(test_set) for _ in range(args.batchSize)]
-         except StopIteration:
-            break
-         printHere = (counter % 500 == 0)
-         forward(numeric, printHere=printHere, train=False)
-         if printHere:
-             print((counter))
-             print("Dev losses")
-             print(devLosses)
-             print("Chars per sec "+str(trainChars/(time.time()-startTime)))
-   
-         if len(hidden_states) == 0:
-              continue
-         assert len(hidden_states) > args.batchSize * args.sequence_length * 0.4
-         predictors = hidden_states
-         dependent = labels
-         
-         x_test = predictors
-         y_test = dependent
-         words_test = relevantWords
-         #next_words_test = relevantNextWords
-         
-         
-         
-         
-         predictions = logisticRegr.predict(x_test)
-         for ind in range(len(positionIDs)):
-            print("\t".join([str(ROUND)] + [str(x[ind]) for x in [positionIDs, charactersAll, predictions, y_test]]), file=outFileTable)
-         
-         score = logisticRegr.score(x_test, y_test)
-         scores.append(score)
+  print("\t".join(["Round", "Fold", "PositionID", "Character", "Prediction", "Boundary"]), file=outFileTable)
+  for FOLD in range(2):
+    print("Got data")
+    if FOLD == 0:
+       fullDataset_perRound = fullDataset_perRound_general[::]
+    elif FOLD == 1:
+       fullDataset_perRound = [x[128:200] + x[:128] + x[200:] for x in fullDataset_perRound_general]
+    else:
+       assert False
+    assert args.batchSize == 16
+    training_chars = (x for x in fullDataset_perRound[0][:64])
     
-  #       parts = [[] for x in range(args.batchSize)]
- #        for i in range(len(x_test)):
-#             parts[boundary_positions[i][0]].append((boundary_positions[i][1], y_test[i], predictions[i], words_test[i], next_words_test[i]))
-#         for p in parts:
-#            p = sorted(p, key=lambda x:x[0])
-#         #   print(p)
-#            pred_string = "".join([c[3][-1]+(" " if c[2] == 1 else "") for c in p])
-#            real_string = "".join([c[3][-1]+(" " if c[1] == 1 else "") for c in p])
-#   
-#            print(real_string, file=outFileReal)
-#            print(pred_string, file=outFilePredicted)
-#    #         print(i, y_test[i], predictions[i], words_test[i], next_words_test[i], boundary_positions[i])
-#    
+    test_chars_perRound = [x[66:] for x in fullDataset_perRound]
+    print([len(list(x)) for x in fullDataset_perRound_general])
+
+    wordsSoFar = set()
+    hidden_states = []
+    labels = []
+    relevantWords = []
+    #relevantNextWords = []
+    labels_sum = 0
     
-         for i in range(len(predictions)):
-             if predictions[i] != y_test[i]:
-#                   errors.append((y_test[i], (words_test[i], next_words_test[i], predictions[i], y_test[i])))
-                   if predictions[i] == 1:
-                     falsePositives += 1
-                   elif predictions[i] == 0:
-                     falseNegatives += 1
-             else:
-                correct += 1
-         print("Balance ",sum(y_test)/len(y_test))
-         examples_count += len(y_test)
-         print(correct, falsePositives)   
+    boundary_positions = []
+    positionIDs = []
+    
+    charactersAll = []
+    
+    
 
-         print("precision", correct / (correct + falsePositives))
-         print("recall", correct / (correct + falseNegatives))
-
-
-
+    rnn_drop.train(False)
+    startTime = time.time()
+    trainChars = 0
+    counter = 0
+    while True:
+       counter += 1
+       try:
+          numeric = [next(training_chars) for _ in range(args.batchSize)]
+       except StopIteration:
+          break
+       printHere = (counter % 500 == 0)
+       forward(numeric, printHere=printHere, train=True)
+       if printHere:
+           print((counter))
+           print("Dev losses")
+           print(devLosses)
+           print("Chars per sec "+str(trainChars/(time.time()-startTime)))
+    assert (len(labels)) > 1000
+    assert (len(labels)) < 2000
+    
+    print("Creating regression model")
+    
+    x_train = hidden_states
+    y_train = labels
+    
+    logisticRegr = LogisticRegression()
+    logisticRegr.fit(x_train, y_train)
+     
+    
+    devLosses = []
+    
+    for ROUND in range(4):
+       test_set = (x for x in test_chars_perRound[ROUND])
+      
+       
+       errors = []
+       scores = []
+       
+       examples_count = 0
+       
+       correct = 0
+       falsePositives = 0
+       falseNegatives = 0
+       
+       devLosses = []
+       startTime = time.time()
+       trainChars = 0
+       counter = 0
+       for _ in range(5000):
+          hidden_states = []
+          labels = []
+          relevantWords = []
+          relevantNextWords = []
+          labels_sum = 0
+          boundary_positions = []
+          positionIDs = []
+          charactersAll = []
+          counter += 1
+          try:
+             numeric = [next(test_set) for _ in range(args.batchSize)]
+          except StopIteration:
+             break
+          printHere = (counter % 500 == 0)
+          forward(numeric, printHere=printHere, train=False)
+          if printHere:
+              print((counter))
+              print("Dev losses")
+              print(devLosses)
+              print("Chars per sec "+str(trainChars/(time.time()-startTime)))
+       
+          if len(hidden_states) == 0:
+               continue
+          assert len(hidden_states) > args.batchSize * args.sequence_length * 0.4
+          predictors = hidden_states
+          dependent = labels
+          
+          x_test = predictors
+          y_test = dependent
+          words_test = relevantWords
+          #next_words_test = relevantNextWords
+          
+          
+          
+          
+          predictions = logisticRegr.predict(x_test)
+          for ind in range(len(positionIDs)):
+             print("\t".join([str(ROUND), str(FOLD)] + [str(x[ind]) for x in [positionIDs, charactersAll, predictions, y_test]]), file=outFileTable)
+          
+          score = logisticRegr.score(x_test, y_test)
+          scores.append(score)
+        
+        
+          for i in range(len(predictions)):
+              if predictions[i] != y_test[i]:
+                    if predictions[i] == 1:
+                      falsePositives += 1
+                    elif predictions[i] == 0:
+                      falseNegatives += 1
+              else:
+                 correct += 1
+          print("Balance ",sum(y_test)/len(y_test), ROUND, FOLD)
+          examples_count += len(y_test)
+          print(correct, falsePositives)   
+    
+          print("precision", correct / (correct + falsePositives))
+          print("recall", correct / (correct + falseNegatives))
+    
+    
+    

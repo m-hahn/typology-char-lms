@@ -85,7 +85,7 @@ class AcqdivReader():
    def iterator(self, markUtteranceBoundaries=True, blankBeforeEOS=True):
      utterances_raw_index = self.utterances[0].index(self.UTTERANCE_COLNAME)
      for sentence in self.utterances[1]:
-        yield (sentence[utterances_raw_index]+((";" if blankBeforeEOS else "")+"\n" if markUtteranceBoundaries else "")).lower().split(" ")
+        yield (sentence[utterances_raw_index]+((";" if blankBeforeEOS else "")+" \n" if markUtteranceBoundaries else "")).lower().split(" ")
 
 
 

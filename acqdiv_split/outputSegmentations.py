@@ -30,7 +30,7 @@ for line in table:
 for i in range(maxPosition):
     if predictedPerPosition[i] is None:
       print(i, characterPerPosition[i], predictedPerPosition[i], truePerPosition[i])   
-    #else:
-     # print(i, characterPerPosition[i], predictedPerPosition[i], truePerPosition[i])   
+    else:
+      print(i, characterPerPosition[i], predictedPerPosition[i], truePerPosition[i])   
      
 

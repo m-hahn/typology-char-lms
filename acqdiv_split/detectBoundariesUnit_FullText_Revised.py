@@ -143,8 +143,9 @@ def prepareDatasetChunksTest(data, train=True, offset=0):
          uniquePositionID += [0 for _ in range(-offset)]
          boundariesAll[:-offset+5] = ["START" for _ in range(-offset+5)]
       for chunk in data:
-       print(len(chunk))
+       print(146, len(chunk))
        for char in chunk:
+         print([char, char in stoi])
          if char == ";":
            if count >= offset:
              boundaries[len(numeric)] = currentWord
@@ -160,7 +161,6 @@ def prepareDatasetChunksTest(data, train=True, offset=0):
            currentWord += char
            uniquePositionID.append(count)
            numeric.append((stoi[char]+3 if char in stoi else 2))
-
          if len(numeric) > args.sequence_length:
             yield numeric, boundaries, boundariesAll, uniquePositionID
             numeric = [0] + numeric[args.sequence_length:]
@@ -351,7 +351,7 @@ with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFil
           
           predictions = logisticRegr.predict(x_test)
           for ind in range(len(positionIDs)):
-             print("\t".join([str(ROUND), str(FOLD)] + [str(x[ind]) for x in [positionIDs, charactersAll, predictions, y_test]]), file=outFileTable)
+             print("\t".join([str(ROUND), str(FOLD)] + [str(x[ind]) for x in [positionIDs, charactersAll if charactersAll != "\n" else "\\n", predictions, y_test]]), file=outFileTable)
           
           score = logisticRegr.score(x_test, y_test)
           scores.append(score)

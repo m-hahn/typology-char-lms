@@ -16,7 +16,7 @@ parser.add_argument("--char_embedding_size", type=int, default=random.choice([50
 parser.add_argument("--hidden_dim", type=int, default=random.choice([512, 1024]))
 parser.add_argument("--layer_num", type=int, default=random.choice([1,2]))
 parser.add_argument("--weight_dropout_in", type=float, default=random.choice([0.05,0.3,0.5]))
-parser.add_argument("--weight_dropout_hidden", type=float, default=random.choice([0.05, 0.3, 0.5]))
+parser.add_argument("--weight_dropout_out", type=float, default=random.choice([0.05, 0.3, 0.5]))
 parser.add_argument("--char_dropout_prob", type=float, default=random.choice([0.05]))
 parser.add_argument("--char_noise_prob", type = float, default=0)
 parser.add_argument("--learning_rate", type = float, default=random.choice([0.1, 1, 2, 5, 10]))
@@ -60,7 +60,6 @@ import torch
 
 print(torch.__version__)
 
-from weight_drop import WeightDrop
 
 
 rnn = torch.nn.LSTM(args.char_embedding_size, args.hidden_dim, args.layer_num).cuda()
@@ -69,7 +68,7 @@ rnn_parameter_names = [name for name, _ in rnn.named_parameters()]
 print(rnn_parameter_names)
 
 
-rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
+#rnn_drop = WeightDrop(rnn, [(name, args.weight_dropout_in) for name, _ in rnn.named_parameters() if name.startswith("weight_ih_")] + [ (name, args.weight_dropout_hidden) for name, _ in rnn.named_parameters() if name.startswith("weight_hh_")])
 
 output = torch.nn.Linear(args.hidden_dim, len(itos)+3).cuda()
 
@@ -141,6 +140,11 @@ def prepareDataset(data, train=True):
          yield numeric
          numeric = [0]
 
+# Dropout Masks
+bernoulli_input = torch.distributions.bernoulli.Bernoulli(torch.tensor([1-args.weight_dropout_in for _ in range(args.batchSize * (args.sequence_length) * args.char_embedding_size)]).cuda())
+bernoulli_output = torch.distributions.bernoulli.Bernoulli(torch.tensor([1-args.weight_dropout_out for _ in range(args.batchSize * (args.sequence_length) * args.hidden_dim)]).cuda())
+
+
 
 def forward(numeric, train=True, printHere=False):
     input_tensor = Variable(torch.LongTensor(numeric).transpose(0,1)[:-1].cuda(), requires_grad=False)
@@ -153,10 +157,22 @@ def forward(numeric, train=True, printHere=False):
     embedded = char_embeddings(input_tensor)
     if train:
        embedded = char_dropout(embedded)
+       mask = bernoulli_input.sample()
+       mask = mask.view(args.sequence_length, args.batchSize, args.char_embedding_size)
+       embedded = embedded * mask
 
-    out, _ = rnn_drop(embedded, None)
+    out, _ = rnn(embedded, None)
     #      if train:
     #          out = dropout(out)
+
+    if train:
+      mask = bernoulli_output.sample()
+      mask = mask.view(args.sequence_length, args.batchSize, args.hidden_dim)
+      out = out * mask
+
+
+
+
 
     logits = output(out)
     log_probs = logsoftmax(logits)
@@ -197,7 +213,7 @@ for epoch in range(100):
    print("Got data")
    training_chars = prepareDatasetChunks(training_data, train=True)
 
-   rnn_drop.train(True)
+   rnn.train(True)
    startTime = time.time()
    trainChars = 0
    counter = 0
@@ -221,7 +237,7 @@ for epoch in range(100):
            torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+".pth.tar")
 
 
-   rnn_drop.train(False)
+   rnn.train(False)
 
 
    dev_data = AcqdivReaderPartition(acqdivCorpusReaderdev).iterator()

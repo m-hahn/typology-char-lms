@@ -253,7 +253,7 @@ for epoch in range(100):
    else:
       min_loss="minimum loss=" + str(float(devLosses[-1])) +" epoch=" + str(epoch) + " args=" + str(args)
  
-   if len(devLosses) > 1 and devLosses[-1] > devLosses[-2]:
+   if len(devLosses) > 1 and (devLosses[-1] > devLosses[-2] or devLosses[-1] > 20):
       break
    if args.save_to is not None:
       torch.save(dict([(name, module.state_dict()) for name, module in named_modules.items()]), CHECKPOINT_HOME+args.save_to+".pth.tar")

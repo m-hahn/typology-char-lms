@@ -184,9 +184,9 @@ def backward(loss, printHere):
    optim.zero_grad()
    if printHere:
       print(loss)
-      loss.backward()
-      torch.nn.utils.clip_grad_value_(parameters_cached, 5.0) #, norm_type="inf")
-      optim.step()
+   loss.backward()
+   torch.nn.utils.clip_grad_value_(parameters_cached, 5.0) #, norm_type="inf")
+   optim.step()
 
 import time
 

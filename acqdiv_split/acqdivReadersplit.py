@@ -59,9 +59,9 @@ def printTSV(table, path):
 class AcqdivReader():
    def __init__(self, split, language):
       basePath = ACQDIV_HOME + language.lower()+"/"
-      self.morphemes = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("morphemes") and x.endswith(".tsv")])
+#      self.morphemes = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("morphemes") and x.endswith(".tsv")])
 
-      self.speakers = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("speakers") and x.endswith(".tsv")])
+#      self.speakers = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("speakers") and x.endswith(".tsv")])
       if split == "traindev":
               self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_traindev") and x.endswith(".tsv")])
       if split == "train":
@@ -70,8 +70,8 @@ class AcqdivReader():
               self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_dev") and x.endswith(".tsv")])
       if split == "test":
 	      self.utterances = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("utterances_test") and x.endswith(".tsv")])
-      self.words = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("words") and x.endswith(".tsv")])
-      self.uniquespeakers = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("uniquespeakers") and x.endswith(".tsv")])
+#      self.words = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("words") and x.endswith(".tsv")])
+#      self.uniquespeakers = readTSV([basePath+x for x in os.listdir(basePath) if x.startswith("uniquespeakers") and x.endswith(".tsv")])
 
       random.Random(4656).shuffle(self.utterances[1]) 
       self.language = language

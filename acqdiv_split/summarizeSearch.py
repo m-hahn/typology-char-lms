@@ -1,4 +1,5 @@
 import sys
+from math import log
 
 language = sys.argv[1]
 
@@ -15,8 +16,8 @@ for name in files:
       minimum_loss = float(line[13:line.index(" epoch=")])
       epoch = line[line.index(" epoch=")+7:line.index(" args=Name")]
       args = line[line.index("args=Name"):]
-      data.append((minimum_loss, epoch, name, args))
-data = sorted(data, key=lambda x:-x[0])
+      data.append(("BPC", float(minimum_loss)/log(2), epoch, name, args))
+data = sorted(data, key=lambda x:-x[1])
 for l in data:
   print("\t".join([str(x) for x in l]))
 

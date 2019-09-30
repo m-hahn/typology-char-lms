@@ -226,7 +226,7 @@ from sklearn.model_selection import train_test_split
 
 
 
-training_data = list(AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False, seed=0))
+training_data = list(AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=True, seed=0))
 
 
 

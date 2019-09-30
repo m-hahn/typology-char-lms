@@ -1,7 +1,13 @@
-language = "Japanese"
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--language", dest="language", type=str)
+args=parser.parse_args()
+print(args)
 
 
-with open("segmentation-predictions/"+language+"-table.txt", "r") as inFile:
+
+with open("segmentation-predictions/"+args.language+"-table.txt", "r") as inFile:
    table = [x.strip().split("\t") for x in inFile]
 print("Read table")
 header = table[0]
@@ -42,8 +48,8 @@ for line in table:
 
 stringPredicted = ""
 stringReal = ""
-with open("segmentation-predictions/"+language+"-predicted.txt", "w") as outPredicted:
-  with open("segmentation-predictions/"+language+"-real.txt", "w") as outReal:
+with open("segmentation-predictions/"+args.language+"-predicted.txt", "w") as outPredicted:
+  with open("segmentation-predictions/"+args.language+"-real.txt", "w") as outReal:
     for i in range(maxPosition):
       print(i)
       assert predictedPerPosition[i] is not None

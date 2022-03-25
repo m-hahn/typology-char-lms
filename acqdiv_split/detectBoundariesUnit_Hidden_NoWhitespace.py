@@ -221,7 +221,7 @@ import time
 
 devLosses = []
 if True:
-   training_data = AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=False)
+   training_data = AcqdivReaderPartition(acqdivCorpusReadertrain).reshuffledIterator(blankBeforeEOS=True)
 
    print("Got data")
    training_chars = prepareDatasetChunks(training_data, train=True)

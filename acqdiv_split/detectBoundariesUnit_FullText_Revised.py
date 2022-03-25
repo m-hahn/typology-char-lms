@@ -51,7 +51,7 @@ def device(x):
 from acqdivReadersplit import AcqdivReader, AcqdivReaderPartition
 
 #acqdivCorpusReader = AcqdivReader(args.language)
-acqdivCorpusReadertrain = AcqdivReader("traindev", args.language)
+acqdivCorpusReadertrain = AcqdivReader("test", args.language)
 # in the end, this will be test, but for now let's do traindev to avoid overfitting our research
 
 
@@ -305,7 +305,7 @@ with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFil
        
        examples_count = 0
        
-       correct = 0
+       correctPositives = 0
        falsePositives = 0
        falseNegatives = 0
        
@@ -363,14 +363,14 @@ with open("segmentation-predictions/"+args.language+"-table.txt", "w") as outFil
                       falsePositives += 1
                     elif predictions[i] == 0:
                       falseNegatives += 1
-              else:
-                 correct += 1
+              elif predictions[i] == 1:
+                 correctPositives += 1
           print("Balance ",sum(y_test)/len(y_test), ROUND, FOLD)
           examples_count += len(y_test)
-          print(correct, falsePositives)   
+          print(correctPositives, falsePositives)   
     
-          print("precision", correct / (correct + falsePositives))
-          print("recall", correct / (correct + falseNegatives))
+          print("precision", correctPositives / (correctPositives + falsePositives + 0.01))
+          print("recall", correctPositives / (correctPositives + falseNegatives + 0.01))
     
     
     
